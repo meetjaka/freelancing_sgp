@@ -1,0 +1,227 @@
+@using System.Security.Claims
+@model List<SGP_Freelancing.Models.DTOs.MessageDto>
+@{
+    ViewData["Title"] = "Messages";
+}
+
+<style>
+    .messages-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .messages-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #ffffff;
+        padding: 32px;
+        border-radius: 16px;
+        margin-bottom: 32px;
+    }
+    
+    .messages-header-title {
+        font-size: 32px;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+    
+    .messages-header-subtitle {
+        font-size: 16px;
+        opacity: 0.9;
+    }
+    
+    .unread-badge {
+        background: #FF4444;
+        color: #ffffff;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 14px;
+    }
+    
+    .messages-card {
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        padding: 24px;
+    }
+    
+    .conversation-item {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s ease;
+        border: 2px solid #E5E7EB;
+    }
+    
+    .conversation-item:hover {
+        border-color: #8B7BE6;
+        background: #F9FAFB;
+        transform: translateX(4px);
+        box-shadow: 0 4px 12px rgba(139, 123, 230, 0.15);
+    }
+    
+    .conversation-item.unread {
+        background: #F0EFFF;
+        border-color: #8B7BE6;
+    }
+    
+    .conversation-avatar {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        font-weight: 700;
+        margin-right: 16px;
+        flex-shrink: 0;
+    }
+    
+    .conversation-content {
+        flex-grow: 1;
+        min-width: 0;
+    }
+    
+    .conversation-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+    
+    .conversation-name {
+        font-size: 18px;
+        font-weight: 700;
+        color: #111827;
+        margin: 0;
+    }
+    
+    .conversation-time {
+        font-size: 13px;
+        color: #9CA3AF;
+        white-space: nowrap;
+        margin-left: 16px;
+    }
+    
+    .conversation-preview {
+        font-size: 15px;
+        color: #6B7280;
+        margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    .conversation-item.unread .conversation-preview {
+        color: #374151;
+        font-weight: 500;
+    }
+    
+    .new-badge {
+        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
+        color: #ffffff;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 700;
+        margin-left: 12px;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 80px 24px;
+    }
+    
+    .empty-state-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 24px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        font-size: 36px;
+    }
+    
+    .empty-state-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 12px;
+    }
+    
+    .empty-state-text {
+        font-size: 16px;
+        color: #6B7280;
+    }
+</style>
+
+<div class="messages-container">
+    <div class="messages-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <div class="messages-header-title">Messages</div>
+                <div class="messages-header-subtitle">Stay connected with freelancers and clients</div>
+            </div>
+            @if (ViewBag.UnreadCount > 0)
+            {
+                <div class="unread-badge">
+                    @ViewBag.UnreadCount Unread
+                </div>
+            }
+        </div>
+    </div>
+    
+    <div class="messages-card">
+        @if (Model.Any())
+        {
+            @foreach (var message in Model)
+            {
+                var otherUserId = message.SenderId == User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier) 
+                    ? message.ReceiverId 
+                    : message.SenderId;
+                var otherUserName = message.SenderId == User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier) 
+                    ? message.ReceiverName 
+                    : message.SenderName;
+                var initial = string.IsNullOrEmpty(otherUserName) ? "?" : otherUserName[0].ToString().ToUpper();
+
+                <a asp-action="Conversation" asp-route-userId="@otherUserId" 
+                   class="conversation-item @(message.IsRead ? "" : "unread")">
+                    <div class="conversation-avatar">@initial</div>
+                    <div class="conversation-content">
+                        <div class="conversation-header">
+                            <h6 class="conversation-name">@otherUserName</h6>
+                            <span class="conversation-time">@message.CreatedAt.ToString("MMM dd")</span>
+                        </div>
+                        <p class="conversation-preview">
+                            @(message.Content.Length > 60 ? message.Content.Substring(0, 60) + "..." : message.Content)
+                        </p>
+                    </div>
+                    @if (!message.IsRead)
+                    {
+                        <span class="new-badge">NEW</span>
+                    }
+                </a>
+            }
+        }
+        else
+        {
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <i class="fas fa-inbox"></i>
+                </div>
+                <div class="empty-state-title">No messages yet</div>
+                <div class="empty-state-text">Start a conversation by connecting with freelancers or clients</div>
+            </div>
+        }
+    </div>
+</div>

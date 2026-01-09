@@ -1,0 +1,360 @@
+@using System.Security.Claims
+@model List<SGP_Freelancing.Models.DTOs.MessageDto>
+@{
+    ViewData["Title"] = "Conversation";
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var otherUserId = ViewBag.OtherUserId as string;
+    var otherUserName = Model.FirstOrDefault()?.SenderId == currentUserId 
+        ? Model.FirstOrDefault()?.ReceiverName 
+        : Model.FirstOrDefault()?.SenderName;
+}
+
+<style>
+    .conversation-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+    
+    .conversation-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #ffffff;
+        padding: 24px 32px;
+        border-radius: 16px 16px 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .conversation-header-left {
+        display: flex;
+        align-items: center;
+    }
+    
+    .back-button {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 16px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+    
+    .back-button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.1);
+        color: #ffffff;
+    }
+    
+    .conversation-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: 700;
+        margin-right: 16px;
+    }
+    
+    .conversation-user-info {
+        flex-grow: 1;
+    }
+    
+    .conversation-user-name {
+        font-size: 20px;
+        font-weight: 700;
+        margin: 0;
+    }
+    
+    .conversation-user-status {
+        font-size: 14px;
+        opacity: 0.9;
+        margin: 0;
+    }
+    
+    .messages-box {
+        background: #ffffff;
+        height: 600px;
+        overflow-y: auto;
+        padding: 32px;
+        border-left: 1px solid #E5E7EB;
+        border-right: 1px solid #E5E7EB;
+    }
+    
+    .message-bubble {
+        margin-bottom: 24px;
+        display: flex;
+        align-items: flex-end;
+    }
+    
+    .message-bubble.sent {
+        flex-direction: row-reverse;
+    }
+    
+    .message-bubble-content {
+        max-width: 70%;
+        padding: 16px 20px;
+        border-radius: 16px;
+        position: relative;
+    }
+    
+    .message-bubble.received .message-bubble-content {
+        background: #F3F4F6;
+        color: #111827;
+        border-bottom-left-radius: 4px;
+    }
+    
+    .message-bubble.sent .message-bubble-content {
+        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
+        color: #ffffff;
+        border-bottom-right-radius: 4px;
+    }
+    
+    .message-sender {
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+    
+    .message-text {
+        font-size: 15px;
+        line-height: 1.5;
+        margin: 0;
+        word-wrap: break-word;
+    }
+    
+    .message-time {
+        font-size: 12px;
+        margin-top: 6px;
+        display: block;
+    }
+    
+    .message-bubble.received .message-time {
+        color: #9CA3AF;
+    }
+    
+    .message-bubble.sent .message-time {
+        color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .message-input-container {
+        background: #ffffff;
+        padding: 24px 32px;
+        border-radius: 0 0 16px 16px;
+        border: 1px solid #E5E7EB;
+        border-top: none;
+    }
+    
+    .message-input-form {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+    }
+    
+    .message-input {
+        flex-grow: 1;
+        border: 2px solid #E5E7EB;
+        border-radius: 24px;
+        padding: 14px 24px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+    }
+    
+    .message-input:focus {
+        border-color: #8B7BE6;
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(139, 123, 230, 0.1);
+    }
+    
+    .send-button {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
+        border: none;
+        color: #ffffff;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+    }
+    
+    .send-button:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 16px rgba(139, 123, 230, 0.3);
+    }
+    
+    .send-button:active {
+        transform: scale(0.95);
+    }
+    
+    .empty-conversation {
+        height: 600px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #9CA3AF;
+    }
+    
+    .empty-conversation-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+        opacity: 0.5;
+    }
+</style>
+
+<div class="conversation-container">
+    <div class="conversation-header">
+        <div class="conversation-header-left">
+            <a href="/Message" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            @if (!string.IsNullOrEmpty(otherUserName))
+            {
+                var initial = otherUserName[0].ToString().ToUpper();
+                <div class="conversation-avatar">@initial</div>
+                <div class="conversation-user-info">
+                    <h1 class="conversation-user-name">@otherUserName</h1>
+                    <p class="conversation-user-status">Active</p>
+                </div>
+            }
+        </div>
+    </div>
+    
+    <div class="messages-box" id="messageContainer">
+        @if (Model.Any())
+        {
+            @foreach (var message in Model.OrderBy(m => m.CreatedAt))
+            {
+                var isCurrentUser = message.SenderId == currentUserId;
+                var senderInitial = isCurrentUser ? "Y" : (string.IsNullOrEmpty(message.SenderName) ? "?" : message.SenderName[0].ToString().ToUpper());
+                
+                <div class="message-bubble @(isCurrentUser ? "sent" : "received")">
+                    <div class="message-bubble-content">
+                        <div class="message-sender">@(isCurrentUser ? "You" : message.SenderName)</div>
+                        <p class="message-text">@message.Content</p>
+                        <span class="message-time">@message.CreatedAt.ToString("hh:mm tt")</span>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="empty-conversation">
+                <div>
+                    <div class="empty-conversation-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <p>No messages yet. Start the conversation!</p>
+                </div>
+            </div>
+        }
+    </div>
+    
+    <div class="message-input-container">
+        <form id="messageForm" class="message-input-form">
+            @Html.AntiForgeryToken()
+            <input type="text" id="messageInput" class="message-input" placeholder="Type your message..." required />
+            <button type="submit" class="send-button">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
+    <script>
+        const receiverId = '@otherUserId';
+        
+        // Initialize SignalR connection
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chatHub")
+            .build();
+
+        connection.on("ReceiveMessage", function (senderId, senderName, message, timestamp) {
+            if (senderId === receiverId) {
+                appendMessage(senderName, message, timestamp, false);
+                scrollToBottom();
+            }
+        });
+
+        connection.start().catch(function (err) {
+            console.error(err.toString());
+        });
+
+        // Handle form submission
+        document.getElementById('messageForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+            
+            if (message) {
+                // Send via SignalR
+                connection.invoke("SendMessage", receiverId, message).catch(function (err) {
+                    console.error(err.toString());
+                });
+
+                // Also save to database via API
+                fetch('/Message/Send', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    },
+                    body: JSON.stringify({
+                        ReceiverId: receiverId,
+                        Content: message
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        appendMessage('You', message, new Date(), true);
+                        messageInput.value = '';
+                        scrollToBottom();
+                    }
+                });
+            }
+        });
+
+        function appendMessage(senderName, content, timestamp, isCurrentUser) {
+            const container = document.getElementById('messageContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message-bubble ${isCurrentUser ? 'sent' : 'received'}`;
+            
+            const time = new Date(timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.innerHTML = `
+                <div class="message-bubble-content">
+                    <div class="message-sender">${senderName}</div>
+                    <p class="message-text">${content}</p>
+                    <span class="message-time">${time}</span>
+                </div>
+            `;
+            
+            container.appendChild(messageDiv);
+        }
+
+        function scrollToBottom() {
+            const container = document.getElementById('messageContainer');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Scroll to bottom on page load
+        scrollToBottom();
+    </script>
+}

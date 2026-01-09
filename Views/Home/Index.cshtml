@@ -1,8 +1,786 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "SGP Freelancing - Connect with Top Talent";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    /* Hero Section with Enhanced Gradient */
+    .hero-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        padding: 100px 0;
+    }
+    
+    .hero-content h1 {
+        font-size: 64px;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 24px;
+        background: linear-gradient(90deg, #FFFFFF 0%, rgba(255,255,255,0.9) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: fadeIn 0.8s ease-out;
+    }
+    
+    .hero-content p.subtitle {
+        font-size: 20px;
+        line-height: 1.6;
+        margin-bottom: 32px;
+        color: rgba(255, 255, 255, 0.95);
+        max-width: 540px;
+        animation: fadeIn 0.8s ease-out 0.2s both;
+    }
+    
+    .hero-badge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(10px);
+        padding: 10px 24px;
+        border-radius: 50px;
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        animation: fadeIn 0.8s ease-out;
+    }
+    
+    .hero-buttons {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 48px;
+        animation: slideUp 0.8s ease-out 0.4s both;
+    }
+    
+    .btn-hero-primary {
+        background: white;
+        color: #667eea;
+        padding: 18px 40px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 16px;
+        text-decoration: none;
+        display: inline-block;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .btn-hero-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        color: #667eea;
+    }
+    
+    .btn-hero-secondary {
+        background: transparent;
+        color: white;
+        padding: 18px 40px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 16px;
+        text-decoration: none;
+        display: inline-block;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        transition: all 0.3s ease;
+    }
+    
+    .btn-hero-secondary:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: white;
+        color: white;
+        transform: translateY(-3px);
+    }
+    
+    .hero-stats {
+        display: flex;
+        gap: 48px;
+        margin-top: 48px;
+        animation: slideUp 0.8s ease-out 0.6s both;
+    }
+    
+    .hero-stat {
+        color: white;
+    }
+    
+    .hero-stat-number {
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+    
+    .hero-stat-label {
+        font-size: 14px;
+        opacity: 0.9;
+    }
+    
+    .hero-illustration {
+        text-align: center;
+        animation: float 4s ease-in-out infinite;
+    }
+    
+    .hero-illustration i {
+        font-size: 220px;
+        opacity: 0.35;
+        color: white;
+        filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.2));
+    }
+    
+    /* Enhanced Geometric Shapes */
+    .floating-shape {
+        position: absolute;
+        border-radius: 50%;
+        pointer-events: none;
+    }
+    
+    .shape-1 {
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.4), transparent);
+        top: -150px;
+        right: -150px;
+        filter: blur(100px);
+        animation: pulse 6s ease-in-out infinite;
+    }
+    
+    .shape-2 {
+        width: 350px;
+        height: 350px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+        bottom: -80px;
+        left: -80px;
+        filter: blur(80px);
+        animation: pulse 8s ease-in-out infinite;
+    }
+    
+    .shape-3 {
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(79, 124, 255, 0.3), transparent);
+        top: 50%;
+        left: 10%;
+        filter: blur(90px);
+        animation: float 10s ease-in-out infinite;
+    }
+    
+    .shape-4 {
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(139, 123, 230, 0.3), transparent);
+        bottom: 20%;
+        right: 20%;
+        filter: blur(70px);
+        animation: float 12s ease-in-out infinite reverse;
+    }
+    
+    
+    /* How It Works Section */
+    .section-label {
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2.5px;
+        color: #8B7BE6;
+        margin-bottom: 16px;
+    }
+    
+    .section-title {
+        font-size: 48px;
+        font-weight: 800;
+        color: #1F2937;
+        margin-bottom: 60px;
+    }
+    
+    .step-card {
+        background: white;
+        border-radius: 20px;
+        padding: 50px 30px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        position: relative;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid rgba(139, 123, 230, 0.1);
+    }
+    
+    .step-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 25px 50px rgba(103, 126, 234, 0.2);
+        border-color: rgba(139, 123, 230, 0.3);
+    }
+    
+    .step-number {
+        position: absolute;
+        top: -28px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 26px;
+        font-weight: 800;
+        box-shadow: 0 10px 25px rgba(139, 123, 230, 0.4);
+        border: 3px solid white;
+    }
+    
+    .step-icon {
+        font-size: 56px;
+        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 32px 0 20px;
+    }
+    
+    .step-title {
+        font-size: 26px;
+        font-weight: 700;
+        color: #1F2937;
+        margin-bottom: 16px;
+    }
+    
+    .step-description {
+        font-size: 16px;
+        color: #6B7280;
+        line-height: 1.7;
+    }
+
+    /* Popular Categories Section */
+    .category-card {
+        background: white;
+        border-radius: 16px;
+        padding: 32px 20px;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        text-decoration: none;
+        display: block;
+        height: 100%;
+    }
+
+    .category-card:hover {
+        transform: scale(1.05);
+        border-color: #8B7BE6;
+        box-shadow: 0 15px 35px rgba(139, 123, 230, 0.2);
+    }
+
+    .category-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 36px;
+    }
+
+    .category-gradient-1 { background: linear-gradient(135deg, #667eea 0%, #4F7CFF 100%); }
+    .category-gradient-2 { background: linear-gradient(135deg, #8B7BE6 0%, #C4B5FD 100%); }
+    .category-gradient-3 { background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%); }
+    .category-gradient-4 { background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%); }
+    .category-gradient-5 { background: linear-gradient(135deg, #EF4444 0%, #F87171 100%); }
+    .category-gradient-6 { background: linear-gradient(135deg, #10B981 0%, #34D399 100%); }
+
+    .category-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #1F2937;
+        margin-bottom: 8px;
+    }
+
+    .category-count {
+        font-size: 14px;
+        color: #6B7280;
+    }
+
+    /* Featured Projects Section */
+    .project-card {
+        background: white;
+        border-radius: 16px;
+        padding: 28px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        border: 1px solid #f0f0f0;
+        height: 100%;
+    }
+
+    .project-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    .project-badge {
+        display: inline-block;
+        padding: 6px 14px;
+        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
+        color: white;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 16px;
+    }
+
+    .project-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #1F2937;
+        margin-bottom: 12px;
+    }
+
+    .project-description {
+        font-size: 15px;
+        color: #6B7280;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .project-skills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    .skill-pill {
+        padding: 6px 14px;
+        background: #F3F4F6;
+        color: #4B5563;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .project-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 20px;
+        border-top: 1px solid #F3F4F6;
+    }
+
+    .project-budget {
+        font-size: 24px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .project-bids {
+        font-size: 14px;
+        color: #6B7280;
+    }
+
+    /* Statistics Showcase Section */
+    .stats-showcase {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 80px 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stats-showcase::before {
+        content: '';
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.15), transparent);
+        top: -200px;
+        right: -200px;
+        border-radius: 50%;
+        filter: blur(100px);
+    }
+
+    .stat-item {
+        text-align: center;
+        color: white;
+        padding: 20px;
+    }
+
+    .stat-number {
+        font-size: 64px;
+        font-weight: 800;
+        margin-bottom: 8px;
+        line-height: 1;
+    }
+
+    .stat-label {
+        font-size: 18px;
+        opacity: 0.95;
+        font-weight: 500;
+    }
+
+    /* Call to Action Section */
+    .cta-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 100px 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cta-shape-1, .cta-shape-2 {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        pointer-events: none;
+    }
+
+    .cta-shape-1 {
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+        top: -100px;
+        left: -100px;
+    }
+
+    .cta-shape-2 {
+        width: 350px;
+        height: 350px;
+        background: radial-gradient(circle, rgba(79, 124, 255, 0.4), transparent);
+        bottom: -80px;
+        right: -80px;
+    }
+
+    .cta-title {
+        font-size: 56px;
+        font-weight: 800;
+        color: white;
+        margin-bottom: 20px;
+    }
+
+    .cta-subtitle {
+        font-size: 22px;
+        color: rgba(255, 255, 255, 0.95);
+        margin-bottom: 40px;
+    }
+
+    .btn-cta-primary {
+        background: white;
+        padding: 18px 48px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 16px;
+        text-decoration: none;
+        display: inline-block;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        margin: 0 8px;
+    }
+
+    .btn-cta-primary .gradient-text-btn {
+        background: linear-gradient(90deg, #8B7BE6, #4F7CFF);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+    }
+
+    .btn-cta-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-cta-secondary {
+        background: transparent;
+        color: white;
+        padding: 18px 48px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 16px;
+        text-decoration: none;
+        display: inline-block;
+        border: 2px solid white;
+        transition: all 0.3s ease;
+        margin: 0 8px;
+    }
+
+    .btn-cta-secondary:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+        transform: translateY(-3px);
+    }
+    
+    @@media (max-width: 768px) {
+        .hero-content h1 {
+            font-size: 42px;
+        }
+        .hero-buttons {
+            flex-direction: column;
+        }
+        .hero-stats {
+            flex-direction: column;
+            gap: 24px;
+        }
+        .section-title {
+            font-size: 36px;
+        }
+        .cta-title {
+            font-size: 40px;
+        }
+        .stat-number {
+            font-size: 48px;
+        }
+    }
+</style>
+
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="floating-shape shape-1"></div>
+    <div class="floating-shape shape-2"></div>
+    <div class="floating-shape shape-3"></div>
+    <div class="floating-shape shape-4"></div>
+    
+    <div class="container-fluid px-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <span class="hero-badge">🚀 #1 Freelancing Platform</span>
+                    <h1>Find the Perfect Freelancer for Your Project</h1>
+                    <p class="subtitle">Connect with talented professionals ready to bring your vision to life. Post your project and receive competitive bids from skilled freelancers.</p>
+                    
+                    <div class="hero-buttons">
+                        <a href="/Project" class="btn-hero-primary">Browse Projects</a>
+                        <a href="/Project/Create" class="btn-hero-secondary">Post a Project</a>
+                    </div>
+                    
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <div class="hero-stat-number">10,000+</div>
+                            <div class="hero-stat-label">Projects Completed</div>
+                        </div>
+                        <div class="hero-stat">
+                            <div class="hero-stat-number">5,000+</div>
+                            <div class="hero-stat-label">Freelancers</div>
+                        </div>
+                        <div class="hero-stat">
+                            <div class="hero-stat-number">98%</div>
+                            <div class="hero-stat-label">Success Rate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-illustration">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- How It Works Section -->
+<div class="container my-5 py-5">
+    <div class="text-center mb-5">
+        <div class="section-label">HOW IT WORKS</div>
+        <h2 class="section-title">Get Started in 3 Simple Steps</h2>
+    </div>
+    
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <div class="step-icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <h4 class="step-title">Create Your Account</h4>
+                <p class="step-description">Sign up as a client or freelancer in seconds. No credit card required to get started.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <div class="step-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h4 class="step-title">Post or Browse Projects</h4>
+                <p class="step-description">Clients post projects with detailed requirements. Freelancers browse and submit competitive proposals.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <div class="step-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h4 class="step-title">Collaborate & Deliver</h4>
+                <p class="step-description">Work together seamlessly, track progress in real-time, and make secure payments upon completion.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Popular Categories Section -->
+<div class="container my-5 py-5">
+    <div class="text-center mb-5">
+        <div class="section-label">POPULAR CATEGORIES</div>
+        <h2 class="section-title">Explore Projects by Category</h2>
+    </div>
+    
+    <div class="row g-4">
+        <div class="col-md-4">
+            <a href="/Project?categoryId=1" class="category-card">
+                <div class="category-icon category-gradient-1">
+                    <i class="fas fa-code" style="color: white;"></i>
+                </div>
+                <h5 class="category-title">Web Development</h5>
+                <p class="category-count">1,234 projects</p>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="/Project?categoryId=2" class="category-card">
+                <div class="category-icon category-gradient-2">
+                    <i class="fas fa-palette" style="color: white;"></i>
+                </div>
+                <h5 class="category-title">Graphic Design</h5>
+                <p class="category-count">892 projects</p>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="/Project?categoryId=3" class="category-card">
+                <div class="category-icon category-gradient-3">
+                    <i class="fas fa-pen" style="color: white;"></i>
+                </div>
+                <h5 class="category-title">Content Writing</h5>
+                <p class="category-count">645 projects</p>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="/Project?categoryId=4" class="category-card">
+                <div class="category-icon category-gradient-4">
+                    <i class="fas fa-bullhorn" style="color: white;"></i>
+                </div>
+                <h5 class="category-title">Digital Marketing</h5>
+                <p class="category-count">523 projects</p>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="/Project?categoryId=5" class="category-card">
+                <div class="category-icon category-gradient-5">
+                    <i class="fas fa-video" style="color: white;"></i>
+                </div>
+                <h5 class="category-title">Video Editing</h5>
+                <p class="category-count">389 projects</p>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="/Project?categoryId=6" class="category-card">
+                <div class="category-icon category-gradient-6">
+                    <i class="fas fa-mobile-alt" style="color: white;"></i>
+                </div>
+                <h5 class="category-title">Mobile Apps</h5>
+                <p class="category-count">756 projects</p>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Featured Projects Section -->
+<div class="container my-5 py-5">
+    <div class="text-center mb-5">
+        <div class="section-label">FEATURED PROJECTS</div>
+        <h2 class="section-title">Top Projects Right Now</h2>
+    </div>
+    
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="project-card">
+                <span class="project-badge">Web Development</span>
+                <h4 class="project-title">E-Commerce Website Development</h4>
+                <p class="project-description">Looking for an experienced developer to build a modern e-commerce platform with payment integration and admin dashboard.</p>
+                <div class="project-skills">
+                    <span class="skill-pill">React</span>
+                    <span class="skill-pill">Node.js</span>
+                    <span class="skill-pill">MongoDB</span>
+                </div>
+                <div class="project-meta">
+                    <div class="project-budget">$2,500</div>
+                    <div class="project-bids"><i class="fas fa-users me-1"></i> 12 bids</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="project-card">
+                <span class="project-badge">Graphic Design</span>
+                <h4 class="project-title">Brand Identity Design</h4>
+                <p class="project-description">Need a complete brand identity package including logo, business cards, letterhead, and brand guidelines.</p>
+                <div class="project-skills">
+                    <span class="skill-pill">Illustrator</span>
+                    <span class="skill-pill">Photoshop</span>
+                    <span class="skill-pill">Branding</span>
+                </div>
+                <div class="project-meta">
+                    <div class="project-budget">$1,200</div>
+                    <div class="project-bids"><i class="fas fa-users me-1"></i> 18 bids</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="project-card">
+                <span class="project-badge">Mobile Apps</span>
+                <h4 class="project-title">Fitness Tracking Mobile App</h4>
+                <p class="project-description">Develop a cross-platform fitness app with workout tracking, nutrition planning, and social features.</p>
+                <div class="project-skills">
+                    <span class="skill-pill">Flutter</span>
+                    <span class="skill-pill">Firebase</span>
+                    <span class="skill-pill">UI/UX</span>
+                </div>
+                <div class="project-meta">
+                    <div class="project-budget">$3,800</div>
+                    <div class="project-bids"><i class="fas fa-users me-1"></i> 9 bids</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Showcase Section -->
+<div class="stats-showcase">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <div class="stat-number">10,000+</div>
+                    <div class="stat-label">Projects Completed</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <div class="stat-number">5,000+</div>
+                    <div class="stat-label">Active Freelancers</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <div class="stat-number">$5M+</div>
+                    <div class="stat-label">Total Earnings</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Client Satisfaction</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action Section -->
+<div class="cta-section">
+    <div class="cta-shape-1"></div>
+    <div class="cta-shape-2"></div>
+    
+    <div class="container text-center position-relative">
+        <h2 class="cta-title">Ready to Start Your Project?</h2>
+        <p class="cta-subtitle">Join thousands of satisfied clients and freelancers working together</p>
+        <div class="mt-4">
+            <a href="/Account/Register" class="btn-cta-primary">
+                <span class="gradient-text-btn">Get Started Free</span>
+            </a>
+            <a href="/Project" class="btn-cta-secondary">Browse Projects</a>
