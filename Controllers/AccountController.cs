@@ -71,7 +71,7 @@ namespace SGP_Freelancing.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(string firstName, string lastName, string email, string password, string confirmPassword, string role)
+        public async Task<IActionResult> Register(string firstName, string lastName, string email, string password, string confirmPassword, string Role)
         {
             if (password != confirmPassword)
             {
@@ -92,9 +92,9 @@ namespace SGP_Freelancing.Controllers
             if (result.Succeeded)
             {
                 // Add user to role
-                if (!string.IsNullOrEmpty(role))
+                if (!string.IsNullOrEmpty(Role))
                 {
-                    await _userManager.AddToRoleAsync(user, role);
+                    await _userManager.AddToRoleAsync(user, Role);
                 }
 
                 await _signInManager.SignInAsync(user, isPersistent: false);
