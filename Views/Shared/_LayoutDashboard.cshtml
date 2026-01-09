@@ -343,11 +343,11 @@
                 <hr class="dashboard-menu-divider">
                 
                 <div class="dashboard-menu-section">
-                    <a href="#" class="dashboard-menu-item">
+                    <a asp-controller="Analytics" asp-action="Index" class="dashboard-menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Analytics" ? "active" : "")">
                         <i class="fas fa-chart-line"></i>
                         <span>Analytics</span>
                     </a>
-                    <a href="#" class="dashboard-menu-item">
+                    <a asp-controller="Earnings" asp-action="Index" class="dashboard-menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Earnings" ? "active" : "")">
                         <i class="fas fa-wallet"></i>
                         <span>Earnings</span>
                     </a>
@@ -360,7 +360,7 @@
                         <i class="fas fa-user"></i>
                         <span>Profile</span>
                     </a>
-                    <a href="#" class="dashboard-menu-item">
+                    <a asp-controller="Settings" asp-action="Index" class="dashboard-menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Settings" ? "active" : "")">
                         <i class="fas fa-cog"></i>
                         <span>Settings</span>
                     </a>
@@ -407,7 +407,7 @@
                                     <li><a class="dropdown-item py-2" asp-controller="Account" asp-action="Profile">
                                         <i class="fas fa-user me-2 text-primary"></i>Profile
                                     </a></li>
-                                    <li><a class="dropdown-item py-2" href="#">
+                                    <li><a class="dropdown-item py-2" asp-controller="Settings" asp-action="Index">
                                         <i class="fas fa-cog me-2 text-primary"></i>Settings
                                     </a></li>
                                     <li><hr class="dropdown-divider my-2"></li>

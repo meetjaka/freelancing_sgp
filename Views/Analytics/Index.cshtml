@@ -1,0 +1,211 @@
+@{
+    ViewData["Title"] = "Analytics";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold mb-1">Analytics Dashboard</h2>
+                    <p class="text-muted mb-0">Track your performance and insights</p>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-primary active">This Week</button>
+                    <button type="button" class="btn btn-outline-primary">This Month</button>
+                    <button type="button" class="btn btn-outline-primary">All Time</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Metrics Row -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="stat-icon-modern me-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <i class="bi bi-eye-fill text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="mb-0 fw-bold" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">1,234</h3>
+                            <small class="text-muted">Profile Views</small>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <small class="text-success"><i class="bi bi-arrow-up"></i> 12.5% from last week</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="stat-icon-modern me-3" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
+                            <i class="bi bi-hand-thumbs-up-fill text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="mb-0 fw-bold text-success">87</h3>
+                            <small class="text-muted">Proposals Sent</small>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <small class="text-success"><i class="bi bi-arrow-up"></i> 8.2% increase</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="stat-icon-modern me-3" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">
+                            <i class="bi bi-clock-history text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="mb-0 fw-bold text-warning">32%</h3>
+                            <small class="text-muted">Response Rate</small>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <small class="text-danger"><i class="bi bi-arrow-down"></i> 3.1% decrease</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="stat-icon-modern me-3" style="background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);">
+                            <i class="bi bi-star-fill text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="mb-0 fw-bold text-primary">4.8</h3>
+                            <small class="text-muted">Average Rating</small>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <small class="text-muted">Based on 156 reviews</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-4">Performance Overview</h5>
+                    <div class="text-center py-5">
+                        <i class="bi bi-bar-chart" style="font-size: 4rem; color: #667eea; opacity: 0.3;"></i>
+                        <p class="text-muted mt-3">Chart visualization would go here</p>
+                        <small class="text-muted">Connect analytics service to view detailed performance metrics</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-4">Top Skills</h5>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="small">Web Development</span>
+                            <span class="small fw-bold">85%</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar" style="width: 85%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="small">UI/UX Design</span>
+                            <span class="small fw-bold">72%</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-success" style="width: 72%;"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="small">Mobile Apps</span>
+                            <span class="small fw-bold">68%</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-warning" style="width: 68%;"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="small">Data Analysis</span>
+                            <span class="small fw-bold">55%</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-info" style="width: 55%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-4">Recent Activity</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="px-3 py-3">Action</th>
+                                    <th class="py-3">Project</th>
+                                    <th class="py-3">Date</th>
+                                    <th class="py-3">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="px-3 py-3"><i class="bi bi-file-earmark-text text-primary me-2"></i>Proposal Submitted</td>
+                                    <td class="py-3">E-commerce Website</td>
+                                    <td class="py-3"><small class="text-muted">2 hours ago</small></td>
+                                    <td class="py-3"><span class="badge bg-warning">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-3"><i class="bi bi-chat-dots text-success me-2"></i>Message Received</td>
+                                    <td class="py-3">Mobile App Design</td>
+                                    <td class="py-3"><small class="text-muted">5 hours ago</small></td>
+                                    <td class="py-3"><span class="badge bg-success">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-3"><i class="bi bi-star text-warning me-2"></i>Review Received</td>
+                                    <td class="py-3">Logo Design Project</td>
+                                    <td class="py-3"><small class="text-muted">1 day ago</small></td>
+                                    <td class="py-3"><span class="badge bg-primary">Completed</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .stat-icon-modern {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+    }
+</style>
