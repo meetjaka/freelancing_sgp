@@ -325,14 +325,48 @@
                         <i class="fas fa-th-large"></i>
                         <span>Dashboard</span>
                     </a>
-                    <a asp-controller="Project" asp-action="Index" class="dashboard-menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Project" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
-                        <i class="fas fa-briefcase"></i>
-                        <span>Browse Projects</span>
-                    </a>
-                    <a asp-controller="Project" asp-action="MyProjects" class="dashboard-menu-item @(ViewContext.RouteData.Values["action"]?.ToString() == "MyProjects" ? "active" : "")">
-                        <i class="fas fa-folder"></i>
-                        <span>My Projects</span>
-                    </a>
+                    
+                    @if (User.IsInRole("Client"))
+                    {
+                        <!-- Client/Hirer specific menu items -->
+                        <a asp-controller="Project" asp-action="MyProjects" class="dashboard-menu-item @(ViewContext.RouteData.Values["action"]?.ToString() == "MyProjects" ? "active" : "")">
+                            <i class="fas fa-folder"></i>
+                            <span>My Projects</span>
+                        </a>
+                        <a asp-controller="Project" asp-action="Create" class="dashboard-menu-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Create" ? "active" : "")">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Post New Project</span>
+                        </a>
+                        <a asp-controller="Project" asp-action="Index" class="dashboard-menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Project" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                            <i class="fas fa-search"></i>
+                            <span>Find Freelancers</span>
+                        </a>
+                    }
+                    else if (User.IsInRole("Freelancer"))
+                    {
+                        <!-- Freelancer specific menu items -->
+                        <a asp-controller="Project" asp-action="Index" class="dashboard-menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Project" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                            <i class="fas fa-briefcase"></i>
+                            <span>Browse Projects</span>
+                        </a>
+                        <a href="#" class="dashboard-menu-item">
+                            <i class="fas fa-file-alt"></i>
+                            <span>My Proposals</span>
+                        </a>
+                        <a href="#" class="dashboard-menu-item">
+                            <i class="fas fa-tasks"></i>
+                            <span>Active Contracts</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <!-- Default for users without role -->
+                        <a asp-controller="Project" asp-action="Index" class="dashboard-menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Project" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                            <i class="fas fa-briefcase"></i>
+                            <span>Browse Projects</span>
+                        </a>
+                    }
+                    
                     <a asp-controller="Message" asp-action="Index" class="dashboard-menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Message" ? "active" : "")">
                         <i class="fas fa-envelope"></i>
                         <span>Messages</span>
@@ -343,14 +377,37 @@
                 <hr class="dashboard-menu-divider">
                 
                 <div class="dashboard-menu-section">
-                    <a asp-controller="Analytics" asp-action="Index" class="dashboard-menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Analytics" ? "active" : "")">
-                        <i class="fas fa-chart-line"></i>
-                        <span>Analytics</span>
-                    </a>
-                    <a asp-controller="Earnings" asp-action="Index" class="dashboard-menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Earnings" ? "active" : "")">
-                        <i class="fas fa-wallet"></i>
-                        <span>Earnings</span>
-                    </a>
+                    @if (User.IsInRole("Freelancer"))
+                    {
+                        <!-- Freelancer earnings & analytics -->
+                        <a asp-controller="Earnings" asp-action="Index" class="dashboard-menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Earnings" ? "active" : "")">
+                            <i class="fas fa-wallet"></i>
+                            <span>Earnings</span>
+                        </a>
+                        <a asp-controller="Analytics" asp-action="Index" class="dashboard-menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Analytics" ? "active" : "")">
+                            <i class="fas fa-chart-line"></i>
+                            <span>My Stats</span>
+                        </a>
+                    }
+                    else if (User.IsInRole("Client"))
+                    {
+                        <!-- Client analytics & spending -->
+                        <a asp-controller="Analytics" asp-action="Index" class="dashboard-menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Analytics" ? "active" : "")">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Project Analytics</span>
+                        </a>
+                        <a href="#" class="dashboard-menu-item">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Payments</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Analytics" asp-action="Index" class="dashboard-menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Analytics" ? "active" : "")">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Analytics</span>
+                        </a>
+                    }
                 </div>
                 
                 <hr class="dashboard-menu-divider">
