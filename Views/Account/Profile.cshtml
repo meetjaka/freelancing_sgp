@@ -1,6 +1,7 @@
 @using System.Security.Claims
 @{
     ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
     var userName = User.Identity?.Name ?? "User";
     var userEmail = User.FindFirstValue(ClaimTypes.Email) ?? "user@example.com";
     var userRole = User.IsInRole("Client") ? "Client" : User.IsInRole("Freelancer") ? "Freelancer" : "User";

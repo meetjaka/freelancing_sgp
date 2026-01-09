@@ -1,0 +1,96 @@
+@model SGP_Freelancing.Models.DTOs.UpdateProjectDto
+@{
+    ViewData["Title"] = "Edit Project";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold mb-1">Edit Project</h2>
+                    <p class="text-muted mb-0">Update your project details</p>
+                </div>
+                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-2"></i>Back to Project
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4 p-md-5">
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="mb-4">
+                            <label asp-for="Title" class="form-label fw-bold">Project Title *</label>
+                            <input asp-for="Title" class="form-control form-control-lg" placeholder="e.g., Build a Modern Website" />
+                            <span asp-validation-for="Title" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="CategoryId" class="form-label fw-bold">Category *</label>
+                            <select asp-for="CategoryId" class="form-select form-select-lg">
+                                <option value="">Select a category</option>
+                                <option value="1">Web Development</option>
+                                <option value="2">Mobile Apps</option>
+                                <option value="3">UI/UX Design</option>
+                                <option value="4">Digital Marketing</option>
+                                <option value="5">Content Writing</option>
+                                <option value="6">Video Editing</option>
+                                <option value="7">Data Science</option>
+                                <option value="8">Other</option>
+                            </select>
+                            <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Description" class="form-label fw-bold">Project Description *</label>
+                            <textarea asp-for="Description" class="form-control" rows="6" placeholder="Describe your project in detail..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                            <div class="form-text">Provide clear requirements, deliverables, and expectations</div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label asp-for="Budget" class="form-label fw-bold">Budget ($) *</label>
+                                <input asp-for="Budget" type="number" class="form-control form-control-lg" placeholder="1000" min="0" step="0.01" />
+                                <span asp-validation-for="Budget" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Deadline" class="form-label fw-bold">Deadline *</label>
+                                <input asp-for="Deadline" type="date" class="form-control form-control-lg" />
+                                <span asp-validation-for="Deadline" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Required Skills</label>
+                            <input type="text" class="form-control" placeholder="e.g., HTML, CSS, JavaScript, React" />
+                            <div class="form-text">Add skills separated by commas</div>
+                        </div>
+
+                        <div class="d-flex gap-3 pt-3">
+                            <button type="submit" class="btn btn-primary btn-lg px-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+                                <i class="bi bi-check-circle me-2"></i>Update Project
+                            </button>
+                            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary btn-lg px-4">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
