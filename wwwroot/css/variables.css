@@ -1,0 +1,157 @@
+/* ========================================
+   SGP FREELANCING - DESIGN SYSTEM VARIABLES
+   Modern Purple/Blue Gradient Theme
+   ======================================== */
+
+:root {
+    /* ===== PRIMARY COLORS ===== */
+    --color-purple-primary: #8B7BE6;
+    --color-purple-dark: #7C3AED;
+    --color-purple-darker: #6366F1;
+    --color-purple-light: #A78BFA;
+    --color-purple-lighter: #C4B5FD;
+    
+    --color-blue-primary: #4F7CFF;
+    --color-blue-dark: #3B82F6;
+    --color-blue-darker: #2563EB;
+    --color-blue-light: #60A5FA;
+    --color-blue-lighter: #93C5FD;
+
+    /* ===== GRADIENTS ===== */
+    --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-card: linear-gradient(135deg, #667eea 0%, #4F7CFF 100%);
+    --gradient-button: linear-gradient(90deg, #8B7BE6 0%, #4F7CFF 100%);
+    --gradient-background: linear-gradient(180deg, #F8F9FF 0%, #EEF2FF 100%);
+    --gradient-purple-blue: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
+    --gradient-text: linear-gradient(90deg, #8B7BE6 0%, #4F7CFF 100%);
+
+    /* ===== NEUTRAL COLORS ===== */
+    --color-white: #FFFFFF;
+    --color-bg-light: #F8F9FF;
+    --color-bg-lighter: #F5F7FF;
+    --color-gray-100: #F3F4F6;
+    --color-gray-200: #E5E7EB;
+    --color-gray-400: #9CA3AF;
+    --color-gray-600: #6B7280;
+    --color-gray-800: #1F2937;
+    --color-gray-900: #111827;
+
+    /* ===== STATUS COLORS ===== */
+    --color-success: #10B981;
+    --color-warning: #F59E0B;
+    --color-error: #EF4444;
+    --color-info: #3B82F6;
+
+    /* ===== TYPOGRAPHY ===== */
+    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    /* Font Sizes */
+    --text-xs: 12px;
+    --text-sm: 14px;
+    --text-base: 16px;
+    --text-lg: 18px;
+    --text-xl: 20px;
+    --text-2xl: 24px;
+    --text-3xl: 28px;
+    --text-4xl: 32px;
+    --text-5xl: 42px;
+    --text-6xl: 48px;
+    --text-7xl: 64px;
+
+    /* Font Weights */
+    --font-light: 300;
+    --font-normal: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+    --font-extrabold: 800;
+
+    /* Line Heights */
+    --leading-tight: 1.1;
+    --leading-snug: 1.2;
+    --leading-normal: 1.4;
+    --leading-relaxed: 1.6;
+    --leading-loose: 1.8;
+
+    /* ===== SPACING SYSTEM ===== */
+    --space-1: 8px;
+    --space-2: 16px;
+    --space-3: 24px;
+    --space-4: 32px;
+    --space-5: 40px;
+    --space-6: 48px;
+    --space-8: 64px;
+    --space-10: 80px;
+    --space-12: 96px;
+    --space-16: 128px;
+
+    /* ===== BORDER RADIUS ===== */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-pill: 50px;
+    --radius-full: 9999px;
+
+    /* ===== SHADOWS ===== */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 40px rgba(103, 126, 234, 0.15);
+    --shadow-2xl: 0 25px 50px rgba(103, 126, 234, 0.2);
+    --shadow-button: 0 8px 20px rgba(139, 123, 230, 0.3);
+    --shadow-card-hover: 0 20px 40px rgba(103, 126, 234, 0.15);
+
+    /* ===== TRANSITIONS ===== */
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s ease;
+    --transition-all: all 0.3s ease;
+
+    /* ===== Z-INDEX SCALE ===== */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-popover: 1060;
+    --z-tooltip: 1070;
+
+    /* ===== LAYOUT ===== */
+    --container-max-width: 1280px;
+    --sidebar-width: 280px;
+    --navbar-height: 80px;
+    --topbar-height: 70px;
+
+    /* ===== BREAKPOINTS ===== */
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
+}
+
+/* ===== GRADIENT TEXT UTILITY ===== */
+.gradient-text {
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ===== GRADIENT BACKGROUND UTILITIES ===== */
+.bg-gradient-hero {
+    background: var(--gradient-hero);
+}
+
+.bg-gradient-card {
+    background: var(--gradient-card);
+}
+
+.bg-gradient-button {
+    background: var(--gradient-button);
+}
+
+.bg-gradient-light {
+    background: var(--gradient-background);
+}

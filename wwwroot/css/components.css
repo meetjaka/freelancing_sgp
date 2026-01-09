@@ -1,0 +1,301 @@
+/* ========================================
+   COMPONENT STYLES - SGP FREELANCING
+   ======================================== */
+
+/* ===== BUTTONS ===== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1);
+    padding: 12px 28px;
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    border-radius: var(--radius-md);
+    border: none;
+    cursor: pointer;
+    transition: var(--transition-all);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.btn-primary {
+    background: var(--gradient-button);
+    color: var(--color-white);
+    box-shadow: var(--shadow-button);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(139, 123, 230, 0.4);
+}
+
+.btn-secondary {
+    background: var(--color-white);
+    color: var(--color-purple-primary);
+    border: 2px solid transparent;
+    background-image: linear-gradient(white, white), var(--gradient-button);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--color-gray-800);
+    border: 1px solid var(--color-gray-200);
+}
+
+.btn-ghost:hover {
+    background: var(--color-gray-100);
+    border-color: var(--color-gray-300);
+}
+
+.btn-lg {
+    padding: 16px 36px;
+    font-size: var(--text-lg);
+}
+
+.btn-sm {
+    padding: 8px 20px;
+    font-size: var(--text-sm);
+}
+
+/* ===== CARDS ===== */
+.card {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-all);
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card-hover);
+}
+
+.card-body {
+    padding: var(--space-3);
+}
+
+.card-header {
+    padding: var(--space-3);
+    border-bottom: 1px solid var(--color-gray-200);
+    font-weight: var(--font-semibold);
+}
+
+.card-footer {
+    padding: var(--space-3);
+    border-top: 1px solid var(--color-gray-200);
+    background: var(--color-bg-light);
+}
+
+/* ===== BADGES & PILLS ===== */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    border-radius: var(--radius-pill);
+    white-space: nowrap;
+}
+
+.badge-gradient {
+    background: var(--gradient-button);
+    color: var(--color-white);
+}
+
+.badge-light {
+    background: var(--color-gray-100);
+    color: var(--color-gray-700);
+}
+
+.badge-success {
+    background: #D1FAE5;
+    color: var(--color-success);
+}
+
+.badge-warning {
+    background: #FEF3C7;
+    color: var(--color-warning);
+}
+
+.badge-error {
+    background: #FEE2E2;
+    color: var(--color-error);
+}
+
+/* ===== FORM INPUTS ===== */
+.form-group {
+    margin-bottom: var(--space-3);
+}
+
+.form-label {
+    display: block;
+    margin-bottom: var(--space-1);
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--color-gray-800);
+}
+
+.form-control {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: var(--text-base);
+    color: var(--color-gray-800);
+    background: var(--color-gray-100);
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    transition: var(--transition-all);
+}
+
+.form-control:focus {
+    outline: none;
+    background: var(--color-white);
+    border-color: var(--color-blue-primary);
+    box-shadow: 0 0 0 3px rgba(79, 124, 255, 0.1);
+}
+
+.input-icon-group {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-gray-400);
+}
+
+.input-icon-group .form-control {
+    padding-left: 44px;
+}
+
+/* ===== AVATARS ===== */
+.avatar {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-sm {
+    width: 32px;
+    height: 32px;
+}
+
+.avatar-lg {
+    width: 64px;
+    height: 64px;
+}
+
+.avatar-xl {
+    width: 80px;
+    height: 80px;
+}
+
+/* ===== STAT CARDS ===== */
+.stat-card {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-all);
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+}
+
+.stat-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-2);
+}
+
+.stat-icon.gradient {
+    background: var(--gradient-button);
+    color: var(--color-white);
+}
+
+.stat-value {
+    font-size: var(--text-4xl);
+    font-weight: var(--font-bold);
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--space-1);
+}
+
+.stat-label {
+    font-size: var(--text-sm);
+    color: var(--color-gray-600);
+    font-weight: var(--font-medium);
+}
+
+/* ===== SECTION LABELS ===== */
+.section-label {
+    display: block;
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--color-purple-primary);
+    margin-bottom: var(--space-2);
+}
+
+/* ===== DECORATIVE ELEMENTS ===== */
+.floating-shape {
+    position: absolute;
+    border-radius: var(--radius-full);
+    opacity: 0.5;
+    filter: blur(60px);
+    animation: float 6s ease-in-out infinite;
+}
+
+.floating-shape.purple {
+    background: radial-gradient(circle, rgba(139, 123, 230, 0.4), transparent);
+}
+
+.floating-shape.blue {
+    background: radial-gradient(circle, rgba(79, 124, 255, 0.4), transparent);
+}
+
+/* ===== SOCIAL ICONS ===== */
+.social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-full);
+    background: var(--gradient-button);
+    color: var(--color-white);
+    transition: var(--transition-all);
+}
+
+.social-icon:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 16px rgba(139, 123, 230, 0.3);
+}
