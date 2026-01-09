@@ -63,14 +63,14 @@ namespace SGP_Freelancing.Controllers
             }
         }
 
-        [Authorize(Roles = "Client")]
+        [Authorize]
         [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
-        [Authorize(Roles = "Client")]
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateProjectDto dto)
@@ -100,7 +100,7 @@ namespace SGP_Freelancing.Controllers
             }
         }
 
-        [Authorize(Roles = "Client")]
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -129,7 +129,7 @@ namespace SGP_Freelancing.Controllers
             }
         }
 
-        [Authorize(Roles = "Client")]
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(UpdateProjectDto dto)
@@ -159,7 +159,7 @@ namespace SGP_Freelancing.Controllers
             }
         }
 
-        [Authorize(Roles = "Client")]
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -186,7 +186,7 @@ namespace SGP_Freelancing.Controllers
             }
         }
 
-        [Authorize(Roles = "Freelancer")]
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SubmitBid(CreateBidDto dto)
@@ -218,7 +218,7 @@ namespace SGP_Freelancing.Controllers
             }
         }
 
-        [Authorize(Roles = "Client")]
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AcceptBid(int bidId, int projectId)
@@ -247,7 +247,7 @@ namespace SGP_Freelancing.Controllers
             }
         }
 
-        [Authorize(Roles = "Client")]
+        [Authorize]
         public async Task<IActionResult> MyProjects()
         {
             try
