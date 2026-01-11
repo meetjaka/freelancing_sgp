@@ -1,0 +1,411 @@
+/* Modern Navbar Styles for SGP Freelancing Platform */
+
+/* Main Navbar Container */
+.modern-navbar {
+    background: rgba(102, 126, 234, 0.95) !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.75rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.modern-navbar.scrolled {
+    padding: 0.5rem 0;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Brand Styling */
+.navbar-brand {
+    font-size: 1.5rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+    color: white !important;
+}
+
+.navbar-brand:hover {
+    transform: scale(1.05);
+}
+
+.brand-icon {
+    background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+    color: #667eea;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.navbar-brand:hover .brand-icon {
+    transform: rotate(360deg);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+}
+
+/* Search Bar Styling */
+.navbar-search {
+    position: relative;
+    max-width: 400px;
+    margin: 0 20px;
+}
+
+.navbar-search input {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    padding: 8px 20px 8px 45px;
+    color: white;
+    transition: all 0.3s ease;
+    width: 100%;
+    font-size: 0.95rem;
+}
+
+.navbar-search input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.navbar-search input:focus {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    outline: none;
+    transform: scale(1.02);
+}
+
+.navbar-search .search-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+}
+
+/* Navigation Links */
+.nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 500;
+    padding: 10px 18px !important;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    margin: 0 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-link::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: white;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.nav-link:hover::before {
+    width: 70%;
+}
+
+.nav-link.active {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-link i {
+    font-size: 1.05rem;
+    transition: transform 0.3s ease;
+}
+
+.nav-link:hover i {
+    transform: scale(1.1);
+}
+
+/* Notification Badge */
+.nav-notification {
+    position: relative;
+}
+
+.notification-badge {
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    background: linear-gradient(135deg, #ff4757 0%, #ff6348 100%);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 10px;
+    border: 2px solid #667eea;
+    animation: pulse 2s infinite;
+    box-shadow: 0 2px 10px rgba(255, 71, 87, 0.5);
+}
+
+@keyframes pulse {
+    0%, 100% { 
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% { 
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+/* Dropdown Menu Styling */
+.dropdown-menu {
+    background: white;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    padding: 10px;
+    margin-top: 10px;
+    min-width: 240px;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-item {
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-item:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    transform: translateX(5px);
+}
+
+.dropdown-item:active {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.dropdown-item i {
+    width: 20px;
+    font-size: 1rem;
+}
+
+.dropdown-divider {
+    margin: 8px 0;
+    opacity: 0.1;
+}
+
+/* User Profile Dropdown */
+.user-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 8px 16px !important;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.user-dropdown-toggle:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.user-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+    color: #667eea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    margin-right: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.user-dropdown-toggle:hover .user-avatar {
+    transform: rotate(360deg);
+    border-color: white;
+}
+
+/* Auth Buttons */
+.btn-navbar-primary {
+    background: white;
+    color: #667eea;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-navbar-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+    color: #764ba2;
+    background: #f8f9fa;
+}
+
+.btn-navbar-outline {
+    color: white !important;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    padding: 8px 20px !important;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    background: transparent;
+}
+
+.btn-navbar-outline:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: white;
+    transform: translateY(-2px);
+}
+
+/* Mobile Toggle Button */
+.navbar-toggler {
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    padding: 8px 12px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.navbar-toggler:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: white;
+}
+
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+}
+
+.navbar-toggler-icon {
+    width: 24px;
+    height: 24px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 991px) {
+    .navbar-search {
+        max-width: 100%;
+        margin: 10px 0;
+    }
+    
+    .nav-link {
+        margin: 2px 0;
+        border-radius: 8px;
+    }
+    
+    .user-dropdown-toggle {
+        width: 100%;
+        justify-content: flex-start;
+        margin-top: 8px;
+    }
+    
+    .btn-navbar-primary,
+    .btn-navbar-outline {
+        width: 100%;
+        justify-content: center;
+        margin: 5px 0 !important;
+    }
+    
+    .navbar-nav {
+        margin-top: 10px;
+    }
+    
+    .dropdown-menu {
+        margin-top: 5px;
+        border-radius: 12px;
+    }
+}
+
+@media (max-width: 576px) {
+    .modern-navbar {
+        padding: 0.5rem 0;
+    }
+    
+    .navbar-brand {
+        font-size: 1.3rem !important;
+    }
+    
+    .brand-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+        margin-right: 8px;
+    }
+    
+    .notification-badge {
+        font-size: 0.6rem;
+        padding: 1px 5px;
+    }
+}
+
+/* Dark Mode Support (Optional) */
+@media (prefers-color-scheme: dark) {
+    .dropdown-menu {
+        background: #2d3748;
+    }
+    
+    .dropdown-item {
+        color: #e2e8f0;
+    }
+    
+    .dropdown-item:hover {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+}
+
+/* Accessibility Improvements */
+.nav-link:focus,
+.btn-navbar-primary:focus,
+.btn-navbar-outline:focus,
+.user-dropdown-toggle:focus {
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+    .modern-navbar {
+        display: none;
+    }
+}
