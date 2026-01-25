@@ -1,4 +1,4 @@
-// Modern Navbar Interactive Features for SGP Freelancing Platform
+// Professional Modern Navbar Interactive Features for SGP Freelancing Platform
 
 (function () {
   "use strict";
@@ -18,39 +18,50 @@
     enhanceSearchBar();
     handleMobileMenu();
     initNotifications();
+    addSmoothScrolling();
   }
 
-  // Add scroll effects to navbar
+  // Enhanced scroll effects to navbar with smooth transitions
   function handleScrollEffects(navbar) {
     let lastScroll = 0;
+    let ticking = false;
 
     window.addEventListener("scroll", function () {
-      const currentScroll = window.pageYOffset;
+      if (!ticking) {
+        window.requestAnimationFrame(function () {
+          const currentScroll = window.pageYOffset;
 
-      // Add 'scrolled' class when user scrolls down
-      if (currentScroll > 50) {
-        navbar.classList.add("scrolled");
-      } else {
-        navbar.classList.remove("scrolled");
+          // Add 'scrolled' class when user scrolls down
+          if (currentScroll > 50) {
+            navbar.classList.add("scrolled");
+          } else {
+            navbar.classList.remove("scrolled");
+          }
+
+          // Add shadow effect based on scroll position
+          const shadowIntensity = Math.min(currentScroll / 100, 1);
+          navbar.style.boxShadow = `0 ${8 + shadowIntensity * 8}px ${
+            32 + shadowIntensity * 16
+          }px rgba(31, 38, 135, ${0.15 + shadowIntensity * 0.1})`;
+
+          lastScroll = currentScroll;
+          ticking = false;
+        });
+
+        ticking = true;
       }
-
-      // Optional: Hide navbar on scroll down, show on scroll up
-      // Uncomment if you want this feature
-      /*
-            if (currentScroll > lastScroll && currentScroll > 100) {
-                navbar.style.transform = 'translateY(-100%)';
-            } else {
-                navbar.style.transform = 'translateY(0)';
-            }
-            */
-
-      lastScroll = currentScroll;
     });
+
+    // Add initial animation on page load
+    setTimeout(() => {
+      navbar.style.opacity = "1";
+      navbar.style.transform = "translateY(0)";
+    }, 100);
   }
 
-  // Highlight active navigation link based on current page
+  // Highlight active navigation link based on current page with smooth transitions
   function highlightActiveLink() {
-    const currentPath = window.location.pathname;
+    const currentPath = window.location.pathname.toLowerCase();
     const navLinks = document.querySelectorAll(".navbar-nav .nav-link");
 
     navLinks.forEach((link) => {
@@ -59,21 +70,61 @@
       // Remove existing active class
       link.classList.remove("active");
 
-      // Add active class to matching link
-      if (href && currentPath.includes(href) && href !== "/") {
-        link.classList.add("active");
-      } else if (href === "/" && currentPath === "/") {
-        link.classList.add("active");
+      // Add active class to matching link with improved logic
+      if (href) {
+        const linkPath = href.toLowerCase();
+        if (currentPath === linkPath) {
+          link.classList.add("active");
+        } else if (linkPath !== "/" && currentPath.startsWith(linkPath)) {
+          link.classList.add("active");
+        }
       }
+    });
+
+    // Add click effect to all nav links
+    navLinks.forEach((link) => {
+      link.addEventListener("click", function (e) {
+        // Add ripple effect
+        createRipple(e, this);
+      });
     });
   }
 
-  // Enhance search bar functionality
+  // Create ripple effect on click
+  function createRipple(event, element) {
+    const ripple = document.createElement("span");
+    const rect = element.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = event.clientX - rect.left - size / 2;
+    const y = event.clientY - rect.top - size / 2;
+
+    ripple.style.cssText = `
+            width: ${size}px;
+            height: ${size}px;
+            left: ${x}px;
+            top: ${y}px;
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 0.6s ease-out;
+            pointer-events: none;
+        `;
+
+    element.style.position = "relative";
+    element.style.overflow = "hidden";
+    element.appendChild(ripple);
+
+    setTimeout(() => ripple.remove(), 600);
+  }
+
+  // Enhanced search bar functionality with animations
   function enhanceSearchBar() {
     const searchInput = document.querySelector(".navbar-search input");
+    const searchIcon = document.querySelector(".navbar-search .search-icon");
     if (!searchInput) return;
 
-    // Add search functionality
+    // Add search functionality with Enter key
     searchInput.addEventListener("keypress", function (e) {
       if (e.key === "Enter") {
         const searchTerm = this.value.trim();
@@ -86,7 +137,18 @@
       }
     });
 
-    // Add clear button functionality (if added in future)
+    // Add focus animations
+    searchInput.addEventListener("focus", function () {
+      this.parentElement.classList.add("focused");
+    });
+
+    searchInput.addEventListener("blur", function () {
+      if (!this.value) {
+        this.parentElement.classList.remove("focused");
+      }
+    });
+
+    // Add value tracking
     searchInput.addEventListener("input", function () {
       if (this.value.length > 0) {
         this.parentElement.classList.add("has-value");
@@ -95,7 +157,7 @@
       }
     });
 
-    // Search suggestions (placeholder for future enhancement)
+    // Search suggestions with debouncing
     let searchTimeout;
     searchInput.addEventListener("input", function () {
       clearTimeout(searchTimeout);
@@ -110,7 +172,7 @@
     });
   }
 
-  // Handle mobile menu interactions
+  // Handle mobile menu interactions with smooth animations
   function handleMobileMenu() {
     const navbarToggler = document.querySelector(".navbar-toggler");
     const navbarCollapse = document.querySelector(".navbar-collapse");
@@ -193,13 +255,13 @@
   }
 
   // Smooth scroll to sections (if using anchor links)
-  function initSmoothScroll() {
+  function addSmoothScrolling() {
     const anchorLinks = document.querySelectorAll('a[href^="#"]');
 
     anchorLinks.forEach((link) => {
       link.addEventListener("click", function (e) {
         const targetId = this.getAttribute("href");
-        if (targetId === "#") return;
+        if (targetId === "#" || !targetId) return;
 
         const targetElement = document.querySelector(targetId);
         if (targetElement) {
@@ -215,9 +277,15 @@
         }
       });
     });
+
+    // Add keyboard navigation support
+    initKeyboardNavigation();
+    
+    // Initialize user avatar enhancements
+    enhanceUserDropdown();
   }
 
-  // Add keyboard navigation support
+  // Add keyboard navigation support for accessibility
   function initKeyboardNavigation() {
     const dropdowns = document.querySelectorAll(".dropdown-toggle");
 
@@ -231,34 +299,33 @@
     });
   }
 
-  // Handle user avatar generation (if not set from server)
-  function generateUserAvatars() {
-    const userAvatars = document.querySelectorAll(".user-avatar");
+  // Enhanced user dropdown with animations
+  function enhanceUserDropdown() {
+    const userDropdown = document.querySelector(".user-dropdown-toggle");
+    if (!userDropdown) return;
 
-    userAvatars.forEach((avatar) => {
-      if (!avatar.textContent.trim()) {
-        const username =
-          document.querySelector("#userDropdown span")?.textContent || "User";
-        avatar.textContent = username.charAt(0).toUpperCase();
-      }
+    // Add smooth opening animation
+    userDropdown.addEventListener("show.bs.dropdown", function () {
+      this.classList.add("dropdown-opening");
+    });
 
-      // Generate a consistent color based on username
-      const colors = [
-        "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-        "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-        "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
-        "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
-      ];
-
-      const username =
-        document.querySelector("#userDropdown span")?.textContent || "User";
-      const colorIndex = username.charCodeAt(0) % colors.length;
-      avatar.style.background = colors[colorIndex];
+    userDropdown.addEventListener("shown.bs.dropdown", function () {
+      this.classList.remove("dropdown-opening");
     });
   }
 
-  // Initialize smooth scroll and keyboard navigation
+  // Add ripple animation keyframe
+  const style = document.createElement("style");
+  style.textContent = `
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    `;
+  document.head.appendChild(style);
+})();
   initSmoothScroll();
   initKeyboardNavigation();
   generateUserAvatars();

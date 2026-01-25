@@ -3,9 +3,16 @@
 }
 
 <style>
+    /* Root Variables for Consistency */
+    :root {
+        --primary-color: #4F46E5;
+        --secondary-color: #7C3AED;
+        --accent-color: #3B82F6;
+    }
+    
     /* Hero Section with Enhanced Gradient */
     .hero-section {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
         min-height: 100vh;
         display: flex;
         align-items: center;
@@ -19,11 +26,9 @@
         font-weight: 800;
         line-height: 1.1;
         margin-bottom: 24px;
-        background: linear-gradient(90deg, #FFFFFF 0%, rgba(255,255,255,0.9) 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        animation: fadeIn 0.8s ease-out;
+        color: white;
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        animation: fadeInUp 0.8s ease-out;
     }
     
     .hero-content p.subtitle {
@@ -32,7 +37,7 @@
         margin-bottom: 32px;
         color: rgba(255, 255, 255, 0.95);
         max-width: 540px;
-        animation: fadeIn 0.8s ease-out 0.2s both;
+        animation: fadeInUp 0.8s ease-out 0.2s both;
     }
     
     .hero-badge {
@@ -46,7 +51,8 @@
         font-weight: 600;
         margin-bottom: 24px;
         border: 1px solid rgba(255, 255, 255, 0.3);
-        animation: fadeIn 0.8s ease-out;
+        animation: fadeInUp 0.8s ease-out;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
     
     .hero-buttons {
@@ -58,21 +64,22 @@
     
     .btn-hero-primary {
         background: white;
-        color: #667eea;
+        color: #4F46E5;
         padding: 18px 40px;
         border-radius: 12px;
-        font-weight: 600;
+        font-weight: 700;
         font-size: 16px;
         text-decoration: none;
         display: inline-block;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .btn-hero-primary:hover {
         transform: translateY(-3px);
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-        color: #667eea;
+        color: #7C3AED;
+        background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
     }
     
     .btn-hero-secondary {
@@ -183,7 +190,7 @@
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 2.5px;
-        color: #8B7BE6;
+        color: #4F46E5;
         margin-bottom: 16px;
     }
     
@@ -207,8 +214,8 @@
     
     .step-card:hover {
         transform: translateY(-10px);
-        box-shadow: 0 25px 50px rgba(103, 126, 234, 0.2);
-        border-color: rgba(139, 123, 230, 0.3);
+        box-shadow: 0 25px 50px rgba(79, 70, 229, 0.25);
+        border-color: rgba(79, 70, 229, 0.35);
     }
     
     .step-number {
@@ -218,7 +225,7 @@
         transform: translateX(-50%);
         width: 64px;
         height: 64px;
-        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
+        background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -226,13 +233,13 @@
         color: white;
         font-size: 26px;
         font-weight: 800;
-        box-shadow: 0 10px 25px rgba(139, 123, 230, 0.4);
+        box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
         border: 3px solid white;
     }
     
     .step-icon {
         font-size: 56px;
-        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
+        background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin: 32px 0 20px;
@@ -266,8 +273,8 @@
 
     .category-card:hover {
         transform: scale(1.05);
-        border-color: #8B7BE6;
-        box-shadow: 0 15px 35px rgba(139, 123, 230, 0.2);
+        border-color: #4F46E5;
+        box-shadow: 0 15px 35px rgba(79, 70, 229, 0.25);
     }
 
     .category-icon {
@@ -281,8 +288,8 @@
         font-size: 36px;
     }
 
-    .category-gradient-1 { background: linear-gradient(135deg, #667eea 0%, #4F7CFF 100%); }
-    .category-gradient-2 { background: linear-gradient(135deg, #8B7BE6 0%, #C4B5FD 100%); }
+    .category-gradient-1 { background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); }
+    .category-gradient-2 { background: linear-gradient(135deg, #7C3AED 0%, #A78BFA 100%); }
     .category-gradient-3 { background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%); }
     .category-gradient-4 { background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%); }
     .category-gradient-5 { background: linear-gradient(135deg, #EF4444 0%, #F87171 100%); }
@@ -319,7 +326,7 @@
     .project-badge {
         display: inline-block;
         padding: 6px 14px;
-        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
+        background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
         color: white;
         border-radius: 20px;
         font-size: 12px;
@@ -368,7 +375,7 @@
     .project-budget {
         font-size: 24px;
         font-weight: 700;
-        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
+        background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
@@ -380,7 +387,7 @@
 
     /* Statistics Showcase Section */
     .stats-showcase {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
         padding: 80px 0;
         position: relative;
         overflow: hidden;
@@ -419,7 +426,7 @@
 
     /* Call to Action Section */
     .cta-section {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
         padding: 100px 0;
         position: relative;
         overflow: hidden;
@@ -475,7 +482,7 @@
     }
 
     .btn-cta-primary .gradient-text-btn {
-        background: linear-gradient(90deg, #8B7BE6, #4F7CFF);
+        background: linear-gradient(90deg, #4F46E5, #7C3AED);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         font-weight: 700;
@@ -504,6 +511,55 @@
         background: rgba(255, 255, 255, 0.15);
         color: white;
         transform: translateY(-3px);
+    }
+    
+    /* Enhanced Animations */
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @@keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @@keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @@keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+    
+    @@keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.05); opacity: 0.9; }
+    }
+    
+    /* Add smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    /* Improve text readability */
+    body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
     
     @@media (max-width: 768px) {
