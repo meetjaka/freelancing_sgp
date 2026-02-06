@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="utf-8" />
@@ -11,47 +11,47 @@
             theme: {
                 extend: {
                     colors: {
-                        // PRIMARY: Deep Ocean Blue - Trust, Professionalism, Reliability
+                        // PRIMARY: Premium Indigo - Trust, Authority, Professionalism
                         primary: {
-                            50:  '#EEF4FF',
-                            100: '#DBE6FE',
-                            200: '#BFCFFD',
-                            300: '#93AEFB',
-                            400: '#6085F7',
-                            500: '#3B63F2',
-                            600: '#2549E8',
-                            700: '#1D3AD5',
-                            800: '#1E32AD',
-                            900: '#1E2F88',
-                            950: '#152054',
+                            50:  '#EEF2FF',
+                            100: '#E0E7FF',
+                            200: '#C7D2FE',
+                            300: '#A5B4FC',
+                            400: '#818CF8',
+                            500: '#6366F1',
+                            600: '#4F46E5',
+                            700: '#4338CA',
+                            800: '#3730A3',
+                            900: '#312E81',
+                            950: '#1E1B4B',
                         },
-                        // SECONDARY: Vibrant Teal - Growth, Creativity, Fresh Energy
+                        // SECONDARY: Clean Emerald - Growth, Success, Trust
                         secondary: {
-                            50:  '#EFFEFB',
-                            100: '#C8FFF4',
-                            200: '#92FFEA',
-                            300: '#53F5DC',
-                            400: '#1FE0C8',
-                            500: '#06C4AE',
-                            600: '#029E8E',
-                            700: '#077D73',
-                            800: '#0B635D',
-                            900: '#0E524D',
-                            950: '#013331',
+                            50:  '#ECFDF5',
+                            100: '#D1FAE5',
+                            200: '#A7F3D0',
+                            300: '#6EE7B7',
+                            400: '#34D399',
+                            500: '#10B981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065F46',
+                            900: '#064E3B',
+                            950: '#022C22',
                         },
-                        // ACCENT: Warm Coral - Action, Urgency, Attention
+                        // ACCENT: Soft Amber - Warmth, Highlights, Attention
                         accent: {
-                            50:  '#FFF5F3',
-                            100: '#FFEBE6',
-                            200: '#FFD5CC',
-                            300: '#FFB3A3',
-                            400: '#FF8469',
-                            500: '#F95D3A',
-                            600: '#E74020',
-                            700: '#C23116',
-                            800: '#A02C17',
-                            900: '#842A1A',
-                            950: '#481108',
+                            50:  '#FFFBEB',
+                            100: '#FEF3C7',
+                            200: '#FDE68A',
+                            300: '#FCD34D',
+                            400: '#FBBF24',
+                            500: '#F59E0B',
+                            600: '#D97706',
+                            700: '#B45309',
+                            800: '#92400E',
+                            900: '#78350F',
+                            950: '#451A03',
                         },
                         // NEUTRAL: Sophisticated Slate - Balance, Professionalism
                         neutral: {
@@ -121,9 +121,10 @@
                     },
                     boxShadow: {
                         'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
-                        'glow': '0 0 20px rgba(59, 99, 242, 0.3)',
-                        'glow-teal': '0 0 20px rgba(6, 196, 174, 0.3)',
-                        'glow-coral': '0 0 20px rgba(249, 93, 58, 0.3)',
+                        'glow': '0 0 20px rgba(99, 102, 241, 0.3)',
+                        'glow-secondary': '0 0 20px rgba(16, 185, 129, 0.3)',
+                        'glow-accent': '0 0 20px rgba(245, 158, 11, 0.3)',
+                        'card': '0 4px 6px -1px rgba(0,0,0,.05), 0 10px 15px -3px rgba(0,0,0,.08)',
                     },
                 }
             }
@@ -134,45 +135,98 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
-<body class="font-sans bg-neutral-50 min-h-screen text-neutral-700">
+<body class="font-sans bg-neutral-50 min-h-screen text-neutral-700 @(ViewData["BodyClass"] ?? "")">
+    <style>
+        /* Navbar scroll transition */
+        .navbar-transparent {
+            background: transparent !important;
+            border-bottom-color: transparent !important;
+        }
+        .navbar-transparent .nav-brand-text { color: #fff !important; }
+        .navbar-transparent .nav-search input {
+            background: rgba(255,255,255,0.08) !important;
+            border-color: rgba(255,255,255,0.15) !important;
+            color: #fff !important;
+        }
+        .navbar-transparent .nav-search input::placeholder { color: rgba(255,255,255,0.5) !important; }
+        .navbar-transparent .nav-search .search-icon { color: rgba(255,255,255,0.4) !important; }
+        .navbar-transparent .nav-link { color: rgba(255,255,255,0.85) !important; }
+        .navbar-transparent .nav-link:hover { color: #fff !important; background: rgba(255,255,255,0.1) !important; }
+        .navbar-transparent .nav-signin { color: rgba(255,255,255,0.85) !important; }
+        .navbar-transparent .nav-signin:hover { background: rgba(255,255,255,0.1) !important; color: #fff !important; }
+        .navbar-transparent .nav-join { background: #fff !important; color: #4F46E5 !important; }
+        .navbar-transparent .nav-join:hover { background: #EEF2FF !important; }
+        .navbar-transparent .nav-categories { border-top-color: rgba(255,255,255,0.08) !important; }
+        .navbar-transparent .nav-cat-link { color: rgba(255,255,255,0.7) !important; }
+        .navbar-transparent .nav-cat-link:hover { color: #fff !important; background: rgba(255,255,255,0.1) !important; }
+        .navbar-transparent .mobile-menu-btn { border-color: rgba(255,255,255,0.2) !important; color: #fff !important; }
+        .navbar-transparent .mobile-menu-btn:hover { background: rgba(255,255,255,0.1) !important; }
+
+        .navbar-scrolled {
+            background: rgba(255,255,255,0.8) !important;
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            border-bottom-color: #E2E8F0 !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02), 0 5px 15px rgba(0,0,0,0.06);
+        }
+        .navbar-scrolled .nav-brand-text { color: #1E293B !important; }
+        .navbar-scrolled .nav-search input {
+            background: #F1F5F9 !important;
+            border-color: #E2E8F0 !important;
+            color: #0F172A !important;
+        }
+        .navbar-scrolled .nav-search input::placeholder { color: #64748B !important; }
+        .navbar-scrolled .nav-search .search-icon { color: #64748B !important; }
+        .navbar-scrolled .nav-link { color: #334155 !important; }
+        .navbar-scrolled .nav-link:hover { color: #4F46E5 !important; background: #EEF2FF !important; }
+        .navbar-scrolled .nav-signin { color: #334155 !important; }
+        .navbar-scrolled .nav-signin:hover { background: #F1F5F9 !important; color: #1E293B !important; }
+        .navbar-scrolled .nav-join { background: #4F46E5 !important; color: #fff !important; }
+        .navbar-scrolled .nav-join:hover { background: #4338CA !important; }
+        .navbar-scrolled .nav-categories { border-top-color: #E2E8F0 !important; }
+        .navbar-scrolled .nav-cat-link { color: #475569 !important; }
+        .navbar-scrolled .nav-cat-link:hover { color: #4F46E5 !important; background: #EEF2FF !important; }
+        .navbar-scrolled .mobile-menu-btn { border-color: #CBD5E1 !important; color: #334155 !important; }
+        .navbar-scrolled .mobile-menu-btn:hover { background: #F1F5F9 !important; }
+    </style>
     <header>
         <!-- Premium Navbar -->
-        <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-b border-slate-200/50">
+        <nav id="main-navbar" class="fixed top-0 left-0 right-0 z-50 border-b transition-all duration-300 ease-in-out">
             <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-16">
                     <!-- Brand -->
                     <a class="flex items-center gap-3 group" asp-area="" asp-controller="Home" asp-action="Index">
                         <div class="relative w-10 h-10 flex items-center justify-center">
-                            <div class="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl blur-sm opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            <div class="relative bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
+                            <div class="absolute inset-0 bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-xl blur-sm opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="relative bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-xl text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
                                 <i class="fas fa-handshake text-xl w-10 h-10 flex items-center justify-center"></i>
                             </div>
                         </div>
                         <div class="hidden sm:block">
-                            <span class="text-xl font-bold text-slate-800">SGP Freelancing</span>
+                            <span class="text-xl font-bold text-slate-800 nav-brand-text transition-colors duration-500">SGP Freelancing</span>
                         </div>
                     </a>
 
                     <!-- Search Bar (Centered) -->
-                    <div class="hidden lg:flex flex-1 justify-center px-12">
+                    <div class="hidden lg:flex flex-1 justify-center px-12 nav-search">
                         <div class="relative w-full max-w-lg">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <i class="fas fa-search text-slate-400"></i>
+                                <i class="fas fa-search text-slate-400 search-icon transition-colors duration-500"></i>
                             </div>
                             <input type="text" placeholder="What service are you looking for today?" 
-                                   class="w-full pl-11 pr-4 py-2.5 bg-slate-100 border-transparent rounded-full text-sm text-slate-900 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+                                   class="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-400 transition-all duration-500">
                         </div>
                     </div>
 
                     <!-- Mobile Menu Button -->
-                    <button id="mobile-menu-btn" class="lg:hidden w-10 h-10 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-50 transition-all">
+                    <button id="mobile-menu-btn" class="lg:hidden w-10 h-10 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-50 transition-all duration-500 mobile-menu-btn">
                         <i class="fas fa-bars text-lg"></i>
                     </button>
 
                     <!-- Right Actions -->
                     <div class="hidden lg:flex items-center gap-2 text-sm font-semibold text-slate-700">
-                        <a class="px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-colors" href="#">Explore</a>
-                        <a class="px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-colors" href="#">Become a Seller</a>
+                        <a class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-all duration-300" href="#">Explore</a>
+                        <a class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-all duration-300" href="#">Become a Seller</a>
                         @if (User.Identity.IsAuthenticated)
                         {
                             <a class="relative w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-600 hover:text-indigo-600 transition-colors" 
@@ -221,22 +275,22 @@
                         }
                         else
                         {
-                            <a class="px-4 py-2 rounded-lg hover:bg-slate-100 transition-colors" 
+                            <a class="nav-signin px-4 py-2 rounded-lg hover:bg-slate-100 transition-all duration-300" 
                                asp-area="" asp-controller="Account" asp-action="Login">Sign In</a>
-                            <a class="px-4 py-2 rounded-lg bg-slate-800 text-white font-semibold hover:bg-slate-900 transition-all shadow-sm" 
+                            <a class="nav-join px-5 py-2 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition-all duration-300 shadow-sm hover:shadow-indigo-500/25" 
                                asp-area="" asp-controller="Account" asp-action="Register">Join</a>
                         }
                     </div>
                 </div>
 
                 <!-- Categories Bar -->
-                <div class="hidden lg:flex items-center justify-center gap-4 h-12 text-sm font-medium text-slate-600 border-t border-slate-200/50">
-                    <a class="px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-colors" href="#">Graphics & Design</a>
-                    <a class="px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-colors" href="#">Programming & Tech</a>
-                    <a class="px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-colors" href="#">Digital Marketing</a>
-                    <a class="px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-colors" href="#">Video & Animation</a>
-                    <a class="px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-colors" href="#">Writing & Translation</a>
-                    <a class="px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-colors" href="#">Business</a>
+                <div class="hidden lg:flex items-center justify-center gap-4 h-12 text-sm font-medium text-slate-600 border-t border-slate-200/50 nav-categories transition-all duration-500">
+                    <a class="nav-cat-link px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-all duration-300" href="#">Graphics & Design</a>
+                    <a class="nav-cat-link px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-all duration-300" href="#">Programming & Tech</a>
+                    <a class="nav-cat-link px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-all duration-300" href="#">Digital Marketing</a>
+                    <a class="nav-cat-link px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-all duration-300" href="#">Video & Animation</a>
+                    <a class="nav-cat-link px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-all duration-300" href="#">Writing & Translation</a>
+                    <a class="nav-cat-link px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-all duration-300" href="#">Business</a>
                 </div>
 
                 <!-- Mobile Menu -->
@@ -298,7 +352,7 @@
                         <div class="border-t border-slate-200 mt-4 pt-3 space-y-2">
                             <a class="block px-4 py-2 text-center text-slate-700 font-semibold rounded-lg border border-slate-200 hover:border-indigo-400 hover:text-indigo-600 transition-all" 
                                asp-area="" asp-controller="Account" asp-action="Login">Sign In</a>
-                            <a class="block px-4 py-2 text-center bg-slate-800 text-white font-bold rounded-lg hover:bg-slate-900 transition-all" 
+                            <a class="block px-4 py-2 text-center bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition-all" 
                                asp-area="" asp-controller="Account" asp-action="Register">Join</a>
                         </div>
                     }
@@ -315,16 +369,16 @@
     </main>
 
     <!-- Ultra-Modern Footer -->
-    <footer class="relative bg-slate-900 text-white overflow-hidden">
+    <footer class="relative bg-[#0B1120] text-white overflow-hidden">
         <!-- Gradient overlay -->
-        <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/20 via-purple-900/20 to-slate-900 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-indigo-950/40 via-transparent to-slate-950 pointer-events-none"></div>
         
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
                 <!-- Brand Column -->
                 <div class="lg:col-span-1">
                     <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                        <div class="w-12 h-12 bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-2xl flex items-center justify-center shadow-lg">
                             <i class="fas fa-handshake text-white text-xl"></i>
                         </div>
                         <div class="ml-3">
@@ -334,16 +388,16 @@
                     </div>
                     <p class="text-slate-400 leading-relaxed mb-6">Empowering global talent to connect, collaborate, and create extraordinary work together.</p>
                     <div class="flex gap-3">
-                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-slate-800 hover:bg-gradient-to-br hover:from-indigo-600 hover:to-purple-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/50">
+                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-white/5 hover:bg-indigo-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/30">
                             <i class="fab fa-facebook-f text-slate-400 group-hover:text-white transition-colors"></i>
                         </a>
-                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-slate-800 hover:bg-gradient-to-br hover:from-indigo-600 hover:to-purple-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/50">
+                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-white/5 hover:bg-indigo-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/30">
                             <i class="fab fa-twitter text-slate-400 group-hover:text-white transition-colors"></i>
                         </a>
-                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-slate-800 hover:bg-gradient-to-br hover:from-indigo-600 hover:to-purple-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/50">
+                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-white/5 hover:bg-indigo-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/30">
                             <i class="fab fa-linkedin-in text-slate-400 group-hover:text-white transition-colors"></i>
                         </a>
-                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-slate-800 hover:bg-gradient-to-br hover:from-indigo-600 hover:to-purple-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/50">
+                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-white/5 hover:bg-indigo-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/30">
                             <i class="fab fa-instagram text-slate-400 group-hover:text-white transition-colors"></i>
                         </a>
                     </div>
@@ -384,7 +438,7 @@
             </div>
             
             <!-- Bottom Bar -->
-            <div class="pt-8 border-t border-slate-800">
+            <div class="pt-8 border-t border-white/10">
                 <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                     <p class="text-slate-400 text-sm">&copy; 2026 SGP Freelancing Platform. All rights reserved.</p>
                     <div class="flex gap-6 text-sm">
@@ -418,6 +472,20 @@
                 menu.classList.add('hidden');
             });
         });
+        
+        // Navbar scroll effect
+        const navbar = document.getElementById('main-navbar');
+        function handleNavScroll() {
+            if (window.scrollY > 80) {
+                navbar.classList.remove('navbar-transparent');
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.add('navbar-transparent');
+                navbar.classList.remove('navbar-scrolled');
+            }
+        }
+        window.addEventListener('scroll', handleNavScroll, { passive: true });
+        handleNavScroll(); // Run on page load
     </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
