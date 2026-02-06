@@ -2,152 +2,131 @@
     ViewData["Title"] = "Analytics";
 }
 
-<div class="container-fluid px-4 py-4">
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                    <h2 class="fw-bold mb-1">Analytics Dashboard</h2>
-                    <p class="text-muted mb-0">Track your performance and insights</p>
-                </div>
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-outline-primary active">This Week</button>
-                    <button type="button" class="btn btn-outline-primary">This Month</button>
-                    <button type="button" class="btn btn-outline-primary">All Time</button>
-                </div>
-            </div>
+<div class="max-w-7xl mx-auto px-4 py-6">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <div>
+            <h2 class="text-3xl font-bold text-slate-900">Analytics Dashboard</h2>
+            <p class="text-slate-500 mt-1">Track your performance and insights</p>
+        </div>
+        <div class="flex rounded-lg overflow-hidden border border-slate-200">
+            <button class="px-4 py-2 text-sm font-semibold bg-indigo-600 text-white">This Week</button>
+            <button class="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50 border-l border-slate-200">This Month</button>
+            <button class="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50 border-l border-slate-200">All Time</button>
         </div>
     </div>
 
     <!-- Key Metrics Row -->
-    <div class="row g-4 mb-4">
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="stat-icon-modern me-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                            <i class="bi bi-eye-fill text-white"></i>
-                        </div>
-                        <div>
-                            <h3 class="mb-0 fw-bold" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">1,234</h3>
-                            <small class="text-muted">Profile Views</small>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <small class="text-success"><i class="bi bi-arrow-up"></i> 12.5% from last week</small>
-                    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Profile Views -->
+        <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6">
+            <div class="flex items-center mb-4">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center mr-4">
+                    <i class="fas fa-eye text-white text-lg"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">1,234</h3>
+                    <p class="text-sm text-slate-500">Profile Views</p>
                 </div>
             </div>
+            <p class="text-sm text-emerald-600"><i class="fas fa-arrow-up mr-1"></i>12.5% from last week</p>
         </div>
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="stat-icon-modern me-3" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
-                            <i class="bi bi-hand-thumbs-up-fill text-white"></i>
-                        </div>
-                        <div>
-                            <h3 class="mb-0 fw-bold text-success">87</h3>
-                            <small class="text-muted">Proposals Sent</small>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <small class="text-success"><i class="bi bi-arrow-up"></i> 8.2% increase</small>
-                    </div>
+
+        <!-- Proposals Sent -->
+        <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6">
+            <div class="flex items-center mb-4">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center mr-4">
+                    <i class="fas fa-thumbs-up text-white text-lg"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-emerald-600">87</h3>
+                    <p class="text-sm text-slate-500">Proposals Sent</p>
                 </div>
             </div>
+            <p class="text-sm text-emerald-600"><i class="fas fa-arrow-up mr-1"></i>8.2% increase</p>
         </div>
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="stat-icon-modern me-3" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">
-                            <i class="bi bi-clock-history text-white"></i>
-                        </div>
-                        <div>
-                            <h3 class="mb-0 fw-bold text-warning">32%</h3>
-                            <small class="text-muted">Response Rate</small>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <small class="text-danger"><i class="bi bi-arrow-down"></i> 3.1% decrease</small>
-                    </div>
+
+        <!-- Response Rate -->
+        <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6">
+            <div class="flex items-center mb-4">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center mr-4">
+                    <i class="fas fa-clock text-white text-lg"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-amber-600">32%</h3>
+                    <p class="text-sm text-slate-500">Response Rate</p>
                 </div>
             </div>
+            <p class="text-sm text-red-500"><i class="fas fa-arrow-down mr-1"></i>3.1% decrease</p>
         </div>
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="stat-icon-modern me-3" style="background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);">
-                            <i class="bi bi-star-fill text-white"></i>
-                        </div>
-                        <div>
-                            <h3 class="mb-0 fw-bold text-primary">4.8</h3>
-                            <small class="text-muted">Average Rating</small>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <small class="text-muted">Based on 156 reviews</small>
-                    </div>
+
+        <!-- Average Rating -->
+        <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6">
+            <div class="flex items-center mb-4">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mr-4">
+                    <i class="fas fa-star text-white text-lg"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-blue-600">4.8</h3>
+                    <p class="text-sm text-slate-500">Average Rating</p>
                 </div>
             </div>
+            <p class="text-sm text-slate-500">Based on 156 reviews</p>
         </div>
     </div>
 
     <!-- Charts Row -->
-    <div class="row g-4 mb-4">
-        <div class="col-lg-8">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h5 class="fw-bold mb-4">Performance Overview</h5>
-                    <div class="text-center py-5">
-                        <i class="bi bi-bar-chart" style="font-size: 4rem; color: #667eea; opacity: 0.3;"></i>
-                        <p class="text-muted mt-3">Chart visualization would go here</p>
-                        <small class="text-muted">Connect analytics service to view detailed performance metrics</small>
-                    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <!-- Performance Overview -->
+        <div class="lg:col-span-2 bg-white rounded-xl border border-slate-100 shadow-md p-6">
+            <h5 class="text-xl font-bold text-slate-900 mb-6">Performance Overview</h5>
+            <div class="text-center py-16">
+                <div class="w-20 h-20 mx-auto bg-indigo-100 rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-chart-bar text-indigo-600 text-3xl"></i>
                 </div>
+                <p class="text-slate-600 text-lg mb-2">Chart visualization would go here</p>
+                <p class="text-slate-400 text-sm">Connect analytics service to view detailed performance metrics</p>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h5 class="fw-bold mb-4">Top Skills</h5>
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="small">Web Development</span>
-                            <span class="small fw-bold">85%</span>
-                        </div>
-                        <div class="progress" style="height: 8px;">
-                            <div class="progress-bar" style="width: 85%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
-                        </div>
+
+        <!-- Top Skills -->
+        <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6">
+            <h5 class="text-xl font-bold text-slate-900 mb-6">Top Skills</h5>
+            <div class="space-y-5">
+                <div>
+                    <div class="flex justify-between mb-2">
+                        <span class="text-sm text-slate-600">Web Development</span>
+                        <span class="text-sm font-bold text-slate-900">85%</span>
                     </div>
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="small">UI/UX Design</span>
-                            <span class="small fw-bold">72%</span>
-                        </div>
-                        <div class="progress" style="height: 8px;">
-                            <div class="progress-bar bg-success" style="width: 72%;"></div>
-                        </div>
+                    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                        <div class="h-full w-[85%] bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full"></div>
                     </div>
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="small">Mobile Apps</span>
-                            <span class="small fw-bold">68%</span>
-                        </div>
-                        <div class="progress" style="height: 8px;">
-                            <div class="progress-bar bg-warning" style="width: 68%;"></div>
-                        </div>
+                </div>
+                <div>
+                    <div class="flex justify-between mb-2">
+                        <span class="text-sm text-slate-600">UI/UX Design</span>
+                        <span class="text-sm font-bold text-slate-900">72%</span>
                     </div>
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="small">Data Analysis</span>
-                            <span class="small fw-bold">55%</span>
-                        </div>
-                        <div class="progress" style="height: 8px;">
-                            <div class="progress-bar bg-info" style="width: 55%;"></div>
-                        </div>
+                    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                        <div class="h-full w-[72%] bg-emerald-500 rounded-full"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between mb-2">
+                        <span class="text-sm text-slate-600">Mobile Apps</span>
+                        <span class="text-sm font-bold text-slate-900">68%</span>
+                    </div>
+                    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                        <div class="h-full w-[68%] bg-amber-500 rounded-full"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between mb-2">
+                        <span class="text-sm text-slate-600">Data Analysis</span>
+                        <span class="text-sm font-bold text-slate-900">55%</span>
+                    </div>
+                    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                        <div class="h-full w-[55%] bg-sky-500 rounded-full"></div>
                     </div>
                 </div>
             </div>
@@ -155,57 +134,74 @@
     </div>
 
     <!-- Recent Activity -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h5 class="fw-bold mb-4">Recent Activity</h5>
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="bg-light">
-                                <tr>
-                                    <th class="px-3 py-3">Action</th>
-                                    <th class="py-3">Project</th>
-                                    <th class="py-3">Date</th>
-                                    <th class="py-3">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="px-3 py-3"><i class="bi bi-file-earmark-text text-primary me-2"></i>Proposal Submitted</td>
-                                    <td class="py-3">E-commerce Website</td>
-                                    <td class="py-3"><small class="text-muted">2 hours ago</small></td>
-                                    <td class="py-3"><span class="badge bg-warning">Pending</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="px-3 py-3"><i class="bi bi-chat-dots text-success me-2"></i>Message Received</td>
-                                    <td class="py-3">Mobile App Design</td>
-                                    <td class="py-3"><small class="text-muted">5 hours ago</small></td>
-                                    <td class="py-3"><span class="badge bg-success">Active</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="px-3 py-3"><i class="bi bi-star text-warning me-2"></i>Review Received</td>
-                                    <td class="py-3">Logo Design Project</td>
-                                    <td class="py-3"><small class="text-muted">1 day ago</small></td>
-                                    <td class="py-3"><span class="badge bg-primary">Completed</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+    <div class="bg-white rounded-xl border border-slate-100 shadow-md overflow-hidden">
+        <div class="p-6 border-b border-slate-100">
+            <h5 class="text-xl font-bold text-slate-900">Recent Activity</h5>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-slate-50">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Action</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Project</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Date</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-file-alt text-indigo-600 mr-3"></i>
+                                <span class="text-sm font-medium text-slate-900">Proposal Submitted</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm text-slate-600">E-commerce Website</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm text-slate-500">2 hours ago</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="px-3 py-1 text-xs font-semibold bg-amber-100 text-amber-700 rounded-full">Pending</span>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-comment-dots text-emerald-600 mr-3"></i>
+                                <span class="text-sm font-medium text-slate-900">Message Received</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm text-slate-600">Mobile App Design</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm text-slate-500">5 hours ago</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="px-3 py-1 text-xs font-semibold bg-emerald-100 text-emerald-700 rounded-full">Active</span>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-star text-amber-500 mr-3"></i>
+                                <span class="text-sm font-medium text-slate-900">Review Received</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm text-slate-600">Logo Design Project</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm text-slate-500">1 day ago</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="px-3 py-1 text-xs font-semibold bg-indigo-100 text-indigo-700 rounded-full">Completed</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
-
-<style>
-    .stat-icon-modern {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.25rem;
-    }
-</style>

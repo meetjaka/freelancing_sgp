@@ -3,105 +3,132 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <div class="row justify-content-center min-vh-100 align-items-center py-5">
-        <div class="col-md-6">
-            <div class="card shadow-lg border-0" style="border-radius: 20px;">
-                <div class="card-body p-5">
-                    <div class="text-center mb-4">
-                        <div class="d-inline-flex align-items-center justify-content-center" style="width: 70px; height: 70px; background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%); border-radius: 16px; margin-bottom: 1.5rem;">
-                            <i class="fas fa-user-plus text-white fa-2x"></i>
-                        </div>
-                        <h2 class="fw-bold mb-2">Create Account</h2>
-                        <p class="text-muted">Join thousands of freelancers and clients</p>
-                    </div>
-
-                    <form asp-action="Register" method="post">
-                        <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
-                        
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="firstName" class="form-label fw-semibold">First Name</label>
-                                <input type="text" class="form-control" id="firstName" name="FirstName" placeholder="John" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="lastName" class="form-label fw-semibold">Last Name</label>
-                                <input type="text" class="form-control" id="lastName" name="LastName" placeholder="Doe" required>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="email" class="form-label fw-semibold">Email Address</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0">
-                                    <i class="fas fa-envelope text-muted"></i>
-                                </span>
-                                <input type="email" class="form-control bg-light border-start-0" id="email" name="Email" placeholder="john@example.com" required>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="password" class="form-label fw-semibold">Password</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0">
-                                    <i class="fas fa-lock text-muted"></i>
-                                </span>
-                                <input type="password" class="form-control bg-light border-start-0" id="password" name="Password" placeholder="Minimum 6 characters" required>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="confirmPassword" class="form-label fw-semibold">Confirm Password</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0">
-                                    <i class="fas fa-lock text-muted"></i>
-                                </span>
-                                <input type="password" class="form-control bg-light border-start-0" id="confirmPassword" name="ConfirmPassword" placeholder="Re-enter password" required>
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label fw-semibold">I want to:</label>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <div class="form-check p-3 border rounded">
-                                        <input class="form-check-input" type="radio" name="Role" id="freelancer" value="Freelancer" checked>
-                                        <label class="form-check-label w-100" for="freelancer">
-                                            <div class="fw-semibold">Work as Freelancer</div>
-                                            <small class="text-muted">Bid on projects</small>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-check p-3 border rounded">
-                                        <input class="form-check-input" type="radio" name="Role" id="client" value="Client">
-                                        <label class="form-check-label w-100" for="client">
-                                            <div class="fw-semibold">Hire Freelancers</div>
-                                            <small class="text-muted">Post projects</small>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-check mb-4">
-                            <input class="form-check-input" type="checkbox" id="terms" required>
-                            <label class="form-check-label" for="terms">
-                                I agree to the <a href="#" class="text-decoration-none">Terms of Service</a> and <a href="#" class="text-decoration-none">Privacy Policy</a>
-                            </label>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary w-100 py-3 fw-semibold mb-3">
-                            <i class="fas fa-user-plus me-2"></i>Create Account
-                        </button>
-
-                        <div class="text-center">
-                            <span class="text-muted">Already have an account?</span>
-                            <a asp-action="Login" class="fw-semibold text-decoration-none ms-1" style="color: var(--primary-blue);">Sign In</a>
-                        </div>
-                    </form>
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-lg w-full">
+        <!-- Card -->
+        <div class="bg-white rounded-2xl shadow-2xl p-8 border border-gray-100">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl mb-6 shadow-lg">
+                    <i class="fas fa-user-plus text-white text-2xl"></i>
                 </div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">Create Account</h2>
+                <p class="text-gray-500">Join thousands of freelancers and clients</p>
             </div>
+
+            <form asp-action="Register" method="post" class="space-y-5">
+                <div asp-validation-summary="All" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm" role="alert"></div>
+                
+                <!-- Name Fields -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="firstName" class="block text-sm font-semibold text-gray-700 mb-2">First Name</label>
+                        <input type="text" id="firstName" name="FirstName" 
+                               class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
+                               placeholder="John" required>
+                    </div>
+                    <div>
+                        <label for="lastName" class="block text-sm font-semibold text-gray-700 mb-2">Last Name</label>
+                        <input type="text" id="lastName" name="LastName" 
+                               class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
+                               placeholder="Doe" required>
+                    </div>
+                </div>
+
+                <!-- Email Field -->
+                <div>
+                    <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fas fa-envelope text-gray-400"></i>
+                        </div>
+                        <input type="email" id="email" name="Email" 
+                               class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
+                               placeholder="john@example.com" required>
+                    </div>
+                </div>
+
+                <!-- Password Field -->
+                <div>
+                    <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-400"></i>
+                        </div>
+                        <input type="password" id="password" name="Password" 
+                               class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
+                               placeholder="Minimum 6 characters" required>
+                    </div>
+                </div>
+
+                <!-- Confirm Password Field -->
+                <div>
+                    <label for="confirmPassword" class="block text-sm font-semibold text-gray-700 mb-2">Confirm Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-400"></i>
+                        </div>
+                        <input type="password" id="confirmPassword" name="ConfirmPassword" 
+                               class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
+                               placeholder="Re-enter password" required>
+                    </div>
+                </div>
+
+                <!-- Role Selection -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">I want to:</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="Role" value="Freelancer" class="peer sr-only" checked>
+                            <div class="p-4 border-2 border-gray-200 rounded-xl peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all hover:border-gray-300">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-laptop-code text-indigo-600"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-gray-900">Freelancer</div>
+                                        <div class="text-xs text-gray-500">Bid on projects</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="Role" value="Client" class="peer sr-only">
+                            <div class="p-4 border-2 border-gray-200 rounded-xl peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all hover:border-gray-300">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-briefcase text-purple-600"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-gray-900">Client</div>
+                                        <div class="text-xs text-gray-500">Hire freelancers</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Terms Checkbox -->
+                <label class="flex items-start cursor-pointer">
+                    <input type="checkbox" required class="w-4 h-4 mt-1 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    <span class="ml-2 text-sm text-gray-600">
+                        I agree to the <a href="#" class="text-indigo-600 hover:text-indigo-700 font-medium">Terms of Service</a> and <a href="#" class="text-indigo-600 hover:text-indigo-700 font-medium">Privacy Policy</a>
+                    </span>
+                </label>
+
+                <!-- Submit Button -->
+                <button type="submit" 
+                        class="w-full py-3 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center">
+                    <i class="fas fa-user-plus mr-2"></i>Create Account
+                </button>
+
+                <!-- Sign In Link -->
+                <p class="text-center text-gray-600">
+                    Already have an account? 
+                    <a asp-action="Login" class="font-semibold text-indigo-600 hover:text-indigo-700 transition-colors">Sign In</a>
+                </p>
+            </form>
         </div>
     </div>
 </div>

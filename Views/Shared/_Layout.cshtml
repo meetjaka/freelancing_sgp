@@ -1,635 +1,426 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SGP Freelancing Platform</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- Tailwind CSS CDN - Includes ALL utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // PRIMARY: Deep Ocean Blue - Trust, Professionalism, Reliability
+                        primary: {
+                            50:  '#EEF4FF',
+                            100: '#DBE6FE',
+                            200: '#BFCFFD',
+                            300: '#93AEFB',
+                            400: '#6085F7',
+                            500: '#3B63F2',
+                            600: '#2549E8',
+                            700: '#1D3AD5',
+                            800: '#1E32AD',
+                            900: '#1E2F88',
+                            950: '#152054',
+                        },
+                        // SECONDARY: Vibrant Teal - Growth, Creativity, Fresh Energy
+                        secondary: {
+                            50:  '#EFFEFB',
+                            100: '#C8FFF4',
+                            200: '#92FFEA',
+                            300: '#53F5DC',
+                            400: '#1FE0C8',
+                            500: '#06C4AE',
+                            600: '#029E8E',
+                            700: '#077D73',
+                            800: '#0B635D',
+                            900: '#0E524D',
+                            950: '#013331',
+                        },
+                        // ACCENT: Warm Coral - Action, Urgency, Attention
+                        accent: {
+                            50:  '#FFF5F3',
+                            100: '#FFEBE6',
+                            200: '#FFD5CC',
+                            300: '#FFB3A3',
+                            400: '#FF8469',
+                            500: '#F95D3A',
+                            600: '#E74020',
+                            700: '#C23116',
+                            800: '#A02C17',
+                            900: '#842A1A',
+                            950: '#481108',
+                        },
+                        // NEUTRAL: Sophisticated Slate - Balance, Professionalism
+                        neutral: {
+                            50:  '#F8FAFC',
+                            100: '#F1F5F9',
+                            200: '#E2E8F0',
+                            300: '#CBD5E1',
+                            400: '#94A3B8',
+                            500: '#64748B',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1E293B',
+                            900: '#0F172A',
+                            950: '#020617',
+                        },
+                        success: {
+                            50:  '#ECFDF5',
+                            100: '#D1FAE5',
+                            200: '#A7F3D0',
+                            300: '#6EE7B7',
+                            400: '#34D399',
+                            500: '#10B981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065F46',
+                            900: '#064E3B',
+                        },
+                        warning: {
+                            50:  '#FFFBEB',
+                            100: '#FEF3C7',
+                            200: '#FDE68A',
+                            300: '#FCD34D',
+                            400: '#FBBF24',
+                            500: '#F59E0B',
+                            600: '#D97706',
+                            700: '#B45309',
+                            800: '#92400E',
+                            900: '#78350F',
+                        },
+                        error: {
+                            50:  '#FEF2F2',
+                            100: '#FEE2E2',
+                            200: '#FECACA',
+                            300: '#FCA5A5',
+                            400: '#F87171',
+                            500: '#EF4444',
+                            600: '#DC2626',
+                            700: '#B91C1C',
+                            800: '#991B1B',
+                            900: '#7F1D1D',
+                        },
+                        info: {
+                            50:  '#EFF6FF',
+                            100: '#DBEAFE',
+                            200: '#BFDBFE',
+                            300: '#93C5FD',
+                            400: '#60A5FA',
+                            500: '#3B82F6',
+                            600: '#2563EB',
+                            700: '#1D4ED8',
+                            800: '#1E40AF',
+                            900: '#1E3A8A',
+                        },
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+                        'glow': '0 0 20px rgba(59, 99, 242, 0.3)',
+                        'glow-teal': '0 0 20px rgba(6, 196, 174, 0.3)',
+                        'glow-coral': '0 0 20px rgba(249, 93, 58, 0.3)',
+                    },
+                }
+            }
+        }
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/variables.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/animations.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/modern-theme.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/notifications.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
-    <style>
-        body { font-family: 'Inter', sans-serif !important; }
-        
-        /* Professional Modern Navbar Styles */
-        .modern-navbar {
-            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%) !important;
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border-bottom: 2px solid rgba(255, 255, 255, 0.15);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 1030;
-            box-shadow: 0 8px 32px rgba(79, 70, 229, 0.25);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .modern-navbar.scrolled {
-            padding: 0.6rem 0;
-            box-shadow: 0 12px 48px rgba(31, 38, 135, 0.25);
-        }
-        
-        /* Professional Brand Styling */
-        .navbar-brand {
-            font-size: 1.75rem !important;
-            font-weight: 800 !important;
-            letter-spacing: -1px;
-            display: flex;
-            align-items: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            color: white !important;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        .navbar-brand:hover {
-            transform: translateY(-2px);
-        }
-        
-        .brand-icon {
-            background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
-            color: #4F46E5;
-            width: 45px;
-            height: 45px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 12px;
-            font-size: 1.3rem;
-            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.25), inset 0 2px 4px rgba(0, 0, 0, 0.05);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .navbar-brand:hover .brand-icon {
-            transform: rotate(360deg) scale(1.05);
-            box-shadow: 0 12px 32px rgba(255, 255, 255, 0.35);
-        }
-        
-        /* Enhanced Search Bar */
-        .navbar-search {
-            position: relative;
-            max-width: 450px;
-            margin: 0 24px;
-        }
-        
-        .navbar-search input {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1.5px solid rgba(255, 255, 255, 0.3);
-            border-radius: 30px;
-            padding: 11px 24px 11px 50px;
-            color: white;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            width: 100%;
-            font-size: 0.95rem;
-            font-weight: 500;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-        
-        .navbar-search input::placeholder {
-            color: rgba(255, 255, 255, 0.75);
-            font-weight: 500;
-        }
-        
-        .navbar-search input:focus {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.5);
-            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2), 0 0 0 4px rgba(255, 255, 255, 0.1);
-            outline: none;
-            transform: translateY(-1px);
-        }
-        
-        .navbar-search .search-icon {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .navbar-search input:focus + .search-icon {
-            color: white;
-            transform: translateY(-50%) scale(1.1);
-        }
-        
-        /* Professional Navigation Links */
-        .nav-link {
-            color: rgba(255, 255, 255, 0.95) !important;
-            font-weight: 600;
-            padding: 11px 20px !important;
-            border-radius: 12px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            margin: 0 3px;
-            position: relative;
-            overflow: hidden;
-            font-size: 0.95rem;
-        }
-        
-        .nav-link::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 3px;
-            background: white;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translateX(-50%);
-            border-radius: 3px 3px 0 0;
-        }
-        
-        .nav-link:hover {
-            background: rgba(255, 255, 255, 0.18);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        .nav-link:hover::before {
-            width: 75%;
-        }
-        
-        .nav-link.active {
-            background: rgba(255, 255, 255, 0.25);
-            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        .nav-link i {
-            font-size: 1.05rem;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            margin-right: 2px;
-        }
-        
-        .nav-link:hover i {
-            transform: scale(1.15);
-        }
-        
-        /* Enhanced Notification Badge */
-        .nav-notification {
-            position: relative;
-        }
-        
-        .notification-badge {
-            position: absolute;
-            top: 3px;
-            right: 6px;
-            background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
-            color: white;
-            font-size: 0.7rem;
-            font-weight: 800;
-            padding: 3px 7px;
-            border-radius: 12px;
-            border: 2.5px solid rgba(102, 126, 234, 0.9);
-            animation: notificationPulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-            box-shadow: 0 4px 12px rgba(255, 71, 87, 0.6), 0 0 20px rgba(255, 71, 87, 0.3);
-            min-width: 20px;
-            text-align: center;
-        }
-        
-        @@keyframes notificationPulse {
-            0%, 100% { 
-                transform: scale(1);
-                box-shadow: 0 4px 12px rgba(255, 71, 87, 0.6);
-            }
-            50% { 
-                transform: scale(1.15);
-                box-shadow: 0 6px 18px rgba(255, 71, 87, 0.8);
-            }
-        }
-        
-        /* Professional Dropdown Menu */
-        .dropdown-menu {
-            background: white;
-            border: none;
-            border-radius: 18px;
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
-            padding: 12px;
-            margin-top: 12px;
-            min-width: 260px;
-            animation: dropdownSlide 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        @@keyframes dropdownSlide {
-            from {
-                opacity: 0;
-                transform: translateY(-12px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .dropdown-item {
-            border-radius: 12px;
-            padding: 13px 20px;
-            font-weight: 600;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            color: #2c3e50;
-            font-size: 0.95rem;
-        }
-        
-        .dropdown-item:hover {
-            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
-            color: white;
-            transform: translateX(6px);
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-        }
-        
-        .dropdown-item i {
-            width: 24px;
-            font-size: 1.05rem;
-        }
-        
-        .dropdown-divider {
-            margin: 10px 0;
-            opacity: 0.12;
-            border-top: 2px solid #e1e8ed;
-        }
-        
-        /* Professional User Profile Dropdown */
-        .user-dropdown-toggle {
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.18);
-            padding: 9px 18px !important;
-            border-radius: 30px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1.5px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-        
-        .user-dropdown-toggle:hover {
-            background: rgba(255, 255, 255, 0.28);
-            border-color: rgba(255, 255, 255, 0.4);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-        }
-        
-        .user-avatar {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
-            color: #4F46E5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            margin-right: 10px;
-            border: 3px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .user-dropdown-toggle:hover .user-avatar {
-            transform: scale(1.05);
-            border-color: white;
-        }
-        
-        /* Professional Auth Buttons */
-        .btn-navbar-primary {
-            background: white;
-            color: #4F46E5;
-            border: none;
-            padding: 11px 28px;
-            border-radius: 30px;
-            font-weight: 700;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.25);
-            font-size: 0.95rem;
-            letter-spacing: 0.3px;
-        }
-        
-        .btn-navbar-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 28px rgba(255, 255, 255, 0.35);
-            color: #7C3AED;
-            background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
-        }
-        
-        .btn-navbar-outline {
-            color: white !important;
-            border: 2.5px solid rgba(255, 255, 255, 0.6);
-            padding: 9px 24px !important;
-            border-radius: 30px;
-            font-weight: 700;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 0.95rem;
-            letter-spacing: 0.3px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-        
-        .btn-navbar-outline:hover {
-            background: rgba(255, 255, 255, 0.25);
-            border-color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-        }
-        
-        /* Mobile Toggle Button */
-        .navbar-toggler {
-            border: 2px solid rgba(255, 255, 255, 0.5) !important;
-            padding: 8px 12px;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-        
-        .navbar-toggler:hover {
-            border-color: white !important;
-            background: rgba(255, 255, 255, 0.15);
-        }
-        
-        .navbar-toggler-icon {
-            filter: brightness(0) invert(1);
-        }
-        
-        /* Mobile Responsive */
-        @@media (max-width: 991px) {
-            .modern-navbar {
-                padding: 0.8rem 0;
-            }
-            
-            .navbar-brand {
-                font-size: 1.5rem !important;
-            }
-            
-            .brand-icon {
-                width: 40px;
-                height: 40px;
-                margin-right: 10px;
-            }
-            
-            .navbar-search {
-                max-width: 100%;
-                margin: 15px 0;
-            }
-            
-            .nav-link {
-                margin: 4px 0;
-                padding: 12px 18px !important;
-            }
-            
-            .navbar-collapse {
-                background: rgba(255, 255, 255, 0.1);
-                padding: 15px;
-                border-radius: 15px;
-                margin-top: 15px;
-                backdrop-filter: blur(10px);
-            }
-        }
-        
-        @@media (max-width: 576px) {
-            .btn-navbar-primary,
-            .btn-navbar-outline {
-                width: 100%;
-                margin: 5px 0;
-            }
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="font-sans bg-neutral-50 min-h-screen text-neutral-700">
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark modern-navbar">
-            <div class="container-fluid px-4">
-                <!-- Brand -->
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    <div class="brand-icon">
-                        <i class="fas fa-handshake"></i>
+        <!-- Premium Navbar -->
+        <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-b border-slate-200/50">
+            <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <!-- Brand -->
+                    <a class="flex items-center gap-3 group" asp-area="" asp-controller="Home" asp-action="Index">
+                        <div class="relative w-10 h-10 flex items-center justify-center">
+                            <div class="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl blur-sm opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="relative bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                <i class="fas fa-handshake text-xl w-10 h-10 flex items-center justify-center"></i>
+                            </div>
+                        </div>
+                        <div class="hidden sm:block">
+                            <span class="text-xl font-bold text-slate-800">SGP Freelancing</span>
+                        </div>
+                    </a>
+
+                    <!-- Search Bar (Centered) -->
+                    <div class="hidden lg:flex flex-1 justify-center px-12">
+                        <div class="relative w-full max-w-lg">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i class="fas fa-search text-slate-400"></i>
+                            </div>
+                            <input type="text" placeholder="What service are you looking for today?" 
+                                   class="w-full pl-11 pr-4 py-2.5 bg-slate-100 border-transparent rounded-full text-sm text-slate-900 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+                        </div>
                     </div>
-                    SGP
-                </a>
-                
-                <!-- Mobile Toggle -->
-                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <!-- Search Bar (Desktop) -->
-                    <div class="navbar-search d-none d-lg-block">
-                        <i class="fas fa-search search-icon"></i>
-                        <input type="text" class="form-control" placeholder="Search projects, freelancers...">
-                    </div>
-                    
-                    <!-- Main Navigation -->
-                    <ul class="navbar-nav me-auto ms-lg-4">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
-                                <i class="fas fa-home me-2"></i>Home
-                            </a>
-                        </li>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn" class="lg:hidden w-10 h-10 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-50 transition-all">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+
+                    <!-- Right Actions -->
+                    <div class="hidden lg:flex items-center gap-2 text-sm font-semibold text-slate-700">
+                        <a class="px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-colors" href="#">Explore</a>
+                        <a class="px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-colors" href="#">Become a Seller</a>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Dashboard" asp-action="Index">
-                                    <i class="fas fa-chart-line me-2"></i>Dashboard
-                                </a>
-                            </li>
-                        }
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Project" asp-action="Index">
-                                <i class="fas fa-briefcase me-2"></i>Projects
+                            <a class="relative w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-600 hover:text-indigo-600 transition-colors" 
+                               asp-area="" asp-controller="Message" asp-action="Index">
+                                <i class="fas fa-envelope text-lg"></i>
+                                <span class="absolute top-1 right-1 w-4 h-4 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">3</span>
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Project" asp-action="Create">
-                                <i class="fas fa-plus-circle me-2"></i>Post Job
-                            </a>
-                        </li>
-                    </ul>
-                    
-                    <!-- Right Side Navigation -->
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <ul class="navbar-nav align-items-lg-center">
-                            <!-- Messages with Badge -->
-                            <li class="nav-item nav-notification">
-                                <a class="nav-link" asp-area="" asp-controller="Message" asp-action="Index">
-                                    <i class="fas fa-envelope"></i>
-                                    <span class="notification-badge">3</span>
-                                </a>
-                            </li>
-                            
-                            <!-- Notifications -->
-                            <li class="nav-item nav-notification">
-                                <a class="nav-link" href="#">
-                                    <i class="fas fa-bell"></i>
-                                    <span class="notification-badge">5</span>
-                                </a>
-                            </li>
-                            
-                            <!-- User Dropdown -->
-                            <li class="nav-item dropdown ms-lg-2">
-                                <a class="nav-link dropdown-toggle user-dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <div class="user-avatar">
+                            <div class="relative dropdown-container">
+                                <button class="flex items-center gap-2 px-2 py-1.5 rounded-full border border-transparent hover:bg-slate-100 transition-all">
+                                    <div class="w-9 h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
                                         @(User.Identity.Name?.Substring(0, 1).ToUpper() ?? "U")
                                     </div>
-                                    <span class="d-none d-lg-inline">@User.Identity.Name</span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                    <li>
-                                        <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">
-                                            <i class="fas fa-user me-2"></i>My Profile
+                                </button>
+                                <div class="hidden dropdown-menu absolute right-0 mt-3 w-64 bg-white border border-slate-200/50 rounded-xl shadow-2xl py-2 overflow-hidden">
+                                    <div class="px-4 py-3 border-b border-slate-100">
+                                        <p class="text-sm font-semibold text-slate-900">@User.Identity.Name</p>
+                                        <p class="text-xs text-slate-500 mt-0.5">@(User.Identity.Name)@@example.com</p>
+                                    </div>
+                                    <div class="py-2">
+                                        <a class="flex items-center px-4 py-2.5 text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all" 
+                                           asp-area="" asp-controller="Account" asp-action="Profile">
+                                            <i class="fas fa-user w-5 text-slate-400"></i>
+                                            <span class="ml-3 font-medium">Profile</span>
                                         </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" asp-area="" asp-controller="Project" asp-action="MyProjects">
-                                            <i class="fas fa-folder-open me-2"></i>My Projects
+                                        <a class="flex items-center px-4 py-2.5 text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all" 
+                                           asp-area="" asp-controller="Project" asp-action="MyProjects">
+                                            <i class="fas fa-folder-open w-5 text-slate-400"></i>
+                                            <span class="ml-3 font-medium">My Projects</span>
                                         </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" asp-area="" asp-controller="Earnings" asp-action="Index">
-                                            <i class="fas fa-wallet me-2"></i>Earnings
+                                        <a class="flex items-center px-4 py-2.5 text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all" 
+                                           asp-area="" asp-controller="Settings" asp-action="Index">
+                                            <i class="fas fa-cog w-5 text-slate-400"></i>
+                                            <span class="ml-3 font-medium">Settings</span>
                                         </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" asp-area="" asp-controller="Settings" asp-action="Index">
-                                            <i class="fas fa-cog me-2"></i>Settings
-                                        </a>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li>
+                                    </div>
+                                    <div class="border-t border-slate-100 pt-2">
                                         <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
-                                            <button type="submit" class="dropdown-item">
-                                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                            <button type="submit" class="flex items-center w-full px-4 py-2.5 text-rose-600 hover:bg-rose-50 transition-all">
+                                                <i class="fas fa-sign-out-alt w-5"></i>
+                                                <span class="ml-3 font-medium">Sign Out</span>
                                             </button>
                                         </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <a class="px-4 py-2 rounded-lg hover:bg-slate-100 transition-colors" 
+                               asp-area="" asp-controller="Account" asp-action="Login">Sign In</a>
+                            <a class="px-4 py-2 rounded-lg bg-slate-800 text-white font-semibold hover:bg-slate-900 transition-all shadow-sm" 
+                               asp-area="" asp-controller="Account" asp-action="Register">Join</a>
+                        }
+                    </div>
+                </div>
+
+                <!-- Categories Bar -->
+                <div class="hidden lg:flex items-center justify-center gap-4 h-12 text-sm font-medium text-slate-600 border-t border-slate-200/50">
+                    <a class="px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-colors" href="#">Graphics & Design</a>
+                    <a class="px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-colors" href="#">Programming & Tech</a>
+                    <a class="px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-colors" href="#">Digital Marketing</a>
+                    <a class="px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-colors" href="#">Video & Animation</a>
+                    <a class="px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-colors" href="#">Writing & Translation</a>
+                    <a class="px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-colors" href="#">Business</a>
+                </div>
+
+                <!-- Mobile Menu -->
+                <div id="mobile-menu" class="hidden lg:hidden px-4 sm:px-6 pb-4">
+                    <div class="relative mt-4">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-slate-400"></i>
+                        </div>
+                        <input type="text" placeholder="Search services..." 
+                               class="w-full pl-11 pr-4 py-2.5 bg-slate-100 border-transparent rounded-full text-sm text-slate-900 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+
+                    <div class="mt-4 space-y-1">
+                        <a class="flex items-center px-4 py-2 text-slate-700 font-semibold rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all" 
+                           asp-area="" asp-controller="Home" asp-action="Index">
+                            <i class="fas fa-home w-5 mr-3"></i>Home
+                        </a>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a class="flex items-center px-4 py-2 text-slate-700 font-semibold rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all" 
+                               asp-area="" asp-controller="Dashboard" asp-action="Index">
+                                <i class="fas fa-chart-line w-5 mr-3"></i>Dashboard
+                            </a>
+                        }
+                        <a class="flex items-center px-4 py-2 text-slate-700 font-semibold rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all" 
+                           asp-area="" asp-controller="Project" asp-action="Index">
+                            <i class="fas fa-briefcase w-5 mr-3"></i>Projects
+                        </a>
+                    </div>
+
+                    <div class="mt-4 border-t border-slate-200 pt-4">
+                        <p class="px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Categories</p>
+                        <div class="mt-2 grid grid-cols-2 gap-2 text-sm font-medium text-slate-600">
+                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all" href="#">Graphics & Design</a>
+                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all" href="#">Programming</a>
+                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all" href="#">Marketing</a>
+                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all" href="#">Video</a>
+                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all" href="#">Writing</a>
+                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all" href="#">Business</a>
+                        </div>
+                    </div>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="border-t border-slate-200 mt-4 pt-2">
+                            <a class="flex items-center px-4 py-2 text-slate-700 font-semibold rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all" 
+                               asp-area="" asp-controller="Account" asp-action="Profile">
+                                <i class="fas fa-user w-5 mr-3"></i>My Profile
+                            </a>
+                            <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                                <button type="submit" class="flex items-center w-full px-4 py-2 text-rose-600 font-semibold rounded-lg hover:bg-rose-50 transition-all">
+                                    <i class="fas fa-sign-out-alt w-5 mr-3"></i>Sign Out
+                                </button>
+                            </form>
+                        </div>
                     }
                     else
                     {
-                        <ul class="navbar-nav align-items-lg-center">
-                            <li class="nav-item me-2">
-                                <a class="nav-link btn-navbar-outline" asp-area="" asp-controller="Account" asp-action="Login">
-                                    <i class="fas fa-sign-in-alt me-2"></i>Login
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="btn btn-navbar-primary" asp-area="" asp-controller="Account" asp-action="Register">
-                                    <i class="fas fa-user-plus me-2"></i>Sign Up
-                                </a>
-                            </li>
-                        </ul>
+                        <div class="border-t border-slate-200 mt-4 pt-3 space-y-2">
+                            <a class="block px-4 py-2 text-center text-slate-700 font-semibold rounded-lg border border-slate-200 hover:border-indigo-400 hover:text-indigo-600 transition-all" 
+                               asp-area="" asp-controller="Account" asp-action="Login">Sign In</a>
+                            <a class="block px-4 py-2 text-center bg-slate-800 text-white font-bold rounded-lg hover:bg-slate-900 transition-all" 
+                               asp-area="" asp-controller="Account" asp-action="Register">Join</a>
+                        </div>
                     }
                 </div>
             </div>
         </nav>
     </header>
     
-    <main role="main">
+    <!-- Add spacing for fixed navbar -->
+    <div class="h-28"></div>
+    
+    <main role="main" class="min-h-screen">
         @RenderBody()
     </main>
 
-    <footer class="bg-dark text-white pt-5 pb-3 mt-5">
-        <div class="container">
-            <div class="row mb-4">
-                <div class="col-md-4 mb-4">
-                    <h5 class="mb-3"><i class="fas fa-handshake me-2"></i>SGP Freelancing</h5>
-                    <p class="text-white-50">Connect with top freelancers and find exciting projects worldwide. Your success is our mission.</p>
-                </div>
-                <div class="col-md-2 mb-4">
-                    <h6 class="mb-3 fw-bold">Company</h6>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none hover-link">About Us</a></li>
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none hover-link">Careers</a></li>
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none hover-link">Press</a></li>
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none hover-link">Blog</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-2 mb-4">
-                    <h6 class="mb-3 fw-bold">Support</h6>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none hover-link">Help Center</a></li>
-                        <li class="mb-2"><a asp-controller="Home" asp-action="Privacy" class="text-white-50 text-decoration-none hover-link">Privacy Policy</a></li>
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none hover-link">Terms of Service</a></li>
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none hover-link">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <h6 class="mb-3 fw-bold">Connect With Us</h6>
-                    <div class="d-flex gap-3 mb-3">
-                        <a href="#" class="social-icon">
-                            <div class="social-icon-circle">
-                                <i class="fab fa-facebook-f"></i>
-                            </div>
+    <!-- Ultra-Modern Footer -->
+    <footer class="relative bg-slate-900 text-white overflow-hidden">
+        <!-- Gradient overlay -->
+        <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/20 via-purple-900/20 to-slate-900 pointer-events-none"></div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <!-- Brand Column -->
+                <div class="lg:col-span-1">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                            <i class="fas fa-handshake text-white text-xl"></i>
+                        </div>
+                        <div class="ml-3">
+                            <span class="text-2xl font-black">SGP</span>
+                            <span class="block text-xs text-slate-400 -mt-1">Freelancing</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-400 leading-relaxed mb-6">Empowering global talent to connect, collaborate, and create extraordinary work together.</p>
+                    <div class="flex gap-3">
+                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-slate-800 hover:bg-gradient-to-br hover:from-indigo-600 hover:to-purple-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/50">
+                            <i class="fab fa-facebook-f text-slate-400 group-hover:text-white transition-colors"></i>
                         </a>
-                        <a href="#" class="social-icon">
-                            <div class="social-icon-circle">
-                                <i class="fab fa-twitter"></i>
-                            </div>
+                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-slate-800 hover:bg-gradient-to-br hover:from-indigo-600 hover:to-purple-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/50">
+                            <i class="fab fa-twitter text-slate-400 group-hover:text-white transition-colors"></i>
                         </a>
-                        <a href="#" class="social-icon">
-                            <div class="social-icon-circle">
-                                <i class="fab fa-linkedin-in"></i>
-                            </div>
+                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-slate-800 hover:bg-gradient-to-br hover:from-indigo-600 hover:to-purple-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/50">
+                            <i class="fab fa-linkedin-in text-slate-400 group-hover:text-white transition-colors"></i>
                         </a>
-                        <a href="#" class="social-icon">
-                            <div class="social-icon-circle">
-                                <i class="fab fa-instagram"></i>
-                            </div>
+                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-slate-800 hover:bg-gradient-to-br hover:from-indigo-600 hover:to-purple-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/50">
+                            <i class="fab fa-instagram text-slate-400 group-hover:text-white transition-colors"></i>
                         </a>
                     </div>
-                    <p class="text-white-50 small">Subscribe to our newsletter for updates</p>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h6 class="text-white font-bold text-lg mb-4">Platform</h6>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">Browse Projects</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">Find Talent</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">How It Works</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">Success Stories</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Company -->
+                <div>
+                    <h6 class="text-white font-bold text-lg mb-4">Company</h6>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">About Us</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">Careers</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">Press Kit</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Support -->
+                <div>
+                    <h6 class="text-white font-bold text-lg mb-4">Support</h6>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">Help Center</a></li>
+                        <li><a asp-controller="Home" asp-action="Privacy" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">Privacy Policy</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">Terms of Service</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">Contact Us</a></li>
+                    </ul>
                 </div>
             </div>
-            <hr class="bg-white opacity-25 mb-3">
-            <div class="text-center text-white-50">
-                <p class="mb-0">&copy; 2026 SGP Freelancing Platform. All rights reserved.</p>
+            
+            <!-- Bottom Bar -->
+            <div class="pt-8 border-t border-slate-800">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p class="text-slate-400 text-sm">&copy; 2026 SGP Freelancing Platform. All rights reserved.</p>
+                    <div class="flex gap-6 text-sm">
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors">Privacy</a>
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors">Terms</a>
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors">Cookies</a>
+                    </div>
+                </div>
             </div>
         </div>
     </footer>
     
-    <style>
-        .hover-link:hover {
-            color: white !important;
-            padding-left: 5px;
-            transition: all 0.3s ease;
-        }
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
         
-        .social-icon {
-            text-decoration: none;
-            transition: transform 0.3s ease;
-        }
+        // Dropdown menu toggle
+        document.querySelectorAll('.dropdown-container button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const menu = this.nextElementSibling;
+                menu.classList.toggle('hidden');
+            });
+        });
         
-        .social-icon:hover {
-            transform: translateY(-3px);
-        }
-        
-        .social-icon-circle {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 18px;
-            transition: all 0.3s ease;
-        }
-        
-        .social-icon:hover .social-icon-circle {
-            box-shadow: 0 8px 20px rgba(139, 123, 230, 0.4);
-        }
-    </style>
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                menu.classList.add('hidden');
+            });
+        });
+    </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/notifications.js" asp-append-version="true"></script>
-    <script src="~/js/navbar.js" asp-append-version="true"></script>
     
     @if (TempData["Success"] != null)
     {

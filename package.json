@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "build:css": "npx tailwindcss -i ./wwwroot/css/tailwind-input.css -o ./wwwroot/css/tailwind-output.css --minify",
+    "watch:css": "npx tailwindcss -i ./wwwroot/css/tailwind-input.css -o ./wwwroot/css/tailwind-output.css --watch",
+    "dev:css": "npx tailwindcss -i ./wwwroot/css/tailwind-input.css -o ./wwwroot/css/tailwind-output.css --watch --poll"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
+  }
+}

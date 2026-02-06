@@ -2,185 +2,185 @@
     ViewData["Title"] = "Earnings";
 }
 
-<div class="container-fluid px-4 py-4">
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                    <h2 class="fw-bold mb-1">Earnings</h2>
-                    <p class="text-muted mb-0">Track your income and transactions</p>
-                </div>
-                <button class="btn btn-primary" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
-                    <i class="bi bi-download me-2"></i>Download Report
-                </button>
-            </div>
+<div class="max-w-7xl mx-auto px-4 py-6">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <div>
+            <h2 class="text-3xl font-bold text-slate-900">Earnings</h2>
+            <p class="text-slate-500 mt-1">Track your income and transactions</p>
         </div>
+        <button class="inline-flex items-center justify-center px-5 py-2.5 font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all">
+            <i class="fas fa-download mr-2"></i>Download Report
+        </button>
     </div>
 
     <!-- Summary Cards -->
-    <div class="row g-4 mb-4">
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                <div class="card-body text-white">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h6 class="mb-0 text-white-50">Total Earnings</h6>
-                        <i class="bi bi-wallet2 fs-4"></i>
-                    </div>
-                    <h2 class="fw-bold mb-2">$12,450.00</h2>
-                    <small class="text-white-50">Lifetime earnings</small>
-                </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- Total Earnings Card -->
+        <div class="rounded-xl shadow-md bg-gradient-to-br from-indigo-600 to-purple-700 p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h6 class="text-white/70 text-sm font-medium">Total Earnings</h6>
+                <i class="fas fa-wallet text-white/80 text-xl"></i>
             </div>
+            <h2 class="text-3xl font-bold text-white mb-1">$12,450.00</h2>
+            <p class="text-white/60 text-sm">Lifetime earnings</p>
         </div>
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h6 class="mb-0 text-muted">This Month</h6>
-                        <i class="bi bi-calendar-check text-success fs-4"></i>
-                    </div>
-                    <h2 class="fw-bold mb-2 text-success">$2,340.00</h2>
-                    <small class="text-muted"><i class="bi bi-arrow-up text-success"></i> 18% from last month</small>
-                </div>
+
+        <!-- This Month Card -->
+        <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h6 class="text-slate-500 text-sm font-medium">This Month</h6>
+                <i class="fas fa-calendar-check text-emerald-500 text-xl"></i>
             </div>
+            <h2 class="text-3xl font-bold text-emerald-500 mb-1">$2,340.00</h2>
+            <p class="text-slate-500 text-sm">
+                <i class="fas fa-arrow-up text-emerald-500 mr-1"></i>18% from last month
+            </p>
         </div>
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h6 class="mb-0 text-muted">Pending</h6>
-                        <i class="bi bi-hourglass-split text-warning fs-4"></i>
-                    </div>
-                    <h2 class="fw-bold mb-2 text-warning">$890.00</h2>
-                    <small class="text-muted">In escrow / processing</small>
-                </div>
+
+        <!-- Pending Card -->
+        <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h6 class="text-slate-500 text-sm font-medium">Pending</h6>
+                <i class="fas fa-hourglass-half text-amber-500 text-xl"></i>
             </div>
+            <h2 class="text-3xl font-bold text-amber-500 mb-1">$890.00</h2>
+            <p class="text-slate-500 text-sm">In escrow / processing</p>
         </div>
     </div>
 
     <!-- Earnings Chart -->
-    <div class="row g-4 mb-4">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h5 class="fw-bold mb-0">Earnings Overview</h5>
-                        <div class="btn-group btn-group-sm" role="group">
-                            <button type="button" class="btn btn-outline-primary active">6M</button>
-                            <button type="button" class="btn btn-outline-primary">1Y</button>
-                            <button type="button" class="btn btn-outline-primary">All</button>
-                        </div>
-                    </div>
-                    <div class="text-center py-5">
-                        <i class="bi bi-graph-up" style="font-size: 4rem; color: #667eea; opacity: 0.3;"></i>
-                        <p class="text-muted mt-3">Earnings chart visualization</p>
-                        <small class="text-muted">Monthly earnings breakdown with trend analysis</small>
-                    </div>
-                </div>
+    <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6 mb-8">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+            <h5 class="text-xl font-bold text-slate-900">Earnings Overview</h5>
+            <div class="flex rounded-lg overflow-hidden border border-slate-200">
+                <button class="px-4 py-2 text-sm font-semibold bg-indigo-600 text-white">6M</button>
+                <button class="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50 border-l border-slate-200">1Y</button>
+                <button class="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50 border-l border-slate-200">All</button>
             </div>
+        </div>
+        <div class="text-center py-16">
+            <div class="w-20 h-20 mx-auto bg-indigo-100 rounded-full flex items-center justify-center mb-4">
+                <i class="fas fa-chart-line text-indigo-600 text-3xl"></i>
+            </div>
+            <p class="text-slate-600 text-lg mb-2">Earnings chart visualization</p>
+            <p class="text-slate-400 text-sm">Monthly earnings breakdown with trend analysis</p>
         </div>
     </div>
 
     <!-- Transaction History -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h5 class="fw-bold mb-4">Recent Transactions</h5>
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="bg-light">
-                                <tr>
-                                    <th class="px-3 py-3">Date</th>
-                                    <th class="py-3">Project</th>
-                                    <th class="py-3">Client</th>
-                                    <th class="py-3">Amount</th>
-                                    <th class="py-3">Status</th>
-                                    <th class="py-3 text-end px-3">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="px-3 py-3">
-                                        <small class="text-muted">Jan 8, 2026</small>
-                                    </td>
-                                    <td class="py-3">E-commerce Website Development</td>
-                                    <td class="py-3">John Smith</td>
-                                    <td class="py-3">
-                                        <span class="fw-bold text-success">+$1,500.00</span>
-                                    </td>
-                                    <td class="py-3">
-                                        <span class="badge bg-success">Completed</span>
-                                    </td>
-                                    <td class="py-3 text-end px-3">
-                                        <button class="btn btn-sm btn-outline-primary">
-                                            <i class="bi bi-receipt"></i> Invoice
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="px-3 py-3">
-                                        <small class="text-muted">Jan 5, 2026</small>
-                                    </td>
-                                    <td class="py-3">Mobile App UI Design</td>
-                                    <td class="py-3">Sarah Johnson</td>
-                                    <td class="py-3">
-                                        <span class="fw-bold text-warning">$840.00</span>
-                                    </td>
-                                    <td class="py-3">
-                                        <span class="badge bg-warning">In Escrow</span>
-                                    </td>
-                                    <td class="py-3 text-end px-3">
-                                        <button class="btn btn-sm btn-outline-secondary">
-                                            <i class="bi bi-eye"></i> View
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="px-3 py-3">
-                                        <small class="text-muted">Jan 2, 2026</small>
-                                    </td>
-                                    <td class="py-3">Logo Design Project</td>
-                                    <td class="py-3">Mike Davis</td>
-                                    <td class="py-3">
-                                        <span class="fw-bold text-success">+$300.00</span>
-                                    </td>
-                                    <td class="py-3">
-                                        <span class="badge bg-success">Completed</span>
-                                    </td>
-                                    <td class="py-3 text-end px-3">
-                                        <button class="btn btn-sm btn-outline-primary">
-                                            <i class="bi bi-receipt"></i> Invoice
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="px-3 py-3">
-                                        <small class="text-muted">Dec 28, 2025</small>
-                                    </td>
-                                    <td class="py-3">SEO Optimization Service</td>
-                                    <td class="py-3">Lisa Anderson</td>
-                                    <td class="py-3">
-                                        <span class="fw-bold text-success">+$450.00</span>
-                                    </td>
-                                    <td class="py-3">
-                                        <span class="badge bg-success">Completed</span>
-                                    </td>
-                                    <td class="py-3 text-end px-3">
-                                        <button class="btn btn-sm btn-outline-primary">
-                                            <i class="bi bi-receipt"></i> Invoice
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="text-center mt-3">
-                        <button class="btn btn-outline-primary">
-                            <i class="bi bi-arrow-clockwise me-2"></i>Load More Transactions
-                        </button>
-                    </div>
-                </div>
-            </div>
+    <div class="bg-white rounded-xl border border-slate-100 shadow-md overflow-hidden">
+        <div class="p-6 border-b border-slate-100">
+            <h5 class="text-xl font-bold text-slate-900">Recent Transactions</h5>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-slate-50">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Date</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Project</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Client</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Amount</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-4 text-right text-xs font-semibold text-slate-600 uppercase tracking-wider">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-4">
+                            <span class="text-sm text-slate-500">Jan 8, 2026</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm font-medium text-slate-900">E-commerce Website Development</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm text-slate-600">John Smith</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm font-bold text-emerald-600">+$1,500.00</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="px-3 py-1 text-xs font-semibold bg-emerald-100 text-emerald-700 rounded-full">Completed</span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <button class="inline-flex items-center justify-center text-sm px-3 py-1.5 border-2 border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition-all">
+                                <i class="fas fa-receipt mr-1"></i> Invoice
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-4">
+                            <span class="text-sm text-slate-500">Jan 5, 2026</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm font-medium text-slate-900">Mobile App UI Design</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm text-slate-600">Sarah Johnson</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm font-bold text-amber-600">$840.00</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="px-3 py-1 text-xs font-semibold bg-amber-100 text-amber-700 rounded-full">In Escrow</span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <button class="inline-flex items-center justify-center text-sm px-3 py-1.5 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-all">
+                                <i class="fas fa-eye mr-1"></i> View
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-4">
+                            <span class="text-sm text-slate-500">Jan 2, 2026</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm font-medium text-slate-900">Logo Design Project</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm text-slate-600">Mike Davis</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm font-bold text-emerald-600">+$300.00</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="px-3 py-1 text-xs font-semibold bg-emerald-100 text-emerald-700 rounded-full">Completed</span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <button class="inline-flex items-center justify-center text-sm px-3 py-1.5 border-2 border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition-all">
+                                <i class="fas fa-receipt mr-1"></i> Invoice
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-4">
+                            <span class="text-sm text-slate-500">Dec 28, 2025</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm font-medium text-slate-900">SEO Optimization Service</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm text-slate-600">Lisa Anderson</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm font-bold text-emerald-600">+$450.00</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="px-3 py-1 text-xs font-semibold bg-emerald-100 text-emerald-700 rounded-full">Completed</span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <button class="inline-flex items-center justify-center text-sm px-3 py-1.5 border-2 border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition-all">
+                                <i class="fas fa-receipt mr-1"></i> Invoice
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="p-6 border-t border-slate-100 text-center">
+            <button class="inline-flex items-center justify-center px-5 py-2.5 border-2 border-indigo-600 text-indigo-600 rounded-lg font-semibold hover:bg-indigo-600 hover:text-white transition-all">
+                <i class="fas fa-sync-alt mr-2"></i>Load More Transactions
+            </button>
         </div>
     </div>
 </div>

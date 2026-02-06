@@ -7,392 +7,152 @@
     var userRole = User.IsInRole("Client") ? "Client" : User.IsInRole("Freelancer") ? "Freelancer" : "User";
 }
 
-<style>
-    .profile-container {
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-    
-    .profile-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 48px 32px;
-        border-radius: 16px;
-        color: #ffffff;
-        margin-bottom: 32px;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .profile-header::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -10%;
-        width: 400px;
-        height: 400px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
-        filter: blur(60px);
-    }
-    
-    .profile-header-content {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        align-items: center;
-        gap: 32px;
-    }
-    
-    .profile-avatar-large {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.25);
-        color: #ffffff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 48px;
-        font-weight: 800;
-        border: 4px solid rgba(255, 255, 255, 0.3);
-        flex-shrink: 0;
-    }
-    
-    .profile-header-info {
-        flex-grow: 1;
-    }
-    
-    .profile-name {
-        font-size: 36px;
-        font-weight: 800;
-        margin: 0 0 8px 0;
-    }
-    
-    .profile-role {
-        display: inline-block;
-        background: rgba(255, 255, 255, 0.25);
-        padding: 8px 16px;
-        border-radius: 20px;
-        font-size: 14px;
-        font-weight: 600;
-        margin-bottom: 12px;
-    }
-    
-    .profile-email {
-        font-size: 16px;
-        opacity: 0.9;
-        margin: 0;
-    }
-    
-    .profile-edit-button {
-        background: #ffffff;
-        color: #8B7BE6;
-        border: none;
-        padding: 12px 32px;
-        border-radius: 24px;
-        font-weight: 600;
-        font-size: 15px;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: inline-block;
-    }
-    
-    .profile-edit-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        color: #8B7BE6;
-    }
-    
-    .profile-content {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 24px;
-    }
-    
-    .profile-card {
-        background: #ffffff;
-        border-radius: 16px;
-        padding: 32px;
-        border: 1px solid #E5E7EB;
-    }
-    
-    .profile-card-title {
-        font-size: 20px;
-        font-weight: 700;
-        color: #111827;
-        margin: 0 0 24px 0;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-    
-    .profile-card-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 12px;
-        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
-        color: #ffffff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 18px;
-    }
-    
-    .profile-info-item {
-        padding: 16px 0;
-        border-bottom: 1px solid #F3F4F6;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    
-    .profile-info-item:last-child {
-        border-bottom: none;
-    }
-    
-    .profile-info-label {
-        font-size: 14px;
-        font-weight: 600;
-        color: #6B7280;
-    }
-    
-    .profile-info-value {
-        font-size: 15px;
-        font-weight: 600;
-        color: #111827;
-    }
-    
-    .stat-item {
-        text-align: center;
-        padding: 20px;
-        border-radius: 12px;
-        background: #F9FAFB;
-        transition: all 0.3s ease;
-    }
-    
-    .stat-item:hover {
-        background: #F3F4F6;
-        transform: translateY(-2px);
-    }
-    
-    .stat-number {
-        font-size: 32px;
-        font-weight: 800;
-        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin: 0 0 8px 0;
-    }
-    
-    .stat-label {
-        font-size: 14px;
-        color: #6B7280;
-        font-weight: 600;
-        margin: 0;
-    }
-    
-    .activity-item {
-        padding: 16px;
-        border-radius: 12px;
-        background: #F9FAFB;
-        margin-bottom: 12px;
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        transition: all 0.3s ease;
-    }
-    
-    .activity-item:hover {
-        background: #F3F4F6;
-        transform: translateX(4px);
-    }
-    
-    .activity-icon {
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
-        color: #ffffff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-    }
-    
-    .activity-content {
-        flex-grow: 1;
-    }
-    
-    .activity-text {
-        font-size: 15px;
-        color: #111827;
-        margin: 0 0 4px 0;
-    }
-    
-    .activity-time {
-        font-size: 13px;
-        color: #9CA3AF;
-        margin: 0;
-    }
-    
-    @@media (max-width: 991px) {
-        .profile-content {
-            grid-template-columns: 1fr;
-        }
+<div class="max-w-6xl mx-auto px-4">
+    <div class="relative bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-12 rounded-2xl text-white mb-8 overflow-hidden">
+        <!-- Decorative background element -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -mr-48 -mt-48"></div>
         
-        .profile-header-content {
-            flex-direction: column;
-            text-align: center;
-        }
-        
-        .profile-name {
-            font-size: 28px;
-        }
-    }
-</style>
-
-<div class="profile-container">
-    <div class="profile-header">
-        <div class="profile-header-content">
-            <div class="profile-avatar-large">@userName[0].ToString().ToUpper()</div>
-            <div class="profile-header-info">
-                <h1 class="profile-name">@userName</h1>
-                <span class="profile-role"><i class="fas fa-user me-2"></i>@userRole</span>
-                <p class="profile-email"><i class="fas fa-envelope me-2"></i>@userEmail</p>
+        <div class="relative z-10 flex flex-col sm:flex-row items-center gap-8 md:gap-12">
+            <div class="w-32 h-32 bg-white/25 rounded-full flex items-center justify-center text-5xl font-bold border-4 border-white/30 flex-shrink-0">
+                @userName[0].ToString().ToUpper()
+            </div>
+            <div class="flex-grow text-center sm:text-left">
+                <h1 class="text-4xl font-black mb-2">@userName</h1>
+                <span class="inline-block bg-white/25 px-4 py-2 rounded-full text-sm font-semibold mb-3"><i class="fas fa-user mr-2"></i>@userRole</span>
+                <p class="text-lg opacity-90"><i class="fas fa-envelope mr-2"></i>@userEmail</p>
             </div>
             <div>
-                <a href="#" class="profile-edit-button">
-                    <i class="fas fa-edit me-2"></i>Edit Profile
+                <a href="#" class="inline-block bg-white text-indigo-600 px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                    <i class="fas fa-edit mr-2"></i>Edit Profile
                 </a>
             </div>
         </div>
     </div>
     
-    <div class="profile-content">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-8">
         <div>
-            <div class="profile-card">
-                <h2 class="profile-card-title">
-                    <span class="profile-card-icon"><i class="fas fa-user"></i></span>
+            <div class="bg-white rounded-2xl p-8 border border-gray-200 hover:shadow-lg transition-shadow">
+                <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 text-white flex items-center justify-center text-sm">
+                        <i class="fas fa-user"></i>
+                    </span>
                     Personal Information
                 </h2>
-                <div class="profile-info-item">
-                    <span class="profile-info-label">Full Name</span>
-                    <span class="profile-info-value">@userName</span>
+                <div class="py-4 border-b border-gray-100 flex justify-between items-center last:border-0">
+                    <span class="text-sm font-semibold text-gray-600">Full Name</span>
+                    <span class="text-base font-semibold text-gray-900">@userName</span>
                 </div>
-                <div class="profile-info-item">
-                    <span class="profile-info-label">Email Address</span>
-                    <span class="profile-info-value">@userEmail</span>
+                <div class="py-4 border-b border-gray-100 flex justify-between items-center last:border-0">
+                    <span class="text-sm font-semibold text-gray-600">Email Address</span>
+                    <span class="text-base font-semibold text-gray-900">@userEmail</span>
                 </div>
-                <div class="profile-info-item">
-                    <span class="profile-info-label">Account Type</span>
-                    <span class="profile-info-value">@userRole</span>
+                <div class="py-4 border-b border-gray-100 flex justify-between items-center last:border-0">
+                    <span class="text-sm font-semibold text-gray-600">Account Type</span>
+                    <span class="text-base font-semibold text-gray-900">@userRole</span>
                 </div>
-                <div class="profile-info-item">
-                    <span class="profile-info-label">Member Since</span>
-                    <span class="profile-info-value">January 2026</span>
+                <div class="py-4 border-b border-gray-100 flex justify-between items-center last:border-0">
+                    <span class="text-sm font-semibold text-gray-600">Member Since</span>
+                    <span class="text-base font-semibold text-gray-900">January 2026</span>
                 </div>
-                <div class="profile-info-item">
-                    <span class="profile-info-label">Status</span>
-                    <span class="profile-info-value"><span class="badge bg-success">Active</span></span>
+                <div class="py-4 border-b border-gray-100 flex justify-between items-center last:border-0">
+                    <span class="text-sm font-semibold text-gray-600">Status</span>
+                    <span class="text-base font-semibold"><span class="inline-block bg-gradient-to-r from-emerald-100 to-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-semibold border border-emerald-200">Active</span></span>
                 </div>
             </div>
             
-            <div class="profile-card mt-4">
-                <h2 class="profile-card-title">
-                    <span class="profile-card-icon"><i class="fas fa-chart-bar"></i></span>
+            <div class="bg-white rounded-2xl p-8 border border-gray-200 hover:shadow-lg transition-shadow mt-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 text-white flex items-center justify-center text-sm">
+                        <i class="fas fa-chart-bar"></i>
+                    </span>
                     Statistics
                 </h2>
-                <div class="row g-3">
-                    <div class="col-6">
-                        <div class="stat-item">
-                            <div class="stat-number">12</div>
-                            <div class="stat-label">Projects Posted</div>
-                        </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="text-center p-5 rounded-xl bg-gray-50 hover:bg-gray-100 hover:-translate-y-1 transition-all">
+                        <div class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent mb-2">12</div>
+                        <div class="text-sm text-gray-600 font-semibold">Projects Posted</div>
                     </div>
-                    <div class="col-6">
-                        <div class="stat-item">
-                            <div class="stat-number">8</div>
-                            <div class="stat-label">Active Projects</div>
-                        </div>
+                    <div class="text-center p-5 rounded-xl bg-gray-50 hover:bg-gray-100 hover:-translate-y-1 transition-all">
+                        <div class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent mb-2">8</div>
+                        <div class="text-sm text-gray-600 font-semibold">Active Projects</div>
                     </div>
-                    <div class="col-6">
-                        <div class="stat-item">
-                            <div class="stat-number">4</div>
-                            <div class="stat-label">Completed</div>
-                        </div>
+                    <div class="text-center p-5 rounded-xl bg-gray-50 hover:bg-gray-100 hover:-translate-y-1 transition-all">
+                        <div class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent mb-2">4</div>
+                        <div class="text-sm text-gray-600 font-semibold">Completed</div>
                     </div>
-                    <div class="col-6">
-                        <div class="stat-item">
-                            <div class="stat-number">24</div>
-                            <div class="stat-label">Bids Received</div>
-                        </div>
+                    <div class="text-center p-5 rounded-xl bg-gray-50 hover:bg-gray-100 hover:-translate-y-1 transition-all">
+                        <div class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent mb-2">24</div>
+                        <div class="text-sm text-gray-600 font-semibold">Bids Received</div>
                     </div>
                 </div>
             </div>
         </div>
         
         <div>
-            <div class="profile-card">
-                <h2 class="profile-card-title">
-                    <span class="profile-card-icon"><i class="fas fa-clock"></i></span>
+            <div class="bg-white rounded-2xl p-8 border border-gray-200 hover:shadow-lg transition-shadow">
+                <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 text-white flex items-center justify-center text-sm">
+                        <i class="fas fa-clock"></i>
+                    </span>
                     Recent Activity
                 </h2>
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-plus"></i>
+                <div class="p-4 rounded-xl bg-gray-50 mb-3 flex gap-4 hover:bg-gray-100 hover:translate-x-1 transition-all">
+                    <div class="w-11 h-11 rounded-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-plus text-sm"></i>
                     </div>
-                    <div class="activity-content">
-                        <p class="activity-text">Posted a new project "E-commerce Website"</p>
-                        <p class="activity-time">2 hours ago</p>
-                    </div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-check"></i>
-                    </div>
-                    <div class="activity-content">
-                        <p class="activity-text">Accepted bid from John Developer</p>
-                        <p class="activity-time">5 hours ago</p>
+                    <div class="flex-grow">
+                        <p class="text-base text-gray-900 mb-1">Posted a new project "E-commerce Website"</p>
+                        <p class="text-sm text-gray-500">2 hours ago</p>
                     </div>
                 </div>
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-message"></i>
+                <div class="p-4 rounded-xl bg-gray-50 mb-3 flex gap-4 hover:bg-gray-100 hover:translate-x-1 transition-all">
+                    <div class="w-11 h-11 rounded-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-check text-sm"></i>
                     </div>
-                    <div class="activity-content">
-                        <p class="activity-text">Sent message to Sarah Designer</p>
-                        <p class="activity-time">1 day ago</p>
+                    <div class="flex-grow">
+                        <p class="text-base text-gray-900 mb-1">Accepted bid from John Developer</p>
+                        <p class="text-sm text-gray-500">5 hours ago</p>
                     </div>
                 </div>
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-star"></i>
+                <div class="p-4 rounded-xl bg-gray-50 mb-3 flex gap-4 hover:bg-gray-100 hover:translate-x-1 transition-all">
+                    <div class="w-11 h-11 rounded-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-message text-sm"></i>
                     </div>
-                    <div class="activity-content">
-                        <p class="activity-text">Received 5-star rating</p>
-                        <p class="activity-time">2 days ago</p>
+                    <div class="flex-grow">
+                        <p class="text-base text-gray-900 mb-1">Sent message to Sarah Designer</p>
+                        <p class="text-sm text-gray-500">1 day ago</p>
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-gray-50 mb-3 flex gap-4 hover:bg-gray-100 hover:translate-x-1 transition-all">
+                    <div class="w-11 h-11 rounded-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-star text-sm"></i>
+                    </div>
+                    <div class="flex-grow">
+                        <p class="text-base text-gray-900 mb-1">Received 5-star rating</p>
+                        <p class="text-sm text-gray-500">2 days ago</p>
                     </div>
                 </div>
             </div>
             
-            <div class="profile-card mt-4">
-                <h2 class="profile-card-title">
-                    <span class="profile-card-icon"><i class="fas fa-cog"></i></span>
+            <div class="bg-white rounded-2xl p-8 border border-gray-200 hover:shadow-lg transition-shadow mt-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 text-white flex items-center justify-center text-sm">
+                        <i class="fas fa-cog"></i>
+                    </span>
                     Account Settings
                 </h2>
-                <div class="d-grid gap-3">
-                    <a href="#" class="btn btn-outline-primary">
-                        <i class="fas fa-lock me-2"></i>Change Password
+                <div class="flex flex-col gap-3">
+                    <a href="#" class="block px-4 py-3 border-2 border-indigo-600 text-indigo-600 font-semibold rounded-lg hover:bg-indigo-50 transition-all">
+                        <i class="fas fa-lock mr-2"></i>Change Password
                     </a>
-                    <a href="#" class="btn btn-outline-primary">
-                        <i class="fas fa-bell me-2"></i>Notification Settings
+                    <a href="#" class="block px-4 py-3 border-2 border-indigo-600 text-indigo-600 font-semibold rounded-lg hover:bg-indigo-50 transition-all">
+                        <i class="fas fa-bell mr-2"></i>Notification Settings
                     </a>
-                    <a href="#" class="btn btn-outline-primary">
-                        <i class="fas fa-credit-card me-2"></i>Payment Methods
+                    <a href="#" class="block px-4 py-3 border-2 border-indigo-600 text-indigo-600 font-semibold rounded-lg hover:bg-indigo-50 transition-all">
+                        <i class="fas fa-credit-card mr-2"></i>Payment Methods
                     </a>
-                    <a href="#" class="btn btn-outline-danger">
-                        <i class="fas fa-trash me-2"></i>Delete Account
+                    <a href="#" class="block px-4 py-3 border-2 border-red-600 text-red-600 font-semibold rounded-lg hover:bg-red-50 transition-all">
+                        <i class="fas fa-trash mr-2"></i>Delete Account
                     </a>
                 </div>
             </div>

@@ -23,6 +23,11 @@ namespace SGP_Freelancing.Controllers
             return View();
         }
 
+        public IActionResult TailwindTest()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

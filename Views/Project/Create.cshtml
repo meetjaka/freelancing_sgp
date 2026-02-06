@@ -3,444 +3,139 @@
     ViewData["Title"] = "Post New Project";
 }
 
-<style>
-    .create-project-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 60px 0;
-        margin-bottom: -40px;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .create-project-header::before {
-        content: '';
-        position: absolute;
-        width: 500px;
-        height: 500px;
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
-        top: -150px;
-        right: -150px;
-        border-radius: 50%;
-        filter: blur(100px);
-    }
-
-    .header-content {
-        position: relative;
-        z-index: 10;
-        text-align: center;
-        color: white;
-    }
-
-    .header-title {
-        font-size: 48px;
-        font-weight: 800;
-        margin-bottom: 16px;
-    }
-
-    .header-subtitle {
-        font-size: 18px;
-        opacity: 0.95;
-    }
-
-    .form-container {
-        background: white;
-        border-radius: 24px;
-        padding: 50px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-        margin-top: 60px;
-    }
-
-    .form-section-title {
-        font-size: 20px;
-        font-weight: 700;
-        color: #1F2937;
-        margin-bottom: 24px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .form-section-icon {
-        width: 40px;
-        height: 40px;
-        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 18px;
-    }
-
-    .form-label-custom {
-        font-size: 15px;
-        font-weight: 600;
-        color: #374151;
-        margin-bottom: 10px;
-        display: block;
-    }
-
-    .form-control-custom {
-        border: 2px solid #E5E7EB;
-        border-radius: 12px;
-        padding: 16px 18px;
-        font-size: 15px;
-        transition: all 0.3s ease;
-    }
-
-    .form-control-custom:focus {
-        border-color: #8B7BE6;
-        box-shadow: 0 0 0 4px rgba(139, 123, 230, 0.1);
-        outline: none;
-    }
-
-    .form-control-custom::placeholder {
-        color: #9CA3AF;
-    }
-
-    .input-group-custom {
-        position: relative;
-    }
-
-    .input-prefix {
-        position: absolute;
-        left: 18px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-weight: 700;
-        color: #6B7280;
-        font-size: 16px;
-        z-index: 10;
-    }
-
-    .input-with-prefix {
-        padding-left: 36px;
-    }
-
-    .form-select-custom {
-        border: 2px solid #E5E7EB;
-        border-radius: 12px;
-        padding: 16px 18px;
-        font-size: 15px;
-        transition: all 0.3s ease;
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%238B7BE6' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
-    }
-
-    .form-select-custom:focus {
-        border-color: #8B7BE6;
-        box-shadow: 0 0 0 4px rgba(139, 123, 230, 0.1);
-        outline: none;
-    }
-
-    .btn-submit-project {
-        width: 100%;
-        padding: 18px;
-        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
-        color: white;
-        border: none;
-        border-radius: 12px;
-        font-weight: 700;
-        font-size: 18px;
-        transition: all 0.3s ease;
-        margin-top: 32px;
-    }
-
-    .btn-submit-project:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 15px 40px rgba(139, 123, 230, 0.4);
-        color: white;
-    }
-
-    .btn-cancel {
-        width: 100%;
-        padding: 16px;
-        background: white;
-        color: #6B7280;
-        border: 2px solid #E5E7EB;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 16px;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: inline-block;
-        text-align: center;
-    }
-
-    .btn-cancel:hover {
-        border-color: #8B7BE6;
-        color: #8B7BE6;
-    }
-
-    .form-hint {
-        font-size: 13px;
-        color: #6B7280;
-        margin-top: 6px;
-    }
-
-    .form-divider {
-        height: 1px;
-        background: linear-gradient(to right, transparent, #E5E7EB, transparent);
-        margin: 40px 0;
-    }
-
-    .skill-input-container {
-        display: flex;
-        gap: 12px;
-        margin-bottom: 12px;
-    }
-
-    .skill-tag-input {
-        display: inline-block;
-        padding: 10px 18px;
-        background: #F3F4F6;
-        color: #4B5563;
-        border-radius: 20px;
-        font-size: 14px;
-        font-weight: 600;
-        margin-right: 8px;
-        margin-bottom: 8px;
-    }
-
-    .progress-indicator {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 40px;
-        padding: 0 50px;
-    }
-
-    .progress-step {
-        flex: 1;
-        text-align: center;
-        position: relative;
-    }
-
-    .progress-step::before {
-        content: '';
-        position: absolute;
-        top: 20px;
-        left: 50%;
-        right: -50%;
-        height: 3px;
-        background: #E5E7EB;
-        z-index: -1;
-    }
-
-    .progress-step:last-child::before {
-        display: none;
-    }
-
-    .progress-circle {
-        width: 40px;
-        height: 40px;
-        background: white;
-        border: 3px solid #E5E7EB;
-        border-radius: 50%;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        color: #9CA3AF;
-        margin-bottom: 8px;
-    }
-
-    .progress-step.active .progress-circle {
-        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
-        border-color: transparent;
-        color: white;
-    }
-
-    .progress-label {
-        font-size: 13px;
-        color: #9CA3AF;
-        font-weight: 600;
-    }
-
-    .progress-step.active .progress-label {
-        color: #8B7BE6;
-    }
-
-    .info-card {
-        background: linear-gradient(135deg, #F0F9FF 0%, #F3F4F6 100%);
-        border-left: 4px solid #8B7BE6;
-        border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 32px;
-    }
-
-    .info-card-title {
-        font-weight: 700;
-        color: #1F2937;
-        margin-bottom: 8px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .info-card-text {
-        color: #6B7280;
-        font-size: 14px;
-        line-height: 1.6;
-        margin-bottom: 0;
-    }
-
-    .character-counter {
-        text-align: right;
-        font-size: 13px;
-        color: #9CA3AF;
-        margin-top: 6px;
-    }
-
-    @@media (max-width: 768px) {
-        .form-container {
-            padding: 30px 20px;
-        }
-        .header-title {
-            font-size: 36px;
-        }
-        .progress-indicator {
-            padding: 0 10px;
-        }
-    }
-</style>
-
 <!-- Header -->
-<div class="create-project-header">
-    <div class="container">
-        <div class="header-content">
-            <h1 class="header-title">Post Your Project</h1>
-            <p class="header-subtitle">Find the perfect freelancer for your needs</p>
-        </div>
+<div class="relative bg-gradient-to-br from-indigo-600 to-purple-700 py-16 mb-8 overflow-hidden">
+    <div class="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -mr-48 -mt-48"></div>
+    <div class="max-w-4xl mx-auto px-4 relative z-10 text-center text-white">
+        <h1 class="text-5xl font-extrabold mb-4">Post Your Project</h1>
+        <p class="text-lg opacity-95">Find the perfect freelancer for your needs</p>
     </div>
 </div>
 
-<div class="container pb-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-9">
-            <div class="form-container">
-                <!-- Info Card -->
-                <div class="info-card">
-                    <div class="info-card-title">
-                        <i class="fas fa-lightbulb" style="color: #8B7BE6;"></i>
-                        Tips for Success
-                    </div>
-                    <p class="info-card-text">
-                        Write a clear, detailed description of your project. Include specific requirements, 
-                        preferred skills, and expected deliverables to attract the best freelancers.
-                    </p>
-                </div>
-
-                <form asp-action="Create" method="post">
-                    @Html.AntiForgeryToken()
-                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-                    
-                    <!-- Project Details Section -->
-                    <div class="form-section-title">
-                        <div class="form-section-icon">
-                            <i class="fas fa-clipboard-list"></i>
-                        </div>
-                        Project Details
-                    </div>
-
-                    <div class="mb-4">
-                        <label asp-for="Title" class="form-label-custom">
-                            Project Title *
-                        </label>
-                        <input asp-for="Title" class="form-control-custom" placeholder="e.g., Build a responsive e-commerce website" maxlength="100" />
-                        <span asp-validation-for="Title" class="text-danger"></span>
-                        <div class="form-hint">
-                            <i class="fas fa-info-circle me-1"></i>
-                            Make it clear and specific
-                        </div>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label asp-for="Description" class="form-label-custom">
-                            Project Description *
-                        </label>
-                        <textarea asp-for="Description" class="form-control-custom" rows="8" placeholder="Describe your project in detail. Include objectives, requirements, preferred technologies, and any specific deliverables..." id="descriptionField"></textarea>
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                        <div class="character-counter">
-                            <span id="charCount">0</span> characters
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <label asp-for="CategoryId" class="form-label-custom">
-                            Category *
-                        </label>
-                        <select asp-for="CategoryId" class="form-select-custom">
-                            <option value="">Select a category</option>
-                            <option value="1">💻 Web Development</option>
-                            <option value="2">📱 Mobile Development</option>
-                            <option value="3">🎨 Design & Creative</option>
-                            <option value="4">✍️ Writing & Translation</option>
-                            <option value="5">📊 Data Science & AI</option>
-                            <option value="6">📈 Digital Marketing</option>
-                        </select>
-                        <span asp-validation-for="CategoryId" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-divider"></div>
-
-                    <!-- Budget & Timeline Section -->
-                    <div class="form-section-title">
-                        <div class="form-section-icon">
-                            <i class="fas fa-dollar-sign"></i>
-                        </div>
-                        Budget & Timeline
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-4">
-                            <label asp-for="Budget" class="form-label-custom">
-                                Project Budget *
-                            </label>
-                            <div class="input-group-custom">
-                                <span class="input-prefix">$</span>
-                                <input asp-for="Budget" type="number" step="0.01" class="form-control-custom input-with-prefix" placeholder="2500" />
-                            </div>
-                            <span asp-validation-for="Budget" class="text-danger"></span>
-                            <div class="form-hint">
-                                <i class="fas fa-info-circle me-1"></i>
-                                Set a realistic budget
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-4">
-                            <label asp-for="Deadline" class="form-label-custom">
-                                Deadline (Optional)
-                            </label>
-                            <input asp-for="Deadline" type="date" class="form-control-custom" />
-                            <span asp-validation-for="Deadline" class="text-danger"></span>
-                            <div class="form-hint">
-                                <i class="fas fa-info-circle me-1"></i>
-                                When do you need it done?
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-divider"></div>
-
-                    <!-- Action Buttons -->
-                    <div class="row">
-                        <div class="col-md-8 mb-3">
-                            <button type="submit" class="btn-submit-project">
-                                <i class="fas fa-rocket me-2"></i>Post Project
-                            </button>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <a asp-action="Index" class="btn-cancel">
-                                <i class="fas fa-times me-2"></i>Cancel
-                            </a>
-                        </div>
-                    </div>
-
-                    <p class="text-center mt-3 mb-0 small text-muted">
-                        <i class="fas fa-shield-alt me-1"></i>
-                        Your project will be visible to thousands of qualified freelancers
-                    </p>
-                </form>
+<div class="max-w-5xl mx-auto px-4 pb-8">
+    <div class="bg-white rounded-3xl p-12 shadow-xl">
+        <!-- Info Card -->
+        <div class="bg-gradient-to-r from-blue-50 to-gray-50 border-l-4 border-indigo-600 rounded-xl p-6 mb-8">
+            <div class="flex items-center gap-2 font-bold text-gray-800 mb-2">
+                <i class="fas fa-lightbulb text-indigo-600"></i>
+                Tips for Success
             </div>
+            <p class="text-gray-600 text-sm leading-relaxed">
+                Write a clear, detailed description of your project. Include specific requirements, 
+                preferred skills, and expected deliverables to attract the best freelancers.
+            </p>
         </div>
+
+        <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6"></div>
+            
+            <!-- Project Details Section -->
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center text-white">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <h2 class="text-xl font-bold text-gray-800">Project Details</h2>
+            </div>
+
+            <div class="mb-6">
+                <label asp-for="Title" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Project Title *
+                </label>
+                <input asp-for="Title" class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl text-base transition-all focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 outline-none" placeholder="e.g., Build a responsive e-commerce website" maxlength="100" />
+                <span asp-validation-for="Title" class="text-red-600 text-sm"></span>
+                <div class="text-xs text-gray-500 mt-1">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    Make it clear and specific
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <label asp-for="Description" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Project Description *
+                </label>
+                <textarea asp-for="Description" class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl text-base transition-all focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 outline-none" rows="8" placeholder="Describe your project in detail. Include objectives, requirements, preferred technologies, and any specific deliverables..." id="descriptionField"></textarea>
+                <span asp-validation-for="Description" class="text-red-600 text-sm"></span>
+                <div class="text-right text-xs text-gray-500 mt-1">
+                    <span id="charCount">0</span> characters
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <label asp-for="CategoryId" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Category *
+                </label>
+                <select asp-for="CategoryId" class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl text-base transition-all focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 outline-none appearance-none bg-white bg-no-repeat bg-[length:1em] bg-[position:right_1rem_center] bg-[url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270%200%2016%2016%27%3e%3cpath fill=%27none%27 stroke=%27%238B7BE6%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27M2%205l6%206%206-6%27/%3e%3c/svg%3e')]">
+                    <option value="">Select a category</option>
+                    <option value="1">💻 Web Development</option>
+                    <option value="2">📱 Mobile Development</option>
+                    <option value="3">🎨 Design & Creative</option>
+                    <option value="4">✍️ Writing & Translation</option>
+                    <option value="5">📊 Data Science & AI</option>
+                    <option value="6">📈 Digital Marketing</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-red-600 text-sm"></span>
+            </div>
+
+            <div class="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent my-10"></div>
+
+            <!-- Budget & Timeline Section -->
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center text-white">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <h2 class="text-xl font-bold text-gray-800">Budget & Timeline</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label asp-for="Budget" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Project Budget *
+                    </label>
+                    <div class="relative">
+                        <span class="absolute left-5 top-1/2 -translate-y-1/2 font-bold text-gray-600 text-base z-10">$</span>
+                        <input asp-for="Budget" type="number" step="0.01" class="w-full pl-10 pr-5 py-4 border-2 border-gray-200 rounded-xl text-base transition-all focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 outline-none" placeholder="2500" />
+                    </div>
+                    <span asp-validation-for="Budget" class="text-red-600 text-sm"></span>
+                    <div class="text-xs text-gray-500 mt-1">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        Set a realistic budget
+                    </div>
+                </div>
+                <div>
+                    <label asp-for="Deadline" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Deadline (Optional)
+                    </label>
+                    <input asp-for="Deadline" type="date" class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl text-base transition-all focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 outline-none" />
+                    <span asp-validation-for="Deadline" class="text-red-600 text-sm"></span>
+                    <div class="text-xs text-gray-500 mt-1">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        When do you need it done?
+                    </div>
+                </div>
+            </div>
+
+            <div class="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent my-10"></div>
+
+            <!-- Action Buttons -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="md:col-span-3">
+                    <button type="submit" class="w-full py-5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-lg rounded-xl transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-400/40">
+                        <i class="fas fa-rocket mr-2"></i>Post Project
+                    </button>
+                </div>
+                <div class="md:col-span-1">
+                    <a asp-action="Index" class="block w-full py-5 bg-white text-gray-600 font-semibold text-base rounded-xl border-2 border-gray-200 transition-all hover:border-indigo-600 hover:text-indigo-600 text-center">
+                        <i class="fas fa-times mr-2"></i>Cancel
+                    </a>
+                </div>
+            </div>
+
+            <p class="text-center mt-6 text-sm text-gray-500">
+                <i class="fas fa-shield-alt mr-1"></i>
+                Your project will be visible to thousands of qualified freelancers
+            </p>
+        </form>
     </div>
 </div>
 
@@ -460,4 +155,3 @@
         }
     </script>
 }
-    </script>

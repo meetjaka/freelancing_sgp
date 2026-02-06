@@ -1,0 +1,20 @@
+# Tailwind CSS - Add to .gitignore
+
+# Node modules (if not already ignored)
+node_modules/
+
+# Tailwind output CSS (auto-generated, should be rebuilt)
+# OPTION 1: If you want to commit the built CSS (recommended for simple deployments)
+# Leave tailwind-output.css tracked
+
+# OPTION 2: If you want to build during deployment (CI/CD pipeline)
+# wwwroot/css/tailwind-output.css
+
+# NPM/Package manager files to keep tracked
+# package.json (KEEP - contains scripts)
+# package-lock.json (KEEP - locks dependency versions)
+# tailwind.config.js (KEEP - contains configuration)
+# wwwroot/css/tailwind-input.css (KEEP - source file)
+
+# Recommendation: Keep tailwind-output.css committed for easier deployment
+# Build it locally with: npm run build:css

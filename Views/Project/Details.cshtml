@@ -3,482 +3,102 @@
     ViewData["Title"] = Model.Project.Title;
 }
 
-<style>
-    .project-details-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 40px 0;
-        margin-bottom: 40px;
-    }
-
-    .breadcrumb-custom {
-        background: none;
-        padding: 0;
-        margin-bottom: 20px;
-    }
-
-    .breadcrumb-custom a {
-        color: rgba(255, 255, 255, 0.8);
-        text-decoration: none;
-    }
-
-    .breadcrumb-custom a:hover {
-        color: white;
-    }
-
-    .breadcrumb-custom .active {
-        color: white;
-    }
-
-    .project-main-card {
-        background: white;
-        border-radius: 20px;
-        padding: 40px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        margin-bottom: 32px;
-        border: 1px solid #F3F4F6;
-    }
-
-    .project-header-badges {
-        display: flex;
-        gap: 12px;
-        margin-bottom: 24px;
-        flex-wrap: wrap;
-    }
-
-    .badge-gradient {
-        padding: 8px 16px;
-        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
-        color: white;
-        border-radius: 20px;
-        font-size: 14px;
-        font-weight: 600;
-    }
-
-    .badge-status {
-        padding: 8px 16px;
-        background: #10B981;
-        color: white;
-        border-radius: 20px;
-        font-size: 14px;
-        font-weight: 600;
-    }
-
-    .project-title-main {
-        font-size: 36px;
-        font-weight: 800;
-        color: #1F2937;
-        margin-bottom: 20px;
-        line-height: 1.2;
-    }
-
-    .project-meta-row {
-        display: flex;
-        gap: 32px;
-        margin-bottom: 24px;
-        flex-wrap: wrap;
-    }
-
-    .project-meta-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        color: #6B7280;
-        font-size: 15px;
-    }
-
-    .project-meta-item i {
-        color: #8B7BE6;
-        font-size: 18px;
-    }
-
-    .project-meta-item strong {
-        color: #1F2937;
-        font-weight: 600;
-    }
-
-    .project-budget-display {
-        font-size: 42px;
-        font-weight: 800;
-        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 8px;
-    }
-
-    .project-section-title {
-        font-size: 24px;
-        font-weight: 700;
-        color: #1F2937;
-        margin-bottom: 16px;
-        margin-top: 32px;
-    }
-
-    .project-description {
-        font-size: 16px;
-        line-height: 1.8;
-        color: #4B5563;
-    }
-
-    .skill-tag-large {
-        display: inline-block;
-        padding: 10px 20px;
-        background: #F3F4F6;
-        color: #4B5563;
-        border-radius: 24px;
-        font-size: 14px;
-        font-weight: 600;
-        margin-right: 12px;
-        margin-bottom: 12px;
-    }
-
-    .bids-section-header {
-        background: white;
-        border-radius: 16px;
-        padding: 24px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        margin-bottom: 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .bids-count {
-        font-size: 28px;
-        font-weight: 700;
-        color: #1F2937;
-    }
-
-    .bid-card {
-        background: white;
-        border-radius: 16px;
-        padding: 28px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        margin-bottom: 20px;
-        border: 2px solid transparent;
-        transition: all 0.3s ease;
-    }
-
-    .bid-card:hover {
-        border-color: #8B7BE6;
-        box-shadow: 0 8px 30px rgba(139, 123, 230, 0.15);
-    }
-
-    .bid-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: start;
-        margin-bottom: 16px;
-    }
-
-    .bid-freelancer {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .bid-avatar {
-        width: 56px;
-        height: 56px;
-        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 24px;
-        font-weight: 700;
-    }
-
-    .bid-freelancer-name {
-        font-size: 20px;
-        font-weight: 700;
-        color: #1F2937;
-        margin-bottom: 4px;
-    }
-
-    .bid-freelancer-rating {
-        color: #F59E0B;
-        font-size: 14px;
-    }
-
-    .bid-amount-section {
-        display: flex;
-        gap: 24px;
-        align-items: center;
-        margin-bottom: 16px;
-        padding: 16px;
-        background: #F9FAFB;
-        border-radius: 12px;
-    }
-
-    .bid-amount {
-        font-size: 32px;
-        font-weight: 800;
-        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .bid-duration {
-        color: #6B7280;
-        font-size: 15px;
-    }
-
-    .bid-duration strong {
-        color: #1F2937;
-        font-weight: 600;
-    }
-
-    .bid-cover-letter {
-        font-size: 15px;
-        line-height: 1.7;
-        color: #4B5563;
-        margin-bottom: 16px;
-    }
-
-    .bid-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-top: 16px;
-        border-top: 1px solid #F3F4F6;
-    }
-
-    .bid-date {
-        color: #9CA3AF;
-        font-size: 14px;
-    }
-
-    .btn-accept-bid {
-        background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
-        color: white;
-        border: none;
-        padding: 12px 32px;
-        border-radius: 10px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-
-    .btn-accept-bid:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
-        color: white;
-    }
-
-    .sidebar-card {
-        background: white;
-        border-radius: 20px;
-        padding: 32px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        position: sticky;
-        top: 100px;
-    }
-
-    .sidebar-title {
-        font-size: 22px;
-        font-weight: 700;
-        color: #1F2937;
-        margin-bottom: 24px;
-    }
-
-    .form-label-modern {
-        font-size: 14px;
-        font-weight: 600;
-        color: #374151;
-        margin-bottom: 8px;
-    }
-
-    .form-control-modern {
-        border: 2px solid #E5E7EB;
-        border-radius: 12px;
-        padding: 14px 16px;
-        font-size: 15px;
-        transition: all 0.3s ease;
-    }
-
-    .form-control-modern:focus {
-        border-color: #8B7BE6;
-        box-shadow: 0 0 0 3px rgba(139, 123, 230, 0.1);
-    }
-
-    .btn-submit-bid {
-        width: 100%;
-        padding: 16px;
-        background: linear-gradient(135deg, #8B7BE6 0%, #4F7CFF 100%);
-        color: white;
-        border: none;
-        border-radius: 12px;
-        font-weight: 700;
-        font-size: 16px;
-        transition: all 0.3s ease;
-    }
-
-    .btn-submit-bid:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(139, 123, 230, 0.4);
-        color: white;
-    }
-
-    .project-summary-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border-radius: 16px;
-        padding: 28px;
-        margin-bottom: 24px;
-    }
-
-    .summary-item {
-        padding: 16px 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .summary-item:last-child {
-        border-bottom: none;
-    }
-
-    .summary-label {
-        font-size: 14px;
-        opacity: 0.9;
-        margin-bottom: 4px;
-    }
-
-    .summary-value {
-        font-size: 20px;
-        font-weight: 700;
-    }
-
-    .empty-bids-state {
-        text-align: center;
-        padding: 60px 20px;
-    }
-
-    .empty-bids-icon {
-        font-size: 64px;
-        color: #E5E7EB;
-        margin-bottom: 20px;
-    }
-
-    .empty-bids-text {
-        font-size: 18px;
-        color: #6B7280;
-    }
-
-    .action-dropdown {
-        position: relative;
-    }
-
-    .btn-action {
-        background: white;
-        border: 2px solid #E5E7EB;
-        color: #6B7280;
-        padding: 10px 20px;
-        border-radius: 10px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-
-    .btn-action:hover {
-        border-color: #8B7BE6;
-        color: #8B7BE6;
-    }
-</style>
-
 <!-- Breadcrumb Header -->
-<div class="project-details-header">
-    <div class="container">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-custom">
-                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-                <li class="breadcrumb-item"><a asp-controller="Project" asp-action="Index">Projects</a></li>
-                <li class="breadcrumb-item active" aria-current="page">@Model.Project.Title</li>
-            </ol>
+<div class="bg-gradient-to-br from-indigo-600 to-purple-700 py-12 mb-10">
+    <div class="max-w-7xl mx-auto px-4">
+        <nav class="flex items-center space-x-2 text-white/80 text-sm mb-4">
+            <a asp-controller="Home" asp-action="Index" class="hover:text-white transition-colors">Home</a>
+            <i class="fas fa-chevron-right text-xs"></i>
+            <a asp-controller="Project" asp-action="Index" class="hover:text-white transition-colors">Projects</a>
+            <i class="fas fa-chevron-right text-xs"></i>
+            <span class="text-white font-medium">@Model.Project.Title</span>
         </nav>
     </div>
 </div>
 
-<div class="container mb-5">
-    <div class="row">
-        <div class="col-lg-8">
+<div class="max-w-7xl mx-auto px-4 pb-16">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2">
             <!-- Project Details Card -->
-            <div class="project-main-card">
-                <div class="d-flex justify-content-between align-items-start mb-4">
-                    <div class="project-header-badges">
-                        <span class="badge-gradient">@Model.Project.CategoryName</span>
-                        <span class="badge-status">@Model.Project.Status</span>
+            <div class="bg-white rounded-xl border border-slate-100 shadow-md p-8 mb-8">
+                <div class="flex flex-wrap justify-between items-start gap-4 mb-6">
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-semibold rounded-full">@Model.Project.CategoryName</span>
+                        <span class="px-4 py-2 bg-emerald-500 text-white text-sm font-semibold rounded-full">@Model.Project.Status</span>
                     </div>
                     @if (Model.IsOwner)
                     {
-                        <div class="action-dropdown dropdown">
-                            <button class="btn-action dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <div class="relative" x-data="{ open: false }">
+                            <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="px-4 py-2 border-2 border-slate-200 text-slate-600 rounded-lg hover:border-indigo-500 hover:text-indigo-600 transition-colors">
                                 <i class="fas fa-ellipsis-v"></i>
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@Model.Project.Id">
-                                    <i class="fas fa-edit me-2"></i>Edit Project
-                                </a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <form asp-action="Delete" asp-route-id="@Model.Project.Id" method="post" onsubmit="return confirm('Are you sure you want to delete this project?')">
-                                        @Html.AntiForgeryToken()
-                                        <button type="submit" class="dropdown-item text-danger">
-                                            <i class="fas fa-trash me-2"></i>Delete Project
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
+                            <div class="hidden absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 py-2 z-10">
+                                <a asp-action="Edit" asp-route-id="@Model.Project.Id" class="block px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors">
+                                    <i class="fas fa-edit mr-2 text-indigo-600"></i>Edit Project
+                                </a>
+                                <hr class="my-2 border-slate-100">
+                                <form asp-action="Delete" asp-route-id="@Model.Project.Id" method="post" onsubmit="return confirm('Are you sure you want to delete this project?')">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors">
+                                        <i class="fas fa-trash mr-2"></i>Delete Project
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     }
                 </div>
                 
-                <h1 class="project-title-main">@Model.Project.Title</h1>
+                <h1 class="text-3xl lg:text-4xl font-bold text-slate-900 mb-6 leading-tight">@Model.Project.Title</h1>
                 
-                <div class="project-meta-row">
-                    <div class="project-meta-item">
-                        <i class="fas fa-user-circle"></i>
-                        <span>Posted by <strong>@Model.Project.ClientName</strong></span>
+                <div class="flex flex-wrap gap-6 mb-6 text-slate-600">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-user-circle text-indigo-600"></i>
+                        <span>Posted by <strong class="text-slate-900">@Model.Project.ClientName</strong></span>
                     </div>
-                    <div class="project-meta-item">
-                        <i class="fas fa-calendar-alt"></i>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-calendar-alt text-indigo-600"></i>
                         <span>@Model.Project.CreatedAt.ToString("MMM dd, yyyy")</span>
                     </div>
                     @if (Model.Project.Deadline.HasValue)
                     {
-                        <div class="project-meta-item">
-                            <i class="fas fa-clock"></i>
-                            <span>Deadline: <strong>@Model.Project.Deadline.Value.ToString("MMM dd, yyyy")</strong></span>
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-clock text-indigo-600"></i>
+                            <span>Deadline: <strong class="text-slate-900">@Model.Project.Deadline.Value.ToString("MMM dd, yyyy")</strong></span>
                         </div>
                     }
-                    <div class="project-meta-item">
-                        <i class="fas fa-users"></i>
-                        <span><strong>@Model.Project.BidsCount</strong> bids received</span>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-users text-indigo-600"></i>
+                        <span><strong class="text-slate-900">@Model.Project.BidsCount</strong> bids received</span>
                     </div>
                 </div>
                 
-                <div class="mb-4">
-                    <div class="project-budget-display">$@Model.Project.Budget.ToString("N0")</div>
-                    <div class="text-muted">Project Budget</div>
+                <div class="mb-8">
+                    <div class="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">$@Model.Project.Budget.ToString("N0")</div>
+                    <div class="text-slate-500 mt-1">Project Budget</div>
                 </div>
                 
-                <h3 class="project-section-title">Project Description</h3>
-                <p class="project-description">@Model.Project.Description</p>
+                <h3 class="text-2xl font-bold text-slate-900 mb-4">Project Description</h3>
+                <p class="text-slate-600 leading-relaxed mb-8">@Model.Project.Description</p>
                 
                 @if (Model.Project.Skills.Any())
                 {
-                    <h3 class="project-section-title">Required Skills</h3>
-                    <div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">Required Skills</h3>
+                    <div class="flex flex-wrap gap-3">
                         @foreach (var skill in Model.Project.Skills)
                         {
-                            <span class="skill-tag-large">@skill</span>
+                            <span class="px-5 py-2 bg-slate-100 text-slate-700 text-sm font-semibold rounded-full">@skill</span>
                         }
                     </div>
                 }
             </div>
 
             <!-- Bids Section -->
-            <div class="bids-section-header">
-                <div>
-                    <div class="bids-count">@Model.Project.BidsCount Freelancers Bid</div>
-                    <div class="text-muted">Review proposals and choose the best fit</div>
+            <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6 mb-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <div class="text-2xl font-bold text-slate-900">@Model.Project.BidsCount Freelancers Bid</div>
+                        <div class="text-slate-500">Review proposals and choose the best fit</div>
+                    </div>
                 </div>
             </div>
 
@@ -486,62 +106,62 @@
             {
                 @foreach (var bid in Model.Bids)
                 {
-                    <div class="bid-card">
-                        <div class="bid-header">
-                            <div class="bid-freelancer">
-                                <div class="bid-avatar">
+                    <div class="bg-white rounded-xl border border-slate-100 p-7 mb-5 transition-all hover:border-indigo-300 hover:shadow-lg">
+                        <div class="flex flex-wrap justify-between items-start gap-4 mb-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-14 h-14 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
                                     @bid.FreelancerName.Substring(0, 1).ToUpper()
                                 </div>
                                 <div>
-                                    <div class="bid-freelancer-name">@bid.FreelancerName</div>
-                                    <div class="bid-freelancer-rating">
+                                    <div class="text-xl font-bold text-slate-900">@bid.FreelancerName</div>
+                                    <div class="flex items-center gap-1 text-amber-500 text-sm">
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star-half-alt"></i>
-                                        <span class="ms-1">4.8</span>
+                                        <span class="ml-1 text-slate-600">4.8</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="bid-amount-section">
+                        <div class="flex flex-wrap gap-6 items-center mb-4 p-4 bg-slate-50 rounded-xl">
                             <div>
-                                <div class="bid-amount">$@bid.ProposedAmount.ToString("N0")</div>
-                                <div class="text-muted small">Proposed Amount</div>
+                                <div class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">$@bid.ProposedAmount.ToString("N0")</div>
+                                <div class="text-sm text-slate-500">Proposed Amount</div>
                             </div>
-                            <div class="bid-duration">
-                                <i class="fas fa-clock me-1"></i>
-                                Delivery in <strong>@bid.EstimatedDurationDays days</strong>
+                            <div class="text-slate-600">
+                                <i class="fas fa-clock mr-1 text-indigo-600"></i>
+                                Delivery in <strong class="text-slate-900">@bid.EstimatedDurationDays days</strong>
                             </div>
                         </div>
 
-                        <div class="bid-cover-letter">
-                            <strong style="color: #1F2937;">Cover Letter:</strong><br>
+                        <div class="text-slate-600 mb-4">
+                            <strong class="text-slate-900">Cover Letter:</strong><br>
                             @bid.CoverLetter
                         </div>
 
-                        <div class="bid-footer">
-                            <div class="bid-date">
-                                <i class="fas fa-calendar me-1"></i>
+                        <div class="flex flex-wrap justify-between items-center gap-4 pt-4 border-t border-slate-100">
+                            <div class="text-slate-400 text-sm">
+                                <i class="fas fa-calendar mr-1"></i>
                                 Submitted @bid.CreatedAt.ToString("MMM dd, yyyy")
                             </div>
                             @if (Model.IsOwner && bid.Status == "Pending")
                             {
-                                <form asp-action="AcceptBid" method="post" class="d-inline">
+                                <form asp-action="AcceptBid" method="post" class="inline">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="bidId" value="@bid.Id" />
                                     <input type="hidden" name="projectId" value="@Model.Project.Id" />
-                                    <button type="submit" class="btn-accept-bid">
-                                        <i class="fas fa-check-circle me-2"></i>Accept Bid
+                                    <button type="submit" class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-semibold rounded-xl hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                                        <i class="fas fa-check-circle mr-2"></i>Accept Bid
                                     </button>
                                 </form>
                             }
                             else if (bid.Status == "Accepted")
                             {
-                                <span class="badge-status">
-                                    <i class="fas fa-check-circle me-1"></i>Accepted
+                                <span class="px-4 py-2 bg-emerald-500 text-white text-sm font-semibold rounded-full">
+                                    <i class="fas fa-check-circle mr-1"></i>Accepted
                                 </span>
                             }
                         </div>
@@ -550,60 +170,58 @@
             }
             else
             {
-                <div class="bid-card">
-                    <div class="empty-bids-state">
-                        <div class="empty-bids-icon">
-                            <i class="fas fa-inbox"></i>
-                        </div>
-                        <div class="empty-bids-text">
-                            No bids yet. Be the first to submit a proposal!
-                        </div>
+                <div class="bg-white rounded-xl border border-slate-100 shadow-md p-16 text-center">
+                    <div class="text-6xl text-slate-200 mb-4">
+                        <i class="fas fa-inbox"></i>
+                    </div>
+                    <div class="text-lg text-slate-500">
+                        No bids yet. Be the first to submit a proposal!
                     </div>
                 </div>
             }
         </div>
 
-        <div class="col-lg-4">
+        <div class="lg:col-span-1">
             @if (Model.CanBid && User.IsInRole("Freelancer"))
             {
                 <!-- Submit Bid Form -->
-                <div class="sidebar-card">
-                    <h3 class="sidebar-title">
-                        <i class="fas fa-paper-plane me-2" style="color: #8B7BE6;"></i>
+                <div class="bg-white rounded-xl border border-slate-100 shadow-md p-8 sticky top-24">
+                    <h3 class="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                        <i class="fas fa-paper-plane text-indigo-600"></i>
                         Submit Your Proposal
                     </h3>
                     <form asp-action="SubmitBid" method="post">
                         @Html.AntiForgeryToken()
                         <input type="hidden" name="ProjectId" value="@Model.Project.Id" />
                         
-                        <div class="mb-4">
-                            <label class="form-label-modern">Your Bid Amount *</label>
-                            <div class="input-group">
-                                <span class="input-group-text" style="background: #F9FAFB; border: 2px solid #E5E7EB; border-right: none; border-radius: 12px 0 0 12px; font-weight: 600;">$</span>
-                                <input type="number" step="0.01" class="form-control-modern" name="ProposedAmount" required placeholder="2500" style="border-left: none; padding-left: 0;" />
+                        <div class="mb-5">
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Your Bid Amount *</label>
+                            <div class="flex">
+                                <span class="px-4 py-3 bg-slate-50 border-2 border-r-0 border-slate-200 rounded-l-xl font-semibold text-slate-600">$</span>
+                                <input type="number" step="0.01" class="flex-1 px-4 py-3 border-2 border-l-0 border-slate-200 rounded-r-xl focus:outline-none focus:border-indigo-500 transition-colors" name="ProposedAmount" required placeholder="2500" />
                             </div>
-                            <small class="text-muted">Project budget: $@Model.Project.Budget.ToString("N0")</small>
+                            <p class="text-sm text-slate-500 mt-1">Project budget: $@Model.Project.Budget.ToString("N0")</p>
                         </div>
                         
-                        <div class="mb-4">
-                            <label class="form-label-modern">Estimated Duration *</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control-modern" name="EstimatedDurationDays" required placeholder="14" style="border-right: none; border-radius: 12px 0 0 12px;" />
-                                <span class="input-group-text" style="background: #F9FAFB; border: 2px solid #E5E7EB; border-left: none; border-radius: 0 12px 12px 0; font-weight: 600;">days</span>
+                        <div class="mb-5">
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Estimated Duration *</label>
+                            <div class="flex">
+                                <input type="number" class="flex-1 px-4 py-3 border-2 border-r-0 border-slate-200 rounded-l-xl focus:outline-none focus:border-indigo-500 transition-colors" name="EstimatedDurationDays" required placeholder="14" />
+                                <span class="px-4 py-3 bg-slate-50 border-2 border-l-0 border-slate-200 rounded-r-xl font-semibold text-slate-600">days</span>
                             </div>
                         </div>
                         
-                        <div class="mb-4">
-                            <label class="form-label-modern">Cover Letter *</label>
-                            <textarea class="form-control-modern" name="CoverLetter" rows="6" required placeholder="Explain why you're the perfect fit for this project. Highlight your relevant experience and skills..."></textarea>
+                        <div class="mb-6">
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Cover Letter *</label>
+                            <textarea class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 transition-colors resize-none" name="CoverLetter" rows="6" required placeholder="Explain why you're the perfect fit for this project. Highlight your relevant experience and skills..."></textarea>
                         </div>
                         
-                        <button type="submit" class="btn-submit-bid">
-                            <i class="fas fa-paper-plane me-2"></i>Submit Proposal
+                        <button type="submit" class="w-full py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                            <i class="fas fa-paper-plane mr-2"></i>Submit Proposal
                         </button>
 
-                        <p class="text-center mt-3 mb-0 small text-muted">
-                            <i class="fas fa-shield-alt me-1"></i>
+                        <p class="text-center mt-4 text-sm text-slate-500">
+                            <i class="fas fa-shield-alt mr-1"></i>
                             Your proposal is secure and private
                         </p>
                     </form>
@@ -611,54 +229,56 @@
             }
             else if (!User.Identity!.IsAuthenticated)
             {
-                <div class="sidebar-card text-center">
-                    <div style="font-size: 64px; color: #E5E7EB; margin-bottom: 20px;">
+                <div class="bg-white rounded-xl border border-slate-100 shadow-md p-8 text-center sticky top-24">
+                    <div class="text-6xl text-slate-200 mb-4">
                         <i class="fas fa-lock"></i>
                     </div>
-                    <h4 class="mb-3">Login Required</h4>
-                    <p class="text-muted mb-4">You need to be logged in as a freelancer to submit a bid on this project.</p>
-                    <a href="/Account/Login" class="btn-submit-bid">
-                        <i class="fas fa-sign-in-alt me-2"></i>Login to Bid
+                    <h4 class="text-xl font-bold text-slate-900 mb-3">Login Required</h4>
+                    <p class="text-slate-500 mb-6">You need to be logged in as a freelancer to submit a bid on this project.</p>
+                    <a href="/Account/Login" class="block w-full py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl text-center hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Login to Bid
                     </a>
                 </div>
             }
             else
             {
                 <!-- Project Summary for Owner/Others -->
-                <div class="project-summary-card">
-                    <h4 class="mb-4" style="font-weight: 700;">Project Summary</h4>
-                    <div class="summary-item">
-                        <div class="summary-label">Budget</div>
-                        <div class="summary-value">$@Model.Project.Budget.ToString("N0")</div>
-                    </div>
-                    @if (Model.Project.Deadline.HasValue)
-                    {
-                        <div class="summary-item">
-                            <div class="summary-label">Deadline</div>
-                            <div class="summary-value">@Model.Project.Deadline.Value.ToString("MMM dd, yyyy")</div>
+                <div class="bg-gradient-to-br from-indigo-600 to-purple-700 text-white rounded-2xl p-7 mb-6 sticky top-24">
+                    <h4 class="text-lg font-bold mb-6">Project Summary</h4>
+                    <div class="space-y-4">
+                        <div class="py-4 border-b border-white/20">
+                            <div class="text-white/70 text-sm mb-1">Budget</div>
+                            <div class="text-xl font-bold">$@Model.Project.Budget.ToString("N0")</div>
                         </div>
-                    }
-                    <div class="summary-item">
-                        <div class="summary-label">Posted Date</div>
-                        <div class="summary-value">@Model.Project.CreatedAt.ToString("MMM dd, yyyy")</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="summary-label">Total Bids</div>
-                        <div class="summary-value">@Model.Project.BidsCount</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="summary-label">Project Status</div>
-                        <div class="summary-value">@Model.Project.Status</div>
+                        @if (Model.Project.Deadline.HasValue)
+                        {
+                            <div class="py-4 border-b border-white/20">
+                                <div class="text-white/70 text-sm mb-1">Deadline</div>
+                                <div class="text-xl font-bold">@Model.Project.Deadline.Value.ToString("MMM dd, yyyy")</div>
+                            </div>
+                        }
+                        <div class="py-4 border-b border-white/20">
+                            <div class="text-white/70 text-sm mb-1">Posted Date</div>
+                            <div class="text-xl font-bold">@Model.Project.CreatedAt.ToString("MMM dd, yyyy")</div>
+                        </div>
+                        <div class="py-4 border-b border-white/20">
+                            <div class="text-white/70 text-sm mb-1">Total Bids</div>
+                            <div class="text-xl font-bold">@Model.Project.BidsCount</div>
+                        </div>
+                        <div class="py-4">
+                            <div class="text-white/70 text-sm mb-1">Project Status</div>
+                            <div class="text-xl font-bold">@Model.Project.Status</div>
+                        </div>
                     </div>
                 </div>
 
                 @if (Model.IsOwner)
                 {
-                    <div class="sidebar-card mt-4">
-                        <h4 class="sidebar-title">Client Dashboard</h4>
-                        <p class="text-muted">You're viewing your own project. Review bids and select the best freelancer.</p>
-                        <a asp-action="Edit" asp-route-id="@Model.Project.Id" class="btn-submit-bid" style="background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);">
-                            <i class="fas fa-edit me-2"></i>Edit Project
+                    <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6">
+                        <h4 class="text-lg font-bold text-slate-900 mb-3">Client Dashboard</h4>
+                        <p class="text-slate-500 mb-4">You're viewing your own project. Review bids and select the best freelancer.</p>
+                        <a asp-action="Edit" asp-route-id="@Model.Project.Id" class="block w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold rounded-xl text-center hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                            <i class="fas fa-edit mr-2"></i>Edit Project
                         </a>
                     </div>
                 }
@@ -666,7 +286,3 @@
         </div>
     </div>
 </div>
-
-@section Scripts {
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-}
