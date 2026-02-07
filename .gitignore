@@ -27,6 +27,9 @@ bld/
 [Ll]og/
 [Ll]ogs/
 
+# Data Protection Keys
+DataProtection-Keys/
+
 # Visual Studio cache/options directory
 .vs/
 

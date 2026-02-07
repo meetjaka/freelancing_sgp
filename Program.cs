@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -182,6 +184,19 @@ namespace SGP_Freelancing
                 options.HeaderName = "X-CSRF-TOKEN";
             });
 
+            // Data Protection (for anti-forgery tokens in containers)
+            builder.Services.AddDataProtection()
+                .SetApplicationName("SGP_Freelancing")
+                .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(builder.Environment.ContentRootPath, "DataProtection-Keys")));
+
+            // Forwarded Headers (for Render reverse proxy)
+            builder.Services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                options.KnownNetworks.Clear();
+                options.KnownProxies.Clear();
+            });
+
             var app = builder.Build();
 
             // Add application lifetime logging
@@ -191,6 +206,9 @@ namespace SGP_Freelancing
             lifetime.ApplicationStopped.Register(() => Log.Warning("APPLICATION STOPPED - Shutdown complete"));
 
             // ========== Configure the HTTP request pipeline ==========
+
+            // Forwarded Headers (MUST be first - before any other middleware)
+            app.UseForwardedHeaders();
 
             // Global Exception Handling
             app.UseExceptionHandlingMiddleware();
@@ -212,7 +230,11 @@ namespace SGP_Freelancing
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            // Only redirect to HTTPS in development (Render handles SSL termination)
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseHttpsRedirection();
+            }
             app.UseStaticFiles();
 
             app.UseRouting();
