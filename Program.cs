@@ -224,11 +224,9 @@ namespace SGP_Freelancing
                 });
             }
 
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
-            }
+            // TEMPORARILY show detailed errors everywhere to debug Render issues
+            // TODO: Remove this after debugging
+            app.UseDeveloperExceptionPage();
 
             // Only redirect to HTTPS in development (Render handles SSL termination)
             if (app.Environment.IsDevelopment())
