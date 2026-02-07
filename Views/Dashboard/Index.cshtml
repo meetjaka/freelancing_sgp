@@ -7,7 +7,7 @@
 }
 
 <!-- Welcome Header -->
-<div class="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl p-8 mb-8 text-white relative overflow-hidden">
+<div class="bg-gradient-to-br from-indigo-600 to-purple-700 dark:from-indigo-700 dark:to-purple-800 rounded-2xl p-8 mb-8 text-white relative overflow-hidden transition-colors duration-500">
     <div class="absolute inset-0 bg-white/10 rounded-full w-96 h-96 -top-48 -right-48 blur-3xl"></div>
     <div class="relative z-10">
         <div class="flex justify-between items-center flex-wrap">
@@ -24,54 +24,54 @@
 
 <!-- Stats Cards -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-    <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6 hover:shadow-lg transition-all">
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-md p-6 hover:shadow-lg transition-all">
         <div class="flex items-center">
             <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-white text-xl mr-4">
                 <i class="fas fa-briefcase"></i>
             </div>
             <div>
-                <p class="text-sm text-slate-600 font-medium">Total Projects</p>
-                <p class="text-3xl font-bold text-slate-900">@totalProjects</p>
-                <span class="text-xs text-green-600 font-semibold"><i class="fas fa-arrow-up mr-1"></i>12%</span>
+                <p class="text-sm text-slate-600 dark:text-slate-400 font-medium">Total Projects</p>
+                <p class="text-3xl font-bold text-slate-900 dark:text-white">@totalProjects</p>
+                <span class="text-xs text-green-600 dark:text-green-400 font-semibold"><i class="fas fa-arrow-up mr-1"></i>12%</span>
             </div>
         </div>
     </div>
     
-    <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6 hover:shadow-lg transition-all">
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-md p-6 hover:shadow-lg transition-all">
         <div class="flex items-center">
             <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center text-white text-xl mr-4">
                 <i class="fas fa-tasks"></i>
             </div>
             <div>
-                <p class="text-sm text-slate-600 font-medium">Active Projects</p>
-                <p class="text-3xl font-bold text-slate-900">@activeProjects</p>
-                <span class="text-xs text-green-600 font-semibold"><i class="fas fa-arrow-up mr-1"></i>8%</span>
+                <p class="text-sm text-slate-600 dark:text-slate-400 font-medium">Active Projects</p>
+                <p class="text-3xl font-bold text-slate-900 dark:text-white">@activeProjects</p>
+                <span class="text-xs text-green-600 dark:text-green-400 font-semibold"><i class="fas fa-arrow-up mr-1"></i>8%</span>
             </div>
         </div>
     </div>
     
-    <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6 hover:shadow-lg transition-all">
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-md p-6 hover:shadow-lg transition-all">
         <div class="flex items-center">
             <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center text-white text-xl mr-4">
                 <i class="fas fa-check-circle"></i>
             </div>
             <div>
-                <p class="text-sm text-slate-600 font-medium">Completed</p>
-                <p class="text-3xl font-bold text-slate-900">@completedProjects</p>
-                <span class="text-xs text-green-600 font-semibold"><i class="fas fa-arrow-up mr-1"></i>24%</span>
+                <p class="text-sm text-slate-600 dark:text-slate-400 font-medium">Completed</p>
+                <p class="text-3xl font-bold text-slate-900 dark:text-white">@completedProjects</p>
+                <span class="text-xs text-green-600 dark:text-green-400 font-semibold"><i class="fas fa-arrow-up mr-1"></i>24%</span>
             </div>
         </div>
     </div>
     
-    <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6 hover:shadow-lg transition-all">
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-md p-6 hover:shadow-lg transition-all">
         <div class="flex items-center">
             <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center text-white text-xl mr-4">
                 <i class="fas fa-envelope"></i>
             </div>
             <div>
-                <p class="text-sm text-slate-600 font-medium">Messages</p>
-                <p class="text-3xl font-bold text-slate-900">@unreadMessages</p>
-                <span class="text-xs text-red-600 font-semibold"><i class="fas fa-arrow-down mr-1"></i>3%</span>
+                <p class="text-sm text-slate-600 dark:text-slate-400 font-medium">Messages</p>
+                <p class="text-3xl font-bold text-slate-900 dark:text-white">@unreadMessages</p>
+                <span class="text-xs text-red-600 dark:text-red-400 font-semibold"><i class="fas fa-arrow-down mr-1"></i>3%</span>
             </div>
         </div>
     </div>
@@ -79,99 +79,99 @@
 
 <!-- Quick Actions -->
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-    <a asp-controller="Project" asp-action="Index" class="bg-white rounded-xl border border-slate-100 shadow-md p-6 text-center hover:shadow-lg transition-all group">
-        <div class="text-3xl text-indigo-600 mb-3 group-hover:scale-110 transition-transform">
+    <a asp-controller="Project" asp-action="Index" class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-md p-6 text-center hover:shadow-lg transition-all group">
+        <div class="text-3xl text-indigo-600 dark:text-indigo-400 mb-3 group-hover:scale-110 transition-transform">
             <i class="fas fa-search"></i>
         </div>
-        <div class="text-sm font-semibold text-slate-900">Browse Projects</div>
+        <div class="text-sm font-semibold text-slate-900 dark:text-white">Browse Projects</div>
     </a>
-    <a asp-controller="Project" asp-action="Create" class="bg-white rounded-xl border border-slate-100 shadow-md p-6 text-center hover:shadow-lg transition-all group">
-        <div class="text-3xl text-indigo-600 mb-3 group-hover:scale-110 transition-transform">
+    <a asp-controller="Project" asp-action="Create" class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-md p-6 text-center hover:shadow-lg transition-all group">
+        <div class="text-3xl text-indigo-600 dark:text-indigo-400 mb-3 group-hover:scale-110 transition-transform">
             <i class="fas fa-plus-circle"></i>
         </div>
-        <div class="text-sm font-semibold text-slate-900">Post Project</div>
+        <div class="text-sm font-semibold text-slate-900 dark:text-white">Post Project</div>
     </a>
-    <a asp-controller="Message" asp-action="Index" class="bg-white rounded-xl border border-slate-100 shadow-md p-6 text-center hover:shadow-lg transition-all group">
-        <div class="text-3xl text-indigo-600 mb-3 group-hover:scale-110 transition-transform">
+    <a asp-controller="Message" asp-action="Index" class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-md p-6 text-center hover:shadow-lg transition-all group">
+        <div class="text-3xl text-indigo-600 dark:text-indigo-400 mb-3 group-hover:scale-110 transition-transform">
             <i class="fas fa-comments"></i>
         </div>
-        <div class="text-sm font-semibold text-slate-900">Messages</div>
+        <div class="text-sm font-semibold text-slate-900 dark:text-white">Messages</div>
     </a>
-    <a asp-controller="Account" asp-action="Profile" class="bg-white rounded-xl border border-slate-100 shadow-md p-6 text-center hover:shadow-lg transition-all group">
-        <div class="text-3xl text-indigo-600 mb-3 group-hover:scale-110 transition-transform">
+    <a asp-controller="Account" asp-action="Profile" class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-md p-6 text-center hover:shadow-lg transition-all group">
+        <div class="text-3xl text-indigo-600 dark:text-indigo-400 mb-3 group-hover:scale-110 transition-transform">
             <i class="fas fa-user-cog"></i>
         </div>
-        <div class="text-sm font-semibold text-slate-900">Settings</div>
+        <div class="text-sm font-semibold text-slate-900 dark:text-white">Settings</div>
     </a>
 </div>
 
 <!-- Recent Projects & Activity -->
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     <div class="lg:col-span-2">
-        <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6">
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-md p-6 transition-colors duration-500">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-bold text-slate-900">Recent Projects</h3>
-                <a asp-controller="Project" asp-action="Index" class="text-indigo-600 hover:text-indigo-800 font-semibold text-sm">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Recent Projects</h3>
+                <a asp-controller="Project" asp-action="Index" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-semibold text-sm">
                     View All <i class="fas fa-arrow-right ml-1"></i>
                 </a>
             </div>
             
             <div class="space-y-4">
-                <div class="flex items-center justify-between p-4 hover:bg-slate-50 rounded-lg transition-colors">
+                <div class="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-700/50 rounded-lg transition-colors">
                     <div class="flex items-center">
-                        <div class="w-12 h-12 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-lg flex items-center justify-center text-indigo-600 mr-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/40 dark:to-purple-900/40 rounded-lg flex items-center justify-center text-indigo-600 dark:text-indigo-400 mr-4">
                             <i class="fas fa-laptop-code text-xl"></i>
                         </div>
                         <div>
-                            <div class="font-semibold text-slate-900">E-commerce Website</div>
-                            <div class="text-sm text-slate-500">Posted 2 days ago</div>
+                            <div class="font-semibold text-slate-900 dark:text-white">E-commerce Website</div>
+                            <div class="text-sm text-slate-500 dark:text-slate-400">Posted 2 days ago</div>
                         </div>
                     </div>
                     <div class="text-right">
-                        <div class="text-xl font-bold text-slate-900">$2,500</div>
+                        <div class="text-xl font-bold text-slate-900 dark:text-white">$2,500</div>
                         <div class="flex space-x-2 mt-1">
-                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full">Open</span>
-                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">8 bids</span>
+                            <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 text-xs font-semibold rounded-full">Open</span>
+                            <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 text-xs font-semibold rounded-full">8 bids</span>
                         </div>
                     </div>
                     <button class="ml-4 inline-flex items-center justify-center px-4 py-2 font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all">View</button>
                 </div>
 
-                <div class="flex items-center justify-between p-4 hover:bg-slate-50 rounded-lg transition-colors">
+                <div class="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-700/50 rounded-lg transition-colors">
                     <div class="flex items-center">
-                        <div class="w-12 h-12 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-lg flex items-center justify-center text-blue-600 mr-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-900/40 dark:to-cyan-900/40 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-400 mr-4">
                             <i class="fas fa-mobile-alt text-xl"></i>
                         </div>
                         <div>
-                            <div class="font-semibold text-slate-900">Mobile App Development</div>
-                            <div class="text-sm text-slate-500">Posted 5 days ago</div>
+                            <div class="font-semibold text-slate-900 dark:text-white">Mobile App Development</div>
+                            <div class="text-sm text-slate-500 dark:text-slate-400">Posted 5 days ago</div>
                         </div>
                     </div>
                     <div class="text-right">
-                        <div class="text-xl font-bold text-slate-900">$3,800</div>
+                        <div class="text-xl font-bold text-slate-900 dark:text-white">$3,800</div>
                         <div class="flex space-x-2 mt-1">
-                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded-full">In Progress</span>
-                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">12 bids</span>
+                            <span class="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400 text-xs font-semibold rounded-full">In Progress</span>
+                            <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 text-xs font-semibold rounded-full">12 bids</span>
                         </div>
                     </div>
                     <button class="ml-4 inline-flex items-center justify-center px-4 py-2 font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all">View</button>
                 </div>
 
-                <div class="flex items-center justify-between p-4 hover:bg-slate-50 rounded-lg transition-colors">
+                <div class="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-700/50 rounded-lg transition-colors">
                     <div class="flex items-center">
-                        <div class="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg flex items-center justify-center text-green-600 mr-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900/40 dark:to-emerald-900/40 rounded-lg flex items-center justify-center text-green-600 dark:text-green-400 mr-4">
                             <i class="fas fa-palette text-xl"></i>
                         </div>
                         <div>
-                            <div class="font-semibold text-slate-900">Brand Identity Design</div>
-                            <div class="text-sm text-slate-500">Posted 1 week ago</div>
+                            <div class="font-semibold text-slate-900 dark:text-white">Brand Identity Design</div>
+                            <div class="text-sm text-slate-500 dark:text-slate-400">Posted 1 week ago</div>
                         </div>
                     </div>
                     <div class="text-right">
-                        <div class="text-xl font-bold text-slate-900">$1,200</div>
+                        <div class="text-xl font-bold text-slate-900 dark:text-white">$1,200</div>
                         <div class="flex space-x-2 mt-1">
-                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full">Open</span>
-                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">15 bids</span>
+                            <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 text-xs font-semibold rounded-full">Open</span>
+                            <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 text-xs font-semibold rounded-full">15 bids</span>
                         </div>
                     </div>
                     <button class="ml-4 inline-flex items-center justify-center px-4 py-2 font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all">View</button>
@@ -181,47 +181,47 @@
     </div>
 
     <div>
-        <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6">
-            <h3 class="text-xl font-bold text-slate-900 mb-6">Recent Activity</h3>
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-md p-6 transition-colors duration-500">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Recent Activity</h3>
             
             <div class="space-y-4">
                 <div class="flex items-start space-x-3">
-                    <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 flex-shrink-0">
+                    <div class="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/40 rounded-full flex items-center justify-center text-indigo-600 dark:text-indigo-400 flex-shrink-0">
                         <i class="fas fa-briefcase"></i>
                     </div>
                     <div>
-                        <p class="text-sm text-slate-700">New project posted: <span class="font-semibold">Website Redesign</span></p>
-                        <p class="text-xs text-slate-500">2 hours ago</p>
+                        <p class="text-sm text-slate-700 dark:text-slate-300">New project posted: <span class="font-semibold">Website Redesign</span></p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">2 hours ago</p>
                     </div>
                 </div>
 
                 <div class="flex items-start space-x-3">
-                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 flex-shrink-0">
+                    <div class="w-10 h-10 bg-green-100 dark:bg-green-900/40 rounded-full flex items-center justify-center text-green-600 dark:text-green-400 flex-shrink-0">
                         <i class="fas fa-check-circle"></i>
                     </div>
                     <div>
-                        <p class="text-sm text-slate-700">Bid accepted for <span class="font-semibold">Mobile App</span></p>
-                        <p class="text-xs text-slate-500">5 hours ago</p>
+                        <p class="text-sm text-slate-700 dark:text-slate-300">Bid accepted for <span class="font-semibold">Mobile App</span></p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">5 hours ago</p>
                     </div>
                 </div>
 
                 <div class="flex items-start space-x-3">
-                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 flex-shrink-0">
+                    <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/40 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 flex-shrink-0">
                         <i class="fas fa-envelope"></i>
                     </div>
                     <div>
-                        <p class="text-sm text-slate-700">New message from <span class="font-semibold">John Smith</span></p>
-                        <p class="text-xs text-slate-500">Yesterday</p>
+                        <p class="text-sm text-slate-700 dark:text-slate-300">New message from <span class="font-semibold">John Smith</span></p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Yesterday</p>
                     </div>
                 </div>
 
                 <div class="flex items-start space-x-3">
-                    <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 flex-shrink-0">
+                    <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900/40 rounded-full flex items-center justify-center text-purple-600 dark:text-purple-400 flex-shrink-0">
                         <i class="fas fa-users"></i>
                     </div>
                     <div>
-                        <p class="text-sm text-slate-700">5 new bids on <span class="font-semibold">E-commerce Project</span></p>
-                        <p class="text-xs text-slate-500">2 days ago</p>
+                        <p class="text-sm text-slate-700 dark:text-slate-300">5 new bids on <span class="font-semibold">E-commerce Project</span></p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">2 days ago</p>
                     </div>
                 </div>
             </div>

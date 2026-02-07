@@ -12,15 +12,15 @@
     </div>
 </div>
 
-<div class="max-w-5xl mx-auto px-4 pb-8">
-    <div class="bg-white rounded-3xl p-12 shadow-xl">
+<div class="max-w-5xl mx-auto px-4 pb-8 bg-slate-50 dark:bg-[#0B1120] transition-colors duration-300">
+    <div class="bg-white dark:bg-slate-800 rounded-3xl p-12 shadow-xl dark:shadow-slate-900/50 transition-colors duration-300">
         <!-- Info Card -->
-        <div class="bg-gradient-to-r from-blue-50 to-gray-50 border-l-4 border-indigo-600 rounded-xl p-6 mb-8">
-            <div class="flex items-center gap-2 font-bold text-gray-800 mb-2">
-                <i class="fas fa-lightbulb text-indigo-600"></i>
+        <div class="bg-gradient-to-r from-blue-50 to-gray-50 dark:from-blue-900/20 dark:to-slate-700/30 border-l-4 border-indigo-600 dark:border-indigo-400 rounded-xl p-6 mb-8 transition-colors duration-300">
+            <div class="flex items-center gap-2 font-bold text-gray-800 dark:text-white mb-2 transition-colors duration-300">
+                <i class="fas fa-lightbulb text-indigo-600 dark:text-indigo-400 transition-colors duration-300"></i>
                 Tips for Success
             </div>
-            <p class="text-gray-600 text-sm leading-relaxed">
+            <p class="text-gray-600 dark:text-slate-400 text-sm leading-relaxed transition-colors duration-300">
                 Write a clear, detailed description of your project. Include specific requirements, 
                 preferred skills, and expected deliverables to attract the best freelancers.
             </p>
@@ -28,44 +28,44 @@
 
         <form asp-action="Create" method="post">
             @Html.AntiForgeryToken()
-            <div asp-validation-summary="ModelOnly" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6"></div>
+            <div asp-validation-summary="ModelOnly" class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg mb-6 transition-colors duration-300"></div>
             
             <!-- Project Details Section -->
             <div class="flex items-center gap-3 mb-6">
                 <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center text-white">
                     <i class="fas fa-clipboard-list"></i>
                 </div>
-                <h2 class="text-xl font-bold text-gray-800">Project Details</h2>
+                <h2 class="text-xl font-bold text-gray-800 dark:text-white transition-colors duration-300">Project Details</h2>
             </div>
 
             <div class="mb-6">
-                <label asp-for="Title" class="block text-sm font-semibold text-gray-700 mb-2">
+                <label asp-for="Title" class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2 transition-colors duration-300">
                     Project Title *
                 </label>
-                <input asp-for="Title" class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl text-base transition-all focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 outline-none" placeholder="e.g., Build a responsive e-commerce website" maxlength="100" />
-                <span asp-validation-for="Title" class="text-red-600 text-sm"></span>
-                <div class="text-xs text-gray-500 mt-1">
+                <input asp-for="Title" class="w-full px-5 py-4 border-2 border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 rounded-xl text-base transition-all focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900/30 outline-none" placeholder="e.g., Build a responsive e-commerce website" maxlength="100" />
+                <span asp-validation-for="Title" class="text-red-600 dark:text-red-400 text-sm transition-colors duration-300"></span>
+                <div class="text-xs text-gray-500 dark:text-slate-400 mt-1 transition-colors duration-300">
                     <i class="fas fa-info-circle mr-1"></i>
                     Make it clear and specific
                 </div>
             </div>
             
             <div class="mb-6">
-                <label asp-for="Description" class="block text-sm font-semibold text-gray-700 mb-2">
+                <label asp-for="Description" class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2 transition-colors duration-300">
                     Project Description *
                 </label>
-                <textarea asp-for="Description" class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl text-base transition-all focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 outline-none" rows="8" placeholder="Describe your project in detail. Include objectives, requirements, preferred technologies, and any specific deliverables..." id="descriptionField"></textarea>
-                <span asp-validation-for="Description" class="text-red-600 text-sm"></span>
-                <div class="text-right text-xs text-gray-500 mt-1">
+                <textarea asp-for="Description" class="w-full px-5 py-4 border-2 border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 rounded-xl text-base transition-all focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900/30 outline-none" rows="8" placeholder="Describe your project in detail. Include objectives, requirements, preferred technologies, and any specific deliverables..." id="descriptionField"></textarea>
+                <span asp-validation-for="Description" class="text-red-600 dark:text-red-400 text-sm transition-colors duration-300"></span>
+                <div class="text-right text-xs text-gray-500 dark:text-slate-400 mt-1 transition-colors duration-300">
                     <span id="charCount">0</span> characters
                 </div>
             </div>
 
             <div class="mb-6">
-                <label asp-for="CategoryId" class="block text-sm font-semibold text-gray-700 mb-2">
+                <label asp-for="CategoryId" class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2 transition-colors duration-300">
                     Category *
                 </label>
-                <select asp-for="CategoryId" class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl text-base transition-all focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 outline-none appearance-none bg-white bg-no-repeat bg-[length:1em] bg-[position:right_1rem_center] bg-[url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270%200%2016%2016%27%3e%3cpath fill=%27none%27 stroke=%27%238B7BE6%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27M2%205l6%206%206-6%27/%3e%3c/svg%3e')]">
+                <select asp-for="CategoryId" class="w-full px-5 py-4 border-2 border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white rounded-xl text-base transition-all focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900/30 outline-none appearance-none bg-no-repeat bg-[length:1em] bg-[position:right_1rem_center] bg-[url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270%200%2016%2016%27%3e%3cpath fill=%27none%27 stroke=%27%238B7BE6%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27M2%205l6%206%206-6%27/%3e%3c/svg%3e')]">
                     <option value="">Select a category</option>
                     <option value="1">💻 Web Development</option>
                     <option value="2">📱 Mobile Development</option>
@@ -74,48 +74,48 @@
                     <option value="5">📊 Data Science & AI</option>
                     <option value="6">📈 Digital Marketing</option>
                 </select>
-                <span asp-validation-for="CategoryId" class="text-red-600 text-sm"></span>
+                <span asp-validation-for="CategoryId" class="text-red-600 dark:text-red-400 text-sm transition-colors duration-300"></span>
             </div>
 
-            <div class="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent my-10"></div>
+            <div class="h-px bg-gradient-to-r from-transparent via-gray-200 dark:via-slate-600 to-transparent my-10 transition-colors duration-300"></div>
 
             <!-- Budget & Timeline Section -->
             <div class="flex items-center gap-3 mb-6">
                 <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center text-white">
                     <i class="fas fa-dollar-sign"></i>
                 </div>
-                <h2 class="text-xl font-bold text-gray-800">Budget & Timeline</h2>
+                <h2 class="text-xl font-bold text-gray-800 dark:text-white transition-colors duration-300">Budget & Timeline</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
-                    <label asp-for="Budget" class="block text-sm font-semibold text-gray-700 mb-2">
+                    <label asp-for="Budget" class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2 transition-colors duration-300">
                         Project Budget *
                     </label>
                     <div class="relative">
-                        <span class="absolute left-5 top-1/2 -translate-y-1/2 font-bold text-gray-600 text-base z-10">$</span>
-                        <input asp-for="Budget" type="number" step="0.01" class="w-full pl-10 pr-5 py-4 border-2 border-gray-200 rounded-xl text-base transition-all focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 outline-none" placeholder="2500" />
+                        <span class="absolute left-5 top-1/2 -translate-y-1/2 font-bold text-gray-600 dark:text-slate-400 text-base z-10 transition-colors duration-300">$</span>
+                        <input asp-for="Budget" type="number" step="0.01" class="w-full pl-10 pr-5 py-4 border-2 border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 rounded-xl text-base transition-all focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900/30 outline-none" placeholder="2500" />
                     </div>
-                    <span asp-validation-for="Budget" class="text-red-600 text-sm"></span>
-                    <div class="text-xs text-gray-500 mt-1">
+                    <span asp-validation-for="Budget" class="text-red-600 dark:text-red-400 text-sm transition-colors duration-300"></span>
+                    <div class="text-xs text-gray-500 dark:text-slate-400 mt-1 transition-colors duration-300">
                         <i class="fas fa-info-circle mr-1"></i>
                         Set a realistic budget
                     </div>
                 </div>
                 <div>
-                    <label asp-for="Deadline" class="block text-sm font-semibold text-gray-700 mb-2">
+                    <label asp-for="Deadline" class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2 transition-colors duration-300">
                         Deadline (Optional)
                     </label>
-                    <input asp-for="Deadline" type="date" class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl text-base transition-all focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 outline-none" />
-                    <span asp-validation-for="Deadline" class="text-red-600 text-sm"></span>
-                    <div class="text-xs text-gray-500 mt-1">
+                    <input asp-for="Deadline" type="date" class="w-full px-5 py-4 border-2 border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white rounded-xl text-base transition-all focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900/30 outline-none" />
+                    <span asp-validation-for="Deadline" class="text-red-600 dark:text-red-400 text-sm transition-colors duration-300"></span>
+                    <div class="text-xs text-gray-500 dark:text-slate-400 mt-1 transition-colors duration-300">
                         <i class="fas fa-info-circle mr-1"></i>
                         When do you need it done?
                     </div>
                 </div>
             </div>
 
-            <div class="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent my-10"></div>
+            <div class="h-px bg-gradient-to-r from-transparent via-gray-200 dark:via-slate-600 to-transparent my-10 transition-colors duration-300"></div>
 
             <!-- Action Buttons -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -125,13 +125,13 @@
                     </button>
                 </div>
                 <div class="md:col-span-1">
-                    <a asp-action="Index" class="block w-full py-5 bg-white text-gray-600 font-semibold text-base rounded-xl border-2 border-gray-200 transition-all hover:border-indigo-600 hover:text-indigo-600 text-center">
+                    <a asp-action="Index" class="block w-full py-5 bg-white dark:bg-slate-700 text-gray-600 dark:text-slate-300 font-semibold text-base rounded-xl border-2 border-gray-200 dark:border-slate-600 transition-all hover:border-indigo-600 dark:hover:border-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-400 text-center">
                         <i class="fas fa-times mr-2"></i>Cancel
                     </a>
                 </div>
             </div>
 
-            <p class="text-center mt-6 text-sm text-gray-500">
+            <p class="text-center mt-6 text-sm text-gray-500 dark:text-slate-400 transition-colors duration-300">
                 <i class="fas fa-shield-alt mr-1"></i>
                 Your project will be visible to thousands of qualified freelancers
             </p>

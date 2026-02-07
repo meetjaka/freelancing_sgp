@@ -3,105 +3,105 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-[#0B1120] transition-colors duration-300">
     <div class="max-w-lg w-full">
         <!-- Card -->
-        <div class="bg-white rounded-2xl shadow-2xl p-8 border border-gray-100">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl dark:shadow-slate-900/50 p-8 border border-gray-100 dark:border-slate-700 transition-colors duration-300">
             <!-- Header -->
             <div class="text-center mb-8">
                 <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl mb-6 shadow-lg">
                     <i class="fas fa-user-plus text-white text-2xl"></i>
                 </div>
-                <h2 class="text-3xl font-bold text-gray-900 mb-2">Create Account</h2>
-                <p class="text-gray-500">Join thousands of freelancers and clients</p>
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-300">Create Account</h2>
+                <p class="text-gray-500 dark:text-slate-400 transition-colors duration-300">Join thousands of freelancers and clients</p>
             </div>
 
             <form asp-action="Register" method="post" class="space-y-5">
-                <div asp-validation-summary="All" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm" role="alert"></div>
+                <div asp-validation-summary="All" class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg text-sm transition-colors duration-300" role="alert"></div>
                 
                 <!-- Name Fields -->
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label for="firstName" class="block text-sm font-semibold text-gray-700 mb-2">First Name</label>
+                        <label for="firstName" class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2 transition-colors duration-300">First Name</label>
                         <input type="text" id="firstName" name="FirstName" 
-                               class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
+                               class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
                                placeholder="John" required>
                     </div>
                     <div>
-                        <label for="lastName" class="block text-sm font-semibold text-gray-700 mb-2">Last Name</label>
+                        <label for="lastName" class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2 transition-colors duration-300">Last Name</label>
                         <input type="text" id="lastName" name="LastName" 
-                               class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
+                               class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
                                placeholder="Doe" required>
                     </div>
                 </div>
 
                 <!-- Email Field -->
                 <div>
-                    <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+                    <label for="email" class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2 transition-colors duration-300">Email Address</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i class="fas fa-envelope text-gray-400"></i>
+                            <i class="fas fa-envelope text-gray-400 dark:text-slate-500 transition-colors duration-300"></i>
                         </div>
                         <input type="email" id="email" name="Email" 
-                               class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
+                               class="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
                                placeholder="john@example.com" required>
                     </div>
                 </div>
 
                 <!-- Password Field -->
                 <div>
-                    <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                    <label for="password" class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2 transition-colors duration-300">Password</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i class="fas fa-lock text-gray-400"></i>
+                            <i class="fas fa-lock text-gray-400 dark:text-slate-500 transition-colors duration-300"></i>
                         </div>
                         <input type="password" id="password" name="Password" 
-                               class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
+                               class="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
                                placeholder="Minimum 6 characters" required>
                     </div>
                 </div>
 
                 <!-- Confirm Password Field -->
                 <div>
-                    <label for="confirmPassword" class="block text-sm font-semibold text-gray-700 mb-2">Confirm Password</label>
+                    <label for="confirmPassword" class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2 transition-colors duration-300">Confirm Password</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i class="fas fa-lock text-gray-400"></i>
+                            <i class="fas fa-lock text-gray-400 dark:text-slate-500 transition-colors duration-300"></i>
                         </div>
                         <input type="password" id="confirmPassword" name="ConfirmPassword" 
-                               class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
+                               class="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
                                placeholder="Re-enter password" required>
                     </div>
                 </div>
 
                 <!-- Role Selection -->
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-3">I want to:</label>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-3 transition-colors duration-300">I want to:</label>
                     <div class="grid grid-cols-2 gap-4">
                         <label class="relative cursor-pointer">
                             <input type="radio" name="Role" value="Freelancer" class="peer sr-only" checked>
-                            <div class="p-4 border-2 border-gray-200 rounded-xl peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all hover:border-gray-300">
+                            <div class="p-4 border-2 border-gray-200 dark:border-slate-600 rounded-xl peer-checked:border-indigo-600 peer-checked:bg-indigo-50 dark:peer-checked:bg-indigo-900/20 transition-all hover:border-gray-300 dark:hover:border-slate-500">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
-                                        <i class="fas fa-laptop-code text-indigo-600"></i>
+                                    <div class="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center transition-colors duration-300">
+                                        <i class="fas fa-laptop-code text-indigo-600 dark:text-indigo-400"></i>
                                     </div>
                                     <div>
-                                        <div class="font-semibold text-gray-900">Freelancer</div>
-                                        <div class="text-xs text-gray-500">Bid on projects</div>
+                                        <div class="font-semibold text-gray-900 dark:text-white transition-colors duration-300">Freelancer</div>
+                                        <div class="text-xs text-gray-500 dark:text-slate-400 transition-colors duration-300">Bid on projects</div>
                                     </div>
                                 </div>
                             </div>
                         </label>
                         <label class="relative cursor-pointer">
                             <input type="radio" name="Role" value="Client" class="peer sr-only">
-                            <div class="p-4 border-2 border-gray-200 rounded-xl peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all hover:border-gray-300">
+                            <div class="p-4 border-2 border-gray-200 dark:border-slate-600 rounded-xl peer-checked:border-indigo-600 peer-checked:bg-indigo-50 dark:peer-checked:bg-indigo-900/20 transition-all hover:border-gray-300 dark:hover:border-slate-500">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                                        <i class="fas fa-briefcase text-purple-600"></i>
+                                    <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center transition-colors duration-300">
+                                        <i class="fas fa-briefcase text-purple-600 dark:text-purple-400"></i>
                                     </div>
                                     <div>
-                                        <div class="font-semibold text-gray-900">Client</div>
-                                        <div class="text-xs text-gray-500">Hire freelancers</div>
+                                        <div class="font-semibold text-gray-900 dark:text-white transition-colors duration-300">Client</div>
+                                        <div class="text-xs text-gray-500 dark:text-slate-400 transition-colors duration-300">Hire freelancers</div>
                                     </div>
                                 </div>
                             </div>
@@ -111,9 +111,9 @@
 
                 <!-- Terms Checkbox -->
                 <label class="flex items-start cursor-pointer">
-                    <input type="checkbox" required class="w-4 h-4 mt-1 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                    <span class="ml-2 text-sm text-gray-600">
-                        I agree to the <a href="#" class="text-indigo-600 hover:text-indigo-700 font-medium">Terms of Service</a> and <a href="#" class="text-indigo-600 hover:text-indigo-700 font-medium">Privacy Policy</a>
+                    <input type="checkbox" required class="w-4 h-4 mt-1 text-indigo-600 border-gray-300 dark:border-slate-600 rounded focus:ring-indigo-500">
+                    <span class="ml-2 text-sm text-gray-600 dark:text-slate-400 transition-colors duration-300">
+                        I agree to the <a href="#" class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium">Terms of Service</a> and <a href="#" class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium">Privacy Policy</a>
                     </span>
                 </label>
 
@@ -124,9 +124,9 @@
                 </button>
 
                 <!-- Sign In Link -->
-                <p class="text-center text-gray-600">
+                <p class="text-center text-gray-600 dark:text-slate-400 transition-colors duration-300">
                     Already have an account? 
-                    <a asp-action="Login" class="font-semibold text-indigo-600 hover:text-indigo-700 transition-colors">Sign In</a>
+                    <a asp-action="Login" class="font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors">Sign In</a>
                 </p>
             </form>
         </div>

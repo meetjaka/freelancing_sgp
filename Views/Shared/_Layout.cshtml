@@ -1,13 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth" id="htmlRoot">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SGP Freelancing Platform</title>
+    <!-- Initialize theme immediately to prevent flash -->
+    <script>
+        (function() {
+            const theme = localStorage.getItem('theme') || 'light';
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
     <!-- Tailwind CSS CDN - Includes ALL utility classes -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -135,59 +145,166 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
-<body class="font-sans bg-neutral-50 min-h-screen text-neutral-700 @(ViewData["BodyClass"] ?? "")">
+<body class="font-sans bg-white dark:bg-slate-900 min-h-screen text-slate-800 dark:text-slate-100 transition-colors duration-300 @(ViewData["BodyClass"] ?? "")">
     <style>
-        /* Navbar scroll transition */
-        .navbar-transparent {
-            background: transparent !important;
-            border-bottom-color: transparent !important;
+        /* Navbar - Responsive to Light/Dark Mode */
+        #main-navbar {
+            background: rgba(255,255,255,0.95);
+            border-bottom: 1px solid rgba(226,232,240,0.8);
+            transition: all 0.3s ease;
         }
-        .navbar-transparent .nav-brand-text { color: #fff !important; }
-        .navbar-transparent .nav-search input {
-            background: rgba(255,255,255,0.08) !important;
-            border-color: rgba(255,255,255,0.15) !important;
-            color: #fff !important;
+        
+        .dark #main-navbar {
+            background: #0B1120;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        .navbar-transparent .nav-search input::placeholder { color: rgba(255,255,255,0.5) !important; }
-        .navbar-transparent .nav-search .search-icon { color: rgba(255,255,255,0.4) !important; }
-        .navbar-transparent .nav-link { color: rgba(255,255,255,0.85) !important; }
-        .navbar-transparent .nav-link:hover { color: #fff !important; background: rgba(255,255,255,0.1) !important; }
-        .navbar-transparent .nav-signin { color: rgba(255,255,255,0.85) !important; }
-        .navbar-transparent .nav-signin:hover { background: rgba(255,255,255,0.1) !important; color: #fff !important; }
-        .navbar-transparent .nav-join { background: #fff !important; color: #4F46E5 !important; }
-        .navbar-transparent .nav-join:hover { background: #EEF2FF !important; }
-        .navbar-transparent .nav-categories { border-top-color: rgba(255,255,255,0.08) !important; }
-        .navbar-transparent .nav-cat-link { color: rgba(255,255,255,0.7) !important; }
-        .navbar-transparent .nav-cat-link:hover { color: #fff !important; background: rgba(255,255,255,0.1) !important; }
-        .navbar-transparent .mobile-menu-btn { border-color: rgba(255,255,255,0.2) !important; color: #fff !important; }
-        .navbar-transparent .mobile-menu-btn:hover { background: rgba(255,255,255,0.1) !important; }
+        
+        /* Brand Text */
+        .nav-brand-text { 
+            color: #1e293b;
+            transition: color 0.3s ease;
+        }
+        .dark .nav-brand-text { 
+            color: #fff; 
+        }
+        
+        /* Search Bar */
+        .nav-search input {
+            background: #f1f5f9;
+            border-color: #e2e8f0;
+            color: #0f172a;
+            transition: all 0.3s ease;
+        }
+        .dark .nav-search input {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+        
+        .nav-search input::placeholder { 
+            color: #64748b;
+        }
+        .dark .nav-search input::placeholder { 
+            color: rgba(255,255,255,0.4); 
+        }
+        
+        .nav-search .search-icon { 
+            color: #64748b;
+            transition: color 0.3s ease;
+        }
+        .dark .nav-search .search-icon { 
+            color: rgba(255,255,255,0.3); 
+        }
+        
+        .nav-search input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+        }
+        
+        /* Nav Links */
+        .nav-link { 
+            color: #475569;
+            transition: all 0.3s ease;
+        }
+        .dark .nav-link { 
+            color: rgba(255,255,255,0.8); 
+        }
+        
+        .nav-link:hover { 
+            color: #6366f1;
+            background: #eef2ff;
+        }
+        .dark .nav-link:hover { 
+            color: #fff; 
+            background: rgba(99,102,241,0.15); 
+        }
+        
+        /* Sign In Button */
+        .nav-signin { 
+            color: #475569;
+            transition: all 0.3s ease;
+        }
+        .dark .nav-signin { 
+            color: rgba(255,255,255,0.8); 
+        }
+        
+        .nav-signin:hover { 
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+        .dark .nav-signin:hover { 
+            background: rgba(255,255,255,0.08); 
+            color: #fff; 
+        }
+        
+        /* Join Button */
+        .nav-join { 
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+            transition: all 0.3s ease;
+        }
+        .nav-join:hover { 
+            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(99,102,241,0.4);
+        }
+        
+        /* Categories Bar */
+        .nav-categories { 
+            border-top-color: #e2e8f0;
+            transition: border-color 0.3s ease;
+        }
+        .dark .nav-categories { 
+            border-top-color: rgba(255,255,255,0.06); 
+        }
+        
+        .nav-cat-link { 
+            color: #64748b;
+            transition: all 0.3s ease;
+        }
+        .dark .nav-cat-link { 
+            color: rgba(255,255,255,0.65); 
+        }
+        
+        .nav-cat-link:hover { 
+            color: #6366f1;
+            background: #eef2ff;
+        }
+        .dark .nav-cat-link:hover { 
+            color: #fff; 
+            background: rgba(99,102,241,0.12); 
+        }
+        
+        /* Mobile Menu Button */
+        .mobile-menu-btn { 
+            border-color: #cbd5e1;
+            color: #334155;
+            transition: all 0.3s ease;
+        }
+        .dark .mobile-menu-btn { 
+            border-color: rgba(255,255,255,0.15); 
+            color: #fff; 
+        }
+        
+        .mobile-menu-btn:hover { 
+            background: #f1f5f9;
+        }
+        .dark .mobile-menu-btn:hover { 
+            background: rgba(255,255,255,0.08); 
+        }
 
+        /* Scrolled state */
         .navbar-scrolled {
-            background: rgba(255,255,255,0.8) !important;
             -webkit-backdrop-filter: blur(12px);
             backdrop-filter: blur(12px);
-            border-bottom-color: #E2E8F0 !important;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02), 0 5px 15px rgba(0,0,0,0.06);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
-        .navbar-scrolled .nav-brand-text { color: #1E293B !important; }
-        .navbar-scrolled .nav-search input {
-            background: #F1F5F9 !important;
-            border-color: #E2E8F0 !important;
-            color: #0F172A !important;
+        .dark .navbar-scrolled {
+            background: rgba(11,17,32,0.95);
+            border-bottom-color: rgba(255,255,255,0.12);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
-        .navbar-scrolled .nav-search input::placeholder { color: #64748B !important; }
-        .navbar-scrolled .nav-search .search-icon { color: #64748B !important; }
-        .navbar-scrolled .nav-link { color: #334155 !important; }
-        .navbar-scrolled .nav-link:hover { color: #4F46E5 !important; background: #EEF2FF !important; }
-        .navbar-scrolled .nav-signin { color: #334155 !important; }
-        .navbar-scrolled .nav-signin:hover { background: #F1F5F9 !important; color: #1E293B !important; }
-        .navbar-scrolled .nav-join { background: #4F46E5 !important; color: #fff !important; }
-        .navbar-scrolled .nav-join:hover { background: #4338CA !important; }
-        .navbar-scrolled .nav-categories { border-top-color: #E2E8F0 !important; }
-        .navbar-scrolled .nav-cat-link { color: #475569 !important; }
-        .navbar-scrolled .nav-cat-link:hover { color: #4F46E5 !important; background: #EEF2FF !important; }
-        .navbar-scrolled .mobile-menu-btn { border-color: #CBD5E1 !important; color: #334155 !important; }
-        .navbar-scrolled .mobile-menu-btn:hover { background: #F1F5F9 !important; }
     </style>
     <header>
         <!-- Premium Navbar -->
@@ -225,6 +342,15 @@
 
                     <!-- Right Actions -->
                     <div class="hidden lg:flex items-center gap-2 text-sm font-semibold text-slate-700">
+                        <!-- Theme Toggle -->
+                        <button id="theme-toggle" class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-600 dark:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-all duration-300 relative group" title="Toggle theme">
+                            <i class="fas fa-sun text-lg theme-icon-light"></i>
+                            <i class="fas fa-moon text-lg theme-icon-dark hidden"></i>
+                            <div class="absolute -bottom-12 right-0 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-3 py-1.5 rounded-lg text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                                <span class="theme-tooltip-light">Switch to dark mode</span>
+                                <span class="theme-tooltip-dark hidden">Switch to light mode</span>
+                            </div>
+                        </button>
                         <a class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-all duration-300" href="#">Explore</a>
                         <a class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-all duration-300" href="#">Become a Seller</a>
                         @if (User.Identity.IsAuthenticated)
@@ -294,54 +420,54 @@
                 </div>
 
                 <!-- Mobile Menu -->
-                <div id="mobile-menu" class="hidden lg:hidden px-4 sm:px-6 pb-4">
+                <div id="mobile-menu" class="hidden lg:hidden px-4 sm:px-6 pb-4 border-t border-white/10">
                     <div class="relative mt-4">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i class="fas fa-search text-slate-400"></i>
+                            <i class="fas fa-search text-white/30"></i>
                         </div>
                         <input type="text" placeholder="Search services..." 
-                               class="w-full pl-11 pr-4 py-2.5 bg-slate-100 border-transparent rounded-full text-sm text-slate-900 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                               class="w-full pl-11 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-full text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:bg-white/10">
                     </div>
 
                     <div class="mt-4 space-y-1">
-                        <a class="flex items-center px-4 py-2 text-slate-700 font-semibold rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all" 
+                        <a class="flex items-center px-4 py-2 text-white/80 font-semibold rounded-lg hover:bg-indigo-500/20 hover:text-white transition-all" 
                            asp-area="" asp-controller="Home" asp-action="Index">
                             <i class="fas fa-home w-5 mr-3"></i>Home
                         </a>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <a class="flex items-center px-4 py-2 text-slate-700 font-semibold rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all" 
+                            <a class="flex items-center px-4 py-2 text-white/80 font-semibold rounded-lg hover:bg-indigo-500/20 hover:text-white transition-all" 
                                asp-area="" asp-controller="Dashboard" asp-action="Index">
                                 <i class="fas fa-chart-line w-5 mr-3"></i>Dashboard
                             </a>
                         }
-                        <a class="flex items-center px-4 py-2 text-slate-700 font-semibold rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all" 
+                        <a class="flex items-center px-4 py-2 text-white/80 font-semibold rounded-lg hover:bg-indigo-500/20 hover:text-white transition-all" 
                            asp-area="" asp-controller="Project" asp-action="Index">
                             <i class="fas fa-briefcase w-5 mr-3"></i>Projects
                         </a>
                     </div>
 
-                    <div class="mt-4 border-t border-slate-200 pt-4">
-                        <p class="px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Categories</p>
-                        <div class="mt-2 grid grid-cols-2 gap-2 text-sm font-medium text-slate-600">
-                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all" href="#">Graphics & Design</a>
-                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all" href="#">Programming</a>
-                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all" href="#">Marketing</a>
-                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all" href="#">Video</a>
-                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all" href="#">Writing</a>
-                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all" href="#">Business</a>
+                    <div class="mt-4 border-t border-white/10 pt-4">
+                        <p class="px-4 text-xs font-semibold text-white/40 uppercase tracking-wider">Categories</p>
+                        <div class="mt-2 grid grid-cols-2 gap-2 text-sm font-medium text-white/70">
+                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-500/15 hover:text-white transition-all" href="#">Graphics & Design</a>
+                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-500/15 hover:text-white transition-all" href="#">Programming</a>
+                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-500/15 hover:text-white transition-all" href="#">Marketing</a>
+                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-500/15 hover:text-white transition-all" href="#">Video</a>
+                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-500/15 hover:text-white transition-all" href="#">Writing</a>
+                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-500/15 hover:text-white transition-all" href="#">Business</a>
                         </div>
                     </div>
 
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <div class="border-t border-slate-200 mt-4 pt-2">
-                            <a class="flex items-center px-4 py-2 text-slate-700 font-semibold rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all" 
+                        <div class="border-t border-white/10 mt-4 pt-2">
+                            <a class="flex items-center px-4 py-2 text-white/80 font-semibold rounded-lg hover:bg-indigo-500/20 hover:text-white transition-all" 
                                asp-area="" asp-controller="Account" asp-action="Profile">
                                 <i class="fas fa-user w-5 mr-3"></i>My Profile
                             </a>
                             <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
-                                <button type="submit" class="flex items-center w-full px-4 py-2 text-rose-600 font-semibold rounded-lg hover:bg-rose-50 transition-all">
+                                <button type="submit" class="flex items-center w-full px-4 py-2 text-rose-400 font-semibold rounded-lg hover:bg-rose-500/20 hover:text-rose-300 transition-all">
                                     <i class="fas fa-sign-out-alt w-5 mr-3"></i>Sign Out
                                 </button>
                             </form>
@@ -349,10 +475,10 @@
                     }
                     else
                     {
-                        <div class="border-t border-slate-200 mt-4 pt-3 space-y-2">
-                            <a class="block px-4 py-2 text-center text-slate-700 font-semibold rounded-lg border border-slate-200 hover:border-indigo-400 hover:text-indigo-600 transition-all" 
+                        <div class="border-t border-white/10 mt-4 pt-3 space-y-2">
+                            <a class="block px-4 py-2 text-center text-white/80 font-semibold rounded-lg border border-white/20 hover:border-indigo-400 hover:bg-indigo-500/10 hover:text-white transition-all" 
                                asp-area="" asp-controller="Account" asp-action="Login">Sign In</a>
-                            <a class="block px-4 py-2 text-center bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition-all" 
+                            <a class="block px-4 py-2 text-center bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-lg hover:from-indigo-500 hover:to-purple-500 transition-all shadow-lg" 
                                asp-area="" asp-controller="Account" asp-action="Register">Join</a>
                         </div>
                     }
@@ -369,9 +495,9 @@
     </main>
 
     <!-- Ultra-Modern Footer -->
-    <footer class="relative bg-[#0B1120] text-white overflow-hidden">
+    <footer class="relative bg-slate-50 dark:bg-[#0B1120] text-slate-900 dark:text-white overflow-hidden transition-colors duration-500">
         <!-- Gradient overlay -->
-        <div class="absolute inset-0 bg-gradient-to-br from-indigo-950/40 via-transparent to-slate-950 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-indigo-50/50 via-transparent to-slate-100/50 dark:from-indigo-950/40 dark:via-transparent dark:to-slate-950 pointer-events-none"></div>
         
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
@@ -382,69 +508,69 @@
                             <i class="fas fa-handshake text-white text-xl"></i>
                         </div>
                         <div class="ml-3">
-                            <span class="text-2xl font-black">SGP</span>
-                            <span class="block text-xs text-slate-400 -mt-1">Freelancing</span>
+                            <span class="text-2xl font-black text-slate-900 dark:text-white">SGP</span>
+                            <span class="block text-xs text-slate-500 dark:text-slate-400 -mt-1">Freelancing</span>
                         </div>
                     </div>
-                    <p class="text-slate-400 leading-relaxed mb-6">Empowering global talent to connect, collaborate, and create extraordinary work together.</p>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">Empowering global talent to connect, collaborate, and create extraordinary work together.</p>
                     <div class="flex gap-3">
-                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-white/5 hover:bg-indigo-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/30">
-                            <i class="fab fa-facebook-f text-slate-400 group-hover:text-white transition-colors"></i>
+                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-slate-200/50 dark:bg-white/5 hover:bg-indigo-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/30">
+                            <i class="fab fa-facebook-f text-slate-600 dark:text-slate-400 group-hover:text-white transition-colors"></i>
                         </a>
-                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-white/5 hover:bg-indigo-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/30">
-                            <i class="fab fa-twitter text-slate-400 group-hover:text-white transition-colors"></i>
+                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-slate-200/50 dark:bg-white/5 hover:bg-indigo-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/30">
+                            <i class="fab fa-twitter text-slate-600 dark:text-slate-400 group-hover:text-white transition-colors"></i>
                         </a>
-                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-white/5 hover:bg-indigo-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/30">
-                            <i class="fab fa-linkedin-in text-slate-400 group-hover:text-white transition-colors"></i>
+                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-slate-200/50 dark:bg-white/5 hover:bg-indigo-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/30">
+                            <i class="fab fa-linkedin-in text-slate-600 dark:text-slate-400 group-hover:text-white transition-colors"></i>
                         </a>
-                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-white/5 hover:bg-indigo-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/30">
-                            <i class="fab fa-instagram text-slate-400 group-hover:text-white transition-colors"></i>
+                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-slate-200/50 dark:bg-white/5 hover:bg-indigo-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/30">
+                            <i class="fab fa-instagram text-slate-600 dark:text-slate-400 group-hover:text-white transition-colors"></i>
                         </a>
                     </div>
                 </div>
                 
                 <!-- Quick Links -->
                 <div>
-                    <h6 class="text-white font-bold text-lg mb-4">Platform</h6>
+                    <h6 class="text-slate-900 dark:text-white font-bold text-lg mb-4">Platform</h6>
                     <ul class="space-y-3">
-                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">Browse Projects</a></li>
-                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">Find Talent</a></li>
-                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">How It Works</a></li>
-                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">Success Stories</a></li>
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">Browse Projects</a></li>
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">Find Talent</a></li>
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">How It Works</a></li>
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">Success Stories</a></li>
                     </ul>
                 </div>
                 
                 <!-- Company -->
                 <div>
-                    <h6 class="text-white font-bold text-lg mb-4">Company</h6>
+                    <h6 class="text-slate-900 dark:text-white font-bold text-lg mb-4">Company</h6>
                     <ul class="space-y-3">
-                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">About Us</a></li>
-                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">Careers</a></li>
-                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">Press Kit</a></li>
-                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">Blog</a></li>
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">About Us</a></li>
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">Careers</a></li>
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">Press Kit</a></li>
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">Blog</a></li>
                     </ul>
                 </div>
                 
                 <!-- Support -->
                 <div>
-                    <h6 class="text-white font-bold text-lg mb-4">Support</h6>
+                    <h6 class="text-slate-900 dark:text-white font-bold text-lg mb-4">Support</h6>
                     <ul class="space-y-3">
-                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">Help Center</a></li>
-                        <li><a asp-controller="Home" asp-action="Privacy" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">Privacy Policy</a></li>
-                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">Terms of Service</a></li>
-                        <li><a href="#" class="text-slate-400 hover:text-white hover:translate-x-1 inline-block transition-all">Contact Us</a></li>
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">Help Center</a></li>
+                        <li><a asp-controller="Home" asp-action="Privacy" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">Privacy Policy</a></li>
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">Terms of Service</a></li>
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">Contact Us</a></li>
                     </ul>
                 </div>
             </div>
             
             <!-- Bottom Bar -->
-            <div class="pt-8 border-t border-white/10">
+            <div class="pt-8 border-t border-slate-300 dark:border-white/10">
                 <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p class="text-slate-400 text-sm">&copy; 2026 SGP Freelancing Platform. All rights reserved.</p>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm">&copy; 2026 SGP Freelancing Platform. All rights reserved.</p>
                     <div class="flex gap-6 text-sm">
-                        <a href="#" class="text-slate-400 hover:text-white transition-colors">Privacy</a>
-                        <a href="#" class="text-slate-400 hover:text-white transition-colors">Terms</a>
-                        <a href="#" class="text-slate-400 hover:text-white transition-colors">Cookies</a>
+                        <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors">Privacy</a>
+                        <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors">Terms</a>
+                        <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors">Cookies</a>
                     </div>
                 </div>
             </div>
@@ -452,6 +578,45 @@
     </footer>
     
     <script>
+        // Theme Toggle System
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlRoot = document.getElementById('htmlRoot');
+        const lightIcons = document.querySelectorAll('.theme-icon-light');
+        const darkIcons = document.querySelectorAll('.theme-icon-dark');
+        const lightTooltips = document.querySelectorAll('.theme-tooltip-light');
+        const darkTooltips = document.querySelectorAll('.theme-tooltip-dark');
+        
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                htmlRoot.classList.add('dark');
+                lightIcons.forEach(icon => icon.classList.add('hidden'));
+                darkIcons.forEach(icon => icon.classList.remove('hidden'));
+                lightTooltips.forEach(tooltip => tooltip.classList.add('hidden'));
+                darkTooltips.forEach(tooltip => tooltip.classList.remove('hidden'));
+            } else {
+                htmlRoot.classList.remove('dark');
+                lightIcons.forEach(icon => icon.classList.remove('hidden'));
+                darkIcons.forEach(icon => icon.classList.add('hidden'));
+                lightTooltips.forEach(tooltip => tooltip.classList.remove('hidden'));
+                darkTooltips.forEach(tooltip => tooltip.classList.add('hidden'));
+            }
+            localStorage.setItem('theme', theme);
+        }
+        
+        // Initialize theme
+        setTheme(currentTheme);
+        
+        // Toggle theme on button click
+        if (themeToggle) {
+            themeToggle.addEventListener('click', function() {
+                const newTheme = htmlRoot.classList.contains('dark') ? 'light' : 'dark';
+                setTheme(newTheme);
+            });
+        }
+        
         // Mobile menu toggle
         document.getElementById('mobile-menu-btn').addEventListener('click', function() {
             document.getElementById('mobile-menu').classList.toggle('hidden');

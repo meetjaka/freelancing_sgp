@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
 
-<div class="max-w-6xl mx-auto px-4">
+<div class="max-w-6xl mx-auto px-4 bg-slate-50 dark:bg-[#0B1120] transition-colors duration-300">
     <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-8 rounded-2xl mb-8">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
@@ -21,7 +21,7 @@
         </div>
     </div>
     
-    <div class="bg-white rounded-2xl shadow-lg p-6">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg dark:shadow-slate-900/50 p-6 transition-colors duration-300">
         @if (Model.Any())
         {
             @foreach (var message in Model)
@@ -35,16 +35,16 @@
                 var initial = string.IsNullOrEmpty(otherUserName) ? "?" : otherUserName[0].ToString().ToUpper();
 
                 <a asp-action="Conversation" asp-route-userId="@otherUserId" 
-                   class="flex items-center gap-4 p-5 rounded-xl mb-3 no-underline text-slate-900 border-2 border-gray-200 transition-all duration-300 hover:border-indigo-600 hover:bg-gray-50 hover:translate-x-1 hover:shadow-md @(message.IsRead ? "" : "bg-indigo-50 border-indigo-600")">
+                   class="flex items-center gap-4 p-5 rounded-xl mb-3 no-underline text-slate-900 dark:text-white border-2 border-gray-200 dark:border-slate-700 transition-all duration-300 hover:border-indigo-600 dark:hover:border-indigo-400 hover:bg-gray-50 dark:hover:bg-slate-700/50 hover:translate-x-1 hover:shadow-md @(message.IsRead ? "" : "bg-indigo-50 dark:bg-indigo-900/20 border-indigo-600 dark:border-indigo-500")">
                     <div class="w-14 h-14 rounded-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white flex items-center justify-center text-lg font-bold flex-shrink-0">
                         @initial
                     </div>
                     <div class="flex-grow min-w-0">
                         <div class="flex justify-between items-center gap-3 mb-2">
-                            <h6 class="text-lg font-bold text-gray-900 m-0">@otherUserName</h6>
-                            <span class="text-sm text-gray-500 whitespace-nowrap">@message.CreatedAt.ToString("MMM dd")</span>
+                            <h6 class="text-lg font-bold text-gray-900 dark:text-white m-0 transition-colors duration-300">@otherUserName</h6>
+                            <span class="text-sm text-gray-500 dark:text-slate-400 whitespace-nowrap transition-colors duration-300">@message.CreatedAt.ToString("MMM dd")</span>
                         </div>
-                        <p class="text-base @(message.IsRead ? "text-gray-600" : "text-gray-800 font-medium") m-0 overflow-hidden text-ellipsis whitespace-nowrap">
+                        <p class="text-base @(message.IsRead ? "text-gray-600 dark:text-slate-400" : "text-gray-800 dark:text-slate-300 font-medium") m-0 overflow-hidden text-ellipsis whitespace-nowrap transition-colors duration-300">
                             @(message.Content.Length > 60 ? message.Content.Substring(0, 60) + "..." : message.Content)
                         </p>
                     </div>
@@ -61,8 +61,8 @@
                 <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-indigo-600 to-blue-600 flex items-center justify-center text-white text-5xl">
                     <i class="fas fa-inbox"></i>
                 </div>
-                <div class="text-3xl font-bold text-gray-900 mb-3">No messages yet</div>
-                <div class="text-lg text-gray-600">Start a conversation by connecting with freelancers or clients</div>
+                <div class="text-3xl font-bold text-gray-900 dark:text-white mb-3 transition-colors duration-300">No messages yet</div>
+                <div class="text-lg text-gray-600 dark:text-slate-400 transition-colors duration-300">Start a conversation by connecting with freelancers or clients</div>
             </div>
         }
     </div>

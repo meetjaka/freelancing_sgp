@@ -7,7 +7,7 @@
     var userRole = User.IsInRole("Client") ? "Client" : User.IsInRole("Freelancer") ? "Freelancer" : "User";
 }
 
-<div class="max-w-6xl mx-auto px-4">
+<div class="max-w-6xl mx-auto px-4 bg-slate-50 dark:bg-[#0B1120] transition-colors duration-300">
     <div class="relative bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-12 rounded-2xl text-white mb-8 overflow-hidden">
         <!-- Decorative background element -->
         <div class="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -mr-48 -mt-48"></div>
@@ -31,127 +31,127 @@
     
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-8">
         <div>
-            <div class="bg-white rounded-2xl p-8 border border-gray-200 hover:shadow-lg transition-shadow">
-                <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-gray-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
                     <span class="w-10 h-10 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 text-white flex items-center justify-center text-sm">
                         <i class="fas fa-user"></i>
                     </span>
                     Personal Information
                 </h2>
-                <div class="py-4 border-b border-gray-100 flex justify-between items-center last:border-0">
-                    <span class="text-sm font-semibold text-gray-600">Full Name</span>
-                    <span class="text-base font-semibold text-gray-900">@userName</span>
+                <div class="py-4 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center last:border-0 transition-colors duration-300">
+                    <span class="text-sm font-semibold text-gray-600 dark:text-slate-400 transition-colors duration-300">Full Name</span>
+                    <span class="text-base font-semibold text-gray-900 dark:text-white transition-colors duration-300">@userName</span>
                 </div>
-                <div class="py-4 border-b border-gray-100 flex justify-between items-center last:border-0">
-                    <span class="text-sm font-semibold text-gray-600">Email Address</span>
-                    <span class="text-base font-semibold text-gray-900">@userEmail</span>
+                <div class="py-4 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center last:border-0 transition-colors duration-300">
+                    <span class="text-sm font-semibold text-gray-600 dark:text-slate-400 transition-colors duration-300">Email Address</span>
+                    <span class="text-base font-semibold text-gray-900 dark:text-white transition-colors duration-300">@userEmail</span>
                 </div>
-                <div class="py-4 border-b border-gray-100 flex justify-between items-center last:border-0">
-                    <span class="text-sm font-semibold text-gray-600">Account Type</span>
-                    <span class="text-base font-semibold text-gray-900">@userRole</span>
+                <div class="py-4 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center last:border-0 transition-colors duration-300">
+                    <span class="text-sm font-semibold text-gray-600 dark:text-slate-400 transition-colors duration-300">Account Type</span>
+                    <span class="text-base font-semibold text-gray-900 dark:text-white transition-colors duration-300">@userRole</span>
                 </div>
-                <div class="py-4 border-b border-gray-100 flex justify-between items-center last:border-0">
-                    <span class="text-sm font-semibold text-gray-600">Member Since</span>
-                    <span class="text-base font-semibold text-gray-900">January 2026</span>
+                <div class="py-4 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center last:border-0 transition-colors duration-300">
+                    <span class="text-sm font-semibold text-gray-600 dark:text-slate-400 transition-colors duration-300">Member Since</span>
+                    <span class="text-base font-semibold text-gray-900 dark:text-white transition-colors duration-300">January 2026</span>
                 </div>
-                <div class="py-4 border-b border-gray-100 flex justify-between items-center last:border-0">
-                    <span class="text-sm font-semibold text-gray-600">Status</span>
-                    <span class="text-base font-semibold"><span class="inline-block bg-gradient-to-r from-emerald-100 to-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-semibold border border-emerald-200">Active</span></span>
+                <div class="py-4 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center last:border-0 transition-colors duration-300">
+                    <span class="text-sm font-semibold text-gray-600 dark:text-slate-400 transition-colors duration-300">Status</span>
+                    <span class="text-base font-semibold"><span class="inline-block bg-gradient-to-r from-emerald-100 to-emerald-50 dark:from-emerald-900/30 dark:to-emerald-900/20 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full text-xs font-semibold border border-emerald-200 dark:border-emerald-800 transition-colors duration-300">Active</span></span>
                 </div>
             </div>
             
-            <div class="bg-white rounded-2xl p-8 border border-gray-200 hover:shadow-lg transition-shadow mt-6">
-                <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-gray-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300 mt-6">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
                     <span class="w-10 h-10 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 text-white flex items-center justify-center text-sm">
                         <i class="fas fa-chart-bar"></i>
                     </span>
                     Statistics
                 </h2>
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="text-center p-5 rounded-xl bg-gray-50 hover:bg-gray-100 hover:-translate-y-1 transition-all">
+                    <div class="text-center p-5 rounded-xl bg-gray-50 dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-slate-600 hover:-translate-y-1 transition-all duration-300">
                         <div class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent mb-2">12</div>
-                        <div class="text-sm text-gray-600 font-semibold">Projects Posted</div>
+                        <div class="text-sm text-gray-600 dark:text-slate-400 font-semibold transition-colors duration-300">Projects Posted</div>
                     </div>
-                    <div class="text-center p-5 rounded-xl bg-gray-50 hover:bg-gray-100 hover:-translate-y-1 transition-all">
+                    <div class="text-center p-5 rounded-xl bg-gray-50 dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-slate-600 hover:-translate-y-1 transition-all duration-300">
                         <div class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent mb-2">8</div>
-                        <div class="text-sm text-gray-600 font-semibold">Active Projects</div>
+                        <div class="text-sm text-gray-600 dark:text-slate-400 font-semibold transition-colors duration-300">Active Projects</div>
                     </div>
-                    <div class="text-center p-5 rounded-xl bg-gray-50 hover:bg-gray-100 hover:-translate-y-1 transition-all">
+                    <div class="text-center p-5 rounded-xl bg-gray-50 dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-slate-600 hover:-translate-y-1 transition-all duration-300">
                         <div class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent mb-2">4</div>
-                        <div class="text-sm text-gray-600 font-semibold">Completed</div>
+                        <div class="text-sm text-gray-600 dark:text-slate-400 font-semibold transition-colors duration-300">Completed</div>
                     </div>
-                    <div class="text-center p-5 rounded-xl bg-gray-50 hover:bg-gray-100 hover:-translate-y-1 transition-all">
+                    <div class="text-center p-5 rounded-xl bg-gray-50 dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-slate-600 hover:-translate-y-1 transition-all duration-300">
                         <div class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent mb-2">24</div>
-                        <div class="text-sm text-gray-600 font-semibold">Bids Received</div>
+                        <div class="text-sm text-gray-600 dark:text-slate-400 font-semibold transition-colors duration-300">Bids Received</div>
                     </div>
                 </div>
             </div>
         </div>
         
         <div>
-            <div class="bg-white rounded-2xl p-8 border border-gray-200 hover:shadow-lg transition-shadow">
-                <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-gray-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
                     <span class="w-10 h-10 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 text-white flex items-center justify-center text-sm">
                         <i class="fas fa-clock"></i>
                     </span>
                     Recent Activity
                 </h2>
-                <div class="p-4 rounded-xl bg-gray-50 mb-3 flex gap-4 hover:bg-gray-100 hover:translate-x-1 transition-all">
+                <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-700 mb-3 flex gap-4 hover:bg-gray-100 dark:hover:bg-slate-600 hover:translate-x-1 transition-all duration-300">
                     <div class="w-11 h-11 rounded-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white flex items-center justify-center flex-shrink-0">
                         <i class="fas fa-plus text-sm"></i>
                     </div>
                     <div class="flex-grow">
-                        <p class="text-base text-gray-900 mb-1">Posted a new project "E-commerce Website"</p>
-                        <p class="text-sm text-gray-500">2 hours ago</p>
+                        <p class="text-base text-gray-900 dark:text-white mb-1 transition-colors duration-300">Posted a new project "E-commerce Website"</p>
+                        <p class="text-sm text-gray-500 dark:text-slate-400 transition-colors duration-300">2 hours ago</p>
                     </div>
                 </div>
-                <div class="p-4 rounded-xl bg-gray-50 mb-3 flex gap-4 hover:bg-gray-100 hover:translate-x-1 transition-all">
+                <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-700 mb-3 flex gap-4 hover:bg-gray-100 dark:hover:bg-slate-600 hover:translate-x-1 transition-all duration-300">
                     <div class="w-11 h-11 rounded-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white flex items-center justify-center flex-shrink-0">
                         <i class="fas fa-check text-sm"></i>
                     </div>
                     <div class="flex-grow">
-                        <p class="text-base text-gray-900 mb-1">Accepted bid from John Developer</p>
-                        <p class="text-sm text-gray-500">5 hours ago</p>
+                        <p class="text-base text-gray-900 dark:text-white mb-1 transition-colors duration-300">Accepted bid from John Developer</p>
+                        <p class="text-sm text-gray-500 dark:text-slate-400 transition-colors duration-300">5 hours ago</p>
                     </div>
                 </div>
-                <div class="p-4 rounded-xl bg-gray-50 mb-3 flex gap-4 hover:bg-gray-100 hover:translate-x-1 transition-all">
+                <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-700 mb-3 flex gap-4 hover:bg-gray-100 dark:hover:bg-slate-600 hover:translate-x-1 transition-all duration-300">
                     <div class="w-11 h-11 rounded-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white flex items-center justify-center flex-shrink-0">
                         <i class="fas fa-message text-sm"></i>
                     </div>
                     <div class="flex-grow">
-                        <p class="text-base text-gray-900 mb-1">Sent message to Sarah Designer</p>
-                        <p class="text-sm text-gray-500">1 day ago</p>
+                        <p class="text-base text-gray-900 dark:text-white mb-1 transition-colors duration-300">Sent message to Sarah Designer</p>
+                        <p class="text-sm text-gray-500 dark:text-slate-400 transition-colors duration-300">1 day ago</p>
                     </div>
                 </div>
-                <div class="p-4 rounded-xl bg-gray-50 mb-3 flex gap-4 hover:bg-gray-100 hover:translate-x-1 transition-all">
+                <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-700 mb-3 flex gap-4 hover:bg-gray-100 dark:hover:bg-slate-600 hover:translate-x-1 transition-all duration-300">
                     <div class="w-11 h-11 rounded-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white flex items-center justify-center flex-shrink-0">
                         <i class="fas fa-star text-sm"></i>
                     </div>
                     <div class="flex-grow">
-                        <p class="text-base text-gray-900 mb-1">Received 5-star rating</p>
-                        <p class="text-sm text-gray-500">2 days ago</p>
+                        <p class="text-base text-gray-900 dark:text-white mb-1 transition-colors duration-300">Received 5-star rating</p>
+                        <p class="text-sm text-gray-500 dark:text-slate-400 transition-colors duration-300">2 days ago</p>
                     </div>
                 </div>
             </div>
             
-            <div class="bg-white rounded-2xl p-8 border border-gray-200 hover:shadow-lg transition-shadow mt-6">
-                <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-gray-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300 mt-6">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
                     <span class="w-10 h-10 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 text-white flex items-center justify-center text-sm">
                         <i class="fas fa-cog"></i>
                     </span>
                     Account Settings
                 </h2>
                 <div class="flex flex-col gap-3">
-                    <a href="#" class="block px-4 py-3 border-2 border-indigo-600 text-indigo-600 font-semibold rounded-lg hover:bg-indigo-50 transition-all">
+                    <a href="#" class="block px-4 py-3 border-2 border-indigo-600 dark:border-indigo-500 text-indigo-600 dark:text-indigo-400 font-semibold rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-all duration-300">
                         <i class="fas fa-lock mr-2"></i>Change Password
                     </a>
-                    <a href="#" class="block px-4 py-3 border-2 border-indigo-600 text-indigo-600 font-semibold rounded-lg hover:bg-indigo-50 transition-all">
+                    <a href="#" class="block px-4 py-3 border-2 border-indigo-600 dark:border-indigo-500 text-indigo-600 dark:text-indigo-400 font-semibold rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-all duration-300">
                         <i class="fas fa-bell mr-2"></i>Notification Settings
                     </a>
-                    <a href="#" class="block px-4 py-3 border-2 border-indigo-600 text-indigo-600 font-semibold rounded-lg hover:bg-indigo-50 transition-all">
+                    <a href="#" class="block px-4 py-3 border-2 border-indigo-600 dark:border-indigo-500 text-indigo-600 dark:text-indigo-400 font-semibold rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-all duration-300">
                         <i class="fas fa-credit-card mr-2"></i>Payment Methods
                     </a>
-                    <a href="#" class="block px-4 py-3 border-2 border-red-600 text-red-600 font-semibold rounded-lg hover:bg-red-50 transition-all">
+                    <a href="#" class="block px-4 py-3 border-2 border-red-600 dark:border-red-500 text-red-600 dark:text-red-400 font-semibold rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-300">
                         <i class="fas fa-trash mr-2"></i>Delete Account
                     </a>
                 </div>

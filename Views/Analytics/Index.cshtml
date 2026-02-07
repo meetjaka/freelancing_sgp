@@ -2,130 +2,130 @@
     ViewData["Title"] = "Analytics";
 }
 
-<div class="max-w-7xl mx-auto px-4 py-6">
+<div class="max-w-7xl mx-auto px-4 py-6 bg-slate-50 dark:bg-[#0B1120] transition-colors duration-300">
     <!-- Header -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
-            <h2 class="text-3xl font-bold text-slate-900">Analytics Dashboard</h2>
-            <p class="text-slate-500 mt-1">Track your performance and insights</p>
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-white transition-colors duration-300">Analytics Dashboard</h2>
+            <p class="text-slate-500 dark:text-slate-400 mt-1 transition-colors duration-300">Track your performance and insights</p>
         </div>
-        <div class="flex rounded-lg overflow-hidden border border-slate-200">
+        <div class="flex rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 transition-colors duration-300">
             <button class="px-4 py-2 text-sm font-semibold bg-indigo-600 text-white">This Week</button>
-            <button class="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50 border-l border-slate-200">This Month</button>
-            <button class="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50 border-l border-slate-200">All Time</button>
+            <button class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700 border-l border-slate-200 dark:border-slate-700 transition-all">This Month</button>
+            <button class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700 border-l border-slate-200 dark:border-slate-700 transition-all">All Time</button>
         </div>
     </div>
 
     <!-- Key Metrics Row -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <!-- Profile Views -->
-        <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6">
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md p-6 transition-colors duration-300">
             <div class="flex items-center mb-4">
                 <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center mr-4">
                     <i class="fas fa-eye text-white text-lg"></i>
                 </div>
                 <div>
                     <h3 class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">1,234</h3>
-                    <p class="text-sm text-slate-500">Profile Views</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">Profile Views</p>
                 </div>
             </div>
-            <p class="text-sm text-emerald-600"><i class="fas fa-arrow-up mr-1"></i>12.5% from last week</p>
+            <p class="text-sm text-emerald-600 dark:text-emerald-400 transition-colors duration-300"><i class="fas fa-arrow-up mr-1"></i>12.5% from last week</p>
         </div>
 
         <!-- Proposals Sent -->
-        <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6">
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md p-6 transition-colors duration-300">
             <div class="flex items-center mb-4">
                 <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center mr-4">
                     <i class="fas fa-thumbs-up text-white text-lg"></i>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold text-emerald-600">87</h3>
-                    <p class="text-sm text-slate-500">Proposals Sent</p>
+                    <h3 class="text-2xl font-bold text-emerald-600 dark:text-emerald-400 transition-colors duration-300">87</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">Proposals Sent</p>
                 </div>
             </div>
-            <p class="text-sm text-emerald-600"><i class="fas fa-arrow-up mr-1"></i>8.2% increase</p>
+            <p class="text-sm text-emerald-600 dark:text-emerald-400 transition-colors duration-300"><i class="fas fa-arrow-up mr-1"></i>8.2% increase</p>
         </div>
 
         <!-- Response Rate -->
-        <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6">
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md p-6 transition-colors duration-300">
             <div class="flex items-center mb-4">
                 <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center mr-4">
                     <i class="fas fa-clock text-white text-lg"></i>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold text-amber-600">32%</h3>
-                    <p class="text-sm text-slate-500">Response Rate</p>
+                    <h3 class="text-2xl font-bold text-amber-600 dark:text-amber-400 transition-colors duration-300">32%</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">Response Rate</p>
                 </div>
             </div>
-            <p class="text-sm text-red-500"><i class="fas fa-arrow-down mr-1"></i>3.1% decrease</p>
+            <p class="text-sm text-red-500 dark:text-red-400 transition-colors duration-300"><i class="fas fa-arrow-down mr-1"></i>3.1% decrease</p>
         </div>
 
         <!-- Average Rating -->
-        <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6">
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md p-6 transition-colors duration-300">
             <div class="flex items-center mb-4">
                 <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mr-4">
                     <i class="fas fa-star text-white text-lg"></i>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold text-blue-600">4.8</h3>
-                    <p class="text-sm text-slate-500">Average Rating</p>
+                    <h3 class="text-2xl font-bold text-blue-600 dark:text-blue-400 transition-colors duration-300">4.8</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">Average Rating</p>
                 </div>
             </div>
-            <p class="text-sm text-slate-500">Based on 156 reviews</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">Based on 156 reviews</p>
         </div>
     </div>
 
     <!-- Charts Row -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         <!-- Performance Overview -->
-        <div class="lg:col-span-2 bg-white rounded-xl border border-slate-100 shadow-md p-6">
-            <h5 class="text-xl font-bold text-slate-900 mb-6">Performance Overview</h5>
+        <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md p-6 transition-colors duration-300">
+            <h5 class="text-xl font-bold text-slate-900 dark:text-white mb-6 transition-colors duration-300">Performance Overview</h5>
             <div class="text-center py-16">
-                <div class="w-20 h-20 mx-auto bg-indigo-100 rounded-full flex items-center justify-center mb-4">
-                    <i class="fas fa-chart-bar text-indigo-600 text-3xl"></i>
+                <div class="w-20 h-20 mx-auto bg-indigo-100 dark:bg-indigo-900/20 rounded-full flex items-center justify-center mb-4 transition-colors duration-300">
+                    <i class="fas fa-chart-bar text-indigo-600 dark:text-indigo-400 text-3xl transition-colors duration-300"></i>
                 </div>
-                <p class="text-slate-600 text-lg mb-2">Chart visualization would go here</p>
-                <p class="text-slate-400 text-sm">Connect analytics service to view detailed performance metrics</p>
+                <p class="text-slate-600 dark:text-slate-400 text-lg mb-2 transition-colors duration-300">Chart visualization would go here</p>
+                <p class="text-slate-400 dark:text-slate-500 text-sm transition-colors duration-300">Connect analytics service to view detailed performance metrics</p>
             </div>
         </div>
 
         <!-- Top Skills -->
-        <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6">
-            <h5 class="text-xl font-bold text-slate-900 mb-6">Top Skills</h5>
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md p-6 transition-colors duration-300">
+            <h5 class="text-xl font-bold text-slate-900 dark:text-white mb-6 transition-colors duration-300">Top Skills</h5>
             <div class="space-y-5">
                 <div>
                     <div class="flex justify-between mb-2">
-                        <span class="text-sm text-slate-600">Web Development</span>
-                        <span class="text-sm font-bold text-slate-900">85%</span>
+                        <span class="text-sm text-slate-600 dark:text-slate-400 transition-colors duration-300">Web Development</span>
+                        <span class="text-sm font-bold text-slate-900 dark:text-white transition-colors duration-300">85%</span>
                     </div>
-                    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden transition-colors duration-300">
                         <div class="h-full w-[85%] bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full"></div>
                     </div>
                 </div>
                 <div>
                     <div class="flex justify-between mb-2">
-                        <span class="text-sm text-slate-600">UI/UX Design</span>
-                        <span class="text-sm font-bold text-slate-900">72%</span>
+                        <span class="text-sm text-slate-600 dark:text-slate-400 transition-colors duration-300">UI/UX Design</span>
+                        <span class="text-sm font-bold text-slate-900 dark:text-white transition-colors duration-300">72%</span>
                     </div>
-                    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden transition-colors duration-300">
                         <div class="h-full w-[72%] bg-emerald-500 rounded-full"></div>
                     </div>
                 </div>
                 <div>
                     <div class="flex justify-between mb-2">
-                        <span class="text-sm text-slate-600">Mobile Apps</span>
-                        <span class="text-sm font-bold text-slate-900">68%</span>
+                        <span class="text-sm text-slate-600 dark:text-slate-400 transition-colors duration-300">Mobile Apps</span>
+                        <span class="text-sm font-bold text-slate-900 dark:text-white transition-colors duration-300">68%</span>
                     </div>
-                    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden transition-colors duration-300">
                         <div class="h-full w-[68%] bg-amber-500 rounded-full"></div>
                     </div>
                 </div>
                 <div>
                     <div class="flex justify-between mb-2">
-                        <span class="text-sm text-slate-600">Data Analysis</span>
-                        <span class="text-sm font-bold text-slate-900">55%</span>
+                        <span class="text-sm text-slate-600 dark:text-slate-400 transition-colors duration-300">Data Analysis</span>
+                        <span class="text-sm font-bold text-slate-900 dark:text-white transition-colors duration-300">55%</span>
                     </div>
-                    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden transition-colors duration-300">
                         <div class="h-full w-[55%] bg-sky-500 rounded-full"></div>
                     </div>
                 </div>
@@ -134,70 +134,70 @@
     </div>
 
     <!-- Recent Activity -->
-    <div class="bg-white rounded-xl border border-slate-100 shadow-md overflow-hidden">
-        <div class="p-6 border-b border-slate-100">
-            <h5 class="text-xl font-bold text-slate-900">Recent Activity</h5>
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md overflow-hidden transition-colors duration-300">
+        <div class="p-6 border-b border-slate-100 dark:border-slate-700 transition-colors duration-300">
+            <h5 class="text-xl font-bold text-slate-900 dark:text-white transition-colors duration-300">Recent Activity</h5>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full">
-                <thead class="bg-slate-50">
+                <thead class="bg-slate-50 dark:bg-slate-900/50 transition-colors duration-300">
                     <tr>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Action</th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Project</th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Date</th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300">Action</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300">Project</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300">Date</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300">Status</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100">
-                    <tr class="hover:bg-slate-50 transition-colors">
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-700 transition-colors duration-300">
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                         <td class="px-6 py-4">
                             <div class="flex items-center">
-                                <i class="fas fa-file-alt text-indigo-600 mr-3"></i>
-                                <span class="text-sm font-medium text-slate-900">Proposal Submitted</span>
+                                <i class="fas fa-file-alt text-indigo-600 dark:text-indigo-400 mr-3 transition-colors duration-300"></i>
+                                <span class="text-sm font-medium text-slate-900 dark:text-white transition-colors duration-300">Proposal Submitted</span>
                             </div>
                         </td>
                         <td class="px-6 py-4">
-                            <span class="text-sm text-slate-600">E-commerce Website</span>
+                            <span class="text-sm text-slate-600 dark:text-slate-400 transition-colors duration-300">E-commerce Website</span>
                         </td>
                         <td class="px-6 py-4">
-                            <span class="text-sm text-slate-500">2 hours ago</span>
+                            <span class="text-sm text-slate-500 dark:text-slate-500 transition-colors duration-300">2 hours ago</span>
                         </td>
                         <td class="px-6 py-4">
-                            <span class="px-3 py-1 text-xs font-semibold bg-amber-100 text-amber-700 rounded-full">Pending</span>
+                            <span class="px-3 py-1 text-xs font-semibold bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 rounded-full transition-colors duration-300">Pending</span>
                         </td>
                     </tr>
-                    <tr class="hover:bg-slate-50 transition-colors">
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                         <td class="px-6 py-4">
                             <div class="flex items-center">
-                                <i class="fas fa-comment-dots text-emerald-600 mr-3"></i>
-                                <span class="text-sm font-medium text-slate-900">Message Received</span>
+                                <i class="fas fa-comment-dots text-emerald-600 dark:text-emerald-400 mr-3 transition-colors duration-300"></i>
+                                <span class="text-sm font-medium text-slate-900 dark:text-white transition-colors duration-300">Message Received</span>
                             </div>
                         </td>
                         <td class="px-6 py-4">
-                            <span class="text-sm text-slate-600">Mobile App Design</span>
+                            <span class="text-sm text-slate-600 dark:text-slate-400 transition-colors duration-300">Mobile App Design</span>
                         </td>
                         <td class="px-6 py-4">
-                            <span class="text-sm text-slate-500">5 hours ago</span>
+                            <span class="text-sm text-slate-500 dark:text-slate-500 transition-colors duration-300">5 hours ago</span>
                         </td>
                         <td class="px-6 py-4">
-                            <span class="px-3 py-1 text-xs font-semibold bg-emerald-100 text-emerald-700 rounded-full">Active</span>
+                            <span class="px-3 py-1 text-xs font-semibold bg-emerald-100 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 rounded-full transition-colors duration-300">Active</span>
                         </td>
                     </tr>
-                    <tr class="hover:bg-slate-50 transition-colors">
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                         <td class="px-6 py-4">
                             <div class="flex items-center">
-                                <i class="fas fa-star text-amber-500 mr-3"></i>
-                                <span class="text-sm font-medium text-slate-900">Review Received</span>
+                                <i class="fas fa-star text-amber-500 dark:text-amber-400 mr-3 transition-colors duration-300"></i>
+                                <span class="text-sm font-medium text-slate-900 dark:text-white transition-colors duration-300">Review Received</span>
                             </div>
                         </td>
                         <td class="px-6 py-4">
-                            <span class="text-sm text-slate-600">Logo Design Project</span>
+                            <span class="text-sm text-slate-600 dark:text-slate-400 transition-colors duration-300">Logo Design Project</span>
                         </td>
                         <td class="px-6 py-4">
-                            <span class="text-sm text-slate-500">1 day ago</span>
+                            <span class="text-sm text-slate-500 dark:text-slate-500 transition-colors duration-300">1 day ago</span>
                         </td>
                         <td class="px-6 py-4">
-                            <span class="px-3 py-1 text-xs font-semibold bg-indigo-100 text-indigo-700 rounded-full">Completed</span>
+                            <span class="px-3 py-1 text-xs font-semibold bg-indigo-100 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400 rounded-full transition-colors duration-300">Completed</span>
                         </td>
                     </tr>
                 </tbody>

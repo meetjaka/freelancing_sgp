@@ -4,36 +4,36 @@
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
 
-<div class="max-w-4xl mx-auto px-4 py-6">
+<div class="max-w-4xl mx-auto px-4 py-6 bg-slate-50 dark:bg-[#0B1120] transition-colors duration-300">
     <!-- Header -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
-            <h2 class="text-3xl font-bold text-slate-900">Edit Project</h2>
-            <p class="text-slate-500 mt-1">Update your project details</p>
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-white transition-colors duration-300">Edit Project</h2>
+            <p class="text-slate-500 dark:text-slate-400 mt-1 transition-colors duration-300">Update your project details</p>
         </div>
-        <a asp-action="Details" asp-route-id="@Model.Id" class="inline-flex items-center justify-center px-4 py-2 border-2 border-indigo-600 text-indigo-600 rounded-lg font-semibold hover:bg-indigo-600 hover:text-white transition-all">
+        <a asp-action="Details" asp-route-id="@Model.Id" class="inline-flex items-center justify-center px-4 py-2 border-2 border-indigo-600 dark:border-indigo-500 text-indigo-600 dark:text-indigo-400 rounded-lg font-semibold hover:bg-indigo-600 hover:text-white transition-all duration-300">
             <i class="fas fa-arrow-left mr-2"></i>Back to Project
         </a>
     </div>
 
     <!-- Form Card -->
-    <div class="bg-white rounded-xl border border-slate-100 shadow-md p-8">
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md p-8 transition-colors duration-300">
         <form asp-action="Edit" method="post">
             <input type="hidden" asp-for="Id" />
             
-            <div asp-validation-summary="ModelOnly" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6" role="alert"></div>
+            <div asp-validation-summary="ModelOnly" class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg mb-6 transition-colors duration-300" role="alert"></div>
 
             <!-- Project Title -->
             <div class="mb-6">
-                <label asp-for="Title" class="block text-sm font-semibold text-slate-700 mb-2">Project Title *</label>
-                <input asp-for="Title" class="w-full px-4 py-3 border border-slate-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" placeholder="e.g., Build a Modern Website" />
-                <span asp-validation-for="Title" class="text-red-500 text-sm mt-1"></span>
+                <label asp-for="Title" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 transition-colors duration-300">Project Title *</label>
+                <input asp-for="Title" class="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" placeholder="e.g., Build a Modern Website" />
+                <span asp-validation-for="Title" class="text-red-500 dark:text-red-400 text-sm mt-1 transition-colors duration-300"></span>
             </div>
 
             <!-- Category -->
             <div class="mb-6">
-                <label asp-for="CategoryId" class="block text-sm font-semibold text-slate-700 mb-2">Category *</label>
-                <select asp-for="CategoryId" class="w-full px-4 py-3 border border-slate-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                <label asp-for="CategoryId" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 transition-colors duration-300">Category *</label>
+                <select asp-for="CategoryId" class="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
                     <option value="">Select a category</option>
                     <option value="1">Web Development</option>
                     <option value="2">Mobile Apps</option>
@@ -44,40 +44,40 @@
                     <option value="7">Data Science</option>
                     <option value="8">Other</option>
                 </select>
-                <span asp-validation-for="CategoryId" class="text-red-500 text-sm mt-1"></span>
+                <span asp-validation-for="CategoryId" class="text-red-500 dark:text-red-400 text-sm mt-1 transition-colors duration-300"></span>
             </div>
 
             <!-- Description -->
             <div class="mb-6">
-                <label asp-for="Description" class="block text-sm font-semibold text-slate-700 mb-2">Project Description *</label>
-                <textarea asp-for="Description" class="w-full px-4 py-3 border border-slate-300 rounded-lg min-h-[160px] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" rows="6" placeholder="Describe your project in detail..."></textarea>
-                <span asp-validation-for="Description" class="text-red-500 text-sm mt-1"></span>
-                <p class="text-sm text-slate-500 mt-2">Provide clear requirements, deliverables, and expectations</p>
+                <label asp-for="Description" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 transition-colors duration-300">Project Description *</label>
+                <textarea asp-for="Description" class="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 rounded-lg min-h-[160px] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" rows="6" placeholder="Describe your project in detail..."></textarea>
+                <span asp-validation-for="Description" class="text-red-500 dark:text-red-400 text-sm mt-1 transition-colors duration-300"></span>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-2 transition-colors duration-300">Provide clear requirements, deliverables, and expectations</p>
             </div>
 
             <!-- Budget & Deadline -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
-                    <label asp-for="Budget" class="block text-sm font-semibold text-slate-700 mb-2">Budget ($) *</label>
-                    <input asp-for="Budget" type="number" class="w-full px-4 py-3 border border-slate-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" placeholder="1000" min="0" step="0.01" />
-                    <span asp-validation-for="Budget" class="text-red-500 text-sm mt-1"></span>
+                    <label asp-for="Budget" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 transition-colors duration-300">Budget ($) *</label>
+                    <input asp-for="Budget" type="number" class="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" placeholder="1000" min="0" step="0.01" />
+                    <span asp-validation-for="Budget" class="text-red-500 dark:text-red-400 text-sm mt-1 transition-colors duration-300"></span>
                 </div>
                 <div>
-                    <label asp-for="Deadline" class="block text-sm font-semibold text-slate-700 mb-2">Deadline *</label>
-                    <input asp-for="Deadline" type="date" class="w-full px-4 py-3 border border-slate-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" />
-                    <span asp-validation-for="Deadline" class="text-red-500 text-sm mt-1"></span>
+                    <label asp-for="Deadline" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 transition-colors duration-300">Deadline *</label>
+                    <input asp-for="Deadline" type="date" class="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" />
+                    <span asp-validation-for="Deadline" class="text-red-500 dark:text-red-400 text-sm mt-1 transition-colors duration-300"></span>
                 </div>
             </div>
 
             <!-- Skills -->
             <div class="mb-8">
-                <label class="block text-sm font-semibold text-slate-700 mb-2">Required Skills</label>
-                <input type="text" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" placeholder="e.g., HTML, CSS, JavaScript, React" />
-                <p class="text-sm text-slate-500 mt-2">Add skills separated by commas</p>
+                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 transition-colors duration-300">Required Skills</label>
+                <input type="text" class="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" placeholder="e.g., HTML, CSS, JavaScript, React" />
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-2 transition-colors duration-300">Add skills separated by commas</p>
             </div>
 
             <!-- Actions -->
-            <div class="flex flex-col sm:flex-row gap-4 pt-4 border-t border-slate-100">
+            <div class="flex flex-col sm:flex-row gap-4 pt-4 border-t border-slate-100 dark:border-slate-700 transition-colors duration-300">
                 <button type="submit" class="inline-flex items-center justify-center px-8 py-3 text-lg font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all">
                     <i class="fas fa-check-circle mr-2"></i>Update Project
                 </button>

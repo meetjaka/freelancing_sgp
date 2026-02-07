@@ -4,12 +4,12 @@
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
 
-<div class="max-w-7xl mx-auto px-4 py-6">
+<div class="max-w-7xl mx-auto px-4 py-6 bg-slate-50 dark:bg-[#0B1120] transition-colors duration-300">
     <!-- Header -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
-            <h2 class="text-3xl font-bold text-slate-900">My Projects</h2>
-            <p class="text-slate-500 mt-1">Manage all your posted projects</p>
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-white transition-colors duration-300">My Projects</h2>
+            <p class="text-slate-500 dark:text-slate-400 mt-1 transition-colors duration-300">Manage all your posted projects</p>
         </div>
         <a asp-action="Create" class="inline-flex items-center justify-center px-5 py-2.5 font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all">
             <i class="fas fa-plus-circle mr-2"></i>New Project
@@ -19,12 +19,12 @@
     @if (Model == null || !Model.Any())
     {
         <!-- Empty State -->
-        <div class="bg-white rounded-xl border border-slate-100 shadow-md p-12 text-center">
-            <div class="w-20 h-20 mx-auto bg-indigo-100 rounded-full flex items-center justify-center mb-6">
-                <i class="fas fa-folder-open text-indigo-600 text-3xl"></i>
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md p-12 text-center transition-colors duration-300">
+            <div class="w-20 h-20 mx-auto bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mb-6 transition-colors duration-300">
+                <i class="fas fa-folder-open text-indigo-600 dark:text-indigo-400 text-3xl transition-colors duration-300"></i>
             </div>
-            <h4 class="text-2xl font-bold text-slate-900 mb-3">No Projects Yet</h4>
-            <p class="text-slate-500 mb-6">You haven't created any projects. Start by posting your first project!</p>
+            <h4 class="text-2xl font-bold text-slate-900 dark:text-white mb-3 transition-colors duration-300">No Projects Yet</h4>
+            <p class="text-slate-500 dark:text-slate-400 mb-6 transition-colors duration-300">You haven't created any projects. Start by posting your first project!</p>
             <a asp-action="Create" class="inline-flex items-center justify-center px-5 py-2.5 font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all">
                 <i class="fas fa-plus-circle mr-2"></i>Create Your First Project
             </a>
@@ -34,76 +34,76 @@
     {
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6">
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md p-6 transition-colors duration-300">
                 <div class="flex items-center">
                     <div class="w-12 h-12 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center text-white text-lg mr-4">
                         <i class="fas fa-folder"></i>
                     </div>
                     <div>
-                        <h3 class="text-2xl font-bold text-slate-900">@Model.Count</h3>
-                        <p class="text-sm text-slate-500">Total Projects</p>
+                        <h3 class="text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300">@Model.Count</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">Total Projects</p>
                     </div>
                 </div>
             </div>
-            <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6">
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md p-6 transition-colors duration-300">
                 <div class="flex items-center">
                     <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center text-white text-lg mr-4">
                         <i class="fas fa-check-circle"></i>
                     </div>
                     <div>
-                        <h3 class="text-2xl font-bold text-slate-900">@Model.Count(p => p.Status == "Active")</h3>
-                        <p class="text-sm text-slate-500">Active</p>
+                        <h3 class="text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300">@Model.Count(p => p.Status == "Active")</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">Active</p>
                     </div>
                 </div>
             </div>
-            <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6">
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md p-6 transition-colors duration-300">
                 <div class="flex items-center">
                     <div class="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center text-white text-lg mr-4">
                         <i class="fas fa-clock"></i>
                     </div>
                     <div>
-                        <h3 class="text-2xl font-bold text-slate-900">@Model.Count(p => p.Status == "InProgress")</h3>
-                        <p class="text-sm text-slate-500">In Progress</p>
+                        <h3 class="text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300">@Model.Count(p => p.Status == "InProgress")</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">In Progress</p>
                     </div>
                 </div>
             </div>
-            <div class="bg-white rounded-xl border border-slate-100 shadow-md p-6">
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md p-6 transition-colors duration-300">
                 <div class="flex items-center">
                     <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center text-white text-lg mr-4">
                         <i class="fas fa-check-double"></i>
                     </div>
                     <div>
-                        <h3 class="text-2xl font-bold text-slate-900">@Model.Count(p => p.Status == "Completed")</h3>
-                        <p class="text-sm text-slate-500">Completed</p>
+                        <h3 class="text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300">@Model.Count(p => p.Status == "Completed")</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">Completed</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Projects List -->
-        <div class="bg-white rounded-xl border border-slate-100 shadow-md overflow-hidden">
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md overflow-hidden transition-colors duration-300">
             <div class="overflow-x-auto">
                 <table class="w-full">
-                    <thead class="bg-slate-50">
+                    <thead class="bg-slate-50 dark:bg-slate-900/50 transition-colors duration-300">
                         <tr>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Project</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Budget</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Bids</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Deadline</th>
-                            <th class="px-6 py-4 text-right text-xs font-semibold text-slate-600 uppercase tracking-wider">Actions</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300">Project</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300">Status</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300">Budget</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300">Bids</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300">Deadline</th>
+                            <th class="px-6 py-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300">Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100">
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-700 transition-colors duration-300">
                         @foreach (var project in Model)
                         {
-                            <tr class="hover:bg-slate-50 transition-colors">
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors duration-300">
                                 <td class="px-6 py-4">
                                     <div>
-                                        <a asp-action="Details" asp-route-id="@project.Id" class="font-semibold text-slate-900 hover:text-indigo-600">
+                                        <a asp-action="Details" asp-route-id="@project.Id" class="font-semibold text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300">
                                             @project.Title
                                         </a>
-                                        <p class="text-sm text-slate-500 mt-1">@(string.IsNullOrEmpty(project.Description) ? "" : project.Description.Substring(0, Math.Min(60, project.Description.Length)))...</p>
+                                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1 transition-colors duration-300">@(string.IsNullOrEmpty(project.Description) ? "" : project.Description.Substring(0, Math.Min(60, project.Description.Length)))...</p>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
@@ -123,12 +123,12 @@
                                     <span class="text-lg font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">$@project.Budget.ToString("N0")</span>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span class="px-3 py-1 bg-slate-100 text-slate-700 text-sm font-medium rounded-full">
+                                    <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-full transition-colors duration-300">
                                         <i class="fas fa-users mr-1"></i>@project.BidsCount
                                     </span>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span class="text-sm text-slate-500">
+                                    <span class="text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
                                         <i class="fas fa-calendar mr-1"></i>
                                         @project.Deadline?.ToString("MMM dd, yyyy")
                                     </span>
