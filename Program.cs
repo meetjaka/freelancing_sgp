@@ -238,19 +238,25 @@ namespace SGP_Freelancing
             // Map SignalR Hub
             app.MapHub<SGP_Freelancing.Hubs.ChatHub>("/chatHub");
 
-            // Initialize Roles
+            // Initialize Database & Roles
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
                 try
                 {
+                    // Ensure database is created and migrations are applied
+                    var context = services.GetRequiredService<ApplicationDbContext>();
+                    Log.Information("Ensuring database exists and applying migrations...");
+                    context.Database.Migrate(); // This will create the database if it doesn't exist
+                    Log.Information("Database ready");
+
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                     InitializeRolesAndAdminAsync(roleManager, userManager).Wait();
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(ex, "An error occurred while initializing roles");
+                    Log.Error(ex, "An error occurred while initializing database or roles");
                 }
             }
 
