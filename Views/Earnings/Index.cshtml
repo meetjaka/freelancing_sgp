@@ -2,185 +2,229 @@
     ViewData["Title"] = "Earnings";
 }
 
-<div class="max-w-7xl mx-auto px-4 py-6 bg-slate-50 dark:bg-[#0B1120] transition-colors duration-300">
-    <!-- Header -->
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+<!-- Page Header -->
+<div class="mb-8">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-            <h2 class="text-3xl font-bold text-slate-900 dark:text-white transition-colors duration-300">Earnings</h2>
-            <p class="text-slate-500 dark:text-slate-400 mt-1 transition-colors duration-300">Track your income and transactions</p>
+            <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-1">Earnings</h1>
+            <p class="text-slate-600 dark:text-slate-400">Track your income and transactions</p>
         </div>
-        <button class="inline-flex items-center justify-center px-5 py-2.5 font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all">
-            <i class="fas fa-download mr-2"></i>Download Report
+        <button class="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            Download Report
         </button>
     </div>
+</div>
 
-    <!-- Summary Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <!-- Total Earnings Card -->
-        <div class="rounded-xl shadow-md bg-gradient-to-br from-indigo-600 to-purple-700 p-6">
-            <div class="flex justify-between items-center mb-4">
-                <h6 class="text-white/70 text-sm font-medium">Total Earnings</h6>
-                <i class="fas fa-wallet text-white/80 text-xl"></i>
+<!-- Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+    <!-- Total Earnings -->
+    <div class="bg-indigo-600 rounded-xl p-6 text-white">
+        <div class="flex items-start justify-between mb-4">
+            <div>
+                <p class="text-white/70 text-sm font-medium mb-1">Total Earnings</p>
+                <p class="text-3xl font-bold">$12,450.00</p>
             </div>
-            <h2 class="text-3xl font-bold text-white mb-1">$12,450.00</h2>
-            <p class="text-white/60 text-sm">Lifetime earnings</p>
-        </div>
-
-        <!-- This Month Card -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md p-6 transition-colors duration-300">
-            <div class="flex justify-between items-center mb-4">
-                <h6 class="text-slate-500 dark:text-slate-400 text-sm font-medium transition-colors duration-300">This Month</h6>
-                <i class="fas fa-calendar-check text-emerald-500 dark:text-emerald-400 text-xl transition-colors duration-300"></i>
+            <div class="p-3 bg-white/10 rounded-lg">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
             </div>
-            <h2 class="text-3xl font-bold text-emerald-500 dark:text-emerald-400 mb-1 transition-colors duration-300">$2,340.00</h2>
-            <p class="text-slate-500 dark:text-slate-400 text-sm transition-colors duration-300">
-                <i class="fas fa-arrow-up text-emerald-500 dark:text-emerald-400 mr-1 transition-colors duration-300"></i>18% from last month
-            </p>
         </div>
-
-        <!-- Pending Card -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md p-6 transition-colors duration-300">
-            <div class="flex justify-between items-center mb-4">
-                <h6 class="text-slate-500 dark:text-slate-400 text-sm font-medium transition-colors duration-300">Pending</h6>
-                <i class="fas fa-hourglass-half text-amber-500 dark:text-amber-400 text-xl transition-colors duration-300"></i>
-            </div>
-            <h2 class="text-3xl font-bold text-amber-500 dark:text-amber-400 mb-1 transition-colors duration-300">$890.00</h2>
-            <p class="text-slate-500 dark:text-slate-400 text-sm transition-colors duration-300">In escrow / processing</p>
-        </div>
+        <p class="text-white/60 text-sm">Lifetime earnings</p>
     </div>
 
-    <!-- Earnings Chart -->
-    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md p-6 mb-8 transition-colors duration-300">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-            <h5 class="text-xl font-bold text-slate-900 dark:text-white transition-colors duration-300">Earnings Overview</h5>
-            <div class="flex rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 transition-colors duration-300">
-                <button class="px-4 py-2 text-sm font-semibold bg-indigo-600 text-white">6M</button>
-                <button class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700 border-l border-slate-200 dark:border-slate-700 transition-all">1Y</button>
-                <button class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700 border-l border-slate-200 dark:border-slate-700 transition-all">All</button>
+    <!-- This Month -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+        <div class="flex items-start justify-between mb-4">
+            <div>
+                <p class="text-slate-600 dark:text-slate-400 text-sm font-medium mb-1">This Month</p>
+                <p class="text-3xl font-bold text-slate-900 dark:text-white">$2,340.00</p>
+            </div>
+            <div class="p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
+                <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
             </div>
         </div>
-        <div class="text-center py-16">
-            <div class="w-20 h-20 mx-auto bg-indigo-100 dark:bg-indigo-900/20 rounded-full flex items-center justify-center mb-4 transition-colors duration-300">
-                <i class="fas fa-chart-line text-indigo-600 dark:text-indigo-400 text-3xl transition-colors duration-300"></i>
-            </div>
-            <p class="text-slate-600 dark:text-slate-400 text-lg mb-2 transition-colors duration-300">Earnings chart visualization</p>
-            <p class="text-slate-400 dark:text-slate-500 text-sm transition-colors duration-300">Monthly earnings breakdown with trend analysis</p>
-        </div>
+        <p class="text-sm text-slate-600 dark:text-slate-400 flex items-center gap-1">
+            <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+            </svg>
+            18% from last month
+        </p>
     </div>
 
-    <!-- Transaction History -->
-    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md overflow-hidden transition-colors duration-300">
-        <div class="p-6 border-b border-slate-100 dark:border-slate-700 transition-colors duration-300">
-            <h5 class="text-xl font-bold text-slate-900 dark:text-white transition-colors duration-300">Recent Transactions</h5>
+    <!-- Pending -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+        <div class="flex items-start justify-between mb-4">
+            <div>
+                <p class="text-slate-600 dark:text-slate-400 text-sm font-medium mb-1">Pending</p>
+                <p class="text-3xl font-bold text-slate-900 dark:text-white">$890.00</p>
+            </div>
+            <div class="p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
+                <svg class="w-6 h-6 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
         </div>
-        <div class="overflow-x-auto">
-            <table class="w-full">
-                <thead class="bg-slate-50 dark:bg-slate-900/50 transition-colors duration-300">
-                    <tr>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300">Date</th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300">Project</th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300">Client</th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300">Amount</th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300">Status</th>
-                        <th class="px-6 py-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300">Action</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 dark:divide-slate-700 transition-colors duration-300">
-                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                        <td class="px-6 py-4">
-                            <span class="text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">Jan 8, 2026</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="text-sm font-medium text-slate-900 dark:text-white transition-colors duration-300">E-commerce Website Development</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="text-sm text-slate-600 dark:text-slate-400 transition-colors duration-300">John Smith</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400 transition-colors duration-300">+$1,500.00</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="px-3 py-1 text-xs font-semibold bg-emerald-100 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 rounded-full transition-colors duration-300">Completed</span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <button class="inline-flex items-center justify-center text-sm px-3 py-1.5 border-2 border-indigo-600 dark:border-indigo-500 text-indigo-600 dark:text-indigo-400 rounded-lg hover:bg-indigo-600 hover:text-white transition-all">
-                                <i class="fas fa-receipt mr-1"></i> Invoice
-                            </button>
-                        </td>
-                    </tr>
-                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                        <td class="px-6 py-4">
-                            <span class="text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">Jan 5, 2026</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="text-sm font-medium text-slate-900 dark:text-white transition-colors duration-300">Mobile App UI Design</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="text-sm text-slate-600 dark:text-slate-400 transition-colors duration-300">Sarah Johnson</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="text-sm font-bold text-amber-600 dark:text-amber-400 transition-colors duration-300">$840.00</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="px-3 py-1 text-xs font-semibold bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 rounded-full transition-colors duration-300">In Escrow</span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <button class="inline-flex items-center justify-center text-sm px-3 py-1.5 bg-slate-600 dark:bg-slate-700 text-white rounded-lg hover:bg-slate-700 dark:hover:bg-slate-600 transition-all">
-                                <i class="fas fa-eye mr-1"></i> View
-                            </button>
-                        </td>
-                    </tr>
-                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                        <td class="px-6 py-4">
-                            <span class="text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">Jan 2, 2026</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="text-sm font-medium text-slate-900 dark:text-white transition-colors duration-300">Logo Design Project</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="text-sm text-slate-600 dark:text-slate-400 transition-colors duration-300">Mike Davis</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400 transition-colors duration-300">+$300.00</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="px-3 py-1 text-xs font-semibold bg-emerald-100 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 rounded-full transition-colors duration-300">Completed</span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <button class="inline-flex items-center justify-center text-sm px-3 py-1.5 border-2 border-indigo-600 dark:border-indigo-500 text-indigo-600 dark:text-indigo-400 rounded-lg hover:bg-indigo-600 hover:text-white transition-all">
-                                <i class="fas fa-receipt mr-1"></i> Invoice
-                            </button>
-                        </td>
-                    </tr>
-                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                        <td class="px-6 py-4">
-                            <span class="text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">Dec 28, 2025</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="text-sm font-medium text-slate-900 dark:text-white transition-colors duration-300">SEO Optimization Service</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="text-sm text-slate-600 dark:text-slate-400 transition-colors duration-300">Lisa Anderson</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400 transition-colors duration-300">+$450.00</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="px-3 py-1 text-xs font-semibold bg-emerald-100 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 rounded-full transition-colors duration-300">Completed</span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <button class="inline-flex items-center justify-center text-sm px-3 py-1.5 border-2 border-indigo-600 dark:border-indigo-500 text-indigo-600 dark:text-indigo-400 rounded-lg hover:bg-indigo-600 hover:text-white transition-all">
-                                <i class="fas fa-receipt mr-1"></i> Invoice
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <p class="text-sm text-slate-600 dark:text-slate-400">In escrow / processing</p>
+    </div>
+</div>
+
+<!-- Earnings Chart -->
+<div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 mb-8">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Earnings Overview</h3>
+        <div class="flex gap-2">
+            <button class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg">6M</button>
+            <button class="px-4 py-2 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors">1Y</button>
+            <button class="px-4 py-2 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors">All</button>
         </div>
-        <div class="p-6 border-t border-slate-100 dark:border-slate-700 text-center transition-colors duration-300">
-            <button class="inline-flex items-center justify-center px-5 py-2.5 border-2 border-indigo-600 dark:border-indigo-500 text-indigo-600 dark:text-indigo-400 rounded-lg font-semibold hover:bg-indigo-600 hover:text-white transition-all">
-                <i class="fas fa-sync-alt mr-2"></i>Load More Transactions
-            </button>
+    </div>
+    <div class="flex items-center justify-center py-20">
+        <div class="text-center">
+            <div class="w-20 h-20 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/>
+                </svg>
+            </div>
+            <p class="text-slate-600 dark:text-slate-400 mb-1">Earnings chart visualization</p>
+            <p class="text-sm text-slate-500 dark:text-slate-500">Monthly earnings breakdown</p>
         </div>
+    </div>
+</div>
+
+<!-- Transaction History -->
+<div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Recent Transactions</h3>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead class="bg-slate-50 dark:bg-slate-900/50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Date</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Project</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Client</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Amount</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Status</th>
+                    <th class="px-6 py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Action</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                    <td class="px-6 py-4">
+                        <span class="text-sm text-slate-500">Jan 8, 2026</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="text-sm font-medium text-slate-900 dark:text-white">E-commerce Website</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="text-sm text-slate-600 dark:text-slate-400">John Smith</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400">+$1,500.00</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="inline-flex items-center px-2.5 py-1 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 text-xs font-medium rounded-full">Completed</span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <button class="inline-flex items-center gap-1 px-3 py-1.5 border border-indigo-200 dark:border-indigo-700 text-indigo-600 dark:text-indigo-400 text-sm rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            Invoice
+                        </button>
+                    </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                    <td class="px-6 py-4">
+                        <span class="text-sm text-slate-500">Jan 5, 2026</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="text-sm font-medium text-slate-900 dark:text-white">Mobile App UI Design</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="text-sm text-slate-600 dark:text-slate-400">Sarah Johnson</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="text-sm font-bold text-amber-600 dark:text-amber-400">$840.00</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="inline-flex items-center px-2.5 py-1 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 text-xs font-medium rounded-full">In Escrow</span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <button class="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-600 text-white text-sm rounded-lg hover:bg-slate-700 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                            View
+                        </button>
+                    </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                    <td class="px-6 py-4">
+                        <span class="text-sm text-slate-500">Jan 2, 2026</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="text-sm font-medium text-slate-900 dark:text-white">Logo Design Project</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="text-sm text-slate-600 dark:text-slate-400">Mike Davis</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400">+$300.00</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="inline-flex items-center px-2.5 py-1 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 text-xs font-medium rounded-full">Completed</span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <button class="inline-flex items-center gap-1 px-3 py-1.5 border border-indigo-200 dark:border-indigo-700 text-indigo-600 dark:text-indigo-400 text-sm rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            Invoice
+                        </button>
+                    </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                    <td class="px-6 py-4">
+                        <span class="text-sm text-slate-500">Dec 28, 2025</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="text-sm font-medium text-slate-900 dark:text-white">SEO Optimization</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="text-sm text-slate-600 dark:text-slate-400">Lisa Anderson</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400">+$450.00</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="inline-flex items-center px-2.5 py-1 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 text-xs font-medium rounded-full">Completed</span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <button class="inline-flex items-center gap-1 px-3 py-1.5 border border-indigo-200 dark:border-indigo-700 text-indigo-600 dark:text-indigo-400 text-sm rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            Invoice
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-700 text-center">
+        <button class="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-lg font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+            Load More Transactions
+        </button>
     </div>
 </div>
