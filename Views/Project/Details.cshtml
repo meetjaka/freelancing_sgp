@@ -3,286 +3,329 @@
     ViewData["Title"] = Model.Project.Title;
 }
 
-<!-- Breadcrumb Header -->
-<div class="bg-gradient-to-br from-indigo-600 to-purple-700 py-12 mb-10">
-    <div class="max-w-7xl mx-auto px-4">
-        <nav class="flex items-center space-x-2 text-white/80 text-sm mb-4">
-            <a asp-controller="Home" asp-action="Index" class="hover:text-white transition-colors">Home</a>
-            <i class="fas fa-chevron-right text-xs"></i>
-            <a asp-controller="Project" asp-action="Index" class="hover:text-white transition-colors">Projects</a>
-            <i class="fas fa-chevron-right text-xs"></i>
-            <span class="text-white font-medium">@Model.Project.Title</span>
+<!-- Page Header -->
+<div class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 py-8 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="flex mb-4 text-sm text-slate-500 dark:text-slate-400">
+            <a asp-controller="Home" asp-action="Index" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Home</a>
+            <span class="mx-2 text-slate-300 dark:text-slate-600">/</span>
+            <a asp-controller="Project" asp-action="Index" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Projects</a>
+            <span class="mx-2 text-slate-300 dark:text-slate-600">/</span>
+            <span class="text-slate-900 dark:text-white font-medium truncate max-w-xs">@Model.Project.Title</span>
         </nav>
-    </div>
-</div>
-
-<div class="max-w-7xl mx-auto px-4 pb-16 bg-slate-50 dark:bg-[#0B1120] transition-colors duration-300">
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div class="lg:col-span-2">
-            <!-- Project Details Card -->
-            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md p-8 mb-8 transition-colors duration-300">
-                <div class="flex flex-wrap justify-between items-start gap-4 mb-6">
-                    <div class="flex flex-wrap gap-3">
-                        <span class="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-semibold rounded-full">@Model.Project.CategoryName</span>
-                        <span class="px-4 py-2 bg-emerald-500 text-white text-sm font-semibold rounded-full">@Model.Project.Status</span>
-                    </div>
-                    @if (Model.IsOwner)
+        
+        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+            <div class="flex-1">
+                <div class="flex flex-wrap items-center gap-3 mb-3">
+                    <h1 class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">@Model.Project.Title</h1>
+                    @if (Model.Project.Status == "Open")
                     {
-                        <div class="relative" x-data="{ open: false }">
-                            <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="px-4 py-2 border-2 border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-400 rounded-lg hover:border-indigo-500 dark:hover:border-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                            <div class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 py-2 z-10 transition-colors duration-300">
-                                <a asp-action="Edit" asp-route-id="@Model.Project.Id" class="block px-4 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
-                                    <i class="fas fa-edit mr-2 text-indigo-600 dark:text-indigo-400"></i>Edit Project
-                                </a>
-                                <hr class="my-2 border-slate-100 dark:border-slate-700">
-                                <form asp-action="Delete" asp-route-id="@Model.Project.Id" method="post" onsubmit="return confirm('Are you sure you want to delete this project?')">
-                                    @Html.AntiForgeryToken()
-                                    <button type="submit" class="w-full text-left px-4 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
-                                        <i class="fas fa-trash mr-2"></i>Delete Project
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+                            Open for Bids
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+                            @Model.Project.Status
+                        </span>
                     }
                 </div>
                 
-                <h1 class="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white mb-6 leading-tight transition-colors duration-300">@Model.Project.Title</h1>
-                
-                <div class="flex flex-wrap gap-6 mb-6 text-slate-600 dark:text-slate-400 transition-colors duration-300">
+                <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-500 dark:text-slate-400">
                     <div class="flex items-center gap-2">
-                        <i class="fas fa-user-circle text-indigo-600 dark:text-indigo-400"></i>
-                        <span>Posted by <strong class="text-slate-900 dark:text-white">@Model.Project.ClientName</strong></span>
+                        <i class="fas fa-folder text-indigo-500 dark:text-indigo-400"></i>
+                        <span>@Model.Project.CategoryName</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <i class="fas fa-calendar-alt text-indigo-600 dark:text-indigo-400"></i>
-                        <span>@Model.Project.CreatedAt.ToString("MMM dd, yyyy")</span>
+                        <i class="fas fa-clock text-indigo-500 dark:text-indigo-400"></i>
+                        <span>Posted @Model.Project.CreatedAt.ToString("MMM dd, yyyy")</span>
                     </div>
-                    @if (Model.Project.Deadline.HasValue)
-                    {
-                        <div class="flex items-center gap-2">
-                            <i class="fas fa-clock text-indigo-600 dark:text-indigo-400"></i>
-                            <span>Deadline: <strong class="text-slate-900 dark:text-white">@Model.Project.Deadline.Value.ToString("MMM dd, yyyy")</strong></span>
-                        </div>
-                    }
                     <div class="flex items-center gap-2">
-                        <i class="fas fa-users text-indigo-600 dark:text-indigo-400"></i>
-                        <span><strong class="text-slate-900 dark:text-white">@Model.Project.BidsCount</strong> bids received</span>
-                    </div>
-                </div>
-                
-                <div class="mb-8">
-                    <div class="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">$@Model.Project.Budget.ToString("N0")</div>
-                    <div class="text-slate-500 dark:text-slate-400 mt-1 transition-colors duration-300">Project Budget</div>
-                </div>
-                
-                <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4 transition-colors duration-300">Project Description</h3>
-                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-8 transition-colors duration-300">@Model.Project.Description</p>
-                
-                @if (Model.Project.Skills.Any())
-                {
-                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4 transition-colors duration-300">Required Skills</h3>
-                    <div class="flex flex-wrap gap-3">
-                        @foreach (var skill in Model.Project.Skills)
-                        {
-                            <span class="px-5 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-sm font-semibold rounded-full transition-colors duration-300">@skill</span>
-                        }
-                    </div>
-                }
-            </div>
-
-            <!-- Bids Section -->
-            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md p-6 mb-6 transition-colors duration-300">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <div class="text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300">@Model.Project.BidsCount Freelancers Bid</div>
-                        <div class="text-slate-500 dark:text-slate-400 transition-colors duration-300">Review proposals and choose the best fit</div>
+                        <i class="fas fa-user-circle text-indigo-500 dark:text-indigo-400"></i>
+                        <span>Client: <span class="font-medium text-slate-900 dark:text-white">@Model.Project.ClientName</span></span>
                     </div>
                 </div>
             </div>
 
-            @if (Model.Bids.Any())
+            @if (Model.IsOwner)
             {
-                @foreach (var bid in Model.Bids)
-                {
-                    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 p-7 mb-5 transition-all hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-lg duration-300">
-                        <div class="flex flex-wrap justify-between items-start gap-4 mb-4">
-                            <div class="flex items-center gap-4">
-                                <div class="w-14 h-14 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                                    @bid.FreelancerName.Substring(0, 1).ToUpper()
-                                </div>
-                                <div>
-                                    <div class="text-xl font-bold text-slate-900 dark:text-white transition-colors duration-300">@bid.FreelancerName</div>
-                                    <div class="flex items-center gap-1 text-amber-500 text-sm">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        <span class="ml-1 text-slate-600">4.8</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex flex-wrap gap-6 items-center mb-4 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl transition-colors duration-300">
-                            <div>
-                                <div class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">$@bid.ProposedAmount.ToString("N0")</div>
-                                <div class="text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">Proposed Amount</div>
-                            </div>
-                            <div class="text-slate-600 dark:text-slate-400 transition-colors duration-300">
-                                <i class="fas fa-clock mr-1 text-indigo-600 dark:text-indigo-400"></i>
-                                Delivery in <strong class="text-slate-900 dark:text-white">@bid.EstimatedDurationDays days</strong>
-                            </div>
-                        </div>
-
-                        <div class="text-slate-600 dark:text-slate-400 mb-4 transition-colors duration-300">
-                            <strong class="text-slate-900 dark:text-white">Cover Letter:</strong><br>
-                            @bid.CoverLetter
-                        </div>
-
-                        <div class="flex flex-wrap justify-between items-center gap-4 pt-4 border-t border-slate-100 dark:border-slate-700 transition-colors duration-300">
-                            <div class="text-slate-400 dark:text-slate-500 text-sm transition-colors duration-300">
-                                <i class="fas fa-calendar mr-1"></i>
-                                Submitted @bid.CreatedAt.ToString("MMM dd, yyyy")
-                            </div>
-                            @if (Model.IsOwner && bid.Status == "Pending")
-                            {
-                                <form asp-action="AcceptBid" method="post" class="inline">
-                                    @Html.AntiForgeryToken()
-                                    <input type="hidden" name="bidId" value="@bid.Id" />
-                                    <input type="hidden" name="projectId" value="@Model.Project.Id" />
-                                    <button type="submit" class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-semibold rounded-xl hover:shadow-lg hover:-translate-y-0.5 transition-all">
-                                        <i class="fas fa-check-circle mr-2"></i>Accept Bid
-                                    </button>
-                                </form>
-                            }
-                            else if (bid.Status == "Accepted")
-                            {
-                                <span class="px-4 py-2 bg-emerald-500 text-white text-sm font-semibold rounded-full">
-                                    <i class="fas fa-check-circle mr-1"></i>Accepted
-                                </span>
-                            }
-                        </div>
-                    </div>
-                }
-            }
-            else
-            {
-                <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md p-16 text-center transition-colors duration-300">
-                    <div class="text-6xl text-slate-200 dark:text-slate-700 mb-4 transition-colors duration-300">
-                        <i class="fas fa-inbox"></i>
-                    </div>
-                    <div class="text-lg text-slate-500 dark:text-slate-400 transition-colors duration-300">
-                        No bids yet. Be the first to submit a proposal!
-                    </div>
-                </div>
-            }
-        </div>
-
-        <div class="lg:col-span-1">
-            @if (Model.CanBid && User.IsInRole("Freelancer"))
-            {
-                <!-- Submit Bid Form -->
-                <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md p-8 sticky top-24 transition-colors duration-300">
-                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2 transition-colors duration-300">
-                        <i class="fas fa-paper-plane text-indigo-600 dark:text-indigo-400"></i>
-                        Submit Your Proposal
-                    </h3>
-                    <form asp-action="SubmitBid" method="post">
+                <div class="flex items-center gap-3">
+                    <a asp-action="Edit" asp-route-id="@Model.Project.Id" class="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors shadow-sm">
+                        <i class="fas fa-edit mr-2 text-indigo-500"></i> Edit
+                    </a>
+                    <form asp-action="Delete" asp-route-id="@Model.Project.Id" method="post" onsubmit="return confirm('Are you sure you want to delete this project?')" class="inline">
                         @Html.AntiForgeryToken()
-                        <input type="hidden" name="ProjectId" value="@Model.Project.Id" />
-                        
-                        <div class="mb-5">
-                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 transition-colors duration-300">Your Bid Amount *</label>
-                            <div class="flex">
-                                <span class="px-4 py-3 bg-slate-50 dark:bg-slate-700 border-2 border-r-0 border-slate-200 dark:border-slate-600 rounded-l-xl font-semibold text-slate-600 dark:text-slate-400 transition-colors duration-300">$</span>
-                                <input type="number" step="0.01" class="flex-1 px-4 py-3 border-2 border-l-0 border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white rounded-r-xl focus:outline-none focus:border-indigo-500 transition-colors" name="ProposedAmount" required placeholder="2500" />
-                            </div>
-                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1 transition-colors duration-300">Project budget: $@Model.Project.Budget.ToString("N0")</p>
-                        </div>
-                        
-                        <div class="mb-5">
-                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 transition-colors duration-300">Estimated Duration *</label>
-                            <div class="flex">
-                                <input type="number" class="flex-1 px-4 py-3 border-2 border-r-0 border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white rounded-l-xl focus:outline-none focus:border-indigo-500 transition-colors" name="EstimatedDurationDays" required placeholder="14" />
-                                <span class="px-4 py-3 bg-slate-50 dark:bg-slate-700 border-2 border-l-0 border-slate-200 dark:border-slate-600 rounded-r-xl font-semibold text-slate-600 dark:text-slate-400 transition-colors duration-300">days</span>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-6">
-                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 transition-colors duration-300">Cover Letter *</label>
-                            <textarea class="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 rounded-xl focus:outline-none focus:border-indigo-500 transition-colors resize-none" name="CoverLetter" rows="6" required placeholder="Explain why you're the perfect fit for this project. Highlight your relevant experience and skills..."></textarea>
-                        </div>
-                        
-                        <button type="submit" class="w-full py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl hover:shadow-lg hover:-translate-y-0.5 transition-all">
-                            <i class="fas fa-paper-plane mr-2"></i>Submit Proposal
+                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-800 border border-red-200 dark:border-red-900/50 rounded-lg font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors shadow-sm">
+                            <i class="fas fa-trash-alt mr-2"></i> Delete
                         </button>
-
-                        <p class="text-center mt-4 text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
-                            <i class="fas fa-shield-alt mr-1"></i>
-                            Your proposal is secure and private
-                        </p>
                     </form>
                 </div>
             }
-            else if (!User.Identity!.IsAuthenticated)
-            {
-                <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md p-8 text-center sticky top-24 transition-colors duration-300">
-                    <div class="text-6xl text-slate-200 dark:text-slate-700 mb-4 transition-colors duration-300">
-                        <i class="fas fa-lock"></i>
+        </div>
+    </div>
+</div>
+
+<div class="bg-slate-50 dark:bg-[#0B1120] min-h-screen py-8 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column: Project Details & Bids -->
+            <div class="lg:col-span-2 space-y-8">
+                
+                <!-- Key Stats Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="text-sm text-slate-500 dark:text-slate-400 mb-1">Budget</div>
+                        <div class="text-2xl font-bold text-slate-900 dark:text-white">$@Model.Project.Budget.ToString("N0")</div>
+                        <div class="text-xs text-emerald-600 dark:text-emerald-400 mt-1 font-medium">Fixed Price</div>
                     </div>
-                    <h4 class="text-xl font-bold text-slate-900 dark:text-white mb-3 transition-colors duration-300">Login Required</h4>
-                    <p class="text-slate-500 dark:text-slate-400 mb-6 transition-colors duration-300">You need to be logged in as a freelancer to submit a bid on this project.</p>
-                    <a href="/Account/Login" class="block w-full py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl text-center hover:shadow-lg hover:-translate-y-0.5 transition-all">
-                        <i class="fas fa-sign-in-alt mr-2"></i>Login to Bid
-                    </a>
-                </div>
-            }
-            else
-            {
-                <!-- Project Summary for Owner/Others -->
-                <div class="bg-gradient-to-br from-indigo-600 to-purple-700 text-white rounded-2xl p-7 mb-6 sticky top-24">
-                    <h4 class="text-lg font-bold mb-6">Project Summary</h4>
-                    <div class="space-y-4">
-                        <div class="py-4 border-b border-white/20">
-                            <div class="text-white/70 text-sm mb-1">Budget</div>
-                            <div class="text-xl font-bold">$@Model.Project.Budget.ToString("N0")</div>
-                        </div>
+                    <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="text-sm text-slate-500 dark:text-slate-400 mb-1">Deadline</div>
                         @if (Model.Project.Deadline.HasValue)
                         {
-                            <div class="py-4 border-b border-white/20">
-                                <div class="text-white/70 text-sm mb-1">Deadline</div>
-                                <div class="text-xl font-bold">@Model.Project.Deadline.Value.ToString("MMM dd, yyyy")</div>
-                            </div>
+                            <div class="text-xl font-bold text-slate-900 dark:text-white">@Model.Project.Deadline.Value.ToString("MMM dd")</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-500 mt-1">@((Model.Project.Deadline.Value - DateTime.Now).Days) days left</div>
                         }
-                        <div class="py-4 border-b border-white/20">
-                            <div class="text-white/70 text-sm mb-1">Posted Date</div>
-                            <div class="text-xl font-bold">@Model.Project.CreatedAt.ToString("MMM dd, yyyy")</div>
-                        </div>
-                        <div class="py-4 border-b border-white/20">
-                            <div class="text-white/70 text-sm mb-1">Total Bids</div>
-                            <div class="text-xl font-bold">@Model.Project.BidsCount</div>
-                        </div>
-                        <div class="py-4">
-                            <div class="text-white/70 text-sm mb-1">Project Status</div>
-                            <div class="text-xl font-bold">@Model.Project.Status</div>
-                        </div>
+                        else
+                        {
+                            <div class="text-xl font-bold text-slate-900 dark:text-white">Flexible</div>
+                        }
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="text-sm text-slate-500 dark:text-slate-400 mb-1">Proposals</div>
+                        <div class="text-2xl font-bold text-slate-900 dark:text-white">@Model.Project.BidsCount</div>
+                        <div class="text-xs text-blue-600 dark:text-blue-400 mt-1 font-medium">Active Candidates</div>
                     </div>
                 </div>
 
-                @if (Model.IsOwner)
+                <!-- Description & Skills -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+                    <div class="p-6 sm:p-8">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Project Description</h3>
+                        <div class="prose dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 leading-relaxed">
+                            @Html.Raw(Model.Project.Description.Replace(Environment.NewLine, "<br />"))
+                        </div>
+
+                        @if (Model.Project.Skills.Any())
+                        {
+                            <div class="mt-8 pt-8 border-t border-slate-100 dark:border-slate-700">
+                                <h4 class="text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wider mb-4">Required Skills</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    @foreach (var skill in Model.Project.Skills)
+                                    {
+                                        <span class="px-3 py-1.5 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 text-sm font-medium rounded-lg border border-indigo-100 dark:border-indigo-800/50">
+                                            @skill
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Bids / Proposals Section -->
+                <div>
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">Proposals (@Model.Project.BidsCount)</h3>
+                        <div class="flex gap-2">
+                            <!-- Sort/Filter controls could go here -->
+                        </div>
+                    </div>
+
+                    @if (Model.Bids.Any())
+                    {
+                        <div class="space-y-4">
+                            @foreach (var bid in Model.Bids)
+                            {
+                                <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm hover:shadow-md transition-all duration-300 group">
+                                    <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-sm">
+                                                @bid.FreelancerName.Substring(0, 1).ToUpper()
+                                            </div>
+                                            <div>
+                                                <h4 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">@bid.FreelancerName</h4>
+                                                <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+                                                    <div class="flex text-amber-400 text-xs">
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                    </div>
+                                                    <span>5.0 (12 jobs)</span> <!-- Placeholder for actual rating if available -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-4 text-right">
+                                            <div>
+                                                <div class="text-xl font-bold text-slate-900 dark:text-white">$@bid.ProposedAmount.ToString("N0")</div>
+                                                <div class="text-xs text-slate-500 dark:text-slate-400">Proposed Bid</div>
+                                            </div>
+                                            <div class="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-2 hidden md:block"></div>
+                                            <div>
+                                                <div class="text-lg font-semibold text-slate-700 dark:text-slate-300">@bid.EstimatedDurationDays <span class="text-sm font-normal text-slate-500">days</span></div>
+                                                <div class="text-xs text-slate-500 dark:text-slate-400">Delivery</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-slate-50 dark:bg-slate-900/50 rounded-lg p-4 mb-4">
+                                        <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed line-clamp-3 hover:line-clamp-none transition-all">
+                                            @bid.CoverLetter
+                                        </p>
+                                    </div>
+
+                                    <div class="flex items-center justify-between pt-2">
+                                        <div class="text-xs text-slate-400 dark:text-slate-500">
+                                            Submitted @bid.CreatedAt.ToString("MMM dd, yyyy")
+                                        </div>
+                                        
+                                        @if (Model.IsOwner && bid.Status == "Pending")
+                                        {
+                                            <form asp-action="AcceptBid" method="post">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="bidId" value="@bid.Id" />
+                                                <input type="hidden" name="projectId" value="@Model.Project.Id" />
+                                                <button type="submit" class="px-5 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-semibold rounded-lg hover:bg-indigo-600 dark:hover:bg-indigo-100 transition-colors shadow-sm">
+                                                    Accept Proposal
+                                                </button>
+                                            </form>
+                                        }
+                                        else if (bid.Status == "Accepted")
+                                        {
+                                            <span class="px-3 py-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 text-xs font-semibold rounded-full border border-emerald-200 dark:border-emerald-800">
+                                                <i class="fas fa-check-circle mr-1"></i> Accepted
+                                            </span>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 border-dashed p-12 text-center">
+                            <div class="w-16 h-16 bg-slate-100 dark:bg-slate-700 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                                <i class="fas fa-inbox"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-slate-900 dark:text-white mb-1">No proposals yet</h3>
+                            <p class="text-slate-500 dark:text-slate-400">Be the first freelancer to bid on this project!</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Right Column: Sidebar Actions -->
+            <div class="lg:col-span-1">
+                @if (Model.CanBid && User.IsInRole("Freelancer"))
                 {
-                    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-md p-6 transition-colors duration-300">
-                        <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-3 transition-colors duration-300">Client Dashboard</h4>
-                        <p class="text-slate-500 dark:text-slate-400 mb-4 transition-colors duration-300">You're viewing your own project. Review bids and select the best freelancer.</p>
-                        <a asp-action="Edit" asp-route-id="@Model.Project.Id" class="block w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold rounded-xl text-center hover:shadow-lg hover:-translate-y-0.5 transition-all">
-                            <i class="fas fa-edit mr-2"></i>Edit Project
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-indigo-100 dark:border-indigo-900/30 p-6 sticky top-8">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Submit Proposal</h3>
+                        
+                        <form asp-action="SubmitBid" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="ProjectId" value="@Model.Project.Id" />
+                            
+                            <div class="space-y-5">
+                                <div>
+                                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Bid Amount</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <span class="text-slate-500 font-semibold">$</span>
+                                        </div>
+                                        <input type="number" step="0.01" name="ProposedAmount" required placeholder="@Model.Project.Budget" 
+                                               class="w-full pl-8 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:ring-indigo-400 dark:text-white transition-all font-medium" />
+                                    </div>
+                                    <p class="text-xs text-slate-500 mt-1.5 flex justify-between">
+                                        <span>Client's Budget:</span>
+                                        <span class="font-medium text-slate-700 dark:text-slate-300">$@Model.Project.Budget.ToString("N0")</span>
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Delivery Time</label>
+                                    <div class="relative">
+                                        <input type="number" name="EstimatedDurationDays" required placeholder="7" 
+                                               class="w-full pl-4 pr-12 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:ring-indigo-400 dark:text-white transition-all font-medium" />
+                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                            <span class="text-slate-500 font-medium text-sm">Days</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Cover Letter</label>
+                                    <textarea name="CoverLetter" rows="5" required placeholder="Describe why you are the best fit..."
+                                              class="w-full p-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:ring-indigo-400 dark:text-white transition-all resize-none text-sm"></textarea>
+                                </div>
+
+                                <button type="submit" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-200 dark:shadow-none hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200">
+                                    Send Proposal
+                                </button>
+                                
+                                <p class="text-xs text-center text-slate-400 dark:text-slate-500">
+                                    <i class="fas fa-lock mr-1"></i> Secure payment protection
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                }
+                else if (!User.Identity!.IsAuthenticated)
+                {
+                    <div class="bg-gradient-to-br from-slate-900 to-slate-800 dark:from-indigo-900/50 dark:to-slate-900 text-white rounded-2xl p-8 text-center shadow-xl sticky top-8">
+                        <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm">
+                            <i class="fas fa-lock text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-2">Login to Bid</h4>
+                        <p class="text-slate-300 mb-6 text-sm">Join our community of freelancers to submit proposals for this project.</p>
+                        <a href="/Account/Login" class="block w-full py-3 bg-white text-slate-900 font-bold rounded-xl hover:bg-indigo-50 transition-colors">
+                            Sign In / Register
                         </a>
                     </div>
                 }
-            }
+                else
+                {
+                    <!-- Summary Card for Client/Browsers -->
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 sticky top-8">
+                        <h4 class="font-bold text-slate-900 dark:text-white mb-4">About the Client</h4>
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/50 rounded-full flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                                <i class="fas fa-user text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold text-slate-900 dark:text-white">@Model.Project.ClientName</div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400">Member since 2024</div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-3 pt-4 border-t border-slate-100 dark:border-slate-700">
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-slate-500 dark:text-slate-400">Payment Verified</span>
+                                <span class="text-emerald-600 dark:text-emerald-400"><i class="fas fa-check-circle"></i> Yes</span>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-slate-500 dark:text-slate-400">Projects Posted</span>
+                                <span class="font-medium text-slate-900 dark:text-white">12</span>
+                            </div>
+                            <!-- Add more client stats if available -->
+                        </div>
+
+                        @if (Model.IsOwner)
+                        {
+                            <div class="mt-6 pt-6 border-t border-slate-100 dark:border-slate-700">
+                                <div class="p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl border border-indigo-100 dark:border-indigo-800">
+                                    <h5 class="font-bold text-indigo-900 dark:text-indigo-200 mb-1">Your Project</h5>
+                                    <p class="text-xs text-indigo-700 dark:text-indigo-300 mb-3">You can manage this project's details and review bids.</p>
+                                    <a asp-action="Edit" asp-route-id="@Model.Project.Id" class="text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 hover:underline">
+                                        Edit Project Details &rarr;
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>
