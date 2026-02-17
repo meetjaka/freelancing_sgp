@@ -17,7 +17,10 @@
             </div>
 
             <form asp-action="Register" method="post" class="space-y-5">
-                <div asp-validation-summary="All" class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg text-sm transition-colors duration-300" role="alert"></div>
+                                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div asp-validation-summary="All" class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg text-sm transition-colors duration-300" role="alert"></div>
+                }
                 
                 <!-- Name Fields -->
                 <div class="grid grid-cols-2 gap-4">
