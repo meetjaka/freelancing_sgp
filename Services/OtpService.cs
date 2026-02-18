@@ -1,47 +1,87 @@
+using Microsoft.EntityFrameworkCore;
+using SGP_Freelancing.Data;
+using SGP_Freelancing.Models.Entities;
+
 namespace SGP_Freelancing.Services
 {
     /// <summary>
-    /// Stores OTP records in-memory (keyed by email).
-    /// In production you can swap this for a distributed cache / DB table.
+    /// Stores OTP records in the DATABASE so they survive server restarts
+    /// and work correctly on Render (no in-memory state issues).
     /// </summary>
     public class OtpService
     {
-        private readonly Dictionary<string, OtpRecord> _store = new(StringComparer.OrdinalIgnoreCase);
+        private readonly IServiceScopeFactory _scopeFactory;
         private readonly ILogger<OtpService> _logger;
 
-        public OtpService(ILogger<OtpService> logger)
+        public OtpService(IServiceScopeFactory scopeFactory, ILogger<OtpService> logger)
         {
+            _scopeFactory = scopeFactory;
             _logger = logger;
         }
 
-        /// <summary>Generates a 6-digit OTP, stores it, and returns it.</summary>
+        /// <summary>Generates a 6-digit OTP, saves it to DB, and returns it.</summary>
         public string GenerateOtp(string email)
         {
             var otp = Random.Shared.Next(100000, 999999).ToString();
-            _store[email] = new OtpRecord(otp, DateTime.UtcNow.AddMinutes(10));
-            _logger.LogInformation("OTP generated for {Email}", email);
+
+            using var scope = _scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+            // Remove any existing OTPs for this email
+            var existing = db.OtpRecords.Where(r => r.Email == email).ToList();
+            db.OtpRecords.RemoveRange(existing);
+
+            db.OtpRecords.Add(new OtpRecord
+            {
+                Email = email,
+                Otp = otp,
+                ExpiresAt = DateTime.UtcNow.AddMinutes(10),
+                CreatedAt = DateTime.UtcNow
+            });
+
+            db.SaveChanges();
+
+            _logger.LogInformation("OTP generated and saved to DB for {Email}", email);
             return otp;
         }
 
         /// <summary>Returns true if the OTP is correct and not expired.</summary>
         public bool VerifyOtp(string email, string otp)
         {
-            if (!_store.TryGetValue(email, out var record))
+            using var scope = _scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+            var record = db.OtpRecords
+                .Where(r => r.Email == email)
+                .OrderByDescending(r => r.CreatedAt)
+                .FirstOrDefault();
+
+            if (record == null)
+            {
+                _logger.LogWarning("OTP verification failed: no record found for {Email}", email);
                 return false;
+            }
 
             if (record.ExpiresAt < DateTime.UtcNow)
             {
-                _store.Remove(email);
+                db.OtpRecords.Remove(record);
+                db.SaveChanges();
+                _logger.LogWarning("OTP expired for {Email}", email);
                 return false;
             }
 
             if (!string.Equals(record.Otp, otp, StringComparison.Ordinal))
+            {
+                _logger.LogWarning("OTP mismatch for {Email}", email);
                 return false;
+            }
 
-            _store.Remove(email); // one-time use
+            // One-time use: remove after successful verification
+            db.OtpRecords.Remove(record);
+            db.SaveChanges();
+
+            _logger.LogInformation("OTP verified successfully for {Email}", email);
             return true;
         }
-
-        private record OtpRecord(string Otp, DateTime ExpiresAt);
     }
 }

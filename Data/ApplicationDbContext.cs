@@ -12,6 +12,9 @@ namespace SGP_Freelancing.Data
         {
         }
 
+        // OTP records (DB-backed, works on Render multi-instance)
+        public DbSet<OtpRecord> OtpRecords { get; set; }
+
         // Old entities
         public DbSet<Student> Students { get; set; }
         

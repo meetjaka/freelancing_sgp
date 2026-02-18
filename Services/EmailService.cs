@@ -35,6 +35,8 @@ namespace SGP_Freelancing.Services
             message.Body = bodyBuilder.ToMessageBody();
 
             using var client = new SmtpClient();
+            // Set timeout so the page doesn't hang forever on Render if SMTP is slow
+            client.Timeout = 15000; // 15 seconds
             try
             {
                 var host = emailSettings["SmtpHost"] ?? "smtp.gmail.com";
@@ -43,12 +45,20 @@ namespace SGP_Freelancing.Services
                 var username = emailSettings["SmtpUsername"] ?? "";
                 var password = emailSettings["SmtpPassword"] ?? "";
 
-                var secureOption = useSsl ? SecureSocketOptions.SslOnConnect : SecureSocketOptions.StartTls;
+                // Port 465 = SSL, Port 587 = StartTLS, anything else = auto
+                SecureSocketOptions secureOption;
+                if (port == 465)
+                    secureOption = SecureSocketOptions.SslOnConnect;
+                else if (useSsl)
+                    secureOption = SecureSocketOptions.SslOnConnect;
+                else
+                    secureOption = SecureSocketOptions.StartTls;
 
-                await client.ConnectAsync(host, port, secureOption);
-                await client.AuthenticateAsync(username, password);
-                await client.SendAsync(message);
-                await client.DisconnectAsync(true);
+                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(15));
+                await client.ConnectAsync(host, port, secureOption, cts.Token);
+                await client.AuthenticateAsync(username, password, cts.Token);
+                await client.SendAsync(message, cancellationToken: cts.Token);
+                await client.DisconnectAsync(true, cts.Token);
 
                 _logger.LogInformation("OTP email sent successfully to {Email}", toEmail);
             }
