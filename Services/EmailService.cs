@@ -1,6 +1,8 @@
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 using SGP_Freelancing.Services.Interfaces;
 
 namespace SGP_Freelancing.Services
@@ -20,6 +22,53 @@ namespace SGP_Freelancing.Services
         {
             var emailSettings = _configuration.GetSection("EmailSettings");
 
+            // If SendGrid API key is configured, use SendGrid (works on Render - uses HTTPS)
+            var sendGridKey = emailSettings["SendGridApiKey"] ?? _configuration["SendGridApiKey"];
+            if (!string.IsNullOrWhiteSpace(sendGridKey))
+            {
+                await SendViaSendGridAsync(sendGridKey, emailSettings, toEmail, toName, otp);
+                return;
+            }
+
+            // Otherwise fall back to SMTP (works locally)
+            await SendViaSmtpAsync(emailSettings, toEmail, toName, otp);
+        }
+
+        // ── SendGrid (HTTPS API – works on Render) ──────────────────────────────
+        private async Task SendViaSendGridAsync(
+            string apiKey,
+            IConfigurationSection emailSettings,
+            string toEmail, string toName, string otp)
+        {
+            var client = new SendGridClient(apiKey);
+
+            var senderEmail = emailSettings["SenderEmail"] ?? "meetjakasaniya24@gmail.com";
+            var senderName  = emailSettings["SenderName"]  ?? "SGP Freelancing";
+
+            var from    = new EmailAddress(senderEmail, senderName);
+            var to      = new EmailAddress(toEmail, toName);
+            var subject = "Verify Your Email – SGP Freelancing";
+            var html    = BuildOtpEmailHtml(toName, otp);
+
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent: null, htmlContent: html);
+
+            var response = await client.SendEmailAsync(msg);
+
+            if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+                _logger.LogInformation("OTP email sent via SendGrid to {Email} (status {Status})", toEmail, response.StatusCode);
+            else
+            {
+                var body = await response.Body.ReadAsStringAsync();
+                _logger.LogError("SendGrid failed for {Email}: {Status} – {Body}", toEmail, response.StatusCode, body);
+                throw new Exception($"SendGrid returned {response.StatusCode}: {body}");
+            }
+        }
+
+        // ── SMTP (MailKit – works locally) ───────────────────────────────────────
+        private async Task SendViaSmtpAsync(
+            IConfigurationSection emailSettings,
+            string toEmail, string toName, string otp)
+        {
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(
                 emailSettings["SenderName"] ?? "SGP Freelancing",
@@ -28,47 +77,41 @@ namespace SGP_Freelancing.Services
             message.To.Add(new MailboxAddress(toName, toEmail));
             message.Subject = "Verify Your Email – SGP Freelancing";
 
-            var bodyBuilder = new BodyBuilder
-            {
-                HtmlBody = BuildOtpEmailHtml(toName, otp)
-            };
+            var bodyBuilder = new BodyBuilder { HtmlBody = BuildOtpEmailHtml(toName, otp) };
             message.Body = bodyBuilder.ToMessageBody();
 
             using var client = new SmtpClient();
-            // Set timeout so the page doesn't hang forever on Render if SMTP is slow
             client.Timeout = 15000; // 15 seconds
+
+            var host     = emailSettings["SmtpHost"] ?? "smtp.gmail.com";
+            var port     = int.Parse(emailSettings["SmtpPort"] ?? "587");
+            var useSsl   = bool.Parse(emailSettings["UseSsl"] ?? "false");
+            var username = emailSettings["SmtpUsername"] ?? "";
+            var password = emailSettings["SmtpPassword"] ?? "";
+
+            // Port 465 = SSL, Port 587 = StartTLS
+            var secureOption = (port == 465 || useSsl)
+                ? SecureSocketOptions.SslOnConnect
+                : SecureSocketOptions.StartTls;
+
             try
             {
-                var host = emailSettings["SmtpHost"] ?? "smtp.gmail.com";
-                var port = int.Parse(emailSettings["SmtpPort"] ?? "587");
-                var useSsl = bool.Parse(emailSettings["UseSsl"] ?? "false");
-                var username = emailSettings["SmtpUsername"] ?? "";
-                var password = emailSettings["SmtpPassword"] ?? "";
-
-                // Port 465 = SSL, Port 587 = StartTLS, anything else = auto
-                SecureSocketOptions secureOption;
-                if (port == 465)
-                    secureOption = SecureSocketOptions.SslOnConnect;
-                else if (useSsl)
-                    secureOption = SecureSocketOptions.SslOnConnect;
-                else
-                    secureOption = SecureSocketOptions.StartTls;
-
                 using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(15));
                 await client.ConnectAsync(host, port, secureOption, cts.Token);
                 await client.AuthenticateAsync(username, password, cts.Token);
                 await client.SendAsync(message, cancellationToken: cts.Token);
                 await client.DisconnectAsync(true, cts.Token);
 
-                _logger.LogInformation("OTP email sent successfully to {Email}", toEmail);
+                _logger.LogInformation("OTP email sent via SMTP to {Email}", toEmail);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to send OTP email to {Email}", toEmail);
+                _logger.LogError(ex, "SMTP failed for {Email}", toEmail);
                 throw;
             }
         }
 
+        // ── HTML Template ────────────────────────────────────────────────────────
         private static string BuildOtpEmailHtml(string name, string otp)
         {
             return $@"
