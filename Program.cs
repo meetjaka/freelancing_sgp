@@ -54,7 +54,7 @@ namespace SGP_Freelancing
 
                 // User settings
                 options.User.RequireUniqueEmail = true;
-                options.SignIn.RequireConfirmedEmail = false; // Set to true in production with email service
+                options.SignIn.RequireConfirmedEmail = true; // OTP email verification is now active
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
@@ -109,6 +109,10 @@ namespace SGP_Freelancing
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IBidService, SGP_Freelancing.Services.BidService>();
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IMessageService, SGP_Freelancing.Services.MessageService>();
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IContractService, SGP_Freelancing.Services.ContractService>();
+
+            // Email & OTP Services
+            builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IEmailService, SGP_Freelancing.Services.EmailService>();
+            builder.Services.AddSingleton<SGP_Freelancing.Services.OtpService>();
 
             // AutoMapper
             builder.Services.AddAutoMapper(typeof(Program));
