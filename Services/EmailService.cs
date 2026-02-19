@@ -22,19 +22,24 @@ namespace SGP_Freelancing.Services
         {
             var emailSettings = _configuration.GetSection("EmailSettings");
 
-            // If SendGrid API key is configured, use SendGrid (works on Render - uses HTTPS)
-            var sendGridKey = emailSettings["SendGridApiKey"] ?? _configuration["SendGridApiKey"];
+            // Priority 1: SendGrid API key (env var SENDGRID_API_KEY or config)
+            var sendGridKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY")
+                           ?? emailSettings["SendGridApiKey"]
+                           ?? _configuration["SendGridApiKey"];
+
             if (!string.IsNullOrWhiteSpace(sendGridKey))
             {
+                _logger.LogInformation("Using SendGrid to send OTP email to {Email}", toEmail);
                 await SendViaSendGridAsync(sendGridKey, emailSettings, toEmail, toName, otp);
                 return;
             }
 
-            // Otherwise fall back to SMTP (works locally)
+            // Priority 2: SMTP (works locally; may be blocked on Render)
+            _logger.LogWarning("No SendGrid API key found. Falling back to SMTP for {Email}. NOTE: SMTP is often blocked on Render/cloud platforms.", toEmail);
             await SendViaSmtpAsync(emailSettings, toEmail, toName, otp);
         }
 
-        // ── SendGrid (HTTPS API – works on Render) ──────────────────────────────
+        // ── SendGrid (HTTPS API – works on Render and all cloud platforms) ─────
         private async Task SendViaSendGridAsync(
             string apiKey,
             IConfigurationSection emailSettings,
@@ -55,23 +60,33 @@ namespace SGP_Freelancing.Services
             var response = await client.SendEmailAsync(msg);
 
             if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
-                _logger.LogInformation("OTP email sent via SendGrid to {Email} (status {Status})", toEmail, response.StatusCode);
+            {
+                _logger.LogInformation("✅ OTP email sent via SendGrid to {Email} (status {Status})", toEmail, response.StatusCode);
+            }
             else
             {
                 var body = await response.Body.ReadAsStringAsync();
-                _logger.LogError("SendGrid failed for {Email}: {Status} – {Body}", toEmail, response.StatusCode, body);
+                _logger.LogError("❌ SendGrid failed for {Email}: {Status} – {Body}", toEmail, response.StatusCode, body);
                 throw new Exception($"SendGrid returned {response.StatusCode}: {body}");
             }
         }
 
-        // ── SMTP (MailKit – works locally) ───────────────────────────────────────
+        // ── SMTP (MailKit – works locally; blocked on Render) ───────────────────
         private async Task SendViaSmtpAsync(
             IConfigurationSection emailSettings,
             string toEmail, string toName, string otp)
         {
+            var host     = emailSettings["SmtpHost"]     ?? "smtp.gmail.com";
+            var port     = int.Parse(emailSettings["SmtpPort"] ?? "587");
+            var useSsl   = bool.Parse(emailSettings["UseSsl"]  ?? "false");
+            var username = emailSettings["SmtpUsername"] ?? "";
+            var password = emailSettings["SmtpPassword"] ?? "";
+
+            _logger.LogInformation("Attempting SMTP connection to {Host}:{Port} (SSL={SSL}) for {Email}", host, port, useSsl, toEmail);
+
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(
-                emailSettings["SenderName"] ?? "SGP Freelancing",
+                emailSettings["SenderName"]  ?? "SGP Freelancing",
                 emailSettings["SenderEmail"] ?? "noreply@sgpfreelancing.com"
             ));
             message.To.Add(new MailboxAddress(toName, toEmail));
@@ -80,15 +95,6 @@ namespace SGP_Freelancing.Services
             var bodyBuilder = new BodyBuilder { HtmlBody = BuildOtpEmailHtml(toName, otp) };
             message.Body = bodyBuilder.ToMessageBody();
 
-            using var client = new SmtpClient();
-            client.Timeout = 15000; // 15 seconds
-
-            var host     = emailSettings["SmtpHost"] ?? "smtp.gmail.com";
-            var port     = int.Parse(emailSettings["SmtpPort"] ?? "587");
-            var useSsl   = bool.Parse(emailSettings["UseSsl"] ?? "false");
-            var username = emailSettings["SmtpUsername"] ?? "";
-            var password = emailSettings["SmtpPassword"] ?? "";
-
             // Port 465 = SSL, Port 587 = StartTLS
             var secureOption = (port == 465 || useSsl)
                 ? SecureSocketOptions.SslOnConnect
@@ -96,17 +102,26 @@ namespace SGP_Freelancing.Services
 
             try
             {
-                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(15));
-                await client.ConnectAsync(host, port, secureOption, cts.Token);
-                await client.AuthenticateAsync(username, password, cts.Token);
-                await client.SendAsync(message, cancellationToken: cts.Token);
-                await client.DisconnectAsync(true, cts.Token);
+                using var smtpClient = new SmtpClient();
+                smtpClient.Timeout = 20000; // 20 seconds
 
-                _logger.LogInformation("OTP email sent via SMTP to {Email}", toEmail);
+                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(20));
+                await smtpClient.ConnectAsync(host, port, secureOption, cts.Token);
+                _logger.LogInformation("SMTP connected to {Host}:{Port}", host, port);
+
+                await smtpClient.AuthenticateAsync(username, password, cts.Token);
+                _logger.LogInformation("SMTP authenticated as {Username}", username);
+
+                await smtpClient.SendAsync(message, cancellationToken: cts.Token);
+                await smtpClient.DisconnectAsync(true, cts.Token);
+
+                _logger.LogInformation("✅ OTP email sent via SMTP to {Email}", toEmail);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "SMTP failed for {Email}", toEmail);
+                _logger.LogError(ex, "❌ SMTP failed for {Email} (Host={Host}, Port={Port}). " +
+                    "On Render/cloud platforms, SMTP port 587/465 is often blocked. " +
+                    "Please set the SENDGRID_API_KEY environment variable on Render.", toEmail, host, port);
                 throw;
             }
         }

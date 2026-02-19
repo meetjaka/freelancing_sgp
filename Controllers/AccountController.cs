@@ -59,22 +59,19 @@ namespace SGP_Freelancing.Controllers
             // Check if email is confirmed
             if (!user.EmailConfirmed)
             {
-                // Re-send OTP in background and redirect to verification
+                // Re-send OTP and redirect to verification
                 var otp = _otpService.GenerateOtp(email);
                 var userName = $"{user.FirstName} {user.LastName}";
-                _ = Task.Run(async () =>
+                try
                 {
-                    try
-                    {
-                        await _emailService.SendOtpEmailAsync(email, userName, otp);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(ex, "Background: Failed to resend OTP during login for {Email}", email);
-                    }
-                });
-
-                TempData["InfoMessage"] = "Your email is not verified. A new OTP has been sent to your email.";
+                    await _emailService.SendOtpEmailAsync(email, userName, otp);
+                    TempData["InfoMessage"] = "Your email is not verified. A new OTP has been sent to your email.";
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to resend OTP during login for {Email}", email);
+                    TempData["InfoMessage"] = "Your email is not verified. Please check your inbox or request a new OTP.";
+                }
                 return RedirectToAction("VerifyOtp", new { email });
             }
 
@@ -135,22 +132,18 @@ namespace SGP_Freelancing.Controllers
                 // Generate OTP (saved to DB)
                 var otp = _otpService.GenerateOtp(email);
 
-                // Send email in background so the page doesn't hang on Render
-                // (SMTP can be slow on cloud platforms)
-                _ = Task.Run(async () =>
+                // Send OTP email – awaited so it completes before redirect (required on Render)
+                try
                 {
-                    try
-                    {
-                        await _emailService.SendOtpEmailAsync(email, $"{firstName} {lastName}", otp);
-                        _logger.LogInformation("OTP email sent to {Email}", email);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(ex, "Background: Failed to send OTP email to {Email}", email);
-                    }
-                });
-
-                TempData["SuccessMessage"] = $"Account created! An OTP has been sent to {email}. Please verify to continue.";
+                    await _emailService.SendOtpEmailAsync(email, $"{firstName} {lastName}", otp);
+                    _logger.LogInformation("OTP email sent to {Email}", email);
+                    TempData["SuccessMessage"] = $"Account created! An OTP has been sent to {email}. Please verify your email to continue.";
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to send OTP email to {Email}", email);
+                    TempData["SuccessMessage"] = $"Account created! However, we couldn't send the OTP email. Please use Resend OTP on the next page.";
+                }
                 return RedirectToAction("VerifyOtp", new { email });
             }
 
@@ -229,19 +222,17 @@ namespace SGP_Freelancing.Controllers
 
             var otp = _otpService.GenerateOtp(email);
             var resendUserName = $"{user.FirstName} {user.LastName}";
-            _ = Task.Run(async () =>
+            try
             {
-                try
-                {
-                    await _emailService.SendOtpEmailAsync(email, resendUserName, otp);
-                    _logger.LogInformation("Resend OTP email sent to {Email}", email);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Background: Failed to resend OTP to {Email}", email);
-                }
-            });
-            TempData["SuccessMessage"] = "A new OTP has been sent to your email.";
+                await _emailService.SendOtpEmailAsync(email, resendUserName, otp);
+                _logger.LogInformation("Resend OTP email sent to {Email}", email);
+                TempData["SuccessMessage"] = "A new OTP has been sent to your email.";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to resend OTP to {Email}", email);
+                TempData["ErrorMessage"] = "Failed to send OTP email. Please try again or contact support.";
+            }
 
             return RedirectToAction("VerifyOtp", new { email });
         }
