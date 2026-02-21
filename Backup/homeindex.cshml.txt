@@ -1,0 +1,276 @@
+@{
+    ViewData["Title"] = "Home Page";
+    ViewData["BodyClass"] = "homepage";
+}
+
+<!-- Futuristic Styles -->
+<style>
+    :root {
+        --primary-glow: conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 180deg, #2a8af6 360deg);
+        --glass-bg: rgba(255, 255, 255, 0.03);
+        --glass-border: rgba(255, 255, 255, 0.08);
+    }
+    
+    .blob {
+        position: absolute;
+        filter: blur(80px);
+        opacity: 0.3;
+        z-index: 0;
+        animation: blob-bounce 10s infinite ease;
+    }
+    
+    @@keyframes blob-bounce {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        50% { transform: translate(20px, -20px) scale(1.1); }
+    }
+
+    .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+    
+    .dark .glass-card {
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .hero-text-gradient {
+        background: linear-gradient(135deg, #4f46e5 0%, #9333ea 50%, #db2777 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .dark .hero-text-gradient {
+        background: linear-gradient(135deg, #a78bfa 0%, #818cf8 50%, #c084fc 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .animate-float-y { animation: floatY 6s ease-in-out infinite; }
+    .animate-float-x { animation: floatX 7s ease-in-out infinite; }
+    
+    @@keyframes floatY {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-15px); }
+    }
+    
+    @@keyframes floatX {
+        0%, 100% { transform: translateX(0px); }
+        50% { transform: translateX(10px); }
+    }
+
+    .ticker-wrap {
+        overflow: hidden;
+        white-space: nowrap;
+        position: relative;
+    }
+    .ticker {
+        display: inline-block;
+        animation: marquee 30s linear infinite;
+    }
+    @@keyframes marquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+</style>
+
+<!-- Hero Section -->
+<div class="relative min-h-[85vh] pt-32 pb-20 overflow-hidden bg-white dark:bg-[#0A0F1C] transition-colors duration-500">
+    <!-- Animated Background Elements -->
+    <div class="blob w-96 h-96 bg-indigo-500/20 rounded-full top-[-10%] left-[-5%] blur-3xl filter animate-float-x"></div>
+    <div class="blob w-[500px] h-[500px] bg-purple-500/10 rounded-full bottom-[-10%] right-[-5%] blur-3xl filter animate-float-y"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            
+            <!-- Left Side: Content -->
+            <div class="text-left">
+                <!-- Online Presence Badge -->
+                <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-indigo-100 dark:border-white/10 bg-indigo-50/50 dark:bg-white/5 backdrop-blur-md mb-8">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                    </span>
+                    <span class="text-sm font-medium text-slate-600 dark:text-slate-300">10,000+ freelancers online now</span>
+                </div>
+
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-8 text-slate-900 dark:text-white leading-[1.1]">
+                    Find the perfect <br>
+                    <span class="hero-text-gradient">freelance services</span> <br>
+                    for your business
+                </h1>
+                
+                <p class="text-lg md:text-xl text-slate-600 dark:text-slate-400 mb-12 max-w-lg leading-relaxed">
+                    Connect with world-class talent. Get quality work done faster, at the most affordable price.
+                </p>
+
+                <!-- Search Bar -->
+                <form action="/Project" method="get" class="max-w-xl relative group">
+                    <div class="relative flex items-center bg-white dark:bg-white/5 backdrop-blur-2xl rounded-2xl p-2 pl-6 shadow-2xl border border-slate-200 dark:border-white/10">
+                        <i class="fas fa-search text-slate-400 mr-4"></i>
+                        <input type="text" name="search" placeholder="Try 'building mobile app'" 
+                               class="w-full bg-transparent border-none outline-none text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-lg py-2.5">
+                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl px-8 py-3.5 font-semibold transition-all shadow-lg shadow-indigo-500/20 transform hover:-translate-y-0.5 ml-2">
+                            Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Right Side: Graphic -->
+            <div class="relative hidden lg:block">
+                <div class="relative z-20">
+                    <!-- Main 3D Illustration -->
+                    <div class="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-indigo-100 dark:border-white/5 aspect-[4/3] max-w-md ml-auto">
+                        <img src="https://png.pngtree.com/thumb_back/fh260/background/20230707/pngtree-d-illustration-of-a-skilled-freelance-developer-working-on-a-laptop-image_3791858.jpg" 
+                             class="w-full h-full object-cover grayscale-[10%] brightness-105 dark:brightness-90 transition-all duration-500" alt="Futuristic Freelancer">
+                        <!-- Darkness overlay on image to match dark UI -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-indigo-50/20 to-transparent dark:from-[#0A0F1C]/80 dark:via-transparent"></div>
+                    </div>
+
+                    <!-- Floating Card 1: Project Completed -->
+                    <div class="glass-card absolute top-[15%] -left-12 p-4 rounded-2xl shadow-xl flex items-center gap-4 animate-float-y min-w-[240px]">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                            <i class="fas fa-check-circle text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="text-slate-900 dark:text-white font-bold text-sm">Project Completed!</div>
+                            <div class="text-slate-500 dark:text-slate-400 text-xs">E-commerce • $2,400</div>
+                        </div>
+                    </div>
+
+                    <!-- Floating Card 2: Projects Posted -->
+                    <div class="glass-card absolute bottom-[25%] -right-12 p-3.5 px-5 rounded-full shadow-xl flex items-center gap-3 animate-float-x">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                        <span class="text-slate-900 dark:text-white text-sm font-medium">24 projects posted today</span>
+                    </div>
+
+                    <!-- Floating Card 3: Payment Received -->
+                    <div class="glass-card absolute -bottom-6 left-[10%] p-4 rounded-2xl shadow-xl flex items-center gap-4 animate-float-y delay-700 min-w-[220px]">
+                        <div class="w-10 h-10 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div>
+                            <div class="text-slate-900 dark:text-white font-bold text-sm">Payment Received</div>
+                            <div class="text-emerald-600 dark:text-emerald-400 text-xs font-bold">$1,250.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Glow background for graphic -->
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-indigo-500/10 dark:bg-indigo-500/20 blur-[100px] -z-10 rounded-full"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Logo Cloud -->
+<div class="border-y border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-[#060B15] py-12 overflow-hidden transition-colors duration-500">
+    <div class="max-w-7xl mx-auto px-4 mb-8 text-center">
+        <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em]">Trusted by the world's best teams</p>
+    </div>
+    <div class="ticker-wrap opacity-60 dark:opacity-40 grayscale group hover:opacity-100 hover:grayscale-0 transition-all duration-700">
+        <div class="ticker">
+             <div class="flex items-center gap-20 text-slate-400 dark:text-slate-500 font-bold text-2xl px-4">
+                 <span class="flex items-center gap-3"><i class="fab fa-google"></i> Google</span>
+                 <span class="flex items-center gap-3"><i class="fab fa-microsoft"></i> Microsoft</span>
+                 <span class="flex items-center gap-3"><i class="fab fa-spotify"></i> Spotify</span>
+                 <span class="flex items-center gap-3"><i class="fab fa-amazon"></i> Amazon</span>
+                 <span class="flex items-center gap-3"><i class="fab fa-airbnb"></i> Airbnb</span>
+                 <span class="flex items-center gap-3"><i class="fab fa-meta"></i> Meta</span>
+                 <!-- Repeat for smooth loop -->
+                 <span class="flex items-center gap-3"><i class="fab fa-google"></i> Google</span>
+                 <span class="flex items-center gap-3"><i class="fab fa-microsoft"></i> Microsoft</span>
+                 <span class="flex items-center gap-3"><i class="fab fa-spotify"></i> Spotify</span>
+             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Services Grid -->
+<div class="py-24 bg-white dark:bg-[#0A0F1C] transition-colors duration-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
+            <div>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-2">Popular services</h2>
+                <p class="text-slate-500 dark:text-slate-400">Find the perfect talent for your business growth</p>
+            </div>
+            <a href="/Project" class="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-semibold group">
+                View All Categories 
+                <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Service Card 1 -->
+            <a href="/Project?category=development" class="group relative aspect-[4/5] rounded-[2rem] overflow-hidden border border-slate-100 dark:border-white/5 transition-all duration-500 hover:shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80" 
+                     class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Development">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent"></div>
+                <div class="absolute bottom-6 left-6 right-6">
+                    <p class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-1">Development</p>
+                    <h3 class="text-xl font-bold text-white">Software & Tech</h3>
+                </div>
+            </a>
+
+            <!-- Service Card 2 -->
+             <a href="/Project?category=design" class="group relative aspect-[4/5] rounded-[2rem] overflow-hidden border border-slate-100 dark:border-white/5 transition-all duration-500 hover:shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=600&q=80" 
+                     class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Design">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent"></div>
+                <div class="absolute bottom-6 left-6 right-6">
+                    <p class="text-xs font-bold text-purple-400 uppercase tracking-widest mb-1">Design</p>
+                    <h3 class="text-xl font-bold text-white">Visual Arts</h3>
+                </div>
+            </a>
+
+            <!-- Service Card 3 -->
+             <a href="/Project?category=marketing" class="group relative aspect-[4/5] rounded-[2rem] overflow-hidden border border-slate-100 dark:border-white/5 transition-all duration-500 hover:shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" 
+                     class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Marketing">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent"></div>
+                <div class="absolute bottom-6 left-6 right-6">
+                    <p class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-1">Marketing</p>
+                    <h3 class="text-xl font-bold text-white">Growth & SEO</h3>
+                </div>
+            </a>
+
+            <!-- Service Card 4 -->
+            <a href="/Project?category=video" class="group relative aspect-[4/5] rounded-[2rem] overflow-hidden border border-slate-100 dark:border-white/5 transition-all duration-500 hover:shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1492724441997-5dc865305da7?auto=format&fit=crop&w=600&q=80" 
+                     class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Writing">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent"></div>
+                <div class="absolute bottom-6 left-6 right-6">
+                    <p class="text-xs font-bold text-rose-400 uppercase tracking-widest mb-1">Creative</p>
+                    <h3 class="text-xl font-bold text-white">Video & AI</h3>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="relative py-24 bg-white dark:bg-[#0A0F1C] overflow-hidden transition-colors duration-500">
+    <div class="max-w-5xl mx-auto px-4 relative z-10">
+        <div class="bg-indigo-600 rounded-[3.5rem] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl">
+             <!-- Abstract Decor -->
+             <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2"></div>
+             <div class="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2"></div>
+             
+             <h2 class="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-8">Ready to grow <br> your business?</h2>
+             <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/Account/Register" class="px-10 py-5 bg-white text-indigo-700 rounded-2xl font-bold text-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+                    Get Started Now
+                </a>
+                <a href="/Project" class="px-10 py-5 bg-indigo-700 text-white rounded-2xl font-bold text-lg border border-white/20 hover:bg-indigo-800 transition-all duration-300">
+                    Browse Projects
+                </a>
+             </div>
+        </div>
+    </div>
+</div>

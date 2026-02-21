@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth" id="htmlRoot">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SGP Freelancing Platform</title>
+    <!-- Initialize theme immediately to prevent flash -->
+    <script>
+        (function() {
+            const theme = localStorage.getItem('theme') || 'light';
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
+    <!-- Tailwind CSS CDN - Includes ALL utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        // PRIMARY: Premium Indigo - Trust, Authority, Professionalism
+                        primary: {
+                            50:  '#EEF2FF',
+                            100: '#E0E7FF',
+                            200: '#C7D2FE',
+                            300: '#A5B4FC',
+                            400: '#818CF8',
+                            500: '#6366F1',
+                            600: '#4F46E5',
+                            700: '#4338CA',
+                            800: '#3730A3',
+                            900: '#312E81',
+                            950: '#1E1B4B',
+                        },
+                        // SECONDARY: Clean Emerald - Growth, Success, Trust
+                        secondary: {
+                            50:  '#ECFDF5',
+                            100: '#D1FAE5',
+                            200: '#A7F3D0',
+                            300: '#6EE7B7',
+                            400: '#34D399',
+                            500: '#10B981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065F46',
+                            900: '#064E3B',
+                            950: '#022C22',
+                        },
+                        // ACCENT: Soft Amber - Warmth, Highlights, Attention
+                        accent: {
+                            50:  '#FFFBEB',
+                            100: '#FEF3C7',
+                            200: '#FDE68A',
+                            300: '#FCD34D',
+                            400: '#FBBF24',
+                            500: '#F59E0B',
+                            600: '#D97706',
+                            700: '#B45309',
+                            800: '#92400E',
+                            900: '#78350F',
+                            950: '#451A03',
+                        },
+                        // NEUTRAL: Sophisticated Slate - Balance, Professionalism
+                        neutral: {
+                            50:  '#F8FAFC',
+                            100: '#F1F5F9',
+                            200: '#E2E8F0',
+                            300: '#CBD5E1',
+                            400: '#94A3B8',
+                            500: '#64748B',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1E293B',
+                            900: '#0F172A',
+                            950: '#020617',
+                        },
+                        success: {
+                            50:  '#ECFDF5',
+                            100: '#D1FAE5',
+                            200: '#A7F3D0',
+                            300: '#6EE7B7',
+                            400: '#34D399',
+                            500: '#10B981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065F46',
+                            900: '#064E3B',
+                        },
+                        warning: {
+                            50:  '#FFFBEB',
+                            100: '#FEF3C7',
+                            200: '#FDE68A',
+                            300: '#FCD34D',
+                            400: '#FBBF24',
+                            500: '#F59E0B',
+                            600: '#D97706',
+                            700: '#B45309',
+                            800: '#92400E',
+                            900: '#78350F',
+                        },
+                        error: {
+                            50:  '#FEF2F2',
+                            100: '#FEE2E2',
+                            200: '#FECACA',
+                            300: '#FCA5A5',
+                            400: '#F87171',
+                            500: '#EF4444',
+                            600: '#DC2626',
+                            700: '#B91C1C',
+                            800: '#991B1B',
+                            900: '#7F1D1D',
+                        },
+                        info: {
+                            50:  '#EFF6FF',
+                            100: '#DBEAFE',
+                            200: '#BFDBFE',
+                            300: '#93C5FD',
+                            400: '#60A5FA',
+                            500: '#3B82F6',
+                            600: '#2563EB',
+                            700: '#1D4ED8',
+                            800: '#1E40AF',
+                            900: '#1E3A8A',
+                        },
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+                        'glow': '0 0 20px rgba(99, 102, 241, 0.3)',
+                        'glow-secondary': '0 0 20px rgba(16, 185, 129, 0.3)',
+                        'glow-accent': '0 0 20px rgba(245, 158, 11, 0.3)',
+                        'card': '0 4px 6px -1px rgba(0,0,0,.05), 0 10px 15px -3px rgba(0,0,0,.08)',
+                    },
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body class="font-sans bg-white dark:bg-slate-900 min-h-screen text-slate-800 dark:text-slate-100 transition-colors duration-300 @(ViewData["BodyClass"] ?? "")">
+    <style>
+        /* Futuristic Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4f46e5; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4338ca; 
+        }
+
+        /* Navbar - Floating Glassmorphism */
+        #main-navbar {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        .nav-scrolled {
+            background: rgba(255, 255, 255, 0.8); /* Glass effect for light */
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            padding-top: 0.75rem !important;
+            padding-bottom: 0.75rem !important;
+            margin-top: 1rem;
+            border-radius: 9999px;
+            width: 90%;
+            max-width: 1200px;
+        }
+
+        .dark .nav-scrolled {
+            background: rgba(15, 23, 42, 0.8); /* Slate 900 with opacity */
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-scrolled .nav-container {
+            padding: 0 1rem;
+        }
+
+        @@media (max-width: 1024px) {
+            .nav-scrolled {
+                max-width: 95%;
+                margin-top: 0.5rem;
+            }
+        }
+
+        /* Initial State (Transparent/Full Width) */
+        .nav-transparent {
+            background: transparent;
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+            width: 100%;
+        }
+
+        /* Search Bar Glow */
+        .search-container:focus-within {
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+            border-color: rgba(99, 102, 241, 0.8);
+        }
+
+        /* Nav Links */
+        .nav-item {
+            position: relative;
+        }
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background: linear-gradient(90deg, #6366f1, #a855f7);
+            transition: width 0.3s ease;
+        }
+        .nav-item:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Menu */
+        #mobile-menu {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        #mobile-menu.open {
+            max-height: 500px;
+            opacity: 1;
+        }
+    </style>
+    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 pointer-events-none">
+        <!-- Floating Navbar Container -->
+        <nav id="main-navbar" class="pointer-events-auto mx-auto nav-transparent flex items-center justify-between transition-all duration-500">
+            <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 nav-container flex items-center justify-between">
+                
+                <!-- Brand -->
+                <a class="flex items-center gap-3 group relative" asp-area="" asp-controller="Home" asp-action="Index">
+                    <div class="relative w-10 h-10 flex items-center justify-center">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-xl rotate-6 blur-md opacity-40 group-hover:opacity-100 group-hover:rotate-12 transition-all duration-300"></div>
+                        <div class="relative bg-slate-900 border border-white/10 rounded-xl text-white flex items-center justify-center w-full h-full shadow-2xl overflow-hidden">
+                            <i class="fas fa-bolt text-indigo-400 text-lg group-hover:animate-pulse"></i>
+                        </div>
+                    </div>
+                    <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-400 group-hover:from-indigo-600 group-hover:to-purple-600 dark:group-hover:from-indigo-400 dark:group-hover:to-purple-400 transition-all duration-300 hidden sm:block">
+                        Freelio<span class="text-indigo-500">.</span>
+                    </span>
+                </a>
+
+                <!-- Search Bar (Desktop) -->
+                <div class="hidden md:flex flex-1 max-w-md mx-8">
+                    <form action="/Project" method="get" class="w-full relative search-container group rounded-full transition-all duration-300">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-slate-400 group-hover:text-indigo-500 transition-colors"></i>
+                        </div>
+                        <input type="text" name="search" 
+                               class="block w-full pl-10 pr-3 py-2 border border-slate-200 dark:border-slate-700/50 rounded-full leading-5 bg-white/50 dark:bg-slate-800/50 text-slate-900 dark:text-slate-300 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:bg-white dark:focus:bg-slate-900/80 transition-all duration-300 sm:text-sm backdrop-blur-sm" 
+                               placeholder="Search for services...">
+                    </form>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex items-center gap-6">
+                    <nav class="flex gap-6 text-sm font-medium text-slate-600 dark:text-slate-300">
+                        <a href="#" class="nav-item hover:text-indigo-600 dark:hover:text-white transition-colors">Explore</a>
+                        <a href="#" class="nav-item hover:text-indigo-600 dark:hover:text-white transition-colors">Pro</a>
+                        <a href="#" class="nav-item hover:text-indigo-600 dark:hover:text-white transition-colors">Business</a>
+                    </nav>
+
+                    <div class="h-6 w-px bg-slate-200 dark:bg-slate-700/50"></div>
+
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-yellow-400 transition-colors">
+                        <i class="fas fa-sun text-lg theme-icon-light hidden"></i>
+                        <i class="fas fa-moon text-lg theme-icon-dark"></i>
+                    </button>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <!-- User Actions -->
+                        <div class="flex items-center gap-4">
+                            <a asp-controller="Message" asp-action="Index" class="relative text-slate-300 hover:text-white transition-colors">
+                                <i class="fas fa-envelope text-lg"></i>
+                                <span class="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-indigo-500"></span>
+                                </span>
+                            </a>
+                            
+                            <div class="relative dropdown-container z-50">
+                                <button class="flex items-center gap-2 focus:outline-none">
+                                    <div class="w-9 h-9 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-[2px]">
+                                        <div class="w-full h-full rounded-full bg-slate-900 flex items-center justify-center text-xs font-bold text-white uppercase">
+                                            @(User.Identity.Name?.Substring(0, 1) ?? "U")
+                                        </div>
+                                    </div>
+                                </button>
+                                <!-- Dropdown -->
+                                <div class="dropdown-menu hidden absolute right-0 mt-2 w-56 rounded-xl bg-slate-900 border border-slate-700 shadow-xl overflow-hidden ring-1 ring-black ring-opacity-5">
+                                    <div class="px-4 py-3 border-b border-slate-700/50">
+                                        <p class="text-sm font-medium text-white">@User.Identity.Name</p>
+                                        <p class="text-xs text-slate-400 truncate">user@@example.com</p>
+                                    </div>
+                                    <div class="py-1">
+                                        <a asp-controller="Account" asp-action="Profile" class="group flex items-center px-4 py-2 text-sm text-slate-300 hover:bg-white/5 hover:text-white transition-colors">
+                                            <i class="fas fa-user w-5 text-slate-500 group-hover:text-indigo-400"></i> Profile
+                                        </a>
+                                        <a asp-controller="Project" asp-action="MyProjects" class="group flex items-center px-4 py-2 text-sm text-slate-300 hover:bg-white/5 hover:text-white transition-colors">
+                                            <i class="fas fa-folder w-5 text-slate-500 group-hover:text-indigo-400"></i> Projects
+                                        </a>
+                                        <a asp-controller="Settings" asp-action="Index" class="group flex items-center px-4 py-2 text-sm text-slate-300 hover:bg-white/5 hover:text-white transition-colors">
+                                            <i class="fas fa-cog w-5 text-slate-500 group-hover:text-indigo-400"></i> Settings
+                                        </a>
+                                    </div>
+                                    <div class="border-t border-slate-700/50 py-1">
+                                        <form asp-controller="Account" asp-action="Logout" method="post">
+                                            <button type="submit" class="w-full group flex items-center px-4 py-2 text-sm text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition-colors">
+                                                <i class="fas fa-sign-out-alt w-5"></i> Sign Out
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="flex items-center gap-3">
+                            <a asp-controller="Account" asp-action="Login" class="text-sm font-medium text-slate-300 hover:text-white transition-colors px-3 py-2">Log In</a>
+                            <a asp-controller="Account" asp-action="Register" class="relative inline-flex h-9 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+                                <span class="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]"></span>
+                                <span class="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-5 py-1 text-sm font-medium text-white backdrop-blur-3xl transition-colors hover:bg-slate-900">
+                                    Join
+                                </span>
+                            </a>
+                        </div>
+                    }
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-md text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Menu (Dropdown) -->
+        <div id="mobile-menu" class="lg:hidden absolute top-20 left-4 right-4 bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl z-40">
+            <div class="px-4 pt-4 pb-6 space-y-3">
+                <form action="/Project" method="get" class="mb-4">
+                    <input type="text" name="search" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Search...">
+                </form>
+                
+                <a href="#" class="block px-3 py-2 text-base font-medium text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Explore</a>
+                <a href="#" class="block px-3 py-2 text-base font-medium text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Pro</a>
+                
+                <div class="border-t border-white/10 my-2 pt-2">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                         <a asp-controller="Account" asp-action="Profile" class="block px-3 py-2 text-base font-medium text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Profile</a>
+                         <form asp-controller="Account" asp-action="Logout" method="post">
+                             <button class="w-full text-left px-3 py-2 text-base font-medium text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors">Sign Out</button>
+                         </form>
+                    }
+                    else
+                    {
+                        <div class="grid grid-cols-2 gap-3 mt-2">
+                            <a asp-controller="Account" asp-action="Login" class="flex items-center justify-center px-4 py-2.5 border border-white/10 rounded-lg text-slate-300 font-medium hover:bg-white/5 transition-colors">Log In</a>
+                            <a asp-controller="Account" asp-action="Register" class="flex items-center justify-center px-4 py-2.5 bg-indigo-600 rounded-lg text-white font-medium hover:bg-indigo-700 transition-colors">Join</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Spacer not needed for floating nav overlay, but good for content -->
+    
+    <main role="main" class="min-h-screen">
+
+        @RenderBody()
+    </main>
+
+    <!-- Ultra-Modern Footer -->
+    <footer class="relative bg-slate-50 dark:bg-[#0B1120] text-slate-900 dark:text-white overflow-hidden transition-colors duration-500">
+        <!-- Gradient overlay -->
+        <div class="absolute inset-0 bg-gradient-to-br from-indigo-50/50 via-transparent to-slate-100/50 dark:from-indigo-950/40 dark:via-transparent dark:to-slate-950 pointer-events-none"></div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <!-- Brand Column -->
+                <div class="lg:col-span-1">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-2xl flex items-center justify-center shadow-lg">
+                            <i class="fas fa-handshake text-white text-xl"></i>
+                        </div>
+                        <div class="ml-3">
+                            <span class="text-2xl font-black text-slate-900 dark:text-white">SGP</span>
+                            <span class="block text-xs text-slate-500 dark:text-slate-400 -mt-1">Freelancing</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">Empowering global talent to connect, collaborate, and create extraordinary work together.</p>
+                    <div class="flex gap-3">
+                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-slate-200/50 dark:bg-white/5 hover:bg-indigo-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/30">
+                            <i class="fab fa-facebook-f text-slate-600 dark:text-slate-400 group-hover:text-white transition-colors"></i>
+                        </a>
+                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-slate-200/50 dark:bg-white/5 hover:bg-indigo-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/30">
+                            <i class="fab fa-twitter text-slate-600 dark:text-slate-400 group-hover:text-white transition-colors"></i>
+                        </a>
+                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-slate-200/50 dark:bg-white/5 hover:bg-indigo-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/30">
+                            <i class="fab fa-linkedin-in text-slate-600 dark:text-slate-400 group-hover:text-white transition-colors"></i>
+                        </a>
+                        <a href="#" class="group relative w-10 h-10 rounded-xl bg-slate-200/50 dark:bg-white/5 hover:bg-indigo-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/30">
+                            <i class="fab fa-instagram text-slate-600 dark:text-slate-400 group-hover:text-white transition-colors"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h6 class="text-slate-900 dark:text-white font-bold text-lg mb-4">Platform</h6>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">Browse Projects</a></li>
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">Find Talent</a></li>
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">How It Works</a></li>
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">Success Stories</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Company -->
+                <div>
+                    <h6 class="text-slate-900 dark:text-white font-bold text-lg mb-4">Company</h6>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">About Us</a></li>
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">Careers</a></li>
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">Press Kit</a></li>
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Support -->
+                <div>
+                    <h6 class="text-slate-900 dark:text-white font-bold text-lg mb-4">Support</h6>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">Help Center</a></li>
+                        <li><a asp-controller="Home" asp-action="Privacy" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">Privacy Policy</a></li>
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">Terms of Service</a></li>
+                        <li><a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:translate-x-1 inline-block transition-all">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="pt-8 border-t border-slate-300 dark:border-white/10">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p class="text-slate-600 dark:text-slate-400 text-sm">&copy; 2026 SGP Freelancing Platform. All rights reserved.</p>
+                    <div class="flex gap-6 text-sm">
+                        <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors">Privacy</a>
+                        <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors">Terms</a>
+                        <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors">Cookies</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Theme Toggle System
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlRoot = document.getElementById('htmlRoot');
+        const lightIcons = document.querySelectorAll('.theme-icon-light');
+        const darkIcons = document.querySelectorAll('.theme-icon-dark');
+        const lightTooltips = document.querySelectorAll('.theme-tooltip-light');
+        const darkTooltips = document.querySelectorAll('.theme-tooltip-dark');
+        
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                htmlRoot.classList.add('dark');
+                lightIcons.forEach(icon => icon.classList.add('hidden'));
+                darkIcons.forEach(icon => icon.classList.remove('hidden'));
+                lightTooltips.forEach(tooltip => tooltip.classList.add('hidden'));
+                darkTooltips.forEach(tooltip => tooltip.classList.remove('hidden'));
+            } else {
+                htmlRoot.classList.remove('dark');
+                lightIcons.forEach(icon => icon.classList.remove('hidden'));
+                darkIcons.forEach(icon => icon.classList.add('hidden'));
+                lightTooltips.forEach(tooltip => tooltip.classList.remove('hidden'));
+                darkTooltips.forEach(tooltip => tooltip.classList.add('hidden'));
+            }
+            localStorage.setItem('theme', theme);
+        }
+        
+        // Initialize theme
+        setTheme(currentTheme);
+        
+        // Toggle theme on button click
+        if (themeToggle) {
+            themeToggle.addEventListener('click', function() {
+                const newTheme = htmlRoot.classList.contains('dark') ? 'light' : 'dark';
+                setTheme(newTheme);
+            });
+        }
+        
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('open');
+        });
+        
+        // Dropdown menu toggle
+        document.querySelectorAll('.dropdown-container button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const menu = this.nextElementSibling;
+                menu.classList.toggle('hidden');
+            });
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                menu.classList.add('hidden');
+            });
+            // Also close mobile menu if open
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu && mobileMenu.classList.contains('open') && !event.target.closest('#mobile-menu') && !event.target.closest('#mobile-menu-btn')) {
+                mobileMenu.classList.remove('open');
+            }
+        });
+        
+        // Navbar scroll effect
+        const navbar = document.getElementById('main-navbar');
+        function handleNavScroll() {
+            if (window.scrollY > 20) {
+                navbar.classList.remove('nav-transparent');
+                navbar.classList.add('nav-scrolled');
+            } else {
+                navbar.classList.add('nav-transparent');
+                navbar.classList.remove('nav-scrolled');
+            }
+        }
+        window.addEventListener('scroll', handleNavScroll, { passive: true });
+        handleNavScroll(); // Run on page load
+    </script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    @if (TempData["Success"] != null)
+    {
+        <div data-temp-success="@TempData["Success"]"></div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div data-temp-error="@TempData["Error"]"></div>
+    }
+    @if (TempData["Warning"] != null)
+    {
+        <div data-temp-warning="@TempData["Warning"]"></div>
+    }
+    @if (TempData["Info"] != null)
+    {
+        <div data-temp-info="@TempData["Info"]"></div>
+    }
+    
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
