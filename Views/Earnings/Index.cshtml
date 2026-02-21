@@ -1,3 +1,4 @@
+@model SGP_Freelancing.Models.ViewModels.EarningsViewModel
 @{
     ViewData["Title"] = "Earnings";
 }
@@ -6,8 +7,8 @@
 <div class="mb-8">
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-            <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-1">Earnings</h1>
-            <p class="text-slate-600 dark:text-slate-400">Track your income and transactions</p>
+            <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-1">@(Model.IsClient ? "Spending" : "Earnings")</h1>
+            <p class="text-slate-600 dark:text-slate-400">Track your @(Model.IsClient ? "spending" : "income") and transactions</p>
         </div>
         <button class="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -24,8 +25,8 @@
     <div class="bg-indigo-600 rounded-xl p-6 text-white">
         <div class="flex items-start justify-between mb-4">
             <div>
-                <p class="text-white/70 text-sm font-medium mb-1">Total Earnings</p>
-                <p class="text-3xl font-bold">$12,450.00</p>
+                <p class="text-white/70 text-sm font-medium mb-1">Total @(Model.IsClient ? "Spent" : "Earnings")</p>
+                <p class="text-3xl font-bold">$@Model.TotalEarnings.ToString("N2")</p>
             </div>
             <div class="p-3 bg-white/10 rounded-lg">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -33,7 +34,7 @@
                 </svg>
             </div>
         </div>
-        <p class="text-white/60 text-sm">Lifetime earnings</p>
+        <p class="text-white/60 text-sm">Lifetime @(Model.IsClient ? "spending" : "earnings")</p>
     </div>
 
     <!-- This Month -->
@@ -41,7 +42,7 @@
         <div class="flex items-start justify-between mb-4">
             <div>
                 <p class="text-slate-600 dark:text-slate-400 text-sm font-medium mb-1">This Month</p>
-                <p class="text-3xl font-bold text-slate-900 dark:text-white">$2,340.00</p>
+                <p class="text-3xl font-bold text-slate-900 dark:text-white">$@Model.ThisMonthEarnings.ToString("N2")</p>
             </div>
             <div class="p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
                 <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -49,11 +50,21 @@
                 </svg>
             </div>
         </div>
-        <p class="text-sm text-slate-600 dark:text-slate-400 flex items-center gap-1">
-            <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
-            </svg>
-            18% from last month
+        <p class="text-sm flex items-center gap-1 @(Model.PercentageChange >= 0 ? "text-slate-600 dark:text-slate-400" : "text-amber-600 dark:text-amber-400")">
+            @if (Model.PercentageChange >= 0)
+            {
+                <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+                </svg>
+                <span>@Model.PercentageChange.ToString("0.0")% from last month</span>
+            }
+            else
+            {
+                <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                </svg>
+                <span>@(Math.Abs(Model.PercentageChange).ToString("0.0"))% from last month</span>
+            }
         </p>
     </div>
 
@@ -62,7 +73,7 @@
         <div class="flex items-start justify-between mb-4">
             <div>
                 <p class="text-slate-600 dark:text-slate-400 text-sm font-medium mb-1">Pending</p>
-                <p class="text-3xl font-bold text-slate-900 dark:text-white">$890.00</p>
+                <p class="text-3xl font-bold text-slate-900 dark:text-white">$@Model.PendingEarnings.ToString("N2")</p>
             </div>
             <div class="p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
                 <svg class="w-6 h-6 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -77,23 +88,13 @@
 <!-- Earnings Chart -->
 <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 mb-8">
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Earnings Overview</h3>
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white">@(Model.IsClient ? "Spending" : "Earnings") Overview</h3>
         <div class="flex gap-2">
             <button class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg">6M</button>
-            <button class="px-4 py-2 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors">1Y</button>
-            <button class="px-4 py-2 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors">All</button>
         </div>
     </div>
-    <div class="flex items-center justify-center py-20">
-        <div class="text-center">
-            <div class="w-20 h-20 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/>
-                </svg>
-            </div>
-            <p class="text-slate-600 dark:text-slate-400 mb-1">Earnings chart visualization</p>
-            <p class="text-sm text-slate-500 dark:text-slate-500">Monthly earnings breakdown</p>
-        </div>
+    <div class="w-full h-[300px]">
+        <canvas id="earningsChart"></canvas>
     </div>
 </div>
 
@@ -108,123 +109,110 @@
                 <tr>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Date</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Project</th>
-                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Client</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">@(Model.IsClient ? "Freelancer" : "Client")</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Amount</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Status</th>
-                    <th class="px-6 py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Action</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
-                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                    <td class="px-6 py-4">
-                        <span class="text-sm text-slate-500">Jan 8, 2026</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="text-sm font-medium text-slate-900 dark:text-white">E-commerce Website</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="text-sm text-slate-600 dark:text-slate-400">John Smith</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400">+$1,500.00</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="inline-flex items-center px-2.5 py-1 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 text-xs font-medium rounded-full">Completed</span>
-                    </td>
-                    <td class="px-6 py-4 text-right">
-                        <button class="inline-flex items-center gap-1 px-3 py-1.5 border border-indigo-200 dark:border-indigo-700 text-indigo-600 dark:text-indigo-400 text-sm rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-colors">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                            </svg>
-                            Invoice
-                        </button>
-                    </td>
-                </tr>
-                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                    <td class="px-6 py-4">
-                        <span class="text-sm text-slate-500">Jan 5, 2026</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="text-sm font-medium text-slate-900 dark:text-white">Mobile App UI Design</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="text-sm text-slate-600 dark:text-slate-400">Sarah Johnson</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="text-sm font-bold text-amber-600 dark:text-amber-400">$840.00</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="inline-flex items-center px-2.5 py-1 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 text-xs font-medium rounded-full">In Escrow</span>
-                    </td>
-                    <td class="px-6 py-4 text-right">
-                        <button class="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-600 text-white text-sm rounded-lg hover:bg-slate-700 transition-colors">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                            </svg>
-                            View
-                        </button>
-                    </td>
-                </tr>
-                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                    <td class="px-6 py-4">
-                        <span class="text-sm text-slate-500">Jan 2, 2026</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="text-sm font-medium text-slate-900 dark:text-white">Logo Design Project</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="text-sm text-slate-600 dark:text-slate-400">Mike Davis</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400">+$300.00</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="inline-flex items-center px-2.5 py-1 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 text-xs font-medium rounded-full">Completed</span>
-                    </td>
-                    <td class="px-6 py-4 text-right">
-                        <button class="inline-flex items-center gap-1 px-3 py-1.5 border border-indigo-200 dark:border-indigo-700 text-indigo-600 dark:text-indigo-400 text-sm rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-colors">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                            </svg>
-                            Invoice
-                        </button>
-                    </td>
-                </tr>
-                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                    <td class="px-6 py-4">
-                        <span class="text-sm text-slate-500">Dec 28, 2025</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="text-sm font-medium text-slate-900 dark:text-white">SEO Optimization</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="text-sm text-slate-600 dark:text-slate-400">Lisa Anderson</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400">+$450.00</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="inline-flex items-center px-2.5 py-1 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 text-xs font-medium rounded-full">Completed</span>
-                    </td>
-                    <td class="px-6 py-4 text-right">
-                        <button class="inline-flex items-center gap-1 px-3 py-1.5 border border-indigo-200 dark:border-indigo-700 text-indigo-600 dark:text-indigo-400 text-sm rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-colors">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                            </svg>
-                            Invoice
-                        </button>
-                    </td>
-                </tr>
+                @if (Model.RecentTransactions.Any())
+                {
+                    foreach (var tx in Model.RecentTransactions)
+                    {
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                            <td class="px-6 py-4">
+                                <span class="text-sm text-slate-500">@tx.Date.ToString("MMM d, yyyy")</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="text-sm font-medium text-slate-900 dark:text-white">@tx.ProjectTitle</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="text-sm text-slate-600 dark:text-slate-400">@tx.OtherPartyName</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="text-sm font-bold @(tx.IsCredit ? "text-emerald-600 dark:text-emerald-400" : "text-slate-900 dark:text-white")">
+                                    @(tx.IsCredit ? "+" : "")$@tx.Amount.ToString("N2")
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                @if (tx.Status == "Completed")
+                                {
+                                    <span class="inline-flex items-center px-2.5 py-1 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 text-xs font-medium rounded-full">Completed</span>
+                                }
+                                else if (tx.Status == "Pending" || tx.Status == "Processing")
+                                {
+                                    <span class="inline-flex items-center px-2.5 py-1 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 text-xs font-medium rounded-full">@tx.Status</span>
+                                }
+                                else
+                                {
+                                    <span class="inline-flex items-center px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-medium rounded-full">@tx.Status</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="px-6 py-8 text-center text-slate-500 dark:text-slate-400">
+                            No recent transactions found.
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
-    <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-700 text-center">
-        <button class="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-lg font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-            </svg>
-            Load More Transactions
-        </button>
-    </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var ctx = document.getElementById('earningsChart').getContext('2d');
+            var isClient = @(Model.IsClient.ToString().ToLower());
+            
+            var chartLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.MonthlyLabels));
+            var chartData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.MonthlyData));
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        label: isClient ? 'Spending ($)' : 'Earnings ($)',
+                        data: chartData,
+                        backgroundColor: '#4F46E5', // indigo-600
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(168, 162, 158, 0.1)'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return '$' + value;
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}

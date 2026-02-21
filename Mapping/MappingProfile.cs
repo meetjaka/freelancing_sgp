@@ -61,7 +61,9 @@ namespace SGP_Freelancing.Mapping
             // Contract mappings
             CreateMap<Contract, ContractDto>()
                 .ForMember(dest => dest.ProjectTitle, opt => opt.MapFrom(src => src.Project.Title))
+                .ForMember(dest => dest.ClientId, opt => opt.MapFrom(src => src.ClientId))
                 .ForMember(dest => dest.ClientName, opt => opt.MapFrom(src => src.Client.FirstName + " " + src.Client.LastName))
+                .ForMember(dest => dest.FreelancerId, opt => opt.MapFrom(src => src.FreelancerId))
                 .ForMember(dest => dest.FreelancerName, opt => opt.MapFrom(src => src.Freelancer.FirstName + " " + src.Freelancer.LastName))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
 

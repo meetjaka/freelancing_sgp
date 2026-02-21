@@ -233,7 +233,9 @@ namespace SGP_Freelancing.Models.DTOs
         public int Id { get; set; }
         public int ProjectId { get; set; }
         public string ProjectTitle { get; set; } = null!;
+        public string ClientId { get; set; } = null!;
         public string ClientName { get; set; } = null!;
+        public string FreelancerId { get; set; } = null!;
         public string FreelancerName { get; set; } = null!;
         public decimal Amount { get; set; }
         public DateTime StartDate { get; set; }

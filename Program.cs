@@ -109,6 +109,7 @@ namespace SGP_Freelancing
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IBidService, SGP_Freelancing.Services.BidService>();
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IMessageService, SGP_Freelancing.Services.MessageService>();
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IContractService, SGP_Freelancing.Services.ContractService>();
+            builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IReviewService, SGP_Freelancing.Services.ReviewService>();
 
             // Email & OTP Services
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IEmailService, SGP_Freelancing.Services.EmailService>();

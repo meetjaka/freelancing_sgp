@@ -1,3 +1,4 @@
+@model SGP_Freelancing.Models.ViewModels.AnalyticsViewModel
 @{
     ViewData["Title"] = "Analytics";
 }
@@ -10,9 +11,7 @@
             <p class="text-slate-600 dark:text-slate-400">Track your performance and insights</p>
         </div>
         <div class="flex gap-2">
-            <button class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg">This Week</button>
-            <button class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">This Month</button>
-            <button class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">All Time</button>
+            <button class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg">All Time</button>
         </div>
     </div>
 </div>
@@ -37,11 +36,11 @@
         </div>
         <div>
             <p class="text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">Profile Views</p>
-            <p class="text-3xl font-bold text-slate-900 dark:text-white">1,234</p>
+            <p class="text-3xl font-bold text-slate-900 dark:text-white">@Model.ProfileViews.ToString("N0")</p>
         </div>
     </div>
 
-    <!-- Proposals -->
+    <!-- Deals Closed or Proposals -->
     <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
         <div class="flex items-start justify-between mb-4">
             <div class="p-2.5 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
@@ -49,20 +48,14 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                 </svg>
             </div>
-            <span class="inline-flex items-center gap-1 text-xs font-medium text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded-full">
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
-                </svg>
-                8.2%
-            </span>
         </div>
         <div>
-            <p class="text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">Proposals Sent</p>
-            <p class="text-3xl font-bold text-slate-900 dark:text-white">87</p>
+            <p class="text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">Deals Closed</p>
+            <p class="text-3xl font-bold text-slate-900 dark:text-white">@Model.DealsClosed</p>
         </div>
     </div>
 
-    <!-- Response Rate -->
+    <!-- Success Rate -->
     <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
         <div class="flex items-start justify-between mb-4">
             <div class="p-2.5 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
@@ -70,16 +63,10 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
             </div>
-            <span class="inline-flex items-center gap-1 text-xs font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded-full">
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-                </svg>
-                3.1%
-            </span>
         </div>
         <div>
-            <p class="text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">Response Rate</p>
-            <p class="text-3xl font-bold text-slate-900 dark:text-white">32%</p>
+            <p class="text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">Success Rate</p>
+            <p class="text-3xl font-bold text-slate-900 dark:text-white">@Model.SuccessRate.ToString("0.0")%</p>
         </div>
     </div>
 
@@ -94,15 +81,15 @@
         </div>
         <div>
             <p class="text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">Average Rating</p>
-            <p class="text-3xl font-bold text-slate-900 dark:text-white">4.8</p>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">156 reviews</p>
+            <p class="text-3xl font-bold text-slate-900 dark:text-white">@Model.AverageRating.ToString("0.0")</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">@Model.TotalReviews reviews</p>
         </div>
     </div>
 </div>
 
 <!-- Charts and Skills -->
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-    <!-- Performance Chart -->
+    <!-- View Chart Placeholder -->
     <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
         <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Performance Overview</h3>
         <div class="flex items-center justify-center py-20">
@@ -112,52 +99,35 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                     </svg>
                 </div>
-                <p class="text-slate-600 dark:text-slate-400 mb-1">Chart visualization</p>
-                <p class="text-sm text-slate-500 dark:text-slate-500">Connect analytics to view performance</p>
+                <p class="text-slate-600 dark:text-slate-400 mb-1">Chart visualization structure ready</p>
+                <p class="text-sm text-slate-500 dark:text-slate-500">More data is needed to render meaningful performance charts.</p>
             </div>
         </div>
     </div>
 
     <!-- Top Skills -->
     <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
-        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Top Skills</h3>
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Top @(Model.IsClient ? "Categories Requested" : "Skills Used")</h3>
         <div class="space-y-5">
-            <div>
-                <div class="flex justify-between mb-2">
-                    <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Web Development</span>
-                    <span class="text-sm font-bold text-slate-900 dark:text-white">85%</span>
-                </div>
-                <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                    <div class="h-full bg-indigo-600 rounded-full" style="width: 85%"></div>
-                </div>
-            </div>
-            <div>
-                <div class="flex justify-between mb-2">
-                    <span class="text-sm font-medium text-slate-700 dark:text-slate-300">UI/UX Design</span>
-                    <span class="text-sm font-bold text-slate-900 dark:text-white">72%</span>
-                </div>
-                <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                    <div class="h-full bg-emerald-500 rounded-full" style="width: 72%"></div>
-                </div>
-            </div>
-            <div>
-                <div class="flex justify-between mb-2">
-                    <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Mobile Apps</span>
-                    <span class="text-sm font-bold text-slate-900 dark:text-white">68%</span>
-                </div>
-                <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                    <div class="h-full bg-amber-500 rounded-full" style="width: 68%"></div>
-                </div>
-            </div>
-            <div>
-                <div class="flex justify-between mb-2">
-                    <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Data Analysis</span>
-                    <span class="text-sm font-bold text-slate-900 dark:text-white">55%</span>
-                </div>
-                <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                    <div class="h-full bg-blue-500 rounded-full" style="width: 55%"></div>
-                </div>
-            </div>
+            @if (Model.TopSkills.Any())
+            {
+                foreach (var skill in Model.TopSkills)
+                {
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">@skill.SkillName</span>
+                            <span class="text-sm font-bold text-slate-900 dark:text-white">@skill.Percentage%</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                            <div class="h-full bg-@skill.ColorClass rounded-full" style="width: @skill.Percentage%"></div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-sm text-slate-500 dark:text-slate-400">Not enough data to calculate top skills/categories.</p>
+            }
         </div>
     </div>
 </div>
@@ -178,69 +148,46 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
-                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                    <td class="px-6 py-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg flex items-center justify-center">
-                                <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                </svg>
-                            </div>
-                            <span class="text-sm font-medium text-slate-900 dark:text-white">Proposal Submitted</span>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="text-sm text-slate-600 dark:text-slate-400">E-commerce Website</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="text-sm text-slate-500">2 hours ago</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="inline-flex items-center px-2.5 py-1 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 text-xs font-medium rounded-full">Pending</span>
-                    </td>
-                </tr>
-                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                    <td class="px-6 py-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg flex items-center justify-center">
-                                <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                                </svg>
-                            </div>
-                            <span class="text-sm font-medium text-slate-900 dark:text-white">Message Received</span>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="text-sm text-slate-600 dark:text-slate-400">Mobile App Design</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="text-sm text-slate-500">5 hours ago</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="inline-flex items-center px-2.5 py-1 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 text-xs font-medium rounded-full">Active</span>
-                    </td>
-                </tr>
-                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                    <td class="px-6 py-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-amber-50 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
-                                <svg class="w-4 h-4 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
-                                </svg>
-                            </div>
-                            <span class="text-sm font-medium text-slate-900 dark:text-white">Review Received</span>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="text-sm text-slate-600 dark:text-slate-400">Logo Design Project</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="text-sm text-slate-500">1 day ago</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="inline-flex items-center px-2.5 py-1 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400 text-xs font-medium rounded-full">Completed</span>
-                    </td>
-                </tr>
+                @if (Model.RecentActivities.Any())
+                {
+                    foreach (var activity in Model.RecentActivities)
+                    {
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-@activity.ColorClass-50 dark:bg-@activity.ColorClass-900/20 rounded-lg flex items-center justify-center">
+                                        <svg class="w-4 h-4 text-@activity.ColorClass-600 dark:text-@activity.ColorClass-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="@activity.IconClass"/>
+                                        </svg>
+                                    </div>
+                                    <span class="text-sm font-medium text-slate-900 dark:text-white">@activity.ActionName</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="text-sm text-slate-600 dark:text-slate-400">@activity.ProjectTitle</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="text-sm text-slate-500">@activity.Date.ToString("MMM d, yyyy h:mm tt")</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                @{
+                                    string badgeClass = "bg-slate-100 text-slate-700";
+                                    if (activity.Status == "Active" || activity.Status == "Completed" || activity.Status == "Read") badgeClass = "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400";
+                                    else if (activity.Status == "Pending" || activity.Status == "InProgress") badgeClass = "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400";
+                                }
+                                <span class="inline-flex items-center px-2.5 py-1 @badgeClass text-xs font-medium rounded-full">@activity.Status</span>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="px-6 py-8 text-center text-slate-500 dark:text-slate-400">
+                            No recent activities to display.
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>

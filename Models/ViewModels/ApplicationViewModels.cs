@@ -122,4 +122,56 @@ namespace SGP_Freelancing.Models.ViewModels
         public decimal TotalRevenue { get; set; }
         public List<ProjectDto> RecentProjects { get; set; } = new();
     }
+
+    public class EarningsViewModel
+    {
+        public decimal TotalEarnings { get; set; }
+        public decimal ThisMonthEarnings { get; set; }
+        public decimal PercentageChange { get; set; }
+        public decimal PendingEarnings { get; set; }
+        public List<TransactionDto> RecentTransactions { get; set; } = new();
+        public List<decimal> MonthlyData { get; set; } = new();
+        public List<string> MonthlyLabels { get; set; } = new();
+        public bool IsClient { get; set; }
+    }
+
+    public class TransactionDto
+    {
+        public DateTime Date { get; set; }
+        public string ProjectTitle { get; set; } = null!;
+        public string OtherPartyName { get; set; } = null!;
+        public decimal Amount { get; set; }
+        public string Status { get; set; } = null!;
+        public string Type { get; set; } = null!;
+        public bool IsCredit { get; set; }
+    }
+
+    public class AnalyticsViewModel
+    {
+        public int ProfileViews { get; set; }
+        public int DealsClosed { get; set; }
+        public decimal SuccessRate { get; set; } // e.g. Accepted / Total
+        public decimal AverageRating { get; set; }
+        public int TotalReviews { get; set; }
+        public List<SkillProgressDto> TopSkills { get; set; } = new();
+        public List<ActivityDto> RecentActivities { get; set; } = new();
+        public bool IsClient { get; set; }
+    }
+
+    public class SkillProgressDto
+    {
+        public string SkillName { get; set; } = null!;
+        public int Percentage { get; set; }
+        public string ColorClass { get; set; } = null!;
+    }
+
+    public class ActivityDto
+    {
+        public string ActionName { get; set; } = null!;
+        public string ProjectTitle { get; set; } = null!;
+        public DateTime Date { get; set; }
+        public string Status { get; set; } = null!;
+        public string IconClass { get; set; } = null!;
+        public string ColorClass { get; set; } = null!;
+    }
 }

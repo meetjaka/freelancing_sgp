@@ -1,0 +1,159 @@
+@model SGP_Freelancing.Models.ViewModels.ContractDetailsViewModel
+@using System.Security.Claims
+@{
+    ViewData["Title"] = "Contract Details";
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var isClient = User.IsInRole("Client");
+    var otherPartyId = isClient ? Model.Contract.FreelancerId : Model.Contract.ClientId; 
+}
+
+<div class="max-w-4xl mx-auto py-8 px-4">
+    <nav class="flex mb-8 text-sm" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-2">
+            <li><a asp-action="Index" class="text-slate-500 hover:text-indigo-600">Contracts</a></li>
+            <li><i class="fas fa-chevron-right text-slate-300 text-[10px]"></i></li>
+            <li class="text-slate-900 dark:text-white font-bold">@Model.Contract.ProjectTitle</li>
+        </ol>
+    </nav>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Content -->
+        <div class="lg:col-span-2 space-y-6">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 shadow-sm">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <h1 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">@Model.Contract.ProjectTitle</h1>
+                        <p class="text-slate-500 text-sm">Contract ID: #@Model.Contract.Id</p>
+                    </div>
+                    @{
+                        string badgeClass = Model.Contract.Status switch
+                        {
+                            "Active" => "bg-indigo-50 text-indigo-700 dark:bg-indigo-900/20 dark:text-indigo-400",
+                            "Completed" => "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400",
+                            "Cancelled" => "bg-rose-50 text-rose-700 dark:bg-rose-900/20 dark:text-rose-400",
+                            _ => "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400"
+                        };
+                    }
+                    <span class="px-4 py-1.5 text-sm font-semibold rounded-full @badgeClass">
+                        @Model.Contract.Status
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-6 py-6 border-y border-slate-100 dark:border-slate-700">
+                    <div>
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Amount</p>
+                        <p class="text-xl font-black text-slate-900 dark:text-white">$@Model.Contract.Amount.ToString("N2")</p>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Start Date</p>
+                        <p class="text-slate-900 dark:text-white">@Model.Contract.StartDate.ToString("MMMM d, yyyy")</p>
+                    </div>
+                </div>
+
+                <div class="mt-6">
+                    <h3 class="font-bold text-slate-900 dark:text-white mb-3">Terms of Agreement</h3>
+                    <div class="text-slate-600 dark:text-slate-400 prose dark:prose-invert max-w-none">
+                        @Html.Raw(Model.Contract.Terms?.Replace("\n", "<br/>") ?? "No specific terms provided.")
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review Section -->
+            @if (Model.Contract.Status == "Completed")
+            {
+                <div class="bg-indigo-600 rounded-2xl p-8 text-white shadow-lg shadow-indigo-500/20">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-star text-2xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold">Leave a Review</h2>
+                            <p class="text-white/80 text-sm">How was your experience working on this project?</p>
+                        </div>
+                    </div>
+
+                    <form asp-controller="Review" asp-action="SubmitReview" method="post" class="space-y-4">
+                        <input type="hidden" name="ContractId" value="@Model.Contract.Id" />
+                        @* We need the RevieweeId here. Let's assume we pass it in ViewBag or it's in the DTO *@
+                        <input type="hidden" name="RevieweeId" value="@otherPartyId" />
+                        
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Rating</label>
+                            <div class="flex gap-2">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <label class="cursor-pointer group">
+                                        <input type="radio" name="Rating" value="@i" class="hidden peer" required @(i == 5 ? "checked" : "") />
+                                        <i class="fas fa-star text-2xl text-white/30 peer-checked:text-amber-400 group-hover:text-amber-300 transition-colors"></i>
+                                    </label>
+                                }
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Your Feedback</label>
+                            <textarea name="Comment" rows="3" class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30" placeholder="Describe your experience..."></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-white text-indigo-600 font-bold py-3 rounded-xl hover:bg-slate-100 transition-all shadow-md">
+                            Submit Review
+                        </button>
+                    </form>
+                </div>
+            }
+            else if (Model.Contract.Status == "Active")
+            {
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
+                    <div class="flex flex-col items-center text-center space-y-4">
+                        <div class="w-16 h-16 bg-amber-50 dark:bg-amber-900/20 text-amber-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-info-circle text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white">In Progress</h3>
+                            <p class="text-slate-500 max-w-sm mx-auto">Once the work is delivered and approved, mark the contract as completed to leave feedback.</p>
+                        </div>
+                        <form asp-action="Complete" asp-route-id="@Model.Contract.Id" method="post">
+                            <button type="submit" class="px-8 py-3 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700 transition-all shadow-md">
+                                Mark as Completed
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm">
+                <h3 class="font-bold text-slate-900 dark:text-white mb-4">Agreement Parties</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center text-slate-500 font-bold">C</div>
+                        <div>
+                            <p class="text-xs text-slate-400 font-bold uppercase">Client</p>
+                            <p class="text-sm font-semibold text-slate-900 dark:text-white">@Model.Contract.ClientName</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 rounded-full flex items-center justify-center font-bold">F</div>
+                        <div>
+                            <p class="text-xs text-slate-400 font-bold uppercase">Freelancer</p>
+                            <p class="text-sm font-semibold text-slate-900 dark:text-white">@Model.Contract.FreelancerName</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 rounded-2xl p-6 text-white overflow-hidden relative">
+                <div class="relative z-10">
+                    <h3 class="font-bold mb-2">Need Help?</h3>
+                    <p class="text-slate-400 text-sm mb-4">If you're having trouble with this contract, our support team is here to help.</p>
+                    <a href="#" class="text-indigo-400 hover:text-indigo-300 font-semibold text-sm flex items-center gap-2">
+                        Open a Dispute <i class="fas fa-arrow-right text-[10px]"></i>
+                    </a>
+                </div>
+                <i class="fas fa-gavel absolute -bottom-4 -right-4 text-7xl text-white/5 transform -rotate-12"></i>
+            </div>
+        </div>
+    </div>
+</div>
