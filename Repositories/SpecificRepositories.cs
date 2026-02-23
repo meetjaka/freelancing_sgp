@@ -270,4 +270,143 @@ namespace SGP_Freelancing.Repositories
                 .ToListAsync();
         }
     }
+
+    public class PortfolioRepository : Repository<Portfolio>, IPortfolioRepository
+    {
+        public PortfolioRepository(ApplicationDbContext context) : base(context) { }
+
+        public async Task<Portfolio?> GetPortfolioWithDetailsAsync(int portfolioId)
+        {
+            return await _dbSet
+                .Include(p => p.FreelancerProfile)
+                    .ThenInclude(fp => fp.User)
+                .Include(p => p.Cases)
+                    .ThenInclude(pc => pc.Images)
+                .Include(p => p.Testimonials)
+                .FirstOrDefaultAsync(p => p.Id == portfolioId);
+        }
+
+        public async Task<Portfolio?> GetPortfolioByFreelancerAsync(int freelancerProfileId)
+        {
+            return await _dbSet
+                .Include(p => p.FreelancerProfile)
+                    .ThenInclude(fp => fp.User)
+                .FirstOrDefaultAsync(p => p.FreelancerProfileId == freelancerProfileId);
+        }
+
+        public async Task<IEnumerable<Portfolio>> GetPublicPortfoliosAsync()
+        {
+            return await _dbSet
+                .Where(p => p.IsPublic)
+                .Include(p => p.FreelancerProfile)
+                    .ThenInclude(fp => fp.User)
+                .Include(p => p.Cases)
+                .OrderByDescending(p => p.PublishedAt)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Portfolio>> GetFeaturedPortfoliosAsync()
+        {
+            return await _dbSet
+                .Where(p => p.IsFeatured && p.IsPublic)
+                .Include(p => p.FreelancerProfile)
+                    .ThenInclude(fp => fp.User)
+                .Include(p => p.Cases)
+                .OrderByDescending(p => p.PublishedAt)
+                .ToListAsync();
+        }
+
+        public async Task<Portfolio?> GetPortfolioWithCasesAndTestimonialsAsync(int portfolioId)
+        {
+            return await _dbSet
+                .Include(p => p.FreelancerProfile)
+                    .ThenInclude(fp => fp.User)
+                .Include(p => p.Cases)
+                    .ThenInclude(pc => pc.Images)
+                .Include(p => p.Testimonials)
+                .FirstOrDefaultAsync(p => p.Id == portfolioId);
+        }
+    }
+
+    public class PortfolioCaseRepository : Repository<PortfolioCase>, IPortfolioCaseRepository
+    {
+        public PortfolioCaseRepository(ApplicationDbContext context) : base(context) { }
+
+        public async Task<PortfolioCase?> GetCaseWithImagesAsync(int caseId)
+        {
+            return await _dbSet
+                .Include(pc => pc.Images)
+                    .OrderBy(img => img.DisplayOrder)
+                .FirstOrDefaultAsync(pc => pc.Id == caseId);
+        }
+
+        public async Task<IEnumerable<PortfolioCase>> GetCasesByPortfolioAsync(int portfolioId)
+        {
+            return await _dbSet
+                .Where(pc => pc.PortfolioId == portfolioId)
+                .Include(pc => pc.Images)
+                    .OrderBy(img => img.DisplayOrder)
+                .OrderBy(pc => pc.DisplayOrder)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<PortfolioCase>> GetHighlightedCasesAsync(int portfolioId)
+        {
+            return await _dbSet
+                .Where(pc => pc.PortfolioId == portfolioId && pc.IsHighlighted)
+                .Include(pc => pc.Images)
+                    .OrderBy(img => img.DisplayOrder)
+                .OrderBy(pc => pc.DisplayOrder)
+                .ToListAsync();
+        }
+    }
+
+    public class PortfolioImageRepository : Repository<PortfolioImage>, IPortfolioImageRepository
+    {
+        public PortfolioImageRepository(ApplicationDbContext context) : base(context) { }
+
+        public async Task<IEnumerable<PortfolioImage>> GetImagesByPortfolioCaseAsync(int caseId)
+        {
+            return await _dbSet
+                .Where(pi => pi.PortfolioCaseId == caseId)
+                .OrderBy(pi => pi.DisplayOrder)
+                .ToListAsync();
+        }
+
+        public async Task<PortfolioImage?> GetThumbnailByCaseAsync(int caseId)
+        {
+            return await _dbSet
+                .FirstOrDefaultAsync(pi => pi.PortfolioCaseId == caseId && pi.IsThumbnail);
+        }
+    }
+
+    public class ProjectTestimonialRepository : Repository<ProjectTestimonial>, IProjectTestimonialRepository
+    {
+        public ProjectTestimonialRepository(ApplicationDbContext context) : base(context) { }
+
+        public async Task<IEnumerable<ProjectTestimonial>> GetTestimonialsByPortfolioAsync(int portfolioId)
+        {
+            return await _dbSet
+                .Where(pt => pt.PortfolioId == portfolioId)
+                .OrderBy(pt => pt.DisplayOrder)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ProjectTestimonial>> GetApprovedTestimonialsAsync(int portfolioId)
+        {
+            return await _dbSet
+                .Where(pt => pt.PortfolioId == portfolioId && pt.IsApproved)
+                .OrderBy(pt => pt.DisplayOrder)
+                .ToListAsync();
+        }
+
+        public async Task<decimal> GetAverageRatingAsync(int portfolioId)
+        {
+            var testimonials = await _dbSet
+                .Where(pt => pt.PortfolioId == portfolioId && pt.IsApproved)
+                .ToListAsync();
+
+            return testimonials.Any() ? testimonials.Average(t => t.Rating) : 0;
+        }
+    }
 }

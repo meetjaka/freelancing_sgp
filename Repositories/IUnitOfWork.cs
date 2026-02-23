@@ -16,6 +16,10 @@ namespace SGP_Freelancing.Repositories
         IReviewRepository Reviews { get; }
         ICategoryRepository Categories { get; }
         ISkillRepository Skills { get; }
+        IPortfolioRepository Portfolios { get; }
+        IPortfolioCaseRepository PortfolioCases { get; }
+        IPortfolioImageRepository PortfolioImages { get; }
+        IProjectTestimonialRepository ProjectTestimonials { get; }
         IRepository<T> Repository<T>() where T : class;
         
         Task<int> SaveChangesAsync();

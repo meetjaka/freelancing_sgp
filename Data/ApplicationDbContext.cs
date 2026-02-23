@@ -31,6 +31,12 @@ namespace SGP_Freelancing.Data
         public DbSet<PaymentTransaction> PaymentTransactions { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Message> Messages { get; set; }
+        
+        // Portfolio entities
+        public DbSet<Portfolio> Portfolios { get; set; }
+        public DbSet<PortfolioCase> PortfolioCases { get; set; }
+        public DbSet<PortfolioImage> PortfolioImages { get; set; }
+        public DbSet<ProjectTestimonial> ProjectTestimonials { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -49,6 +55,7 @@ namespace SGP_Freelancing.Data
             ConfigureContractRelationships(modelBuilder);
             ConfigureReviewRelationships(modelBuilder);
             ConfigureMessageRelationships(modelBuilder);
+            ConfigurePortfolioRelationships(modelBuilder);
 
             // Configure indexes for performance
             ConfigureIndexes(modelBuilder);
@@ -166,6 +173,45 @@ namespace SGP_Freelancing.Data
                 .OnDelete(DeleteBehavior.Restrict);
         }
 
+        private void ConfigurePortfolioRelationships(ModelBuilder modelBuilder)
+        {
+            // Portfolio -> FreelancerProfile (One-to-One)
+            modelBuilder.Entity<Portfolio>()
+                .HasOne(p => p.FreelancerProfile)
+                .WithMany()
+                .HasForeignKey(p => p.FreelancerProfileId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Portfolio -> PortfolioCase (One-to-Many)
+            modelBuilder.Entity<Portfolio>()
+                .HasMany(p => p.Cases)
+                .WithOne(pc => pc.Portfolio)
+                .HasForeignKey(pc => pc.PortfolioId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Portfolio -> ProjectTestimonial (One-to-Many)
+            // Using NoAction to avoid cascading delete conflicts
+            modelBuilder.Entity<Portfolio>()
+                .HasMany(p => p.Testimonials)
+                .WithOne(pt => pt.Portfolio)
+                .HasForeignKey(pt => pt.PortfolioId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // PortfolioCase -> PortfolioImage (One-to-Many)
+            modelBuilder.Entity<PortfolioCase>()
+                .HasMany(pc => pc.Images)
+                .WithOne(pi => pi.PortfolioCase)
+                .HasForeignKey(pi => pi.PortfolioCaseId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // ProjectTestimonial -> PortfolioCase (Optional)
+            modelBuilder.Entity<ProjectTestimonial>()
+                .HasOne(pt => pt.ProjectCase)
+                .WithMany()
+                .HasForeignKey(pt => pt.ProjectCaseId)
+                .OnDelete(DeleteBehavior.SetNull);
+        }
+
         private void ConfigureIndexes(ModelBuilder modelBuilder)
         {
             // Index on frequently queried fields
@@ -198,6 +244,12 @@ namespace SGP_Freelancing.Data
             modelBuilder.Entity<Review>().HasQueryFilter(e => !e.IsDeleted);
             modelBuilder.Entity<Message>().HasQueryFilter(e => !e.IsDeleted);
             modelBuilder.Entity<PaymentTransaction>().HasQueryFilter(e => !e.IsDeleted);
+            
+            // Portfolio entities soft delete filters
+            modelBuilder.Entity<Portfolio>().HasQueryFilter(e => !e.IsDeleted);
+            modelBuilder.Entity<PortfolioCase>().HasQueryFilter(e => !e.IsDeleted);
+            modelBuilder.Entity<PortfolioImage>().HasQueryFilter(e => !e.IsDeleted);
+            modelBuilder.Entity<ProjectTestimonial>().HasQueryFilter(e => !e.IsDeleted);
         }
 
         private void SeedData(ModelBuilder modelBuilder)

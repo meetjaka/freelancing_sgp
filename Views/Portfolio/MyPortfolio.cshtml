@@ -1,0 +1,114 @@
+@{
+    ViewData["Title"] = "My Portfolio";
+}
+
+<div class="container my-5">
+    <!-- Header -->
+    <div class="row mb-5">
+        <div class="col-lg-8">
+            <h1 class="display-4 fw-bold">My Portfolio</h1>
+            <p class="lead text-muted">Showcase your best work and attract more clients</p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+            <a asp-action="Create" class="btn btn-primary btn-lg">
+                <i class="fa fa-plus me-2"></i> Create Portfolio
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Getting Started Section -->
+    <div class="alert alert-info">
+        <div class="d-flex align-items-start">
+            <i class="fa fa-info-circle me-3 mt-1 fs-5"></i>
+            <div>
+                <h5>Build Your Portfolio</h5>
+                <p class="mb-0">Create a portfolio to showcase your work, add case studies, client testimonials, and increase your visibility to potential clients.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Steps to Get Started -->
+    <div class="row g-4 my-5">
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+                    <div class="fs-1 text-primary mb-3">1</div>
+                    <h5 class="card-title fw-bold">Create Portfolio</h5>
+                    <p class="card-text text-muted">Set up your portfolio with title, bio, and profile image</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+                    <div class="fs-1 text-primary mb-3">2</div>
+                    <h5 class="card-title fw-bold">Add Case Studies</h5>
+                    <p class="card-text text-muted">Upload your best projects with details and images</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+                    <div class="fs-1 text-primary mb-3">3</div>
+                    <h5 class="card-title fw-bold">Collect Reviews</h5>
+                    <p class="card-text text-muted">Gather client testimonials to build trust</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Portfolio Guidelines -->
+    <div class="bg-light p-4 rounded-3">
+        <h5 class="fw-bold mb-3">Portfolio Tips</h5>
+        <ul class="list-unstyled">
+            <li class="mb-2">
+                <i class="fa fa-check-circle text-success me-2"></i>
+                <strong>Use high-quality images</strong> - Clear, professional photos make a better impression
+            </li>
+            <li class="mb-2">
+                <i class="fa fa-check-circle text-success me-2"></i>
+                <strong>Write detailed descriptions</strong> - Explain your role, challenges, and solutions
+            </li>
+            <li class="mb-2">
+                <i class="fa fa-check-circle text-success me-2"></i>
+                <strong>Include diverse projects</strong> - Show different types and industries you've worked on
+            </li>
+            <li class="mb-2">
+                <i class="fa fa-check-circle text-success me-2"></i>
+                <strong>Highlight your best work</strong> - Make your top projects stand out
+            </li>
+            <li class="mb-2">
+                <i class="fa fa-check-circle text-success me-2"></i>
+                <strong>Keep it updated</strong> - Regularly add new projects and testimonials
+            </li>
+        </ul>
+    </div>
+
+    <!-- Portfolio Management Section -->
+    <div class="mt-5 pt-5 border-top">
+        <h3 class="fw-bold mb-4">Manage Your Portfolios</h3>
+        <div class="alert alert-light border">
+            <p class="text-muted text-center mb-0">
+                <i class="fa fa-spinner fa-spin me-2"></i>
+                Loading your portfolios...
+            </p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,199 @@
+@model UpdatePortfolioDto
+@using SGP_Freelancing.Models.DTOs;
+@{
+    ViewData["Title"] = "Edit Portfolio";
+}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Tabs -->
+            <ul class="nav nav-tabs mb-4" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button">
+                        <i class="fa fa-info-circle me-2"></i> Portfolio Info
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="cases-tab" data-bs-toggle="tab" data-bs-target="#cases" type="button">
+                        <i class="fa fa-briefcase me-2"></i> Case Studies
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="testimonials-tab" data-bs-toggle="tab" data-bs-target="#testimonials" type="button">
+                        <i class="fa fa-quote-left me-2"></i> Testimonials
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <!-- Portfolio Info Tab -->
+                <div class="tab-pane fade show active" id="info">
+                    <div class="card shadow-lg">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Portfolio Information</h5>
+                        </div>
+
+                        <form method="post" class="card-body">
+                            <!-- Title -->
+                            <div class="mb-4">
+                                <label asp-for="Title" class="form-label fw-bold">
+                                    Portfolio Title
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="Title" class="form-control form-control-lg" required>
+                                <span asp-validation-for="Title" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="mb-4">
+                                <label asp-for="Description" class="form-label fw-bold">
+                                    Short Description
+                                </label>
+                                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                            </div>
+
+                            <!-- Detailed Bio -->
+                            <div class="mb-4">
+                                <label asp-for="DetailedBio" class="form-label fw-bold">
+                                    Detailed Bio
+                                </label>
+                                <textarea asp-for="DetailedBio" class="form-control" rows="5"></textarea>
+                            </div>
+
+                            <!-- Settings -->
+                            <div class="bg-light p-4 rounded-3 mb-4">
+                                <h6 class="fw-bold mb-3">Settings</h6>
+                                <div class="form-check mb-3">
+                                    <input asp-for="IsPublic" type="checkbox" class="form-check-input">
+                                    <label class="form-check-label" asp-for="IsPublic">
+                                        Make portfolio public
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input asp-for="IsFeatured" type="checkbox" class="form-check-input">
+                                    <label class="form-check-label" asp-for="IsFeatured">
+                                        Featured portfolio (Admin only)
+                                    </label>
+                                </div>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fa fa-save me-2"></i> Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Case Studies Tab -->
+                <div class="tab-pane fade" id="cases">
+                    <div class="card shadow-lg">
+                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Case Studies</h5>
+                            <a href="#addCaseModal" class="btn btn-sm btn-light" data-bs-toggle="modal">
+                                <i class="fa fa-plus me-2"></i> Add Case Study
+                            </a>
+                        </div>
+
+                        <div class="card-body">
+                            <p class="text-muted">
+                                <i class="fa fa-info-circle me-2"></i>
+                                Add your best projects here with images, descriptions, and client details.
+                            </p>
+
+                            <div class="alert alert-info">
+                                <div class="list-group">
+                                    <a asp-action="AddCase" asp-route-portfolioId="@Model.Id" class="list-group-item list-group-item-action">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">
+                                                <i class="fa fa-plus-circle text-primary me-2"></i> Add Your First Case Study
+                                            </h6>
+                                            <small class="text-muted">Get Started</small>
+                                        </div>
+                                        <p class="mb-0 text-muted small">Showcase your best work with images and descriptions</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonials Tab -->
+                <div class="tab-pane fade" id="testimonials">
+                    <div class="card shadow-lg">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Client Testimonials</h5>
+                        </div>
+
+                        <div class="card-body">
+                            <p class="text-muted">
+                                <i class="fa fa-info-circle me-2"></i>
+                                Testimonials from satisfied clients help build trust and credibility.
+                            </p>
+
+                            <div class="alert alert-info">
+                                <h6 class="mb-2">
+                                    <i class="fa fa-quote-left me-2"></i> How to Get Testimonials
+                                </h6>
+                                <ul class="mb-0 small">
+                                    <li>Ask satisfied clients after project completion</li>
+                                    <li>Provide them with a link to your portfolio</li>
+                                    <li>Let them know how testimonials help you</li>
+                                    <li>Make it easy for them to leave feedback</li>
+                                </ul>
+                            </div>
+
+                            <p class="text-muted text-center py-4">
+                                <i class="fa fa-comments fa-3x opacity-50 d-block mb-2"></i>
+                                No testimonials yet. Ask your happy clients to share their experience!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Portfolio Preview -->
+            <div class="card shadow-lg mb-4 sticky-top" style="top: 20px;">
+                <div class="card-header">
+                    <h6 class="mb-0">Preview</h6>
+                </div>
+                <div class="card-body text-center">
+                    <div class="bg-gradient p-4 rounded-3 mb-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                        <h6 class="text-truncate">@Model.Title</h6>
+                    </div>
+                    <a asp-action="Details" asp-route-id="@Model.Id" target="_blank" class="btn btn-sm btn-outline-primary w-100">
+                        <i class="fa fa-eye me-2"></i> View Portfolio
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card shadow-lg">
+                <div class="card-header">
+                    <h6 class="mb-0">Actions</h6>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="fa fa-image me-2 text-primary"></i> Upload Cover Image
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="fa fa-user-circle me-2 text-success"></i> Upload Profile Picture
+                    </a>
+                    <form asp-action="Delete" asp-route-id="@Model.Id" method="post" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="list-group-item list-group-item-action text-danger" onclick="return confirm('Delete this portfolio?')">
+                            <i class="fa fa-trash me-2"></i> Delete Portfolio
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

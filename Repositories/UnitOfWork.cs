@@ -21,6 +21,10 @@ namespace SGP_Freelancing.Repositories
         private IReviewRepository? _reviews;
         private ICategoryRepository? _categories;
         private ISkillRepository? _skills;
+        private IPortfolioRepository? _portfolios;
+        private IPortfolioCaseRepository? _portfolioCases;
+        private IPortfolioImageRepository? _portfolioImages;
+        private IProjectTestimonialRepository? _projectTestimonials;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -36,6 +40,10 @@ namespace SGP_Freelancing.Repositories
         public IReviewRepository Reviews => _reviews ??= new ReviewRepository(_context);
         public ICategoryRepository Categories => _categories ??= new CategoryRepository(_context);
         public ISkillRepository Skills => _skills ??= new SkillRepository(_context);
+        public IPortfolioRepository Portfolios => _portfolios ??= new PortfolioRepository(_context);
+        public IPortfolioCaseRepository PortfolioCases => _portfolioCases ??= new PortfolioCaseRepository(_context);
+        public IPortfolioImageRepository PortfolioImages => _portfolioImages ??= new PortfolioImageRepository(_context);
+        public IProjectTestimonialRepository ProjectTestimonials => _projectTestimonials ??= new ProjectTestimonialRepository(_context);
 
         public IRepository<T> Repository<T>() where T : class
         {

@@ -61,4 +61,33 @@ namespace SGP_Freelancing.Repositories.Interfaces
     {
         Task<IEnumerable<Skill>> GetPopularSkillsAsync(int count);
     }
+
+    public interface IPortfolioRepository : IRepository<Portfolio>
+    {
+        Task<Portfolio?> GetPortfolioWithDetailsAsync(int portfolioId);
+        Task<Portfolio?> GetPortfolioByFreelancerAsync(int freelancerProfileId);
+        Task<IEnumerable<Portfolio>> GetPublicPortfoliosAsync();
+        Task<IEnumerable<Portfolio>> GetFeaturedPortfoliosAsync();
+        Task<Portfolio?> GetPortfolioWithCasesAndTestimonialsAsync(int portfolioId);
+    }
+
+    public interface IPortfolioCaseRepository : IRepository<PortfolioCase>
+    {
+        Task<PortfolioCase?> GetCaseWithImagesAsync(int caseId);
+        Task<IEnumerable<PortfolioCase>> GetCasesByPortfolioAsync(int portfolioId);
+        Task<IEnumerable<PortfolioCase>> GetHighlightedCasesAsync(int portfolioId);
+    }
+
+    public interface IPortfolioImageRepository : IRepository<PortfolioImage>
+    {
+        Task<IEnumerable<PortfolioImage>> GetImagesByPortfolioCaseAsync(int caseId);
+        Task<PortfolioImage?> GetThumbnailByCaseAsync(int caseId);
+    }
+
+    public interface IProjectTestimonialRepository : IRepository<ProjectTestimonial>
+    {
+        Task<IEnumerable<ProjectTestimonial>> GetTestimonialsByPortfolioAsync(int portfolioId);
+        Task<IEnumerable<ProjectTestimonial>> GetApprovedTestimonialsAsync(int portfolioId);
+        Task<decimal> GetAverageRatingAsync(int portfolioId);
+    }
 }

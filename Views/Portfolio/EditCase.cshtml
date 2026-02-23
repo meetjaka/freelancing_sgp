@@ -1,0 +1,200 @@
+@model UpdatePortfolioCaseDto
+@using SGP_Freelancing.Models.DTOs;
+@{
+    ViewData["Title"] = "Edit Case Study";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <i class="fa fa-edit me-2"></i> Edit Case Study
+                    </h4>
+                    <form asp-action="DeleteCase" asp-route-caseId="@Model.Id" method="post" style="display:inline-block;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this case study?')">
+                            <i class="fa fa-trash me-1"></i> Delete
+                        </button>
+                    </form>
+                </div>
+
+                <div class="card-body p-5">
+                    @if (ViewData.ModelState.Any(x => x.Value.Errors.Any()))
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Please fix the following errors:</strong>
+                            <ul class="mt-2 mb-0">
+                                @foreach (var error in ViewData.ModelState.Values.SelectMany(x => x.Errors))
+                                {
+                                    <li>@error.ErrorMessage</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                    <form method="post" class="needs-validation">
+                        <input type="hidden" asp-for="Id">
+
+                        <!-- Basic Information -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold text-primary mb-3">Basic Information</h6>
+
+                            <div class="mb-3">
+                                <label asp-for="Title" class="form-label fw-bold">
+                                    Project Title
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="Title" class="form-control" required>
+                                <span asp-validation-for="Title" class="text-danger small"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Description" class="form-label fw-bold">
+                                    Short Description
+                                </label>
+                                <textarea asp-for="Description" class="form-control" rows="2"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="DetailedDescription" class="form-label fw-bold">
+                                    Detailed Description
+                                </label>
+                                <textarea asp-for="DetailedDescription" class="form-control" rows="4"></textarea>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Project Details -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold text-primary mb-3">Project Details</h6>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="ClientName" class="form-label fw-bold">
+                                        Client Name
+                                    </label>
+                                    <input asp-for="ClientName" class="form-control">
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="Industry" class="form-label fw-bold">
+                                        Industry
+                                    </label>
+                                    <input asp-for="Industry" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="BudgetAmount" class="form-label fw-bold">
+                                        Budget Amount
+                                    </label>
+                                    <input asp-for="BudgetAmount" class="form-control" type="number" step="0.01">
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="BudgetCurrency" class="form-label fw-bold">
+                                        Currency
+                                    </label>
+                                    <select asp-for="BudgetCurrency" class="form-control">
+                                        <option>USD</option>
+                                        <option>EUR</option>
+                                        <option>GBP</option>
+                                        <option>AUD</option>
+                                        <option>CAD</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="CompletionDate" class="form-label fw-bold">
+                                    Completion Date
+                                </label>
+                                <input asp-for="CompletionDate" class="form-control" type="date">
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="ProjectUrl" class="form-label fw-bold">
+                                    Project URL
+                                </label>
+                                <input asp-for="ProjectUrl" class="form-control" type="url">
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Rating & Display -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold text-primary mb-3">Additional Details</h6>
+
+                            <div class="mb-3">
+                                <label asp-for="Technologies" class="form-label fw-bold">
+                                    Technologies Used
+                                </label>
+                                <input asp-for="Technologies" class="form-control">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="Rating" class="form-label fw-bold">
+                                        Case Rating (1-5)
+                                    </label>
+                                    <input asp-for="Rating" class="form-control" type="number" min="1" max="5" step="0.5">
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="DisplayOrder" class="form-label fw-bold">
+                                        Display Order
+                                    </label>
+                                    <input asp-for="DisplayOrder" class="form-control" type="number">
+                                </div>
+                            </div>
+
+                            <div class="form-check">
+                                <input asp-for="IsHighlighted" type="checkbox" class="form-check-input">
+                                <label class="form-check-label" asp-for="IsHighlighted">
+                                    Highlight this case study (pin to top)
+                                </label>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Form Actions -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fa fa-save me-2"></i> Save Changes
+                            </button>
+                            <a asp-action="MyPortfolio" class="btn btn-outline-secondary btn-lg">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                var forms = document.querySelectorAll('.needs-validation');
+                Array.prototype.slice.call(forms).forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+}
