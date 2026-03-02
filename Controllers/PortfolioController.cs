@@ -127,12 +127,10 @@ namespace SGP_Freelancing.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                // Get freelancer profile - we'll need to modify this
-                // For now, passing a placeholder
-                var portfolio = await _portfolioService.CreatePortfolioAsync("1", createDto);
+                var portfolio = await _portfolioService.CreatePortfolioAsync(userId, createDto);
                 
                 TempData["Success"] = "Portfolio created successfully!";
-                return RedirectToAction("Edit", new { id = portfolio.Id });
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {

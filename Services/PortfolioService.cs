@@ -176,7 +176,20 @@ namespace SGP_Freelancing.Services
             {
                 var freelancerProfile = await _unitOfWork.FreelancerProfiles.GetByUserIdAsync(userId);
                 if (freelancerProfile == null)
-                    throw new InvalidOperationException("Freelancer profile not found");
+                {
+                    // Auto-create FreelancerProfile if it doesn't exist
+                    freelancerProfile = new FreelancerProfile
+                    {
+                        UserId = userId,
+                        Title = "Freelancer",
+                        Bio = "Professional freelancer",
+                        HourlyRate = 0,
+                        CreatedAt = DateTime.UtcNow
+                    };
+                    await _unitOfWork.FreelancerProfiles.AddAsync(freelancerProfile);
+                    await _unitOfWork.SaveChangesAsync();
+                    _logger.LogInformation("Auto-created FreelancerProfile for user {UserId}", userId);
+                }
 
                 var portfolio = new Portfolio
                 {

@@ -2,113 +2,219 @@
     ViewData["Title"] = "My Portfolio";
 }
 
-<div class="container my-5">
-    <!-- Header -->
-    <div class="row mb-5">
-        <div class="col-lg-8">
-            <h1 class="display-4 fw-bold">My Portfolio</h1>
-            <p class="lead text-muted">Showcase your best work and attract more clients</p>
+<!-- My Portfolio Page -->
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-blue-50">
+    <!-- Hero Section -->
+    <div class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="flex-1">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">
+                        My Portfolio
+                    </h1>
+                    <p class="text-lg md:text-xl text-indigo-100 mb-6">
+                        Showcase your best work and attract more clients to grow your freelance business
+                    </p>
+                    <div class="flex gap-3">
+                        <a asp-action="Create" class="inline-flex items-center px-6 py-3 bg-white text-indigo-600 font-bold rounded-lg hover:bg-indigo-50 transition duration-300 shadow-lg hover:shadow-xl">
+                            <i class="fas fa-plus mr-2"></i>
+                            Create Portfolio
+                        </a>
+                    </div>
+                </div>
+                <div class="flex-1 text-center md:text-right">
+                    <div class="w-32 h-32 md:w-40 md:h-40 bg-white bg-opacity-20 rounded-full mx-auto md:mx-0 flex items-center justify-center animate-bounce">
+                        <i class="fas fa-briefcase text-white text-6xl"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-lg-4 text-lg-end">
-            <a asp-action="Create" class="btn btn-primary btn-lg">
-                <i class="fa fa-plus me-2"></i> Create Portfolio
+    </div>
+
+    <!-- Alerts -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        @if (TempData["Success"] != null)
+        {
+            <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-lg mb-6 animate-slide-in">
+                <div class="flex items-center">
+                    <i class="fas fa-check-circle text-green-500 text-2xl mr-3"></i>
+                    <p class="text-green-800 font-medium">@TempData["Success"]</p>
+                </div>
+            </div>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg mb-6 animate-slide-in">
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-circle text-red-500 text-2xl mr-3"></i>
+                    <p class="text-red-800 font-medium">@TempData["Error"]</p>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Getting Started Section -->
+        <div class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                    Build Your Portfolio in 3 Steps
+                </h2>
+                <p class="text-xl text-slate-600">
+                    Create a professional portfolio to stand out and attract more clients
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 border-t-4 border-indigo-600">
+                    <div class="mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto group-hover:scale-110 transition duration-300">
+                            1
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-3 text-center">Create Portfolio</h3>
+                    <p class="text-slate-600 text-center mb-4">
+                        Set up your portfolio with a professional title, bio, and cover image that represents your work
+                    </p>
+                    <div class="text-center">
+                        <span class="inline-block px-4 py-2 bg-indigo-100 text-indigo-700 rounded-full text-sm font-semibold">
+                            <i class="fas fa-star mr-1"></i> Basic Information
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 border-t-4 border-purple-600 md:translate-y-4">
+                    <div class="mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto group-hover:scale-110 transition duration-300">
+                            2
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-3 text-center">Add Case Studies</h3>
+                    <p class="text-slate-600 text-center mb-4">
+                        Upload your best projects with detailed descriptions, images, and technologies used
+                    </p>
+                    <div class="text-center">
+                        <span class="inline-block px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-semibold">
+                            <i class="fas fa-images mr-1"></i> Showcase Work
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 border-t-4 border-pink-600">
+                    <div class="mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-br from-pink-600 to-rose-600 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto group-hover:scale-110 transition duration-300">
+                            3
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-3 text-center">Collect Reviews</h3>
+                    <p class="text-slate-600 text-center mb-4">
+                        Gather client testimonials and 5-star ratings to build trust and credibility
+                    </p>
+                    <div class="text-center">
+                        <span class="inline-block px-4 py-2 bg-pink-100 text-pink-700 rounded-full text-sm font-semibold">
+                            <i class="fas fa-star mr-1"></i> Build Trust
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Portfolio Tips Section -->
+        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl p-8 md:p-12 text-white mb-16">
+            <div class="flex items-center mb-8">
+                <i class="fas fa-lightbulb text-4xl mr-4 text-yellow-300"></i>
+                <h2 class="text-3xl font-bold">Portfolio Tips & Best Practices</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="flex items-start">
+                    <i class="fas fa-check-circle text-yellow-300 text-xl mr-4 mt-1 flex-shrink-0"></i>
+                    <div>
+                        <h4 class="font-bold text-lg mb-1">Use High-Quality Images</h4>
+                        <p class="text-indigo-100">Clear, professional photos make a lasting impression on potential clients</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start">
+                    <i class="fas fa-check-circle text-yellow-300 text-xl mr-4 mt-1 flex-shrink-0"></i>
+                    <div>
+                        <h4 class="font-bold text-lg mb-1">Write Detailed Descriptions</h4>
+                        <p class="text-indigo-100">Explain your role, challenges you solved, and the results you achieved</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start">
+                    <i class="fas fa-check-circle text-yellow-300 text-xl mr-4 mt-1 flex-shrink-0"></i>
+                    <div>
+                        <h4 class="font-bold text-lg mb-1">Showcase Diverse Projects</h4>
+                        <p class="text-indigo-100">Show different industries and project types you've successfully completed</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start">
+                    <i class="fas fa-check-circle text-yellow-300 text-xl mr-4 mt-1 flex-shrink-0"></i>
+                    <div>
+                        <h4 class="font-bold text-lg mb-1">Highlight Your Best Work</h4>
+                        <p class="text-indigo-100">Feature your top projects and mark them as highlighted or featured</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start">
+                    <i class="fas fa-check-circle text-yellow-300 text-xl mr-4 mt-1 flex-shrink-0"></i>
+                    <div>
+                        <h4 class="font-bold text-lg mb-1">Keep It Updated</h4>
+                        <p class="text-indigo-100">Regularly add new projects and client testimonials to stay fresh</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start">
+                    <i class="fas fa-check-circle text-yellow-300 text-xl mr-4 mt-1 flex-shrink-0"></i>
+                    <div>
+                        <h4 class="font-bold text-lg mb-1">Ask for Testimonials</h4>
+                        <p class="text-indigo-100">Social proof from satisfied clients is incredibly powerful</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="bg-white rounded-3xl shadow-lg p-12 text-center">
+            <div class="mb-6">
+                <div class="w-24 h-24 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full flex items-center justify-center mx-auto">
+                    <i class="fas fa-briefcase text-indigo-600 text-5xl"></i>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-slate-900 mb-3">No Portfolio Yet</h3>
+            <p class="text-slate-600 text-lg mb-8 max-w-md mx-auto">
+                Start building your professional portfolio today to showcase your best work and attract more clients
+            </p>
+            <a asp-action="Create" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl hover:shadow-lg transition duration-300">
+                <i class="fas fa-plus mr-2"></i>
+                Create Your First Portfolio
             </a>
         </div>
     </div>
-
-    @if (TempData["Success"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            @TempData["Success"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    }
-
-    @if (TempData["Error"] != null)
-    {
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            @TempData["Error"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    }
-
-    <!-- Getting Started Section -->
-    <div class="alert alert-info">
-        <div class="d-flex align-items-start">
-            <i class="fa fa-info-circle me-3 mt-1 fs-5"></i>
-            <div>
-                <h5>Build Your Portfolio</h5>
-                <p class="mb-0">Create a portfolio to showcase your work, add case studies, client testimonials, and increase your visibility to potential clients.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Steps to Get Started -->
-    <div class="row g-4 my-5">
-        <div class="col-md-4">
-            <div class="card shadow-sm text-center">
-                <div class="card-body">
-                    <div class="fs-1 text-primary mb-3">1</div>
-                    <h5 class="card-title fw-bold">Create Portfolio</h5>
-                    <p class="card-text text-muted">Set up your portfolio with title, bio, and profile image</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm text-center">
-                <div class="card-body">
-                    <div class="fs-1 text-primary mb-3">2</div>
-                    <h5 class="card-title fw-bold">Add Case Studies</h5>
-                    <p class="card-text text-muted">Upload your best projects with details and images</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm text-center">
-                <div class="card-body">
-                    <div class="fs-1 text-primary mb-3">3</div>
-                    <h5 class="card-title fw-bold">Collect Reviews</h5>
-                    <p class="card-text text-muted">Gather client testimonials to build trust</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Portfolio Guidelines -->
-    <div class="bg-light p-4 rounded-3">
-        <h5 class="fw-bold mb-3">Portfolio Tips</h5>
-        <ul class="list-unstyled">
-            <li class="mb-2">
-                <i class="fa fa-check-circle text-success me-2"></i>
-                <strong>Use high-quality images</strong> - Clear, professional photos make a better impression
-            </li>
-            <li class="mb-2">
-                <i class="fa fa-check-circle text-success me-2"></i>
-                <strong>Write detailed descriptions</strong> - Explain your role, challenges, and solutions
-            </li>
-            <li class="mb-2">
-                <i class="fa fa-check-circle text-success me-2"></i>
-                <strong>Include diverse projects</strong> - Show different types and industries you've worked on
-            </li>
-            <li class="mb-2">
-                <i class="fa fa-check-circle text-success me-2"></i>
-                <strong>Highlight your best work</strong> - Make your top projects stand out
-            </li>
-            <li class="mb-2">
-                <i class="fa fa-check-circle text-success me-2"></i>
-                <strong>Keep it updated</strong> - Regularly add new projects and testimonials
-            </li>
-        </ul>
-    </div>
-
-    <!-- Portfolio Management Section -->
-    <div class="mt-5 pt-5 border-top">
-        <h3 class="fw-bold mb-4">Manage Your Portfolios</h3>
-        <div class="alert alert-light border">
-            <p class="text-muted text-center mb-0">
-                <i class="fa fa-spinner fa-spin me-2"></i>
-                Loading your portfolios...
-            </p>
-        </div>
-    </div>
 </div>
+
+<style>
+    @@keyframes slide-in {
+        from {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    .animate-slide-in {
+        animation: slide-in 0.3s ease-out;
+    }
+</style>
+

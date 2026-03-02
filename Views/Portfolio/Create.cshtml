@@ -4,119 +4,164 @@
     ViewData["Title"] = "Create Portfolio";
 }
 
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-6">
-            <div class="card shadow-lg">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">
-                        <i class="fa fa-briefcase me-2"></i> Create Your Portfolio
-                    </h4>
-                </div>
-
-                <div class="card-body p-5">
-                    <form method="post" class="needs-validation">
-                        @if (ViewData.ModelState.Any(x => x.Value.Errors.Any()))
-                        {
-                            <div class="alert alert-danger">
-                                <strong>Please fix the following errors:</strong>
-                                <ul class="mt-2 mb-0">
-                                    @foreach (var error in ViewData.ModelState.Values.SelectMany(x => x.Errors))
-                                    {
-                                        <li>@error.ErrorMessage</li>
-                                    }
-                                </ul>
-                            </div>
-                        }
-
-                        <!-- Title -->
-                        <div class="mb-4">
-                            <label asp-for="Title" class="form-label fw-bold">
-                                Portfolio Title
-                                <span class="text-danger">*</span>
-                            </label>
-                            <input asp-for="Title" class="form-control form-control-lg" 
-                                   placeholder="e.g., Professional Web Designer" required>
-                            <small class="text-muted d-block mt-1">
-                                A catchy title that describes your expertise and style
-                            </small>
-                            <span asp-validation-for="Title" class="text-danger small"></span>
-                        </div>
-
-                        <!-- Description -->
-                        <div class="mb-4">
-                            <label asp-for="Description" class="form-label fw-bold">
-                                Short Description
-                            </label>
-                            <textarea asp-for="Description" class="form-control" rows="3"
-                                      placeholder="A brief overview of your portfolio..."></textarea>
-                            <small class="text-muted d-block mt-1">
-                                Keep it concise - this appears in portfolio listings
-                            </small>
-                        </div>
-
-                        <!-- Detailed Bio -->
-                        <div class="mb-4">
-                            <label asp-for="DetailedBio" class="form-label fw-bold">
-                                Detailed Bio
-                            </label>
-                            <textarea asp-for="DetailedBio" class="form-control" rows="5"
-                                      placeholder="Tell your story, highlight your experience, skills, and approach..."></textarea>
-                            <small class="text-muted d-block mt-1">
-                                Show your personality and experience
-                            </small>
-                        </div>
-
-                        <!-- Visibility -->
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">Visibility</label>
-                            <div class="form-check">
-                                <input asp-for="IsPublic" type="checkbox" class="form-check-input" id="isPublic" checked>
-                                <label class="form-check-label" for="isPublic">
-                                    Make portfolio public (visible to all clients)
-                                </label>
-                            </div>
-                            <small class="text-muted d-block mt-1">
-                                You can change this anytime
-                            </small>
-                        </div>
-
-                        <hr class="my-4">
-
-                        <!-- Buttons -->
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fa fa-check me-2"></i> Create Portfolio
-                            </button>
-                            <a asp-action="MyPortfolio" class="btn btn-outline-secondary btn-lg">
-                                Cancel
-                            </a>
-                        </div>
-                    </form>
-                </div>
+<!-- Create Portfolio Page -->
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-blue-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
+        <!-- Form Container -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 px-8 md:px-12 py-10">
+                <h1 class="text-3xl md:text-4xl font-bold text-white mb-2 flex items-center">
+                    <i class="fas fa-plus-circle mr-3"></i>
+                    Create Your Portfolio
+                </h1>
+                <p class="text-indigo-100 text-lg">
+                    Start showcasing your best work and attract more clients
+                </p>
             </div>
 
-            <!-- Help Tips -->
-            <div class="card mt-4 shadow-sm">
-                <div class="card-header bg-light">
-                    <h6 class="mb-0">
-                        <i class="fa fa-lightbulb text-warning me-2"></i> Tips for a Great Portfolio
-                    </h6>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <strong>Be Specific:</strong> Use keywords relevant to your niche
-                    </li>
-                    <li class="list-group-item">
-                        <strong>Show Value:</strong> Explain what makes your work unique
-                    </li>
-                    <li class="list-group-item">
-                        <strong>Update Regularly:</strong> Add new projects and testimonials
-                    </li>
-                    <li class="list-group-item">
-                        <strong>Professional Photos:</strong> Use high-quality images for cases
-                    </li>
-                </ul>
+            <!-- Form Body -->
+            <div class="px-8 md:px-12 py-10">
+                <form method="post" class="space-y-8">
+                    <!-- Errors -->
+                    @if (ViewData.ModelState.Any(x => x.Value.Errors.Any()))
+                    {
+                        <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-lg">
+                            <div class="flex items-start">
+                                <i class="fas fa-exclamation-circle text-red-500 text-2xl mr-4 flex-shrink-0 mt-1"></i>
+                                <div>
+                                    <h3 class="font-bold text-red-800 mb-2">Please fix the following errors:</h3>
+                                    <ul class="space-y-1">
+                                        @foreach (var error in ViewData.ModelState.Values.SelectMany(x => x.Errors))
+                                        {
+                                            <li class="text-red-700">• @error.ErrorMessage</li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Portfolio Title -->
+                    <div>
+                        <label asp-for="Title" class="flex items-center text-lg font-bold text-slate-900 mb-3">
+                            <i class="fas fa-heading text-indigo-600 mr-3"></i>
+                            Portfolio Title
+                            <span class="text-red-500 ml-1">*</span>
+                        </label>
+                        <input asp-for="Title" 
+                               class="w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-indigo-600 focus:outline-none transition duration-300 text-base" 
+                               placeholder="e.g., Professional Web Designer &amp; Developer" 
+                               required>
+                        <p class="text-slate-500 text-sm mt-2">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            A catchy title that describes your expertise and style
+                        </p>
+                        <span asp-validation-for="Title" class="text-red-600 text-sm block mt-2"></span>
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+                        <label asp-for="Description" class="flex items-center text-lg font-bold text-slate-900 mb-3">
+                            <i class="fas fa-align-left text-indigo-600 mr-3"></i>
+                            Short Description
+                        </label>
+                        <textarea asp-for="Description" 
+                                  class="w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-indigo-600 focus:outline-none transition duration-300 resize-none" 
+                                  rows="3"
+                                  placeholder="A brief overview of your portfolio and expertise..."></textarea>
+                        <p class="text-slate-500 text-sm mt-2">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            Keep it concise - this appears in portfolio listings (optional)
+                        </p>
+                    </div>
+
+                    <!-- Detailed Bio -->
+                    <div>
+                        <label asp-for="DetailedBio" class="flex items-center text-lg font-bold text-slate-900 mb-3">
+                            <i class="fas fa-file-alt text-indigo-600 mr-3"></i>
+                            Detailed Bio
+                        </label>
+                        <textarea asp-for="DetailedBio" 
+                                  class="w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-indigo-600 focus:outline-none transition duration-300 resize-none" 
+                                  rows="6"
+                                  placeholder="Tell your story... Highlight your experience, skills, approach, and what sets you apart..."></textarea>
+                        <p class="text-slate-500 text-sm mt-2">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            Show your personality and professional experience (optional)
+                        </p>
+                    </div>
+
+                    <!-- Visibility Section -->
+                    <div class="bg-indigo-50 border-2 border-indigo-200 rounded-lg p-6">
+                        <label class="flex items-center text-lg font-bold text-slate-900 mb-4">
+                            <i class="fas fa-eye text-indigo-600 mr-3"></i>
+                            Portfolio Visibility
+                        </label>
+                        <div class="flex items-center">
+                            <input asp-for="IsPublic" 
+                                   type="checkbox" 
+                                   id="isPublic" 
+                                   class="w-5 h-5 text-indigo-600 rounded focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                                   checked>
+                            <label for="isPublic" class="ml-3 flex-1 cursor-pointer">
+                                <span class="font-semibold text-slate-900">Make portfolio public</span>
+                                <p class="text-slate-600 text-sm">Visible to all clients browsing portfolios on the platform</p>
+                            </label>
+                        </div>
+                        <p class="text-slate-500 text-sm mt-4 ml-8">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            You can change this anytime in your portfolio settings
+                        </p>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="flex gap-4 pt-6 border-t-2 border-slate-200">
+                        <button type="submit" class="flex-1 flex items-center justify-center px-6 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-lg hover:shadow-lg transition duration-300">
+                            <i class="fas fa-check-circle mr-2 text-lg"></i>
+                            Create Portfolio
+                        </button>
+                        <a asp-action="MyPortfolio" class="flex-1 flex items-center justify-center px-6 py-4 border-2 border-slate-300 text-slate-700 font-bold rounded-lg hover:bg-slate-50 transition duration-300">
+                            <i class="fas fa-times mr-2 text-lg"></i>
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Help Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-indigo-600">
+                <h4 class="font-bold text-slate-900 mb-3 flex items-center">
+                    <i class="fas fa-star text-yellow-500 mr-2"></i>
+                    Be Specific
+                </h4>
+                <p class="text-slate-600">Use keywords relevant to your niche and services to attract the right clients</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-600">
+                <h4 class="font-bold text-slate-900 mb-3 flex items-center">
+                    <i class="fas fa-star text-yellow-500 mr-2"></i>
+                    Show Value
+                </h4>
+                <p class="text-slate-600">Explain what makes your work unique and why clients should choose you</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-pink-600">
+                <h4 class="font-bold text-slate-900 mb-3 flex items-center">
+                    <i class="fas fa-star text-yellow-500 mr-2"></i>
+                    Update Regularly
+                </h4>
+                <p class="text-slate-600">Keep your portfolio fresh with new projects and client testimonials</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-rose-600">
+                <h4 class="font-bold text-slate-900 mb-3 flex items-center">
+                    <i class="fas fa-star text-yellow-500 mr-2"></i>
+                    Professional Images
+                </h4>
+                <p class="text-slate-600">Use high-quality screenshots and photos for your case studies</p>
             </div>
         </div>
     </div>
@@ -128,7 +173,7 @@
         (function () {
             'use strict';
             window.addEventListener('load', function () {
-                var forms = document.querySelectorAll('.needs-validation');
+                var forms = document.querySelectorAll('form');
                 Array.prototype.slice.call(forms).forEach(function (form) {
                     form.addEventListener('submit', function (event) {
                         if (!form.checkValidity()) {
