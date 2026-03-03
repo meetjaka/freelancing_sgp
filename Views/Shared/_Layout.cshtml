@@ -422,36 +422,36 @@
 
 
                 <!-- Mobile Menu -->
-                <div id="mobile-menu" class="hidden lg:hidden px-4 sm:px-6 pb-4 border-t border-white/10">
+                <div id="mobile-menu" class="hidden lg:hidden px-4 sm:px-6 pb-4 border-t border-slate-200 dark:border-white/10">
                     <div class="relative mt-4">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i class="fas fa-search text-white/30"></i>
+                            <i class="fas fa-search text-slate-400 dark:text-white/30"></i>
                         </div>
                         <input type="text" placeholder="Search services..." 
-                               class="w-full pl-11 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-full text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:bg-white/10">
+                               class="w-full pl-11 pr-4 py-2.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-full text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:bg-white dark:focus:bg-white/10">
                     </div>
 
                     <div class="mt-4 space-y-1">
-                        <a class="flex items-center px-4 py-2 text-white/80 font-semibold rounded-lg hover:bg-indigo-500/20 hover:text-white transition-all" 
+                        <a class="flex items-center px-4 py-2 text-slate-700 dark:text-white/80 font-semibold rounded-lg hover:bg-indigo-500/10 dark:hover:bg-indigo-500/20 hover:text-indigo-600 dark:hover:text-white transition-all" 
                            asp-area="" asp-controller="Home" asp-action="Index">
                             <i class="fas fa-home w-5 mr-3"></i>Home
                         </a>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <a class="flex items-center px-4 py-2 text-white/80 font-semibold rounded-lg hover:bg-indigo-500/20 hover:text-white transition-all" 
+                            <a class="flex items-center px-4 py-2 text-slate-700 dark:text-white/80 font-semibold rounded-lg hover:bg-indigo-500/10 dark:hover:bg-indigo-500/20 hover:text-indigo-600 dark:hover:text-white transition-all" 
                                asp-area="" asp-controller="Dashboard" asp-action="Index">
                                 <i class="fas fa-chart-line w-5 mr-3"></i>Dashboard
                             </a>
-                            <a class="flex items-center px-4 py-2 text-white/80 font-semibold rounded-lg hover:bg-indigo-500/20 hover:text-white transition-all" 
+                            <a class="flex items-center px-4 py-2 text-slate-700 dark:text-white/80 font-semibold rounded-lg hover:bg-indigo-500/10 dark:hover:bg-indigo-500/20 hover:text-indigo-600 dark:hover:text-white transition-all" 
                                asp-area="" asp-controller="Portfolio" asp-action="MyPortfolio">
                                 <i class="fas fa-image w-5 mr-3"></i>My Portfolio
                             </a>
                         }
-                        <a class="flex items-center px-4 py-2 text-white/80 font-semibold rounded-lg hover:bg-indigo-500/20 hover:text-white transition-all" 
+                        <a class="flex items-center px-4 py-2 text-slate-700 dark:text-white/80 font-semibold rounded-lg hover:bg-indigo-500/10 dark:hover:bg-indigo-500/20 hover:text-indigo-600 dark:hover:text-white transition-all" 
                            asp-area="" asp-controller="Project" asp-action="Index">
                             <i class="fas fa-briefcase w-5 mr-3"></i>Projects
                         </a>
-                        <a class="flex items-center px-4 py-2 text-white/80 font-semibold rounded-lg hover:bg-indigo-500/20 hover:text-white transition-all" 
+                        <a class="flex items-center px-4 py-2 text-slate-700 dark:text-white/80 font-semibold rounded-lg hover:bg-indigo-500/10 dark:hover:bg-indigo-500/20 hover:text-indigo-600 dark:hover:text-white transition-all" 
                            asp-area="" asp-controller="Portfolio" asp-action="Index">
                             <i class="fas fa-gallery w-5 mr-3"></i>View Portfolios
                         </a>
@@ -461,13 +461,13 @@
 
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <div class="border-t border-white/10 mt-4 pt-2">
-                            <a class="flex items-center px-4 py-2 text-white/80 font-semibold rounded-lg hover:bg-indigo-500/20 hover:text-white transition-all" 
+                        <div class="border-t border-slate-200 dark:border-white/10 mt-4 pt-2">
+                            <a class="flex items-center px-4 py-2 text-slate-700 dark:text-white/80 font-semibold rounded-lg hover:bg-indigo-500/10 dark:hover:bg-indigo-500/20 hover:text-indigo-600 dark:hover:text-white transition-all" 
                                asp-area="" asp-controller="Account" asp-action="Profile">
                                 <i class="fas fa-user w-5 mr-3"></i>My Profile
                             </a>
                             <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
-                                <button type="submit" class="flex items-center w-full px-4 py-2 text-rose-400 font-semibold rounded-lg hover:bg-rose-500/20 hover:text-rose-300 transition-all">
+                                <button type="submit" class="flex items-center w-full px-4 py-2 text-rose-600 dark:text-rose-400 font-semibold rounded-lg hover:bg-rose-500/10 dark:hover:bg-rose-500/20 hover:text-rose-700 dark:hover:text-rose-300 transition-all">
                                     <i class="fas fa-sign-out-alt w-5 mr-3"></i>Sign Out
                                 </button>
                             </form>
@@ -475,8 +475,8 @@
                     }
                     else
                     {
-                        <div class="border-t border-white/10 mt-4 pt-3 space-y-2">
-                            <a class="block px-4 py-2 text-center text-white/80 font-semibold rounded-lg border border-white/20 hover:border-indigo-400 hover:bg-indigo-500/10 hover:text-white transition-all" 
+                        <div class="border-t border-slate-200 dark:border-white/10 mt-4 pt-3 space-y-2">
+                            <a class="block px-4 py-2 text-center text-slate-700 dark:text-white/80 font-semibold rounded-lg border border-slate-300 dark:border-white/20 hover:border-indigo-400 hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-white transition-all" 
                                asp-area="" asp-controller="Account" asp-action="Login">Sign In</a>
                             <a class="block px-4 py-2 text-center bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-lg hover:from-indigo-500 hover:to-purple-500 transition-all shadow-lg" 
                                asp-area="" asp-controller="Account" asp-action="Register">Join</a>

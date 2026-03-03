@@ -190,5 +190,82 @@ namespace SGP_Freelancing.Services
                 return ApiResponse<bool>.ErrorResponse("An error occurred");
             }
         }
+
+        public async Task<PagedResult<ContractDto>> GetContractsByClientPaginatedAsync(string clientId, int page = 1, int pageSize = 10)
+        {
+            try
+            {
+                var allProjects = await _unitOfWork.Projects.GetAllAsync();
+                var clientProjects = allProjects.Where(p => p.ClientId == clientId).ToList();
+                
+                var allContracts = await _unitOfWork.Contracts.GetAllAsync();
+                var contracts = allContracts
+                    .Where(c => clientProjects.Any(p => p.Id == c.ProjectId))
+                    .OrderByDescending(c => c.CreatedAt)
+                    .ToList();
+
+                var totalCount = contracts.Count;
+                var pagedContracts = contracts
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+
+                return new PagedResult<ContractDto>
+                {
+                    Items = _mapper.Map<List<ContractDto>>(pagedContracts),
+                    TotalCount = totalCount,
+                    PageNumber = page,
+                    PageSize = pageSize
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error getting paginated contracts for client {clientId}");
+                return new PagedResult<ContractDto>
+                {
+                    Items = new List<ContractDto>(),
+                    TotalCount = 0,
+                    PageNumber = page,
+                    PageSize = pageSize
+                };
+            }
+        }
+
+        public async Task<PagedResult<ContractDto>> GetContractsByFreelancerPaginatedAsync(string freelancerId, int page = 1, int pageSize = 10)
+        {
+            try
+            {
+                var allContracts = await _unitOfWork.Contracts.GetAllAsync();
+                var contracts = allContracts
+                    .Where(c => c.FreelancerId == freelancerId)
+                    .OrderByDescending(c => c.CreatedAt)
+                    .ToList();
+
+                var totalCount = contracts.Count;
+                var pagedContracts = contracts
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+
+                return new PagedResult<ContractDto>
+                {
+                    Items = _mapper.Map<List<ContractDto>>(pagedContracts),
+                    TotalCount = totalCount,
+                    PageNumber = page,
+                    PageSize = pageSize
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error getting paginated contracts for freelancer {freelancerId}");
+                return new PagedResult<ContractDto>
+                {
+                    Items = new List<ContractDto>(),
+                    TotalCount = 0,
+                    PageNumber = page,
+                    PageSize = pageSize
+                };
+            }
+        }
     }
 }

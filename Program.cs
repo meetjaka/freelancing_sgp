@@ -111,6 +111,9 @@ namespace SGP_Freelancing
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IContractService, SGP_Freelancing.Services.ContractService>();
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IReviewService, SGP_Freelancing.Services.ReviewService>();
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IPortfolioService, SGP_Freelancing.Services.PortfolioService>();
+            builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IProfileService, SGP_Freelancing.Services.ProfileService>();
+            builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IFreelancerService, SGP_Freelancing.Services.FreelancerService>();
+            builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IFileUploadService, SGP_Freelancing.Services.FileUploadService>();
 
             // Email & OTP Services
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IEmailService, SGP_Freelancing.Services.EmailService>();
@@ -165,14 +168,18 @@ namespace SGP_Freelancing
                 });
             });
 
-            // CORS
+            // CORS - Secure configuration
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowAll", policy =>
+                options.AddPolicy("AllowSpecificOrigins", policy =>
                 {
-                    policy.AllowAnyOrigin()
+                    var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() 
+                        ?? new[] { "http://localhost:3000", "http://localhost:5173", "https://localhost:7042" };
+                    
+                    policy.WithOrigins(allowedOrigins)
                           .AllowAnyMethod()
-                          .AllowAnyHeader();
+                          .AllowAnyHeader()
+                          .AllowCredentials(); // Required for SignalR
                 });
             });
 
@@ -243,7 +250,7 @@ namespace SGP_Freelancing
 
             app.UseRouting();
 
-            app.UseCors("AllowAll");
+            app.UseCors("AllowSpecificOrigins");
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -279,6 +286,9 @@ namespace SGP_Freelancing
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                     InitializeRolesAndAdminAsync(roleManager, userManager).Wait();
+
+                    // Seed Categories and Skills
+                    SeedCategoriesAndSkillsAsync(context).Wait();
                 }
                 catch (Exception ex)
                 {
@@ -350,6 +360,169 @@ namespace SGP_Freelancing
                     await userManager.AddToRoleAsync(adminUser, Constants.Roles.Admin);
                     Log.Information("Default admin user created");
                 }
+            }
+        }
+
+        private static async Task SeedCategoriesAndSkillsAsync(ApplicationDbContext context)
+        {
+            // Seed Categories
+            if (!context.Categories.Any())
+            {
+                var categories = new[]
+                {
+                    new SGP_Freelancing.Models.Entities.Category 
+                    { 
+                        Name = "Web Development", 
+                        Description = "Build websites and web applications",
+                        IconClass = "fa-globe",
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow
+                    },
+                    new SGP_Freelancing.Models.Entities.Category 
+                    { 
+                        Name = "Mobile App Development", 
+                        Description = "iOS, Android and cross-platform apps",
+                        IconClass = "fa-mobile-alt",
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow
+                    },
+                    new SGP_Freelancing.Models.Entities.Category 
+                    { 
+                        Name = "Graphic Design", 
+                        Description = "Logo design, branding, illustrations",
+                        IconClass = "fa-palette",
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow
+                    },
+                    new SGP_Freelancing.Models.Entities.Category 
+                    { 
+                        Name = "UI/UX Design", 
+                        Description = "User interface and experience design",
+                        IconClass = "fa-pencil-ruler",
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow
+                    },
+                    new SGP_Freelancing.Models.Entities.Category 
+                    { 
+                        Name = "Content Writing", 
+                        Description = "Articles, blogs, copywriting",
+                        IconClass = "fa-pen",
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow
+                    },
+                    new SGP_Freelancing.Models.Entities.Category 
+                    { 
+                        Name = "Digital Marketing", 
+                        Description = "SEO, social media, email marketing",
+                        IconClass = "fa-bullhorn",
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow
+                    },
+                    new SGP_Freelancing.Models.Entities.Category 
+                    { 
+                        Name = "Video & Animation", 
+                        Description = "Video editing, motion graphics, 3D animation",
+                        IconClass = "fa-video",
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow
+                    },
+                    new SGP_Freelancing.Models.Entities.Category 
+                    { 
+                        Name = "Data Science & Analytics", 
+                        Description = "Data analysis, machine learning, AI",
+                        IconClass = "fa-chart-bar",
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow
+                    },
+                    new SGP_Freelancing.Models.Entities.Category 
+                    { 
+                        Name = "Virtual Assistant", 
+                        Description = "Administrative support, customer service",
+                        IconClass = "fa-headset",
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow
+                    },
+                    new SGP_Freelancing.Models.Entities.Category 
+                    { 
+                        Name = "Translation", 
+                        Description = "Language translation and localization",
+                        IconClass = "fa-language",
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow
+                    }
+                };
+
+                await context.Categories.AddRangeAsync(categories);
+                await context.SaveChangesAsync();
+                Log.Information($"{categories.Length} categories seeded");
+            }
+
+            // Seed Skills
+            if (!context.Skills.Any())
+            {
+                var skills = new[]
+                {
+                    // Web Development
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "HTML/CSS", Description = "Frontend markup and styling", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "JavaScript", Description = "Frontend and backend programming", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "React", Description = "JavaScript library for building UIs", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Vue.js", Description = "Progressive JavaScript framework", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Angular", Description = "TypeScript-based web application framework", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Node.js", Description = "JavaScript runtime for backend", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "ASP.NET Core", Description = "Cross-platform .NET framework", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "PHP", Description = "Server-side scripting language", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Python", Description = "High-level programming language", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Django", Description = "Python web framework", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Ruby on Rails", Description = "Ruby web framework", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    
+                    // Mobile Development
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "React Native", Description = "Cross-platform mobile development", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Flutter", Description = "Cross-platform mobile UI framework", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "iOS Development", Description = "Native iOS app development", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Android Development", Description = "Native Android app development", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Swift", Description = "iOS programming language", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Kotlin", Description = "Android programming language", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    
+                    // Design
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Adobe Photoshop", Description = "Image editing and design", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Adobe Illustrator", Description = "Vector graphics design", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Figma", Description = "UI/UX design and prototyping", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Adobe XD", Description = "UI/UX design tool", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Sketch", Description = "Digital design platform", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "UI Design", Description = "User interface design", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "UX Design", Description = "User experience design", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    
+                    // Marketing
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "SEO", Description = "Search engine optimization", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Social Media Marketing", Description = "Social platform marketing", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Content Marketing", Description = "Content strategy and creation", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Google Ads", Description = "PPC advertising", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Email Marketing", Description = "Email campaign management", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    
+                    // Data & AI
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Machine Learning", Description = "ML model development", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Data Analysis", Description = "Data processing and insights", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "SQL", Description = "Database query language", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Power BI", Description = "Business intelligence tool", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Tableau", Description = "Data visualization platform", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    
+                    // Video & Animation
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Video Editing", Description = "Video post-production", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Adobe After Effects", Description = "Motion graphics and VFX", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Adobe Premiere Pro", Description = "Video editing software", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "3D Animation", Description = "3D modeling and animation", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Blender", Description = "3D creation suite", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    
+                    // Other
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "WordPress", Description = "CMS platform", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Shopify", Description = "E-commerce platform", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Technical Writing", Description = "Documentation and manuals", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                    new SGP_Freelancing.Models.Entities.Skill { Name = "Copywriting", Description = "Marketing and sales writing", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
+                };
+
+                await context.Skills.AddRangeAsync(skills);
+                await context.SaveChangesAsync();
+                Log.Information($"{skills.Length} skills seeded");
             }
         }
     }

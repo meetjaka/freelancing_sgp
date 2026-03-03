@@ -8,8 +8,8 @@
 <div class="mb-8">
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-            <h1 class="text-3xl font-bold text-white mb-1">Analytics <span class="text-indigo-400">✦</span></h1>
-            <p class="text-slate-400">Track your performance and insights</p>
+            <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-1">Analytics <span class="text-indigo-500 dark:text-indigo-400">✦</span></h1>
+            <p class="text-slate-500 dark:text-slate-400">Track your performance and insights</p>
         </div>
         <div class="flex gap-2">
             <button class="px-5 py-2.5 bg-indigo-500 hover:bg-indigo-400 text-white text-sm font-bold rounded-full transition-all shadow-[0_0_20px_rgba(99,102,241,0.3)]">All Time</button>
@@ -31,8 +31,8 @@
             </span>
         </div>
         <div>
-            <p class="text-sm font-bold text-slate-400 mb-1">Profile Views</p>
-            <p class="text-3xl font-bold text-white tracking-tight">@Model.ProfileViews.ToString("N0")</p>
+            <p class="text-sm font-bold text-slate-500 dark:text-slate-400 mb-1">Profile Views</p>
+            <p class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">@Model.ProfileViews.ToString("N0")</p>
         </div>
     </div>
 
@@ -44,8 +44,8 @@
             </div>
         </div>
         <div>
-            <p class="text-sm font-bold text-slate-400 mb-1">Deals Closed</p>
-            <p class="text-3xl font-bold text-white tracking-tight">@Model.DealsClosed</p>
+            <p class="text-sm font-bold text-slate-500 dark:text-slate-400 mb-1">Deals Closed</p>
+            <p class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">@Model.DealsClosed</p>
         </div>
     </div>
 
@@ -57,8 +57,8 @@
             </div>
         </div>
         <div>
-            <p class="text-sm font-bold text-slate-400 mb-1">Success Rate</p>
-            <p class="text-3xl font-bold text-white tracking-tight">@Model.SuccessRate.ToString("0.0")%</p>
+            <p class="text-sm font-bold text-slate-500 dark:text-slate-400 mb-1">Success Rate</p>
+            <p class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">@Model.SuccessRate.ToString("0.0")%</p>
         </div>
     </div>
 
@@ -70,8 +70,8 @@
             </div>
         </div>
         <div>
-            <p class="text-sm font-bold text-slate-400 mb-1">Average Rating</p>
-            <p class="text-3xl font-bold text-white tracking-tight">@Model.AverageRating.ToString("0.0")</p>
+            <p class="text-sm font-bold text-slate-500 dark:text-slate-400 mb-1">Average Rating</p>
+            <p class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">@Model.AverageRating.ToString("0.0")</p>
             <p class="text-xs text-slate-500 mt-1">@Model.TotalReviews reviews</p>
         </div>
     </div>
@@ -81,26 +81,26 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
     <!-- View Chart Placeholder -->
     <div class="lg:col-span-2 bento-card p-6 relative overflow-hidden group">
-        <h3 class="text-lg font-bold text-white mb-6 relative z-10">Performance Overview</h3>
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6 relative z-10">Performance Overview</h3>
         
         <!-- Visible grid pattern in dark mode -->
         <div class="absolute inset-x-0 bottom-0 h-[280px] z-0 opacity-10 dark:opacity-20 pointer-events-none" style="background-image: linear-gradient(#6366f1 1px, transparent 1px), linear-gradient(90deg, #6366f1 1px, transparent 1px); background-size: 30px 30px;"></div>
-        <div class="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#12141a] to-transparent z-0 pointer-events-none"></div>
+        <div class="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-white dark:from-[#12141a] to-transparent z-0 pointer-events-none"></div>
 
         <div class="flex items-center justify-center py-20 relative z-10">
             <div class="text-center transition-transform group-hover:scale-105">
-                <div class="w-20 h-20 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
-                    <i class="fas fa-chart-line text-2xl text-indigo-400"></i>
+                <div class="w-20 h-20 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+                    <i class="fas fa-chart-line text-2xl text-indigo-500 dark:text-indigo-400"></i>
                 </div>
-                <p class="text-slate-400 mb-1 font-bold">Chart visualization structure ready</p>
-                <p class="text-sm text-slate-500">More data is needed to render meaningful performance charts.</p>
+                <p class="text-slate-500 dark:text-slate-400 mb-1 font-bold">Chart visualization structure ready</p>
+                <p class="text-sm text-slate-400 dark:text-slate-500">More data is needed to render meaningful performance charts.</p>
             </div>
         </div>
     </div>
 
     <!-- Top Skills -->
     <div class="bento-card p-6">
-        <h3 class="text-lg font-bold text-white mb-6">Top @(Model.IsClient ? "Categories Requested" : "Skills Used")</h3>
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Top @(Model.IsClient ? "Categories Requested" : "Skills Used")</h3>
         <div class="space-y-5">
             @if (Model.TopSkills.Any())
             {
@@ -108,10 +108,10 @@
                 {
                     <div>
                         <div class="flex justify-between mb-2">
-                            <span class="text-sm font-bold text-slate-300">@skill.SkillName</span>
-                            <span class="text-sm font-bold text-white">@skill.Percentage%</span>
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300">@skill.SkillName</span>
+                            <span class="text-sm font-bold text-slate-900 dark:text-white">@skill.Percentage%</span>
                         </div>
-                        <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                        <div class="w-full h-2 bg-slate-200 dark:bg-white/10 rounded-full overflow-hidden">
                             <div class="h-full bg-indigo-500 rounded-full" style="width: @skill.Percentage%"></div>
                         </div>
                     </div>
@@ -127,44 +127,44 @@
 
 <!-- Recent Activity -->
 <div class="bento-card overflow-hidden">
-    <div class="px-6 py-5 border-b border-white/5 bg-[#15171e]">
-        <h3 class="text-lg font-bold text-white">Recent Activity</h3>
+    <div class="px-6 py-5 border-b border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-[#15171e]">
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Recent Activity</h3>
     </div>
     <div class="overflow-x-auto">
         <table class="w-full">
-            <thead class="bg-white/5 backdrop-blur-md">
+            <thead class="bg-slate-50 dark:bg-white/5 backdrop-blur-md">
                 <tr>
-                    <th class="px-6 py-4 text-left text-xs font-bold text-indigo-400 uppercase tracking-wider">Action</th>
-                    <th class="px-6 py-4 text-left text-xs font-bold text-indigo-400 uppercase tracking-wider">Project</th>
-                    <th class="px-6 py-4 text-left text-xs font-bold text-indigo-400 uppercase tracking-wider">Date</th>
-                    <th class="px-6 py-4 text-left text-xs font-bold text-indigo-400 uppercase tracking-wider">Status</th>
+                    <th class="px-6 py-4 text-left text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Action</th>
+                    <th class="px-6 py-4 text-left text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Project</th>
+                    <th class="px-6 py-4 text-left text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Date</th>
+                    <th class="px-6 py-4 text-left text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Status</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-white/5">
+            <tbody class="divide-y divide-slate-200 dark:divide-white/5">
                 @if (Model.RecentActivities.Any())
                 {
                     foreach (var activity in Model.RecentActivities)
                     {
-                        <tr class="hover:bg-white/5 transition-colors group">
+                        <tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group">
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
                                     <div class="w-8 h-8 bg-indigo-500/10 border border-indigo-500/20 rounded-lg flex items-center justify-center group-hover:bg-indigo-500/20 transition-colors">
-                                        <i class="fas fa-bolt text-indigo-400 text-xs"></i>
+                                        <i class="fas fa-bolt text-indigo-500 dark:text-indigo-400 text-xs"></i>
                                     </div>
-                                    <span class="text-sm font-bold text-white">@activity.ActionName</span>
+                                    <span class="text-sm font-bold text-slate-900 dark:text-white">@activity.ActionName</span>
                                 </div>
                             </td>
                             <td class="px-6 py-4">
-                                <span class="text-sm font-medium text-slate-400">@activity.ProjectTitle</span>
+                                <span class="text-sm font-medium text-slate-500 dark:text-slate-400">@activity.ProjectTitle</span>
                             </td>
                             <td class="px-6 py-4">
                                 <span class="text-sm text-slate-500">@activity.Date.ToString("MMM d, yyyy h:mm tt")</span>
                             </td>
                             <td class="px-6 py-4">
                                 @{
-                                    string badgeClass = "bg-white/10 text-slate-300";
-                                    if (activity.Status == "Active" || activity.Status == "Completed" || activity.Status == "Read") badgeClass = "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
-                                    else if (activity.Status == "Pending" || activity.Status == "InProgress") badgeClass = "bg-amber-500/10 text-amber-400 border border-amber-500/20";
+                                    string badgeClass = "bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-slate-300";
+                                    if (activity.Status == "Active" || activity.Status == "Completed" || activity.Status == "Read") badgeClass = "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20";
+                                    else if (activity.Status == "Pending" || activity.Status == "InProgress") badgeClass = "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20";
                                 }
                                 <span class="inline-flex items-center px-2.5 py-1 @badgeClass text-[10px] uppercase tracking-wider font-bold rounded-full">@activity.Status</span>
                             </td>

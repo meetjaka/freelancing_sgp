@@ -9,6 +9,7 @@ namespace SGP_Freelancing.Services.Interfaces
         Task<ApiResponse<MessageDto>> SendMessageAsync(SendMessageDto dto, string senderId);
         Task<MessagesViewModel> GetUserMessagesAsync(string userId);
         Task<ConversationViewModel> GetConversationAsync(string userId, string otherUserId);
+        Task<PagedResult<MessageDto>> GetConversationPaginatedAsync(string userId, string otherUserId, int page = 1, int pageSize = 20);
         Task<ApiResponse<bool>> MarkAsReadAsync(int messageId, string userId);
         Task<int> GetUnreadCountAsync(string userId);
     }

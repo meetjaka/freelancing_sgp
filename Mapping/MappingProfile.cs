@@ -77,6 +77,10 @@ namespace SGP_Freelancing.Mapping
             CreateMap<PaymentTransaction, PaymentTransactionDto>()
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type.ToString()));
+
+            // File Attachment mappings
+            CreateMap<FileAttachment, FileAttachmentDto>()
+                .ForMember(dest => dest.UploadedByName, opt => opt.MapFrom(src => src.UploadedBy.FirstName + " " + src.UploadedBy.LastName));
         }
     }
 }

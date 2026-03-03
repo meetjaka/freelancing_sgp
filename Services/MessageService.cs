@@ -67,6 +67,41 @@ namespace SGP_Freelancing.Services
             };
         }
 
+        public async Task<PagedResult<MessageDto>> GetConversationPaginatedAsync(string userId, string otherUserId, int page = 1, int pageSize = 20)
+        {
+            try
+            {
+                var allMessages = await _unitOfWork.Messages.GetConversationAsync(userId, otherUserId);
+                var orderedMessages = allMessages.OrderByDescending(m => m.CreatedAt).ToList();
+
+                var totalCount = orderedMessages.Count;
+                var pagedMessages = orderedMessages
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .OrderBy(m => m.CreatedAt) // Display in chronological order within page
+                    .ToList();
+
+                return new PagedResult<MessageDto>
+                {
+                    Items = _mapper.Map<List<MessageDto>>(pagedMessages),
+                    TotalCount = totalCount,
+                    PageNumber = page,
+                    PageSize = pageSize
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error getting paginated conversation between {userId} and {otherUserId}");
+                return new PagedResult<MessageDto>
+                {
+                    Items = new List<MessageDto>(),
+                    TotalCount = 0,
+                    PageNumber = page,
+                    PageSize = pageSize
+                };
+            }
+        }
+
         public async Task<ApiResponse<bool>> MarkAsReadAsync(int messageId, string userId)
         {
             try

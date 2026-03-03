@@ -66,6 +66,11 @@ namespace SGP_Freelancing.Services
                 if (bid.Project.ClientId != clientId)
                     return ApiResponse<BidDto>.ErrorResponse(Constants.ErrorMessages.Unauthorized);
 
+                // Check if project already has an accepted bid/contract
+                var existingContract = await _unitOfWork.Contracts.FirstOrDefaultAsync(c => c.ProjectId == bid.ProjectId);
+                if (existingContract != null)
+                    return ApiResponse<BidDto>.ErrorResponse("This project already has an accepted bid");
+
                 bid.Status = BidStatus.Accepted;
                 bid.UpdatedAt = DateTime.UtcNow;
 
@@ -74,12 +79,29 @@ namespace SGP_Freelancing.Services
                 project.Status = ProjectStatus.InProgress;
                 project.UpdatedAt = DateTime.UtcNow;
 
+                // Create contract automatically
+                var contract = new Contract
+                {
+                    ProjectId = bid.ProjectId,
+                    ClientId = clientId,
+                    FreelancerId = bid.FreelancerId,
+                    AgreedAmount = bid.ProposedAmount,
+                    StartDate = DateTime.UtcNow,
+                    Terms = $"Contract for project: {project.Title}. Delivery within {bid.EstimatedDurationDays} days.",
+                    Status = ContractStatus.Active,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+
+                await _unitOfWork.Contracts.AddAsync(contract);
                 _unitOfWork.Bids.Update(bid);
                 _unitOfWork.Projects.Update(project);
                 await _unitOfWork.SaveChangesAsync();
 
+                _logger.LogInformation($"Bid {bidId} accepted and Contract {contract.Id} created with amount {bid.ProposedAmount}");
+
                 var bidDto = _mapper.Map<BidDto>(bid);
-                return ApiResponse<BidDto>.SuccessResponse(bidDto, "Bid accepted successfully");
+                return ApiResponse<BidDto>.SuccessResponse(bidDto, "Bid accepted and contract created successfully");
             }
             catch (Exception ex)
             {

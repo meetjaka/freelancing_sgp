@@ -7,15 +7,24 @@
 }
 
 <style>
-    /* Bento Box Styling */
+    /* Bento Box Styling - Light & Dark Theme Support */
     .bento-card {
-        background: rgba(15, 17, 21, 0.6); /* Very dark, transparent slate */
         backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 1.5rem; /* rounded-3xl equivalent */
+        border-radius: 1.5rem;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
         overflow: hidden;
+    }
+
+    html:not(.dark) .bento-card {
+        background: #ffffff;
+        border: 1px solid rgba(226, 232, 240, 1);
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    html.dark .bento-card {
+        background: rgba(15, 17, 21, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .bento-card::before {
@@ -33,18 +42,39 @@
 
     .bento-card:hover {
         transform: translateY(-4px);
+    }
+
+    html:not(.dark) .bento-card:hover {
+        box-shadow: 0 10px 30px -5px rgba(0,0,0,0.1), 0 0 20px rgba(99, 102, 241, 0.08);
+        border-color: rgba(99, 102, 241, 0.3);
+    }
+
+    html.dark .bento-card:hover {
         box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5), 0 0 20px rgba(99, 102, 241, 0.05);
         border-color: rgba(99, 102, 241, 0.2);
     }
 
-    .bento-purple-accent {
+    /* Purple Accent Card */
+    html:not(.dark) .bento-purple-accent {
+        background: linear-gradient(135deg, rgba(238, 242, 255, 1) 0%, rgba(243, 232, 255, 1) 100%);
+        border: 1px solid rgba(165, 180, 252, 0.5);
+    }
+
+    html.dark .bento-purple-accent {
         background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0.05) 100%);
         border: 1px solid rgba(99, 102, 241, 0.2);
     }
     
     .bento-purple-accent:hover {
-        box-shadow: 0 0 30px rgba(99, 102, 241, 0.15);
         border-color: rgba(99, 102, 241, 0.4);
+    }
+
+    html:not(.dark) .bento-purple-accent:hover {
+        box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
+    }
+
+    html.dark .bento-purple-accent:hover {
+        box-shadow: 0 0 30px rgba(99, 102, 241, 0.15);
     }
 
     /* Chart/Wave Graphic Mockup */
@@ -69,17 +99,17 @@
 <div class="mb-8 bento-card p-8 flex flex-col md:flex-row items-center justify-between gap-6 overflow-visible z-10 relative bento-purple-accent">
     <div class="wave-bg"></div>
     <div class="relative z-10">
-        <p class="text-indigo-400 font-medium tracking-wider text-sm uppercase mb-2">Overview</p>
-        <h1 class="text-4xl md:text-5xl font-bold text-white mb-2 tracking-tight">Welcome, @ViewBag.UserName <span class="text-indigo-400 text-3xl">✦</span></h1>
-        <p class="text-slate-400 text-lg">Your freelancing hub activity for today.</p>
+        <p class="text-indigo-500 dark:text-indigo-400 font-medium tracking-wider text-sm uppercase mb-2">Overview</p>
+        <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-2 tracking-tight">Welcome, @ViewBag.UserName <span class="text-indigo-500 dark:text-indigo-400 text-3xl">✦</span></h1>
+        <p class="text-slate-600 dark:text-slate-400 text-lg">Your freelancing hub activity for today.</p>
     </div>
 
     <!-- Quick Filters / Tabs (Aesthetic matching the reference) -->
     <div class="flex flex-wrap gap-3 z-10">
-        <button class="px-6 py-2.5 rounded-full bg-white text-slate-900 font-bold text-sm shadow-[0_0_15px_rgba(255,255,255,0.4)] hover:shadow-[0_0_20px_rgba(255,255,255,0.6)] transition-all">All</button>
-        <button class="px-6 py-2.5 rounded-full bg-[#15171e] text-slate-300 font-medium text-sm border border-white/10 hover:bg-white/10 hover:text-white transition-all">Projects</button>
-        <button class="px-6 py-2.5 rounded-full bg-[#15171e] text-slate-300 font-medium text-sm border border-white/10 hover:bg-white/10 hover:text-white transition-all">Messages</button>
-        <button class="px-6 py-2.5 rounded-full bg-[#15171e] text-slate-300 font-medium text-sm border border-white/10 hover:bg-white/10 hover:text-white transition-all">Payments</button>
+        <a asp-controller="Dashboard" asp-action="Index" class="px-6 py-2.5 rounded-full bg-indigo-500 dark:bg-white text-white dark:text-slate-900 font-bold text-sm shadow-lg hover:shadow-xl transition-all">All</a>
+        <a asp-controller="Project" asp-action="Index" class="px-6 py-2.5 rounded-full bg-slate-200 dark:bg-[#15171e] text-slate-700 dark:text-slate-300 font-medium text-sm border border-slate-300 dark:border-white/10 hover:bg-slate-300 dark:hover:bg-white/10 hover:text-slate-900 dark:hover:text-white transition-all">Projects</a>
+        <a asp-controller="Message" asp-action="Index" class="px-6 py-2.5 rounded-full bg-slate-200 dark:bg-[#15171e] text-slate-700 dark:text-slate-300 font-medium text-sm border border-slate-300 dark:border-white/10 hover:bg-slate-300 dark:hover:bg-white/10 hover:text-slate-900 dark:hover:text-white transition-all">Messages</a>
+        <a asp-controller="Earnings" asp-action="Index" class="px-6 py-2.5 rounded-full bg-slate-200 dark:bg-[#15171e] text-slate-700 dark:text-slate-300 font-medium text-sm border border-slate-300 dark:border-white/10 hover:bg-slate-300 dark:hover:bg-white/10 hover:text-slate-900 dark:hover:text-white transition-all">Earnings</a>
     </div>
 </div>
 
@@ -91,17 +121,17 @@
         <div class="wave-bg"></div>
         <div class="flex justify-between items-start z-10 relative">
             <div>
-                <p class="text-slate-400 text-sm font-medium mb-1">Project Analytics</p>
+                <p class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1">Project Analytics</p>
                 <div class="flex items-baseline gap-4 mt-2">
                     <div>
-                        <p class="text-xs text-slate-500 mb-1 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-indigo-400"></span> Total</p>
-                        <p class="text-3xl font-bold text-white">@totalProjects</p>
+                        <p class="text-xs text-slate-400 dark:text-slate-500 mb-1 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-indigo-400"></span> Total</p>
+                        <p class="text-3xl font-bold text-slate-900 dark:text-white">@totalProjects</p>
                     </div>
                 </div>
             </div>
             <div class="flex gap-2">
-                <button class="px-4 py-1.5 rounded-full bg-[#15171e] border border-white/10 text-xs font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all">Weekly</button>
-                <button class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-slate-900 shadow-[0_0_10px_rgba(255,255,255,0.3)] hover:scale-105 transition-transform">
+                <button class="px-4 py-1.5 rounded-full bg-slate-200 dark:bg-[#15171e] border border-slate-300 dark:border-white/10 text-xs font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-300 dark:hover:bg-white/5 transition-all">Weekly</button>
+                <button class="w-8 h-8 rounded-full bg-indigo-500 dark:bg-white flex items-center justify-center text-white dark:text-slate-900 shadow-lg hover:scale-105 transition-transform">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
                     </svg>
@@ -109,7 +139,7 @@
             </div>
         </div>
         <div class="flex justify-end z-10 relative mt-auto">
-            <a asp-controller="Project" asp-action="Index" class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-slate-900 hover:scale-110 transition-transform shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+            <a asp-controller="Project" asp-action="Index" class="w-10 h-10 rounded-full bg-indigo-500 dark:bg-white flex items-center justify-center text-white dark:text-slate-900 hover:scale-110 transition-transform shadow-lg">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                 </svg>
@@ -121,26 +151,26 @@
     <div class="bento-card bento-purple-accent col-span-1 p-6 flex flex-col justify-between">
         <div class="flex justify-between items-start">
             <div class="flex items-center gap-2">
-                <h3 class="text-slate-900 font-bold">Active Projects</h3>
-                <span class="bg-white/40 text-slate-900 text-xs font-bold px-2 py-0.5 rounded-full">@activeProjects</span>
+                <h3 class="text-slate-900 dark:text-white font-bold">Active Projects</h3>
+                <span class="bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-bold px-2 py-0.5 rounded-full">@activeProjects</span>
             </div>
-            <button class="px-3 py-1 rounded-full bg-white/40 text-slate-900 text-xs font-bold hover:bg-white/60 transition-colors backdrop-blur-md">Monthly</button>
+            <button class="px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-bold hover:bg-indigo-500/30 transition-colors backdrop-blur-md">Monthly</button>
         </div>
         
         <div class="mt-8 flex items-end gap-3 h-24">
-            <div class="w-full bg-white rounded-t-xl h-[60%] relative group cursor-pointer hover:h-[70%] transition-all">
-                <span class="absolute -top-7 left-1/2 transform -translate-x-1/2 text-slate-900 text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">Design</span>
+            <div class="w-full bg-indigo-500 rounded-t-xl h-[60%] relative group cursor-pointer hover:h-[70%] transition-all">
+                <span class="absolute -top-7 left-1/2 transform -translate-x-1/2 text-slate-900 dark:text-white text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">Design</span>
             </div>
-            <div class="w-full bg-white rounded-t-xl h-[90%] relative group cursor-pointer hover:h-[100%] transition-all">
-                 <span class="absolute -top-7 left-1/2 transform -translate-x-1/2 text-slate-900 text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">Dev</span>
+            <div class="w-full bg-indigo-500 rounded-t-xl h-[90%] relative group cursor-pointer hover:h-[100%] transition-all">
+                 <span class="absolute -top-7 left-1/2 transform -translate-x-1/2 text-slate-900 dark:text-white text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">Dev</span>
             </div>
-            <div class="w-full bg-white/60 rounded-t-xl h-[40%] relative group cursor-pointer hover:h-[50%] transition-all">
-                 <span class="absolute -top-7 left-1/2 transform -translate-x-1/2 text-slate-900 text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">SEO</span>
+            <div class="w-full bg-indigo-400/60 rounded-t-xl h-[40%] relative group cursor-pointer hover:h-[50%] transition-all">
+                 <span class="absolute -top-7 left-1/2 transform -translate-x-1/2 text-slate-900 dark:text-white text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">SEO</span>
             </div>
         </div>
         
         <div class="flex justify-end mt-4">
-            <button class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-slate-900 hover:scale-110 transition-transform shadow-md">
+            <button class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white hover:scale-110 transition-transform shadow-md">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                 </svg>
@@ -153,9 +183,9 @@
         <!-- Completed -->
         <div class="bento-card p-5 flex-1 flex flex-col justify-center relative overflow-hidden group">
             <div class="absolute -right-6 -top-6 w-24 h-24 bg-indigo-500/20 rounded-full blur-2xl group-hover:bg-indigo-500/30 transition-colors"></div>
-            <p class="text-sm font-medium text-slate-400 mb-1 z-10">Completed</p>
+            <p class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1 z-10">Completed</p>
             <div class="flex items-end justify-between z-10">
-                <p class="text-4xl font-bold text-white">@completedProjects</p>
+                <p class="text-4xl font-bold text-slate-900 dark:text-white">@completedProjects</p>
                 <span class="text-indigo-400 text-sm font-medium flex items-center gap-1">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
                     24%
@@ -167,14 +197,14 @@
         <a asp-controller="Message" asp-action="Index" class="bento-card p-5 flex-1 flex flex-col justify-center relative overflow-hidden group hover:border-indigo-500/30">
             <div class="absolute -left-6 -bottom-6 w-24 h-24 bg-purple-500/20 rounded-full blur-2xl group-hover:bg-purple-500/30 transition-colors"></div>
             <div class="flex justify-between items-start mb-1 z-10">
-                <p class="text-sm font-medium text-slate-400">Unread Msgs</p>
-                <div class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center bg-[#15171e] group-hover:bg-white/10 transition-colors">
+                <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Unread Msgs</p>
+                <div class="w-8 h-8 rounded-full border border-slate-300 dark:border-white/10 flex items-center justify-center bg-slate-200 dark:bg-[#15171e] group-hover:bg-slate-300 dark:group-hover:bg-white/10 transition-colors">
                      <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                     </svg>
                 </div>
             </div>
-             <p class="text-4xl font-bold text-white z-10">@unreadMessages</p>
+             <p class="text-4xl font-bold text-slate-900 dark:text-white z-10">@unreadMessages</p>
         </a>
     </div>
 </div>
@@ -184,34 +214,34 @@
     <!-- Recent Projects -->
     <div class="bento-card lg:col-span-2 p-6 flex flex-col">
         <div class="flex items-center justify-between mb-6">
-            <h2 class="text-xl font-bold text-white tracking-tight">Recent Projects</h2>
-            <a asp-controller="Project" asp-action="Index" class="px-4 py-2 rounded-full border border-white/10 text-xs font-bold text-slate-300 hover:text-white hover:bg-white/5 transition-all">
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight">Recent Projects</h2>
+            <a asp-controller="Project" asp-action="Index" class="px-4 py-2 rounded-full border border-slate-300 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-all">
                 View All
             </a>
         </div>
         
         <div class="space-y-4 flex-1">
             <!-- Project 1 -->
-            <div class="group p-4 rounded-2xl border border-white/5 hover:border-indigo-500/30 bg-[#12141a] hover:bg-[#15171e] transition-all">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="group p-4 rounded-2xl border border-slate-200 dark:border-white/5 hover:border-indigo-500/30 bg-slate-50 dark:bg-[#12141a] hover:bg-slate-100 dark:hover:bg-[#15171e] transition-all">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gapproject-4">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-indigo-400">
+                        <div class="w-12 h-12 bg-indigo-100 dark:bg-white/5 border border-indigo-200 dark:border-white/10 rounded-xl flex items-center justify-center text-indigo-600 dark:text-indigo-400">
                             <i class="fas fa-laptop-code text-xl"></i>
                         </div>
                         <div>
-                            <h3 class="font-bold text-white text-base group-hover:text-indigo-400 transition-colors">E-commerce Website</h3>
-                            <p class="text-xs text-slate-400 mt-1">Posted 2 days ago • Tech</p>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">E-commerce Website</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Posted 2 days ago • Tech</p>
                         </div>
                     </div>
                     <div class="flex items-center justify-between sm:justify-end gap-6 sm:w-auto w-full">
                         <div class="text-left sm:text-right">
-                            <p class="text-lg font-bold text-white">$2,500</p>
+                            <p class="text-lg font-bold text-slate-900 dark:text-white">$2,500</p>
                             <div class="flex items-center gap-2 mt-1">
-                                <span class="text-[10px] font-bold text-indigo-400 bg-indigo-400/10 px-2 py-0.5 rounded-full uppercase tracking-wider">Open</span>
-                                <span class="text-xs text-slate-500 font-medium">8 bids</span>
+                                <span class="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-400/10 px-2 py-0.5 rounded-full uppercase tracking-wider">Open</span>
+                                <span class="text-xs text-slate-500 dark:text-slate-500 font-medium">8 bids</span>
                             </div>
                         </div>
-                        <button class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
+                        <button class="w-10 h-10 rounded-full border border-slate-300 dark:border-white/10 flex items-center justify-center text-slate-400 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </button>
                     </div>
@@ -219,26 +249,26 @@
             </div>
 
             <!-- Project 2 -->
-            <div class="group p-4 rounded-2xl border border-white/5 hover:border-indigo-500/30 bg-[#12141a] hover:bg-[#15171e] transition-all">
+            <div class="group p-4 rounded-2xl border border-slate-200 dark:border-white/5 hover:border-indigo-500/30 bg-slate-50 dark:bg-[#12141a] hover:bg-slate-100 dark:hover:bg-[#15171e] transition-all">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-indigo-400">
+                        <div class="w-12 h-12 bg-indigo-100 dark:bg-white/5 border border-indigo-200 dark:border-white/10 rounded-xl flex items-center justify-center text-indigo-600 dark:text-indigo-400">
                              <i class="fas fa-mobile-alt text-xl"></i>
                         </div>
                         <div>
-                            <h3 class="font-bold text-white text-base group-hover:text-indigo-400 transition-colors">Mobile App Development</h3>
-                            <p class="text-xs text-slate-400 mt-1">Posted 5 days ago • Mobile</p>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Mobile App Development</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Posted 5 days ago • Mobile</p>
                         </div>
                     </div>
                     <div class="flex items-center justify-between sm:justify-end gap-6 sm:w-auto w-full">
                         <div class="text-left sm:text-right">
-                            <p class="text-lg font-bold text-white">$3,800</p>
+                            <p class="text-lg font-bold text-slate-900 dark:text-white">$3,800</p>
                             <div class="flex items-center gap-2 mt-1">
-                                <span class="text-[10px] font-bold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-full uppercase tracking-wider">In Progress</span>
-                                <span class="text-xs text-slate-500 font-medium">12 bids</span>
+                                <span class="text-[10px] font-bold text-amber-600 dark:text-amber-400 bg-amber-100 dark:bg-amber-400/10 px-2 py-0.5 rounded-full uppercase tracking-wider">In Progress</span>
+                                <span class="text-xs text-slate-500 dark:text-slate-500 font-medium">12 bids</span>
                             </div>
                         </div>
-                        <button class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
+                        <button class="w-10 h-10 rounded-full border border-slate-300 dark:border-white/10 flex items-center justify-center text-slate-400 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </button>
                     </div>
@@ -246,26 +276,26 @@
             </div>
              
              <!-- Project 3 -->
-            <div class="group p-4 rounded-2xl border border-white/5 hover:border-indigo-500/30 bg-[#12141a] hover:bg-[#15171e] transition-all">
+            <div class="group p-4 rounded-2xl border border-slate-200 dark:border-white/5 hover:border-indigo-500/30 bg-slate-50 dark:bg-[#12141a] hover:bg-slate-100 dark:hover:bg-[#15171e] transition-all">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-indigo-400">
+                        <div class="w-12 h-12 bg-indigo-100 dark:bg-white/5 border border-indigo-200 dark:border-white/10 rounded-xl flex items-center justify-center text-indigo-600 dark:text-indigo-400">
                              <i class="fas fa-paint-brush text-xl"></i>
                         </div>
                         <div>
-                            <h3 class="font-bold text-white text-base group-hover:text-indigo-400 transition-colors">Brand Identity Design</h3>
-                            <p class="text-xs text-slate-400 mt-1">Posted 1 week ago • Design</p>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Brand Identity Design</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Posted 1 week ago • Design</p>
                         </div>
                     </div>
                     <div class="flex items-center justify-between sm:justify-end gap-6 sm:w-auto w-full">
                         <div class="text-left sm:text-right">
-                            <p class="text-lg font-bold text-white">$1,200</p>
+                            <p class="text-lg font-bold text-slate-900 dark:text-white">$1,200</p>
                             <div class="flex items-center gap-2 mt-1">
-                                <span class="text-[10px] font-bold text-indigo-400 bg-indigo-400/10 px-2 py-0.5 rounded-full uppercase tracking-wider">Open</span>
-                                <span class="text-xs text-slate-500 font-medium">15 bids</span>
+                                <span class="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-400/10 px-2 py-0.5 rounded-full uppercase tracking-wider">Open</span>
+                                <span class="text-xs text-slate-500 dark:text-slate-500 font-medium">15 bids</span>
                             </div>
                         </div>
-                        <button class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
+                        <button class="w-10 h-10 rounded-full border border-slate-300 dark:border-white/10 flex items-center justify-center text-slate-400 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </button>
                     </div>
@@ -277,63 +307,63 @@
 
     <!-- Recent Activity -->
     <div class="bento-card p-6 flex flex-col">
-        <div class="flex items-center justify-between mb-6 border-b border-white/5 pb-4">
-            <h2 class="text-xl font-bold text-white tracking-tight">Recent Activity</h2>
-            <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-400">
+        <div class="flex items-center justify-between mb-6 border-b border-slate-200 dark:border-white/5 pb-4">
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight">Recent Activity</h2>
+            <div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-white/5 flex items-center justify-center text-slate-600 dark:text-slate-400">
                 <i class="fas fa-history text-sm"></i>
             </div>
         </div>
         
-        <div class="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-white/10 before:to-transparent">
+        <div class="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 dark:before:via-white/10 before:to-transparent">
             
             <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
                  <!-- Icon Indicator -->
-                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-[#15171e] group-hover:bg-indigo-500/20 group-hover:border-indigo-500/30 text-indigo-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 transition-colors z-10">
+                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-slate-300 dark:border-white/10 bg-white dark:bg-[#15171e] group-hover:bg-indigo-100 dark:group-hover:bg-indigo-500/20 group-hover:border-indigo-400 dark:group-hover:border-indigo-500/30 text-indigo-500 dark:text-indigo-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 transition-colors z-10">
                     <i class="fas fa-plus text-xs"></i>
                 </div>
                 <!-- Content -->
                 <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] pl-4 md:pl-0 md:pr-4 md:text-right mt-1">
-                    <p class="text-sm font-bold text-white mb-0.5">Website Redesign</p>
-                    <p class="text-xs text-slate-400 mb-1">New project posted</p>
+                    <p class="text-sm font-bold text-slate-900 dark:text-white mb-0.5">Website Redesign</p>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 mb-1">New project posted</p>
                     <time class="text-[10px] font-medium text-slate-500 uppercase tracking-wider">2 hrs ago</time>
                 </div>
             </div>
 
             <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
                  <!-- Icon Indicator -->
-                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-[#15171e] group-hover:bg-indigo-500/20 group-hover:border-indigo-500/30 text-indigo-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 transition-colors z-10">
+                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-slate-300 dark:border-white/10 bg-white dark:bg-[#15171e] group-hover:bg-indigo-100 dark:group-hover:bg-indigo-500/20 group-hover:border-indigo-400 dark:group-hover:border-indigo-500/30 text-indigo-500 dark:text-indigo-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 transition-colors z-10">
                     <i class="fas fa-check text-xs"></i>
                 </div>
                 <!-- Content -->
                 <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] pl-4 md:group-odd:pl-4 md:group-even:pr-4 md:text-left mt-1">
-                    <p class="text-sm font-bold text-white mb-0.5">Mobile App</p>
-                    <p class="text-xs text-slate-400 mb-1">Bid accepted</p>
+                    <p class="text-sm font-bold text-slate-900 dark:text-white mb-0.5">Mobile App</p>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 mb-1">Bid accepted</p>
                     <time class="text-[10px] font-medium text-slate-500 uppercase tracking-wider">5 hrs ago</time>
                 </div>
             </div>
 
             <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
                  <!-- Icon Indicator -->
-                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-[#15171e] group-hover:bg-indigo-500/20 group-hover:border-indigo-500/30 text-indigo-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 transition-colors z-10">
+                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-slate-300 dark:border-white/10 bg-white dark:bg-[#15171e] group-hover:bg-indigo-100 dark:group-hover:bg-indigo-500/20 group-hover:border-indigo-400 dark:group-hover:border-indigo-500/30 text-indigo-500 dark:text-indigo-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 transition-colors z-10">
                     <i class="fas fa-envelope text-xs"></i>
                 </div>
                 <!-- Content -->
                 <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] pl-4 md:pl-0 md:pr-4 md:text-right mt-1">
-                    <p class="text-sm font-bold text-white mb-0.5">John Smith</p>
-                    <p class="text-xs text-slate-400 mb-1">New message received</p>
+                    <p class="text-sm font-bold text-slate-900 dark:text-white mb-0.5">John Smith</p>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 mb-1">New message received</p>
                     <time class="text-[10px] font-medium text-slate-500 uppercase tracking-wider">Yesterday</time>
                 </div>
             </div>
 
              <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
                  <!-- Icon Indicator -->
-                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-[#15171e] group-hover:bg-indigo-500/20 group-hover:border-indigo-500/30 text-indigo-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 transition-colors z-10">
+                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-slate-300 dark:border-white/10 bg-white dark:bg-[#15171e] group-hover:bg-indigo-100 dark:group-hover:bg-indigo-500/20 group-hover:border-indigo-400 dark:group-hover:border-indigo-500/30 text-indigo-500 dark:text-indigo-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 transition-colors z-10">
                     <i class="fas fa-gavel text-xs"></i>
                 </div>
                 <!-- Content -->
                 <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] pl-4 md:group-odd:pl-4 md:group-even:pr-4 md:text-left mt-1">
-                    <p class="text-sm font-bold text-white mb-0.5">E-commerce Project</p>
-                    <p class="text-xs text-slate-400 mb-1">5 new bids added</p>
+                    <p class="text-sm font-bold text-slate-900 dark:text-white mb-0.5">E-commerce Project</p>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 mb-1">5 new bids added</p>
                     <time class="text-[10px] font-medium text-slate-500 uppercase tracking-wider">2 days ago</time>
                 </div>
             </div>

@@ -460,4 +460,46 @@ namespace SGP_Freelancing.Models.DTOs
         public DateTime? TestimonialDate { get; set; }
         public bool IsAnonymous { get; set; }
         public int DisplayOrder { get; set; }
-    }}
+    }
+
+    // Freelancer Search DTOs
+    public class FreelancerSearchDto
+    {
+        public string? Search { get; set; }
+        public List<int>? SkillIds { get; set; }
+        public decimal? MinHourlyRate { get; set; }
+        public decimal? MaxHourlyRate { get; set; }
+        public decimal? MinRating { get; set; }
+        public int Page { get; set; } = 1;
+        public int PageSize { get; set; } = 12;
+        public string? SortBy { get; set; } // "rating", "rate-asc", "rate-desc", "completed"
+    }
+
+    // Paging Result
+    public class PagedResult<T>
+    {
+        public List<T> Items { get; set; } = new();
+        public int TotalCount { get; set; }
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
+        public int TotalPages => (int)Math.Ceiling((double)TotalCount / PageSize);
+        public bool HasPreviousPage => PageNumber > 1;
+        public bool HasNextPage => PageNumber < TotalPages;
+    }
+
+    // File Attachment DTOs
+    public class FileAttachmentDto
+    {
+        public int Id { get; set; }
+        public string FileName { get; set; } = null!;
+        public string FilePath { get; set; } = null!;
+        public string FileType { get; set; } = null!;
+        public long FileSize { get; set; }
+        public string UploadedById { get; set; } = null!;
+        public string UploadedByName { get; set; } = null!;
+        public DateTime CreatedAt { get; set; }
+        public int? ProjectId { get; set; }
+        public int? ContractId { get; set; }
+        public int? MessageId { get; set; }
+    }
+}

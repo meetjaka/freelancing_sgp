@@ -11,11 +11,11 @@
     <div class="mb-10 bento-card p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 overflow-visible z-10 relative">
         <div class="wave-bg"></div>
         <div class="relative z-10">
-            <p class="text-indigo-400 font-medium tracking-wider text-sm uppercase mb-2">Showcase</p>
-            <h1 class="text-4xl md:text-5xl font-bold text-white mb-2 tracking-tight">
-                Freelancer Portfolios <span class="text-indigo-400 text-3xl">✦</span>
+            <p class="text-indigo-500 dark:text-indigo-400 font-medium tracking-wider text-sm uppercase mb-2">Showcase</p>
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-2 tracking-tight">
+                Freelancer Portfolios <span class="text-indigo-500 dark:text-indigo-400 text-3xl">✦</span>
             </h1>
-            <p class="text-slate-400 text-lg">
+            <p class="text-slate-500 dark:text-slate-400 text-lg">
                 Explore the best work samples and case studies from our top-rated freelancers
             </p>
             @if (User.IsInRole("Freelancer"))
@@ -25,7 +25,7 @@
                         <i class="fas fa-plus"></i>
                         Build My Portfolio
                     </button>
-                    <button onclick="document.getElementById('managePortfolioModal').classList.remove('hidden')" class="ml-3 inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-full transition-all backdrop-blur-sm">
+                    <button onclick="document.getElementById('managePortfolioModal').classList.remove('hidden')" class="ml-3 inline-flex items-center gap-2 px-6 py-3 bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-900 dark:text-white font-bold rounded-full transition-all backdrop-blur-sm">
                         <i class="fas fa-briefcase"></i>
                         Manage
                     </button>
@@ -57,12 +57,12 @@
         {
             <div class="bento-card p-16 text-center flex flex-col items-center justify-center min-h-[400px]">
                 <div class="mb-6">
-                    <div class="w-28 h-28 bg-[#15171e] border border-white/5 rounded-full flex items-center justify-center mx-auto shadow-inner">
-                        <i class="fas fa-briefcase text-slate-500 text-5xl"></i>
+                    <div class="w-28 h-28 bg-slate-100 dark:bg-[#15171e] border border-slate-200 dark:border-white/5 rounded-full flex items-center justify-center mx-auto shadow-inner">
+                        <i class="fas fa-briefcase text-slate-400 dark:text-slate-500 text-5xl"></i>
                     </div>
                 </div>
-                <h2 class="text-3xl font-bold text-white mb-4 tracking-tight">No Portfolios Available Yet</h2>
-                <p class="text-slate-400 text-lg mb-8 max-w-md mx-auto">
+                <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight">No Portfolios Available Yet</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-lg mb-8 max-w-md mx-auto">
                     Be the first to showcase your work! Create a portfolio to display your best projects to potential clients.
                 </p>
                 @if (User.IsInRole("Freelancer"))
@@ -82,7 +82,7 @@
                 {
                     <div class="bento-card group flex flex-col justify-between overflow-hidden relative">
                         <!-- Cover Image -->
-                        <div class="relative h-48 bg-[#15171e] overflow-hidden rounded-t-3xl border-b border-white/5">
+                        <div class="relative h-48 bg-slate-100 dark:bg-[#15171e] overflow-hidden rounded-t-3xl border-b border-slate-200 dark:border-white/5">
                             @if (!string.IsNullOrEmpty(portfolio.CoverImageUrl))
                             {
                                 <img src="@portfolio.CoverImageUrl" 
@@ -115,13 +115,13 @@
                                     @portfolio.FreelancerName.FirstOrDefault()
                                 </div>
                                 <div class="ml-3 flex-1">
-                                    <p class="font-bold text-white text-sm">@portfolio.FreelancerName</p>
-                                    <p class="text-xs text-slate-400">Freelancer</p>
+                                    <p class="font-bold text-slate-900 dark:text-white text-sm">@portfolio.FreelancerName</p>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">Freelancer</p>
                                 </div>
                             </div>
 
                             <!-- Title -->
-                            <h3 class="text-xl font-bold text-white mb-2 line-clamp-2">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2 line-clamp-2">
                                 @portfolio.Title
                             </h3>
 
@@ -139,27 +139,27 @@
                                             <i class="fas fa-star-half-alt text-amber-400 text-xs"></i>
                                         }
                                     </div>
-                                    <span class="text-xs font-bold text-slate-300">
+                                    <span class="text-xs font-bold text-slate-500 dark:text-slate-300">
                                         @portfolio.AverageRating.ToString("F1")
                                     </span>
                                 </div>
                             }
 
                             <!-- Stats -->
-                            <div class="flex gap-4 mb-6 text-sm text-slate-400 py-4 mt-auto border-t border-white/5">
+                            <div class="flex gap-4 mb-6 text-sm text-slate-500 dark:text-slate-400 py-4 mt-auto border-t border-slate-200 dark:border-white/5">
                                 <div class="flex items-center gap-1.5">
-                                    <i class="fas fa-images text-indigo-400"></i>
-                                    <span class="font-bold text-white">@portfolio.TotalCases</span>
+                                    <i class="fas fa-images text-indigo-500 dark:text-indigo-400"></i>
+                                    <span class="font-bold text-slate-900 dark:text-white">@portfolio.TotalCases</span>
                                     <span class="text-xs">Case@(portfolio.TotalCases != 1 ? "s" : "")</span>
                                 </div>
                                 <div class="flex items-center gap-1.5">
-                                    <i class="fas fa-comments text-indigo-400"></i>
-                                    <span class="font-bold text-white">@portfolio.TotalTestimonials</span>
+                                    <i class="fas fa-comments text-indigo-500 dark:text-indigo-400"></i>
+                                    <span class="font-bold text-slate-900 dark:text-white">@portfolio.TotalTestimonials</span>
                                     <span class="text-xs">Review@(portfolio.TotalTestimonials != 1 ? "s" : "")</span>
                                 </div>
                                 <div class="flex items-center gap-1.5">
-                                    <i class="fas fa-eye text-indigo-400"></i>
-                                    <span class="font-bold text-white">@portfolio.ViewCount</span>
+                                    <i class="fas fa-eye text-indigo-500 dark:text-indigo-400"></i>
+                                    <span class="font-bold text-slate-900 dark:text-white">@portfolio.ViewCount</span>
                                     <span class="text-xs">Views</span>
                                 </div>
                             </div>
@@ -167,7 +167,7 @@
                             <!-- View Button -->
                             <a asp-action="Details" 
                                asp-route-id="@portfolio.Id" 
-                               class="w-full flex items-center justify-center gap-2 px-6 py-3 bg-[#15171e] hover:bg-white/5 border border-white/10 text-white font-bold rounded-xl transition-colors">
+                               class="w-full flex items-center justify-center gap-2 px-6 py-3 bg-slate-100 dark:bg-[#15171e] hover:bg-slate-200 dark:hover:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white font-bold rounded-xl transition-colors">
                                 <i class="fas fa-eye"></i>
                                 View Portfolio
                             </a>
@@ -186,20 +186,20 @@
     
     <!-- Modal Content -->
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
-        <div class="relative inline-block align-bottom bento-card border border-white/10 rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full max-h-[90vh] flex flex-col">
+        <div class="relative inline-block align-bottom bento-card border border-slate-200 dark:border-white/10 rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full max-h-[90vh] flex flex-col">
             <!-- Header -->
-            <div class="px-6 py-4 border-b border-white/5 bg-[#12141a] flex justify-between items-center sticky top-0 z-10">
-                <h3 class="text-xl font-bold text-white flex items-center gap-2">
-                    <i class="fas fa-briefcase text-indigo-400"></i>
+            <div class="px-6 py-4 border-b border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-[#12141a] flex justify-between items-center sticky top-0 z-10">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fas fa-briefcase text-indigo-500 dark:text-indigo-400"></i>
                     Manage My Portfolios
                 </h3>
-                <button onclick="document.getElementById('managePortfolioModal').classList.add('hidden')" class="text-slate-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full">
+                <button onclick="document.getElementById('managePortfolioModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-full">
                     <i class="fas fa-times text-lg"></i>
                 </button>
             </div>
             
             <!-- Body -->
-            <div class="px-6 py-8 overflow-y-auto bg-[#0a0a0f]">
+            <div class="px-6 py-8 overflow-y-auto bg-white dark:bg-[#0a0a0f]">
                 @{
                     var myPortfolios = Model != null && User.Identity?.Name != null 
                         ? Model.Where(p => p.FreelancerName == User.Identity.Name).ToList() 
@@ -213,7 +213,7 @@
                         {
                             <div class="bento-card p-5 group flex flex-col relative">
                                 <!-- Banner -->
-                                <div class="relative h-32 bg-[#15171e] rounded-xl overflow-hidden mb-4 border border-white/5">
+                                <div class="relative h-32 bg-slate-100 dark:bg-[#15171e] rounded-xl overflow-hidden mb-4 border border-slate-200 dark:border-white/5">
                                     @if (!string.IsNullOrEmpty(portfolio.CoverImageUrl))
                                     {
                                         <img src="@portfolio.CoverImageUrl" alt="@portfolio.Title" class="w-full h-full object-cover">
@@ -226,15 +226,15 @@
                                     }
                                 </div>
                                 
-                                <h4 class="text-lg font-bold text-white mb-2">@portfolio.Title</h4>
-                                <p class="text-sm text-slate-400 mb-4 line-clamp-2">@portfolio.Description</p>
+                                <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">@portfolio.Title</h4>
+                                <p class="text-sm text-slate-500 dark:text-slate-400 mb-4 line-clamp-2">@portfolio.Description</p>
                                 
-                                <div class="mt-auto flex items-center justify-between border-t border-white/5 pt-4">
+                                <div class="mt-auto flex items-center justify-between border-t border-slate-200 dark:border-white/5 pt-4">
                                     <div class="flex gap-2">
                                         <a asp-action="Edit" asp-route-id="@portfolio.Id" class="px-3 py-1.5 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 rounded-lg text-sm font-bold transition-colors">
                                             <i class="fas fa-edit mr-1"></i> Edit
                                         </a>
-                                        <a asp-action="Details" asp-route-id="@portfolio.Id" class="px-3 py-1.5 bg-white/5 hover:bg-white/10 text-white rounded-lg text-sm font-bold transition-colors">
+                                        <a asp-action="Details" asp-route-id="@portfolio.Id" class="px-3 py-1.5 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 text-slate-900 dark:text-white rounded-lg text-sm font-bold transition-colors">
                                             <i class="fas fa-eye mr-1"></i> View
                                         </a>
                                     </div>
@@ -254,8 +254,8 @@
                         <div class="w-20 h-20 bg-indigo-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
                             <i class="fas fa-folder-open text-3xl text-indigo-400"></i>
                         </div>
-                        <h4 class="text-xl font-bold text-white mb-2">No Portfolios Found</h4>
-                        <p class="text-slate-400 mb-6">You haven't created any portfolios yet.</p>
+                        <h4 class="text-xl font-bold text-slate-900 dark:text-white mb-2">No Portfolios Found</h4>
+                        <p class="text-slate-500 dark:text-slate-400 mb-6">You haven't created any portfolios yet.</p>
                         <button onclick="document.getElementById('managePortfolioModal').classList.add('hidden'); document.getElementById('createPortfolioModal').classList.remove('hidden');" class="px-6 py-2.5 bg-indigo-500 text-white rounded-xl font-bold hover:bg-indigo-400 transition-colors">
                             Create Your First Portfolio
                         </button>
@@ -264,8 +264,8 @@
             </div>
             
             <!-- Footer -->
-            <div class="px-6 py-4 border-t border-white/5 bg-[#12141a] flex justify-end gap-3 rounded-b-2xl sticky bottom-0">
-                <button type="button" onclick="document.getElementById('managePortfolioModal').classList.add('hidden')" class="px-6 py-2.5 text-sm font-bold text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-all">
+            <div class="px-6 py-4 border-t border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-[#12141a] flex justify-end gap-3 rounded-b-2xl sticky bottom-0">
+                <button type="button" onclick="document.getElementById('managePortfolioModal').classList.add('hidden')" class="px-6 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl transition-all">
                     Close
                 </button>
             </div>
@@ -281,55 +281,55 @@
     
     <!-- Modal Content -->
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
-        <div class="relative inline-block align-bottom bento-card border border-white/10 rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full max-h-[90vh] flex flex-col">
+        <div class="relative inline-block align-bottom bento-card border border-slate-200 dark:border-white/10 rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full max-h-[90vh] flex flex-col">
             <!-- Header -->
-            <div class="px-6 py-4 border-b border-white/5 bg-[#12141a] flex justify-between items-center sticky top-0 z-10">
-                <h3 class="text-xl font-bold text-white flex items-center gap-2">
-                    <i class="fas fa-plus-circle text-indigo-400"></i>
+            <div class="px-6 py-4 border-b border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-[#12141a] flex justify-between items-center sticky top-0 z-10">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fas fa-plus-circle text-indigo-500 dark:text-indigo-400"></i>
                     Create Your Portfolio
                 </h3>
-                <button onclick="document.getElementById('createPortfolioModal').classList.add('hidden')" class="text-slate-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full">
+                <button onclick="document.getElementById('createPortfolioModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-full">
                     <i class="fas fa-times text-lg"></i>
                 </button>
             </div>
             
             <!-- Body -->
-            <div class="px-6 py-8 overflow-y-auto bg-[#0a0a0f]">
+            <div class="px-6 py-8 overflow-y-auto bg-white dark:bg-[#0a0a0f]">
                 <!-- Provide a dummy model since this is in the index page -->
                 <form asp-action="Create" method="post" class="space-y-6">
                     <!-- Portfolio Title -->
                     <div>
-                        <label for="Title" class="flex items-center text-sm font-bold text-slate-300 mb-2">
+                        <label for="Title" class="flex items-center text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
                             <i class="fas fa-heading text-indigo-500 mr-2"></i>
                             Portfolio Title
                             <span class="text-rose-500 ml-1">*</span>
                         </label>
                         <input name="Title" id="Title"
-                               class="w-full px-4 py-3 bg-[#15171e] text-white border-2 border-white/5 rounded-xl focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition duration-300 text-sm" 
+                               class="w-full px-4 py-3 bg-slate-50 dark:bg-[#15171e] text-slate-900 dark:text-white border-2 border-slate-300 dark:border-white/5 rounded-xl focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition duration-300 text-sm" 
                                placeholder="e.g., Professional Web Designer &amp; Developer" 
                                required>
                     </div>
 
                     <!-- Description -->
                     <div>
-                        <label for="Description" class="flex items-center text-sm font-bold text-slate-300 mb-2">
+                        <label for="Description" class="flex items-center text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
                             <i class="fas fa-align-left text-indigo-500 mr-2"></i>
                             Short Description
                         </label>
                         <textarea name="Description" id="Description"
-                                  class="w-full px-4 py-3 bg-[#15171e] text-white border-2 border-white/5 rounded-xl focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition duration-300 resize-none text-sm" 
+                                  class="w-full px-4 py-3 bg-slate-50 dark:bg-[#15171e] text-slate-900 dark:text-white border-2 border-slate-300 dark:border-white/5 rounded-xl focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition duration-300 resize-none text-sm" 
                                   rows="3"
                                   placeholder="A brief overview of your portfolio and expertise..."></textarea>
                     </div>
 
                     <!-- Detailed Bio -->
                     <div>
-                        <label for="DetailedBio" class="flex items-center text-sm font-bold text-slate-300 mb-2">
+                        <label for="DetailedBio" class="flex items-center text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
                             <i class="fas fa-file-alt text-indigo-500 mr-2"></i>
                             Detailed Bio
                         </label>
                         <textarea name="DetailedBio" id="DetailedBio"
-                                  class="w-full px-4 py-3 bg-[#15171e] text-white border-2 border-white/5 rounded-xl focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition duration-300 resize-none text-sm" 
+                                  class="w-full px-4 py-3 bg-slate-50 dark:bg-[#15171e] text-slate-900 dark:text-white border-2 border-slate-300 dark:border-white/5 rounded-xl focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition duration-300 resize-none text-sm" 
                                   rows="5"
                                   placeholder="Tell your story... Highlight your experience, skills, approach, and what sets you apart..."></textarea>
                     </div>
@@ -341,22 +341,22 @@
                                    type="checkbox" 
                                    value="true"
                                    id="isPublic" 
-                                   class="w-5 h-5 bg-[#15171e] border border-white/10 text-indigo-500 rounded focus:ring-indigo-500 cursor-pointer"
+                                   class="w-5 h-5 bg-slate-50 dark:bg-[#15171e] border border-slate-300 dark:border-white/10 text-indigo-500 rounded focus:ring-indigo-500 cursor-pointer"
                                    checked>
                             <label for="isPublic" class="ml-3 flex-1 cursor-pointer">
-                                <span class="font-semibold text-white">Make portfolio public</span>
-                                <p class="text-slate-400 text-xs mt-0.5">Visible to all clients browsing portfolios on the platform</p>
+                                <span class="font-semibold text-slate-900 dark:text-white">Make portfolio public</span>
+                                <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5">Visible to all clients browsing portfolios on the platform</p>
                             </label>
                         </div>
                     </div>
 
                     <!-- Buttons -->
-                    <div class="flex gap-4 pt-4 border-t border-white/5">
+                    <div class="flex gap-4 pt-4 border-t border-slate-200 dark:border-white/5">
                         <button type="submit" class="flex-1 flex items-center justify-center px-6 py-3 bg-indigo-500 hover:bg-indigo-400 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(99,102,241,0.3)] transition-all">
                             <i class="fas fa-check-circle mr-2"></i>
                             Create Portfolio
                         </button>
-                        <button type="button" onclick="document.getElementById('createPortfolioModal').classList.add('hidden')" class="flex-1 flex items-center justify-center px-6 py-3 border border-white/10 text-slate-300 hover:text-white hover:bg-white/5 font-bold rounded-xl transition-all">
+                        <button type="button" onclick="document.getElementById('createPortfolioModal').classList.add('hidden')" class="flex-1 flex items-center justify-center px-6 py-3 border border-slate-300 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 font-bold rounded-xl transition-all">
                             <i class="fas fa-times mr-2"></i>
                             Cancel
                         </button>

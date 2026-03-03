@@ -1,0 +1,122 @@
+@model SGP_Freelancing.Models.DTOs.FreelancerProfileDto
+@{
+    ViewData["Title"] = Model.Title ?? "Freelancer Profile";
+}
+
+<style>
+    .profile-card {
+        backdrop-filter: blur(12px);
+        border-radius: 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    html:not(.dark) .profile-card {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    html.dark .profile-card {
+        background: rgba(15, 17, 21, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+</style>
+
+<div class="container mx-auto px-6 py-8 max-w-5xl">
+    <!-- Back Button -->
+    <div class="mb-6">
+        <a asp-action="Index" class="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300">
+            <i class="fas fa-arrow-left mr-2"></i>Back to Freelancers
+        </a>
+    </div>
+
+    <!-- Profile Header -->
+    <div class="profile-card p-8 mb-6">
+        <div class="flex flex-col md:flex-row items-start gap-6">
+            <div class="w-32 h-32 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-5xl font-bold">
+                @(Model.Title?.Substring(0, 1).ToUpper() ?? "F")
+            </div>
+            <div class="flex-1">
+                <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">@Model.Title</h1>
+                
+                <div class="flex flex-wrap items-center gap-4 mb-4">
+                    @if (Model.AverageRating > 0)
+                    {
+                        <div class="flex items-center gap-2">
+                            <div class="flex gap-1">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <i class="fas fa-star @(i <= Model.AverageRating ? "text-yellow-400" : "text-slate-300 dark:text-slate-600")"></i>
+                                }
+                            </div>
+                            <span class="text-slate-600 dark:text-slate-400 font-semibold">@Model.AverageRating.ToString("F1")</span>
+                        </div>
+                    }
+
+                    <div class="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span>@Model.CompletedProjects project@(Model.CompletedProjects != 1 ? "s" : "") completed</span>
+                    </div>
+                </div>
+
+                <div class="flex items-baseline gap-2 mb-4">
+                    <span class="text-4xl font-bold text-slate-900 dark:text-white">$@Model.HourlyRate.ToString("F0")</span>
+                    <span class="text-slate-500 dark:text-slate-400">/hour</span>
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.PortfolioUrl))
+                {
+                    <a href="@Model.PortfolioUrl" target="_blank" 
+                       class="inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300">
+                        <i class="fas fa-external-link-alt"></i>
+                        <span>View Portfolio</span>
+                    </a>
+                }
+            </div>
+
+            <div class="flex flex-col gap-3">
+                @if (User.IsInRole("Client"))
+                {
+                    <a asp-controller="Message" asp-action="New" asp-route-recipientId="@Model.Id" 
+                       class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl transition-all text-center">
+                        <i class="fas fa-envelope mr-2"></i>Contact
+                    </a>
+                }
+                else if (!User.Identity.IsAuthenticated)
+                {
+                    <a asp-controller="Account" asp-action="Login" 
+                       class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl transition-all text-center">
+                        Login to Contact
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Bio -->
+    @if (!string.IsNullOrEmpty(Model.Bio))
+    {
+        <div class="profile-card p-6 mb-6">
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4">About</h2>
+            <p class="text-slate-600 dark:text-slate-400 whitespace-pre-line">@Model.Bio</p>
+        </div>
+    }
+
+    <!-- Skills -->
+    @if (Model.Skills != null && Model.Skills.Any())
+    {
+        <div class="profile-card p-6">
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4">
+                Skills (@Model.Skills.Count)
+            </h2>
+            <div class="flex flex-wrap gap-3">
+                @foreach (var skill in Model.Skills)
+                {
+                    <div class="px-4 py-2 bg-indigo-100 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 rounded-xl font-medium">
+                        @skill.Name
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

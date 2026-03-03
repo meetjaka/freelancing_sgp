@@ -37,6 +37,9 @@ namespace SGP_Freelancing.Data
         public DbSet<PortfolioCase> PortfolioCases { get; set; }
         public DbSet<PortfolioImage> PortfolioImages { get; set; }
         public DbSet<ProjectTestimonial> ProjectTestimonials { get; set; }
+        
+        // File attachments
+        public DbSet<FileAttachment> FileAttachments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -56,6 +59,9 @@ namespace SGP_Freelancing.Data
             ConfigureReviewRelationships(modelBuilder);
             ConfigureMessageRelationships(modelBuilder);
             ConfigurePortfolioRelationships(modelBuilder);
+
+            // Configure decimal precision
+            ConfigureDecimalPrecision(modelBuilder);
 
             // Configure indexes for performance
             ConfigureIndexes(modelBuilder);
@@ -212,6 +218,30 @@ namespace SGP_Freelancing.Data
                 .OnDelete(DeleteBehavior.SetNull);
         }
 
+        private void ConfigureDecimalPrecision(ModelBuilder modelBuilder)
+        {
+            // Configure decimal properties to avoid truncation warnings
+            modelBuilder.Entity<ClientProfile>()
+                .Property(c => c.AverageRating)
+                .HasPrecision(3, 2); // 0.00 to 5.00
+
+            modelBuilder.Entity<FreelancerProfile>()
+                .Property(f => f.AverageRating)
+                .HasPrecision(3, 2); // 0.00 to 5.00
+
+            modelBuilder.Entity<PortfolioCase>()
+                .Property(pc => pc.BudgetAmount)
+                .HasPrecision(18, 2); // Standard money precision
+
+            modelBuilder.Entity<PortfolioCase>()
+                .Property(pc => pc.Rating)
+                .HasPrecision(3, 2); // 0.00 to 5.00
+
+            modelBuilder.Entity<ProjectTestimonial>()
+                .Property(pt => pt.Rating)
+                .HasPrecision(3, 2); // 0.00 to 5.00
+        }
+
         private void ConfigureIndexes(ModelBuilder modelBuilder)
         {
             // Index on frequently queried fields
@@ -244,6 +274,16 @@ namespace SGP_Freelancing.Data
             modelBuilder.Entity<Review>().HasQueryFilter(e => !e.IsDeleted);
             modelBuilder.Entity<Message>().HasQueryFilter(e => !e.IsDeleted);
             modelBuilder.Entity<PaymentTransaction>().HasQueryFilter(e => !e.IsDeleted);
+            
+            // Add query filters for junction tables to match parent entities
+            // This fixes the warning about global filters on required relationships
+            modelBuilder.Entity<FreelancerSkill>().HasQueryFilter(fs => 
+                !EF.Property<bool>(fs.FreelancerProfile, "IsDeleted") && 
+                !EF.Property<bool>(fs.Skill, "IsDeleted"));
+            
+            modelBuilder.Entity<ProjectSkill>().HasQueryFilter(ps => 
+                !EF.Property<bool>(ps.Project, "IsDeleted") && 
+                !EF.Property<bool>(ps.Skill, "IsDeleted"));
             
             // Portfolio entities soft delete filters
             modelBuilder.Entity<Portfolio>().HasQueryFilter(e => !e.IsDeleted);
