@@ -149,14 +149,27 @@
     <style>
         /* Navbar - Responsive to Light/Dark Mode */
         #main-navbar {
-            background: rgba(255,255,255,0.95);
-            border-bottom: 1px solid rgba(226,232,240,0.8);
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             transition: all 0.3s ease;
         }
         
         .dark #main-navbar {
-            background: #0B1120;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background: rgba(10, 10, 15, 0.7); /* Deep sleek glass */
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+        
+        #main-navbar.navbar-transparent {
+            background: rgba(255,255,255,0.4) !important;
+            border-color: rgba(255,255,255,0.2) !important;
+            box-shadow: none !important;
+        }
+        
+        .dark #main-navbar.navbar-transparent {
+            background: rgba(5, 5, 10, 0.5) !important;
+            border-color: rgba(255,255,255,0.05) !important;
         }
         
         /* Brand Text */
@@ -170,22 +183,24 @@
         
         /* Search Bar */
         .nav-search input {
-            background: #f1f5f9;
-            border-color: #e2e8f0;
+            background: rgba(241, 245, 249, 0.8);
+            border: 1px solid rgba(226, 232, 240, 0.8);
             color: #0f172a;
             transition: all 0.3s ease;
         }
         .dark .nav-search input {
-            background: rgba(255,255,255,0.06);
-            border-color: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05); /* Sleek pill interior */
+            border: 1px solid rgba(255,255,255,0.06);
             color: #fff;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
         
         .nav-search input::placeholder { 
             color: #64748b;
         }
         .dark .nav-search input::placeholder { 
-            color: rgba(255,255,255,0.4); 
+            color: #94a3b8; 
         }
         
         .nav-search .search-icon { 
@@ -193,30 +208,39 @@
             transition: color 0.3s ease;
         }
         .dark .nav-search .search-icon { 
-            color: rgba(255,255,255,0.3); 
+            color: #94a3b8; 
         }
         
         .nav-search input:focus {
+            background: #fff;
             border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+            box-shadow: 0 0 0 4px rgba(99,102,241,0.15);
+        }
+        .dark .nav-search input:focus {
+            background: rgba(255,255,255,0.08); /* Active glass */
+            border-color: rgba(139,92,246,0.5); /* Purple hint */
+            box-shadow: 0 0 0 4px rgba(139,92,246,0.15);
         }
         
         /* Nav Links */
         .nav-link { 
             color: #475569;
+            font-weight: 600;
+            border-radius: 9999px;
             transition: all 0.3s ease;
         }
         .dark .nav-link { 
-            color: rgba(255,255,255,0.8); 
+            color: rgba(255,255,255,0.7); 
         }
         
         .nav-link:hover { 
-            color: #6366f1;
+            color: #4F46E5;
             background: #eef2ff;
         }
         .dark .nav-link:hover { 
             color: #fff; 
             background: rgba(99,102,241,0.15); 
+            box-shadow: 0 0 15px rgba(99,102,241,0.1);
         }
         
         /* Sign In Button */
@@ -239,42 +263,17 @@
         
         /* Join Button */
         .nav-join { 
-            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            background: #8B5CF6; /* Purple button */
             color: #fff;
-            box-shadow: 0 4px 12px rgba(99,102,241,0.3);
             transition: all 0.3s ease;
         }
         .nav-join:hover { 
-            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+            background: #7C3AED;
             transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(99,102,241,0.4);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
         }
         
-        /* Categories Bar */
-        .nav-categories { 
-            border-top-color: #e2e8f0;
-            transition: border-color 0.3s ease;
-        }
-        .dark .nav-categories { 
-            border-top-color: rgba(255,255,255,0.06); 
-        }
-        
-        .nav-cat-link { 
-            color: #64748b;
-            transition: all 0.3s ease;
-        }
-        .dark .nav-cat-link { 
-            color: rgba(255,255,255,0.65); 
-        }
-        
-        .nav-cat-link:hover { 
-            color: #6366f1;
-            background: #eef2ff;
-        }
-        .dark .nav-cat-link:hover { 
-            color: #fff; 
-            background: rgba(99,102,241,0.12); 
-        }
+
         
         /* Mobile Menu Button */
         .mobile-menu-btn { 
@@ -294,44 +293,45 @@
             background: rgba(255,255,255,0.08); 
         }
 
-        /* Scrolled state */
         .navbar-scrolled {
-            -webkit-backdrop-filter: blur(12px);
-            backdrop-filter: blur(12px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            background: rgba(255,255,255,0.95);
+            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+            border-color: rgba(226,232,240,0.8);
         }
         .dark .navbar-scrolled {
-            background: rgba(11,17,32,0.95);
-            border-bottom-color: rgba(255,255,255,0.12);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            background: rgba(10, 10, 15, 0.85); /* Darker on scroll */
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
+            border-color: rgba(255,255,255,0.08);
         }
     </style>
     <header>
         <!-- Premium Navbar -->
-        <nav id="main-navbar" class="fixed top-0 left-0 right-0 z-50 border-b transition-all duration-300 ease-in-out">
-            <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-16">
+        <nav id="main-navbar" class="fixed top-4 inset-x-0 mx-auto w-[calc(100%-2rem)] max-w-screen-xl z-[60] rounded-[1.25rem] border border-slate-200/50 dark:border-white/10 transition-all duration-300 ease-in-out">
+            <div class="px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-[4.5rem]">
                     <!-- Brand -->
                     <a class="flex items-center gap-3 group" asp-area="" asp-controller="Home" asp-action="Index">
                         <div class="relative w-10 h-10 flex items-center justify-center">
-                            <div class="absolute inset-0 bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-xl blur-sm opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            <div class="relative bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-xl text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                <i class="fas fa-handshake text-xl w-10 h-10 flex items-center justify-center"></i>
+                            <div class="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl blur-md opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="relative w-10 h-10 bg-[#0a0a0f] border border-white/10 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-500">
+                                <i class="fas fa-cube text-xl w-10 h-10 flex items-center justify-center text-transparent bg-clip-text bg-gradient-to-br from-indigo-400 to-purple-400"></i>
                             </div>
                         </div>
                         <div class="hidden sm:block">
-                            <span class="text-xl font-bold text-slate-800 nav-brand-text transition-colors duration-500">Freelio</span>
+                            <span class="text-2xl font-black text-slate-800 nav-brand-text tracking-tighter transition-colors duration-500">SGP</span>
                         </div>
                     </a>
 
                     <!-- Search Bar (Centered) -->
-                    <div class="hidden lg:flex flex-1 justify-center px-12 nav-search">
-                        <div class="relative w-full max-w-lg">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <i class="fas fa-search text-slate-400 search-icon transition-colors duration-500"></i>
+                    <div class="hidden lg:flex flex-1 justify-center px-8 xl:px-16 nav-search">
+                        <div class="relative w-full max-w-2xl group">
+                            <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                                <i class="fas fa-search text-slate-400 dark:text-slate-500 group-focus-within:text-purple-500 transition-colors duration-500"></i>
                             </div>
                             <input type="text" placeholder="What service are you looking for today?" 
-                                   class="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-400 transition-all duration-500">
+                                   class="w-full pl-12 pr-6 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-[15px] font-medium text-slate-900 placeholder-slate-400 focus:outline-none transition-all duration-500 shadow-sm hover:shadow-md">
                         </div>
                     </div>
 
@@ -343,7 +343,7 @@
                     <!-- Right Actions -->
                     <div class="hidden lg:flex items-center gap-2 text-sm font-semibold text-slate-700">
                         <!-- Theme Toggle -->
-                        <button id="theme-toggle" class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-600 dark:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-all duration-300 relative group" title="Toggle theme">
+                        <button id="theme-toggle" class="w-10 h-10 rounded-full flex items-center justify-center text-slate-600 dark:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-all duration-300 relative group" title="Toggle theme">
                             <i class="fas fa-sun text-lg theme-icon-light"></i>
                             <i class="fas fa-moon text-lg theme-icon-dark hidden"></i>
                             <div class="absolute -bottom-12 right-0 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-3 py-1.5 rounded-lg text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
@@ -351,8 +351,13 @@
                                 <span class="theme-tooltip-dark hidden">Switch to light mode</span>
                             </div>
                         </button>
-                        <a class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-all duration-300" href="#">Explore</a>
-                        <a class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-all duration-300" href="#">Become a Seller</a>
+
+                        <a class="nav-link px-4 py-2 flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-white/5 transition-all duration-300" href="/Project">
+                            <i class="fas fa-compass text-indigo-500/80 dark:text-[#8B5CF6]"></i> Explore
+                        </a>
+                        <a class="nav-link px-4 py-2 flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-white/5 transition-all duration-300" href="#">
+                            <i class="fas fa-store text-emerald-500/80 dark:text-[#10B981]"></i> Become a Seller
+                        </a>
                         @if (User.Identity.IsAuthenticated)
                         {
                             <a class="relative w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-600 hover:text-indigo-600 transition-colors" 
@@ -414,15 +419,7 @@
                     </div>
                 </div>
 
-                <!-- Categories Bar -->
-                <div class="hidden lg:flex items-center justify-center gap-4 h-12 text-sm font-medium text-slate-600 border-t border-slate-200/50 nav-categories transition-all duration-500">
-                    <a class="nav-cat-link px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-all duration-300" href="#">Graphics & Design</a>
-                    <a class="nav-cat-link px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-all duration-300" href="#">Programming & Tech</a>
-                    <a class="nav-cat-link px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-all duration-300" href="#">Digital Marketing</a>
-                    <a class="nav-cat-link px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-all duration-300" href="#">Video & Animation</a>
-                    <a class="nav-cat-link px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-all duration-300" href="#">Writing & Translation</a>
-                    <a class="nav-cat-link px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-indigo-600 transition-all duration-300" href="#">Business</a>
-                </div>
+
 
                 <!-- Mobile Menu -->
                 <div id="mobile-menu" class="hidden lg:hidden px-4 sm:px-6 pb-4 border-t border-white/10">
@@ -460,17 +457,7 @@
                         </a>
                     </div>
 
-                    <div class="mt-4 border-t border-white/10 pt-4">
-                        <p class="px-4 text-xs font-semibold text-white/40 uppercase tracking-wider">Categories</p>
-                        <div class="mt-2 grid grid-cols-2 gap-2 text-sm font-medium text-white/70">
-                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-500/15 hover:text-white transition-all" href="#">Graphics & Design</a>
-                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-500/15 hover:text-white transition-all" href="#">Programming</a>
-                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-500/15 hover:text-white transition-all" href="#">Marketing</a>
-                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-500/15 hover:text-white transition-all" href="#">Video</a>
-                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-500/15 hover:text-white transition-all" href="#">Writing</a>
-                            <a class="px-3 py-2 rounded-lg hover:bg-indigo-500/15 hover:text-white transition-all" href="#">Business</a>
-                        </div>
-                    </div>
+
 
                     @if (User.Identity.IsAuthenticated)
                     {
@@ -501,7 +488,10 @@
     </header>
     
     <!-- Add spacing for fixed navbar -->
-    <div class="h-28"></div>
+    @if (ViewData["BodyClass"]?.ToString() != "homepage")
+    {
+        <div class="h-28"></div>
+    }
     
     <main role="main" class="min-h-screen">
         @RenderBody()
@@ -631,8 +621,8 @@
         }
         
         // Mobile menu toggle
-        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
+        document.getElementById('mobile-menu-btn')?.addEventListener('click', function() {
+            document.getElementById('mobile-menu')?.classList.toggle('hidden');
         });
         
         // Dropdown menu toggle
