@@ -38,15 +38,17 @@ namespace SGP_Freelancing.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Conversation(string userId)
+        public async Task<IActionResult> Conversation(string userId, int page = 1, int pageSize = 20)
         {
             try
             {
                 var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-                var viewModel = await _messageService.GetConversationAsync(currentUserId, userId);
                 
-                // Mark messages as read
-                var unreadMessages = viewModel.Messages.Where(m => m.ReceiverId == currentUserId && !m.IsRead).Select(m => m.Id);
+                // Get paginated messages
+                var pagedResult = await _messageService.GetConversationPaginatedAsync(currentUserId, userId, page, pageSize);
+                
+                // Mark current page's unread messages as read
+                var unreadMessages = pagedResult.Items.Where(m => m.ReceiverId == currentUserId && !m.IsRead).Select(m => m.Id);
                 foreach (var messageId in unreadMessages)
                 {
                     await _messageService.MarkAsReadAsync(messageId, currentUserId);
@@ -54,7 +56,7 @@ namespace SGP_Freelancing.Controllers
                 
                 ViewBag.OtherUserId = userId;
                 
-                return View(viewModel.Messages);
+                return View(pagedResult);
             }
             catch (Exception ex)
             {

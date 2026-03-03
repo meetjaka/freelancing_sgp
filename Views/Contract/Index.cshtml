@@ -1,43 +1,43 @@
-@model IEnumerable<SGP_Freelancing.Models.DTOs.ContractDto>
+@model SGP_Freelancing.Models.DTOs.PagedResult<SGP_Freelancing.Models.DTOs.ContractDto>
 @{
     ViewData["Title"] = "My Contracts";
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
 
 <div class="mb-8">
-    <h1 class="text-3xl font-bold text-white mb-2">My Contracts <span class="text-indigo-400">✦</span></h1>
-    <p class="text-slate-400">Manage your active and completed work agreements.</p>
+    <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">My Contracts <span class="text-indigo-500 dark:text-indigo-400">✦</span></h1>
+    <p class="text-slate-500 dark:text-slate-400">Manage your active and completed work agreements.</p>
 </div>
 
 <div class="bento-card overflow-hidden">
     <div class="overflow-x-auto">
         <table class="w-full">
-            <thead class="bg-white/5 backdrop-blur-md">
+            <thead class="bg-slate-50 dark:bg-white/5 backdrop-blur-md">
                 <tr>
-                    <th class="px-6 py-4 text-left text-xs font-bold text-indigo-400 uppercase tracking-wider">Project</th>
-                    <th class="px-6 py-4 text-left text-xs font-bold text-indigo-400 uppercase tracking-wider">Party</th>
-                    <th class="px-6 py-4 text-left text-xs font-bold text-indigo-400 uppercase tracking-wider">Amount</th>
-                    <th class="px-6 py-4 text-left text-xs font-bold text-indigo-400 uppercase tracking-wider">Start Date</th>
-                    <th class="px-6 py-4 text-left text-xs font-bold text-indigo-400 uppercase tracking-wider">Status</th>
-                    <th class="px-6 py-4 text-right text-xs font-bold text-indigo-400 uppercase tracking-wider">Action</th>
+                    <th class="px-6 py-4 text-left text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Project</th>
+                    <th class="px-6 py-4 text-left text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Party</th>
+                    <th class="px-6 py-4 text-left text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Amount</th>
+                    <th class="px-6 py-4 text-left text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Start Date</th>
+                    <th class="px-6 py-4 text-left text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Status</th>
+                    <th class="px-6 py-4 text-right text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Action</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-white/5 bg-[#12141a]">
-                @if (Model.Any())
+            <tbody class="divide-y divide-slate-200 dark:divide-white/5">
+                @if (Model.Items.Any())
                 {
-                    foreach (var contract in Model)
+                    foreach (var contract in Model.Items)
                     {
-                        <tr class="hover:bg-white/5 transition-colors group">
+                        <tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group">
                             <td class="px-6 py-4">
-                                <div class="text-sm font-bold text-white group-hover:text-indigo-400 transition-colors">@contract.ProjectTitle</div>
+                                <div class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors">@contract.ProjectTitle</div>
                             </td>
                             <td class="px-6 py-4">
-                                <div class="text-sm text-slate-400">
+                                <div class="text-sm text-slate-500 dark:text-slate-400">
                                     @(User.IsInRole("Client") ? contract.FreelancerName : contract.ClientName)
                                 </div>
                             </td>
                             <td class="px-6 py-4">
-                                <div class="text-sm font-bold text-white">$@contract.Amount.ToString("N2")</div>
+                                <div class="text-sm font-bold text-slate-900 dark:text-white">$@contract.Amount.ToString("N2")</div>
                             </td>
                             <td class="px-6 py-4">
                                 <div class="text-sm text-slate-500 font-medium">@contract.StartDate.ToString("MMM d, yyyy")</div>
@@ -46,10 +46,10 @@
                                 @{
                                     string badgeClass = contract.Status switch
                                     {
-                                        "Active" => "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20",
-                                        "Completed" => "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
-                                        "Cancelled" => "bg-rose-500/10 text-rose-400 border border-rose-500/20",
-                                        _ => "bg-white/10 text-slate-300 border border-white/10"
+                                        "Active" => "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20",
+                                        "Completed" => "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20",
+                                        "Cancelled" => "bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20",
+                                        _ => "bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-white/10"
                                     };
                                 }
                                 <span class="px-2.5 py-1 text-[10px] tracking-wider uppercase font-bold rounded-full @badgeClass shadow-sm">
@@ -57,7 +57,7 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <a asp-action="Details" asp-route-id="@contract.Id" class="text-indigo-400 hover:text-indigo-300 font-bold text-sm bg-indigo-500/10 hover:bg-indigo-500/20 px-3 py-1.5 rounded-lg transition-colors">View Details</a>
+                                <a asp-action="Details" asp-route-id="@contract.Id" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 font-bold text-sm bg-indigo-500/10 hover:bg-indigo-500/20 px-3 py-1.5 rounded-lg transition-colors">View Details</a>
                             </td>
                         </tr>
                     }
@@ -67,11 +67,11 @@
                     <tr>
                         <td colspan="6" class="px-6 py-16 text-center">
                             <div class="flex flex-col items-center">
-                                <div class="w-20 h-20 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-4 shadow-inner">
-                                    <i class="fas fa-file-contract text-3xl text-slate-500"></i>
+                                <div class="w-20 h-20 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-full flex items-center justify-center mb-4 shadow-inner">
+                                    <i class="fas fa-file-contract text-3xl text-slate-400 dark:text-slate-500"></i>
                                 </div>
-                                <h3 class="text-white font-bold text-xl">No contracts found</h3>
-                                <p class="text-slate-400 mt-2">You haven't started any projects yet.</p>
+                                <h3 class="text-slate-900 dark:text-white font-bold text-xl">No contracts found</h3>
+                                <p class="text-slate-500 dark:text-slate-400 mt-2">You haven't started any projects yet.</p>
                             </div>
                         </td>
                     </tr>
@@ -80,3 +80,32 @@
         </table>
     </div>
 </div>
+
+@if (Model.TotalPages > 1)
+{
+    <div class="flex items-center justify-center gap-2 mt-8">
+        @if (Model.HasPreviousPage)
+        {
+            <a asp-action="Index" asp-route-page="@(Model.PageNumber - 1)"
+               class="px-4 py-2 text-sm font-bold rounded-xl border border-slate-300 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
+                <i class="fas fa-chevron-left mr-1"></i> Previous
+            </a>
+        }
+
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <a asp-action="Index" asp-route-page="@i"
+               class="px-4 py-2 text-sm font-bold rounded-xl transition-colors @(i == Model.PageNumber ? "bg-indigo-500 text-white shadow-[0_0_15px_rgba(99,102,241,0.3)]" : "border border-slate-300 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5")">
+                @i
+            </a>
+        }
+
+        @if (Model.HasNextPage)
+        {
+            <a asp-action="Index" asp-route-page="@(Model.PageNumber + 1)"
+               class="px-4 py-2 text-sm font-bold rounded-xl border border-slate-300 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
+                Next <i class="fas fa-chevron-right ml-1"></i>
+            </a>
+        }
+    </div>
+}

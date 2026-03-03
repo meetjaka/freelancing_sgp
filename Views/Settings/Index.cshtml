@@ -4,32 +4,53 @@
 
 <!-- Page Header -->
 <div class="mb-8">
-    <h1 class="text-3xl font-bold text-white mb-1">Settings <span class="text-indigo-400">✦</span></h1>
-    <p class="text-slate-400">Manage your account preferences and security</p>
+    <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-1">Settings <span class="text-indigo-600 dark:text-indigo-400">✦</span></h1>
+    <p class="text-slate-600 dark:text-slate-400">Manage your account preferences and security</p>
 </div>
+
+<!-- Alert Messages -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg flex items-center gap-3">
+        <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span class="text-sm text-green-700 dark:text-green-300">@TempData["SuccessMessage"]</span>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg flex items-center gap-3">
+        <svg class="w-5 h-5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span class="text-sm text-red-700 dark:text-red-300">@TempData["ErrorMessage"]</span>
+    </div>
+}
 
 <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
     <!-- Settings Sidebar -->
     <div class="lg:col-span-1">
         <div class="bento-card overflow-hidden sticky top-24 p-2">
             <nav class="flex flex-col space-y-1">
-                <a href="#account" class="settings-tab active flex items-center gap-3 px-4 py-3 bg-indigo-500/10 text-indigo-400 border-l-4 border-indigo-500 rounded-r-lg transition-colors" data-tab="account">
+                <a href="#account" class="settings-tab active flex items-center gap-3 px-4 py-3 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 border-l-4 border-indigo-600 rounded-r-lg transition-colors" data-tab="account">
                     <i class="far fa-user"></i>
                     <span class="font-bold text-sm">Account</span>
                 </a>
-                <a href="#security" class="settings-tab flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 border-l-4 border-transparent hover:border-indigo-500 rounded-r-lg transition-colors" data-tab="security">
+                <a href="#security" class="settings-tab flex items-center gap-3 px-4 py-3 text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 border-l-4 border-transparent hover:border-indigo-500 rounded-r-lg transition-colors" data-tab="security">
                     <i class="fas fa-shield-alt"></i>
                     <span class="font-bold text-sm">Security</span>
                 </a>
-                <a href="#notifications" class="settings-tab flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 border-l-4 border-transparent hover:border-indigo-500 rounded-r-lg transition-colors" data-tab="notifications">
+                <a href="#notifications" class="settings-tab flex items-center gap-3 px-4 py-3 text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 border-l-4 border-transparent hover:border-indigo-500 rounded-r-lg transition-colors" data-tab="notifications">
                     <i class="far fa-bell"></i>
                     <span class="font-bold text-sm">Notifications</span>
                 </a>
-                <a href="#privacy" class="settings-tab flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 border-l-4 border-transparent hover:border-indigo-500 rounded-r-lg transition-colors" data-tab="privacy">
+                <a href="#privacy" class="settings-tab flex items-center gap-3 px-4 py-3 text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 border-l-4 border-transparent hover:border-indigo-500 rounded-r-lg transition-colors" data-tab="privacy">
                     <i class="fas fa-lock"></i>
                     <span class="font-bold text-sm">Privacy</span>
                 </a>
-                <a href="#billing" class="settings-tab flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 border-l-4 border-transparent hover:border-indigo-500 rounded-r-lg transition-colors" data-tab="billing">
+                <a href="#billing" class="settings-tab flex items-center gap-3 px-4 py-3 text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 border-l-4 border-transparent hover:border-indigo-500 rounded-r-lg transition-colors" data-tab="billing">
                     <i class="fas fa-credit-card"></i>
                     <span class="font-bold text-sm">Billing</span>
                 </a>
@@ -42,31 +63,31 @@
         <!-- Account Settings -->
         <div class="settings-panel" id="account">
             <div class="bento-card p-6 mb-6">
-                <h3 class="text-lg font-bold text-white mb-6">Account Information</h3>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Account Information</h3>
                 <form class="space-y-5">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">First Name</label>
-                            <input type="text" class="w-full px-4 py-2.5 bg-[#12141a] border border-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50 backdrop-blur-sm shadow-inner" value="@User.Identity?.Name">
+                            <input type="text" class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" value="@User.Identity?.Name">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">Last Name</label>
-                            <input type="text" class="w-full px-4 py-2.5 bg-[#12141a] border border-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50 backdrop-blur-sm shadow-inner" value="User">
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Last Name</label>
+                            <input type="text" class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" value="User">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">Email Address</label>
-                        <input type="email" class="w-full px-4 py-2.5 bg-[#12141a] border border-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50 backdrop-blur-sm shadow-inner" value="@User.Identity?.Name@@example.com">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email Address</label>
+                        <input type="email" class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" value="@User.Identity?.Name@@example.com">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">Phone Number</label>
-                        <input type="tel" class="w-full px-4 py-2.5 bg-[#12141a] border border-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50 backdrop-blur-sm shadow-inner" placeholder="+1 (555) 000-0000">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Phone Number</label>
+                        <input type="tel" class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="+1 (555) 000-0000">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">Bio</label>
-                        <textarea class="w-full px-4 py-2.5 bg-[#12141a] border border-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50 resize-none backdrop-blur-sm shadow-inner" rows="4" placeholder="Tell us about yourself..."></textarea>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Bio</label>
+                        <textarea class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none" rows="4" placeholder="Tell us about yourself..."></textarea>
                     </div>
-                    <button type="submit" class="px-6 py-2.5 bg-indigo-500 hover:bg-indigo-400 text-white font-bold rounded-lg transition-all shadow-[0_0_20px_rgba(99,102,241,0.3)]">
+                    <button type="submit" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg transition-all shadow-lg">
                         Save Changes
                     </button>
                 </form>
@@ -76,30 +97,31 @@
         <!-- Security Settings -->
         <div class="settings-panel hidden" id="security">
             <div class="bento-card p-6 mb-6">
-                <h3 class="text-lg font-bold text-white mb-6">Change Password</h3>
-                <form class="space-y-5">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Change Password</h3>
+                <form asp-action="ChangePassword" asp-controller="Settings" method="post" class="space-y-5">
+                    <div asp-validation-summary="ModelOnly" class="text-red-600 dark:text-red-400 text-sm"></div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">Current Password</label>
-                        <input type="password" class="w-full px-4 py-2.5 bg-[#12141a] border border-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50 backdrop-blur-sm shadow-inner">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Current Password</label>
+                        <input type="password" name="CurrentPassword" required class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">New Password</label>
-                        <input type="password" class="w-full px-4 py-2.5 bg-[#12141a] border border-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50 backdrop-blur-sm shadow-inner">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">New Password</label>
+                        <input type="password" name="NewPassword" required class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">Confirm New Password</label>
-                        <input type="password" class="w-full px-4 py-2.5 bg-[#12141a] border border-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50 backdrop-blur-sm shadow-inner">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Confirm New Password</label>
+                        <input type="password" name="ConfirmPassword" required class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
-                    <button type="submit" class="px-6 py-2.5 bg-indigo-500 hover:bg-indigo-400 text-white font-bold rounded-lg transition-all shadow-[0_0_20px_rgba(99,102,241,0.3)]">
+                    <button type="submit" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg transition-all shadow-lg">
                         Update Password
                     </button>
                 </form>
             </div>
 
             <div class="bento-card p-6">
-                <h3 class="text-lg font-bold text-white mb-2">Two-Factor Authentication</h3>
-                <p class="text-sm text-slate-400 mb-4">Add an extra layer of security to your account</p>
-                <button class="px-6 py-2.5 border border-indigo-500 text-indigo-400 font-bold rounded-lg hover:bg-indigo-500 hover:text-white transition-colors">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Two-Factor Authentication</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">Add an extra layer of security to your account</p>
+                <button class="px-6 py-2.5 border border-indigo-500 dark:border-indigo-400 text-indigo-600 dark:text-indigo-400 font-bold rounded-lg hover:bg-indigo-600 dark:hover:bg-indigo-500 hover:text-white transition-colors">
                     Enable 2FA
                 </button>
             </div>
@@ -108,38 +130,38 @@
         <!-- Notification Settings -->
         <div class="settings-panel hidden" id="notifications">
             <div class="bento-card p-6">
-                <h3 class="text-lg font-bold text-white mb-6">Notification Preferences</h3>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Notification Preferences</h3>
                 <div class="space-y-4 mb-6">
-                    <label class="flex items-center justify-between p-4 bg-white/5 rounded-lg cursor-pointer hover:bg-white/10 transition-colors">
+                    <label class="flex items-center justify-between p-4 bg-slate-50 dark:bg-white/5 rounded-lg cursor-pointer hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
                         <div>
-                            <span class="font-medium text-white block">Email Notifications</span>
-                            <span class="text-sm text-slate-400">Receive updates via email</span>
+                            <span class="font-medium text-slate-900 dark:text-white block">Email Notifications</span>
+                            <span class="text-sm text-slate-600 dark:text-slate-400">Receive updates via email</span>
                         </div>
                         <input type="checkbox" checked class="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500">
                     </label>
-                    <label class="flex items-center justify-between p-4 bg-white/5 rounded-lg cursor-pointer hover:bg-white/10 transition-colors">
+                    <label class="flex items-center justify-between p-4 bg-slate-50 dark:bg-white/5 rounded-lg cursor-pointer hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
                         <div>
-                            <span class="font-medium text-white block">New Project Alerts</span>
-                            <span class="text-sm text-slate-400">Get notified about new projects</span>
+                            <span class="font-medium text-slate-900 dark:text-white block">New Project Alerts</span>
+                            <span class="text-sm text-slate-600 dark:text-slate-400">Get notified about new projects</span>
                         </div>
                         <input type="checkbox" checked class="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500">
                     </label>
-                    <label class="flex items-center justify-between p-4 bg-white/5 rounded-lg cursor-pointer hover:bg-white/10 transition-colors">
+                    <label class="flex items-center justify-between p-4 bg-slate-50 dark:bg-white/5 rounded-lg cursor-pointer hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
                         <div>
-                            <span class="font-medium text-white block">Message Notifications</span>
-                            <span class="text-sm text-slate-400">Notifications for new messages</span>
+                            <span class="font-medium text-slate-900 dark:text-white block">Message Notifications</span>
+                            <span class="text-sm text-slate-600 dark:text-slate-400">Notifications for new messages</span>
                         </div>
                         <input type="checkbox" checked class="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500">
                     </label>
-                    <label class="flex items-center justify-between p-4 bg-white/5 rounded-lg cursor-pointer hover:bg-white/10 transition-colors">
+                    <label class="flex items-center justify-between p-4 bg-slate-50 dark:bg-white/5 rounded-lg cursor-pointer hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
                         <div>
-                            <span class="font-medium text-white block">Bid Updates</span>
-                            <span class="text-sm text-slate-400">Updates on your bids</span>
+                            <span class="font-medium text-slate-900 dark:text-white block">Bid Updates</span>
+                            <span class="text-sm text-slate-600 dark:text-slate-400">Updates on your bids</span>
                         </div>
                         <input type="checkbox" class="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500">
                     </label>
                 </div>
-                <button type="submit" class="px-6 py-2.5 bg-indigo-500 hover:bg-indigo-400 text-white font-bold rounded-lg transition-all shadow-[0_0_20px_rgba(99,102,241,0.3)]">
+                <button type="submit" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg transition-all shadow-lg">
                     Save Preferences
                 </button>
             </div>
@@ -148,31 +170,31 @@
         <!-- Privacy Settings -->
         <div class="settings-panel hidden" id="privacy">
             <div class="bento-card p-6">
-                <h3 class="text-lg font-bold text-white mb-6">Privacy Settings</h3>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Privacy Settings</h3>
                 <div class="space-y-4 mb-6">
-                    <label class="flex items-center justify-between p-4 bg-white/5 rounded-lg cursor-pointer hover:bg-white/10 transition-colors">
+                    <label class="flex items-center justify-between p-4 bg-slate-50 dark:bg-white/5 rounded-lg cursor-pointer hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
                         <div>
-                            <span class="font-medium text-white block">Public Profile</span>
-                            <span class="text-sm text-slate-400">Make your profile visible to everyone</span>
+                            <span class="font-medium text-slate-900 dark:text-white block">Public Profile</span>
+                            <span class="text-sm text-slate-600 dark:text-slate-400">Make your profile visible to everyone</span>
                         </div>
                         <input type="checkbox" checked class="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500">
                     </label>
-                    <label class="flex items-center justify-between p-4 bg-white/5 rounded-lg cursor-pointer hover:bg-white/10 transition-colors">
+                    <label class="flex items-center justify-between p-4 bg-slate-50 dark:bg-white/5 rounded-lg cursor-pointer hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
                         <div>
-                            <span class="font-medium text-white block">Show Email</span>
-                            <span class="text-sm text-slate-400">Display email on your profile</span>
+                            <span class="font-medium text-slate-900 dark:text-white block">Show Email</span>
+                            <span class="text-sm text-slate-600 dark:text-slate-400">Display email on your profile</span>
                         </div>
                         <input type="checkbox" class="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500">
                     </label>
-                    <label class="flex items-center justify-between p-4 bg-white/5 rounded-lg cursor-pointer hover:bg-white/10 transition-colors">
+                    <label class="flex items-center justify-between p-4 bg-slate-50 dark:bg-white/5 rounded-lg cursor-pointer hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
                         <div>
-                            <span class="font-medium text-white block">Show Portfolio</span>
-                            <span class="text-sm text-slate-400">Display your completed projects</span>
+                            <span class="font-medium text-slate-900 dark:text-white block">Show Portfolio</span>
+                            <span class="text-sm text-slate-600 dark:text-slate-400">Display your completed projects</span>
                         </div>
                         <input type="checkbox" checked class="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500">
                     </label>
                 </div>
-                <button type="submit" class="px-6 py-2.5 bg-indigo-500 hover:bg-indigo-400 text-white font-bold rounded-lg transition-all shadow-[0_0_20px_rgba(99,102,241,0.3)]">
+                <button type="submit" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg transition-all shadow-lg">
                     Save Settings
                 </button>
             </div>
@@ -181,14 +203,14 @@
         <!-- Billing Settings -->
         <div class="settings-panel hidden" id="billing">
             <div class="bento-card p-6 mb-6">
-                <h3 class="text-lg font-bold text-white mb-6">Payment Methods</h3>
-                <div class="bg-indigo-500/10 border border-indigo-500/20 rounded-lg p-4 mb-4 flex items-center gap-3">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Payment Methods</h3>
+                <div class="bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 rounded-lg p-4 mb-4 flex items-center gap-3">
                     <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
-                    <span class="text-sm text-indigo-300">No payment methods added yet</span>
+                    <span class="text-sm text-indigo-700 dark:text-indigo-300">No payment methods added yet</span>
                 </div>
-                <button class="inline-flex items-center gap-2 px-6 py-2.5 bg-indigo-500 hover:bg-indigo-400 text-white font-bold rounded-lg transition-all shadow-[0_0_20px_rgba(99,102,241,0.3)]">
+                <button class="inline-flex items-center gap-2 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg transition-all shadow-lg">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                     </svg>
@@ -197,8 +219,8 @@
             </div>
 
             <div class="bento-card p-6">
-                <h3 class="text-lg font-bold text-white mb-4">Billing History</h3>
-                <p class="text-slate-400">No billing history available</p>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Billing History</h3>
+                <p class="text-slate-600 dark:text-slate-400">No billing history available</p>
             </div>
         </div>
     </div>
@@ -217,11 +239,11 @@
                 // Remove active from all tabs
                 tabs.forEach(t => {
                     t.classList.remove('active', 'bg-indigo-50', 'dark:bg-indigo-900/20', 'text-indigo-600', 'dark:text-indigo-400', 'border-indigo-600');
-                    t.classList.add('text-slate-700', 'dark:text-slate-300', 'border-transparent');
+                    t.classList.add('text-slate-700', 'dark:text-slate-400', 'border-transparent', 'hover:text-slate-900', 'dark:hover:text-white', 'hover:bg-slate-50', 'dark:hover:bg-white/5', 'hover:border-indigo-500');
                 });
                 
                 // Add active to clicked tab
-                this.classList.remove('text-slate-700', 'dark:text-slate-300', 'border-transparent');
+                this.classList.remove('text-slate-700', 'dark:text-slate-400', 'border-transparent', 'hover:text-slate-900', 'dark:hover:text-white', 'hover:bg-slate-50', 'dark:hover:bg-white/5', 'hover:border-indigo-500');
                 this.classList.add('active', 'bg-indigo-50', 'dark:bg-indigo-900/20', 'text-indigo-600', 'dark:text-indigo-400', 'border-indigo-600');
                 
                 // Hide all panels

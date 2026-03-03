@@ -13,5 +13,7 @@ namespace SGP_Freelancing.Services.Interfaces
         Task<List<ContractDto>> GetContractsByClientAsync(string clientId);
         Task<List<ContractDto>> GetContractsByFreelancerAsync(string freelancerId);
         Task<List<ContractDto>> GetActiveContractsAsync();
+        Task<PagedResult<ContractDto>> GetContractsByClientPaginatedAsync(string clientId, int page = 1, int pageSize = 10);
+        Task<PagedResult<ContractDto>> GetContractsByFreelancerPaginatedAsync(string freelancerId, int page = 1, int pageSize = 10);
     }
 }

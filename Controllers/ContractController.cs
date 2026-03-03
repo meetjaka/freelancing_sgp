@@ -18,23 +18,29 @@ namespace SGP_Freelancing.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
             try
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
                 var isClient = User.IsInRole("Client");
                 
-                var contracts = isClient 
-                    ? await _contractService.GetContractsByClientAsync(userId)
-                    : await _contractService.GetContractsByFreelancerAsync(userId);
+                var pagedContracts = isClient 
+                    ? await _contractService.GetContractsByClientPaginatedAsync(userId, page, pageSize)
+                    : await _contractService.GetContractsByFreelancerPaginatedAsync(userId, page, pageSize);
                 
-                return View(contracts);
+                return View(pagedContracts);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading contracts");
-                return View(new List<SGP_Freelancing.Models.DTOs.ContractDto>());
+                return View(new SGP_Freelancing.Models.DTOs.PagedResult<SGP_Freelancing.Models.DTOs.ContractDto> 
+                { 
+                    Items = new List<SGP_Freelancing.Models.DTOs.ContractDto>(),
+                    TotalCount = 0,
+                    PageNumber = page,
+                    PageSize = pageSize
+                });
             }
         }
 
