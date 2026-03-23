@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SGP_Freelancing.Models.DTOs;
 using SGP_Freelancing.Models.ViewModels;
+using SGP_Freelancing.Repositories;
 using SGP_Freelancing.Services.Interfaces;
 using SGP_Freelancing.Utilities;
 using System.Security.Claims;
@@ -13,24 +14,45 @@ namespace SGP_Freelancing.Controllers
     {
         private readonly IProjectService _projectService;
         private readonly IBidService _bidService;
+        private readonly IBookmarkService _bookmarkService;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<ProjectController> _logger;
 
-        public ProjectController(IProjectService projectService, IBidService bidService, ILogger<ProjectController> logger)
+        public ProjectController(
+            IProjectService projectService, 
+            IBidService bidService, 
+            IBookmarkService bookmarkService,
+            IUnitOfWork unitOfWork,
+            ILogger<ProjectController> logger)
         {
             _projectService = projectService;
             _bidService = bidService;
+            _bookmarkService = bookmarkService;
+            _unitOfWork = unitOfWork;
             _logger = logger;
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Index(int pageNumber = 1, int? categoryId = null, string? searchTerm = null)
+        public async Task<IActionResult> Index(ProjectSearchDto searchDto)
         {
             try
             {
-                var result = await _projectService.GetAllProjectsAsync(pageNumber, 12, categoryId, searchTerm);
+                var result = await _projectService.AdvancedSearchAsync(searchDto);
                 
-                ViewBag.CategoryId = categoryId;
-                ViewBag.SearchTerm = searchTerm;
+                ViewBag.SearchDto = searchDto;
+                
+                // Get categories and skills for filter dropdowns
+                var categories = await _unitOfWork.Categories.GetAllAsync();
+                var skills = await _unitOfWork.Skills.GetAllAsync();
+                ViewBag.Categories = categories.OrderBy(c => c.Name).ToList();
+                ViewBag.Skills = skills.OrderBy(s => s.Name).ToList();
+                
+                // Get bookmarked project IDs if user is authenticated
+                if (User.Identity?.IsAuthenticated == true)
+                {
+                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+                    ViewBag.BookmarkedProjectIds = await _bookmarkService.GetBookmarkedItemIdsAsync(userId, "Project");
+                }
                 
                 return View(result);
             }

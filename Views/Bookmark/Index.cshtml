@@ -1,0 +1,202 @@
+@model List<SGP_Freelancing.Models.DTOs.BookmarkDto>
+@{
+    ViewData["Title"] = "Saved Items";
+    var activeTab = ViewBag.ActiveTab as string ?? "all";
+}
+
+@section Scripts {
+<script>
+    function removeBookmark(bookmarkId) {
+        if (!confirm('Are you sure you want to remove this bookmark?')) return;
+        
+        const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+        fetch('/Bookmark/Remove?id=' + bookmarkId, {
+            method: 'POST',
+            headers: {
+                'RequestVerificationToken': token,
+                'X-CSRF-TOKEN': token,
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                const card = document.getElementById('bookmark-' + bookmarkId);
+                card.style.transition = 'all 0.3s ease-out';
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.95)';
+                setTimeout(() => card.remove(), 300);
+                
+                // Update count
+                const countEl = document.getElementById('bookmarkCount');
+                if (countEl) {
+                    const currentCount = parseInt(countEl.textContent) - 1;
+                    countEl.textContent = currentCount;
+                }
+            }
+        });
+    }
+</script>
+}
+
+@Html.AntiForgeryToken()
+
+<div class="container mx-auto px-6 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">
+            <i class="fas fa-bookmark text-indigo-500 mr-2"></i>Saved Items <span class="text-indigo-500 dark:text-indigo-400">✦</span>
+        </h1>
+        <p class="text-slate-500 dark:text-slate-400">Your bookmarked projects and freelancers in one place</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex gap-2 mb-8">
+        <a asp-action="Index" 
+           class="px-6 py-2.5 rounded-xl font-bold text-sm transition-all @(activeTab == "all" ? "bg-indigo-500 text-white shadow-[0_0_15px_rgba(99,102,241,0.3)]" : "bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/10 hover:bg-slate-200 dark:hover:bg-white/10")">
+            <i class="fas fa-th-large mr-2"></i>All
+            <span class="ml-1 px-2 py-0.5 rounded-full text-[10px] @(activeTab == "all" ? "bg-white/20" : "bg-slate-200 dark:bg-white/10")">@Model.Count</span>
+        </a>
+        <a asp-action="Index" asp-route-type="Project" 
+           class="px-6 py-2.5 rounded-xl font-bold text-sm transition-all @(activeTab == "Project" ? "bg-indigo-500 text-white shadow-[0_0_15px_rgba(99,102,241,0.3)]" : "bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/10 hover:bg-slate-200 dark:hover:bg-white/10")">
+            <i class="fas fa-briefcase mr-2"></i>Projects
+            <span class="ml-1 px-2 py-0.5 rounded-full text-[10px] @(activeTab == "Project" ? "bg-white/20" : "bg-slate-200 dark:bg-white/10")">@Model.Count(b => b.BookmarkType == "Project")</span>
+        </a>
+        <a asp-action="Index" asp-route-type="Freelancer" 
+           class="px-6 py-2.5 rounded-xl font-bold text-sm transition-all @(activeTab == "Freelancer" ? "bg-indigo-500 text-white shadow-[0_0_15px_rgba(99,102,241,0.3)]" : "bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/10 hover:bg-slate-200 dark:hover:bg-white/10")">
+            <i class="fas fa-users mr-2"></i>Freelancers
+            <span class="ml-1 px-2 py-0.5 rounded-full text-[10px] @(activeTab == "Freelancer" ? "bg-white/20" : "bg-slate-200 dark:bg-white/10")">@Model.Count(b => b.BookmarkType == "Freelancer")</span>
+        </a>
+    </div>
+
+    <!-- Results Count -->
+    <div class="mb-6">
+        <p class="text-sm text-slate-600 dark:text-slate-400">
+            <span id="bookmarkCount" class="font-semibold text-slate-900 dark:text-white">@Model.Count</span> saved items
+        </p>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach (var bookmark in Model)
+            {
+                <div id="bookmark-@bookmark.Id" class="bento-card p-6 relative group">
+                    <!-- Type Badge -->
+                    <div class="flex items-center justify-between mb-4">
+                        @if (bookmark.BookmarkType == "Project")
+                        {
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-[10px] font-bold uppercase tracking-wider rounded-full border border-blue-200 dark:border-blue-800">
+                                <i class="fas fa-briefcase text-[9px]"></i> Project
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 text-[10px] font-bold uppercase tracking-wider rounded-full border border-purple-200 dark:border-purple-800">
+                                <i class="fas fa-user text-[9px]"></i> Freelancer
+                            </span>
+                        }
+                        <button type="button" onclick="removeBookmark(@bookmark.Id)" class="w-8 h-8 flex items-center justify-center rounded-full text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all" title="Remove bookmark">
+                            <i class="fas fa-times text-sm"></i>
+                        </button>
+                    </div>
+
+                    <!-- Content -->
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 line-clamp-1 group-hover:text-indigo-500 transition-colors">
+                        @if (bookmark.BookmarkType == "Project")
+                        {
+                            <a asp-controller="Project" asp-action="Details" asp-route-id="@bookmark.ItemId">@bookmark.ItemTitle</a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Freelancer" asp-action="Details" asp-route-id="@bookmark.ItemId">@bookmark.ItemTitle</a>
+                        }
+                    </h3>
+
+                    @if (!string.IsNullOrEmpty(bookmark.ItemDescription))
+                    {
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mb-4 line-clamp-2">@bookmark.ItemDescription</p>
+                    }
+
+                    @if (!string.IsNullOrEmpty(bookmark.ItemCategory))
+                    {
+                        <span class="inline-flex items-center px-2.5 py-1 bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 text-[11px] font-bold rounded-lg mb-3">
+                            @bookmark.ItemCategory
+                        </span>
+                    }
+
+                    <!-- Skills -->
+                    @if (bookmark.ItemSkills != null && bookmark.ItemSkills.Any())
+                    {
+                        <div class="flex flex-wrap gap-1.5 mb-4">
+                            @foreach (var skill in bookmark.ItemSkills.Take(3))
+                            {
+                                <span class="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-[10px] rounded-full font-bold">@skill</span>
+                            }
+                            @if (bookmark.ItemSkills.Count > 3)
+                            {
+                                <span class="px-2 py-0.5 bg-slate-100 dark:bg-white/5 text-slate-500 text-[10px] rounded-full font-bold">+@(bookmark.ItemSkills.Count - 3)</span>
+                            }
+                        </div>
+                    }
+
+                    <!-- Footer -->
+                    <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-white/5 mt-auto">
+                        <div>
+                            @if (bookmark.ItemBudgetOrRate.HasValue)
+                            {
+                                <span class="text-xl font-bold text-slate-900 dark:text-white">$@bookmark.ItemBudgetOrRate.Value.ToString("N0")</span>
+                                @if (bookmark.BookmarkType == "Freelancer")
+                                {
+                                    <span class="text-xs text-slate-500">/hr</span>
+                                }
+                            }
+                            @if (bookmark.ItemRating.HasValue && bookmark.ItemRating > 0)
+                            {
+                                <div class="flex items-center gap-1 mt-1">
+                                    <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                    <span class="text-sm text-slate-600 dark:text-slate-400 font-semibold">@bookmark.ItemRating.Value.ToString("F1")</span>
+                                </div>
+                            }
+                        </div>
+                        @if (bookmark.BookmarkType == "Project")
+                        {
+                            <a asp-controller="Project" asp-action="Details" asp-route-id="@bookmark.ItemId" class="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-500 hover:bg-indigo-400 text-white font-bold text-xs rounded-full transition-all">
+                                View Project <i class="fas fa-arrow-right text-[9px]"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Freelancer" asp-action="Details" asp-route-id="@bookmark.ItemId" class="inline-flex items-center gap-1.5 px-4 py-2 bg-purple-500 hover:bg-purple-400 text-white font-bold text-xs rounded-full transition-all">
+                                View Profile <i class="fas fa-arrow-right text-[9px]"></i>
+                            </a>
+                        }
+                    </div>
+
+                    <!-- Saved date -->
+                    <div class="mt-3 text-[11px] text-slate-400 dark:text-slate-500 font-medium">
+                        <i class="far fa-clock mr-1"></i>Saved @bookmark.CreatedAt.ToString("MMM dd, yyyy")
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-20 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl">
+            <div class="w-20 h-20 bg-slate-200 dark:bg-[#12141a] border border-slate-300 dark:border-white/5 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-bookmark text-3xl text-slate-400 dark:text-slate-500"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">No saved items yet</h3>
+            <p class="text-slate-500 dark:text-slate-400 mb-8 max-w-sm mx-auto">Start browsing projects and freelancers, then click the heart icon to save your favorites!</p>
+            <div class="flex justify-center gap-3">
+                <a asp-controller="Project" asp-action="Index" class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-500 hover:bg-indigo-400 text-white font-bold rounded-full transition-all shadow-[0_0_20px_rgba(99,102,241,0.3)]">
+                    <i class="fas fa-briefcase"></i> Browse Projects
+                </a>
+                <a asp-controller="Freelancer" asp-action="Index" class="inline-flex items-center gap-2 px-6 py-3 bg-purple-500 hover:bg-purple-400 text-white font-bold rounded-full transition-all shadow-[0_0_20px_rgba(147,51,234,0.3)]">
+                    <i class="fas fa-users"></i> Find Freelancers
+                </a>
+            </div>
+        </div>
+    }
+</div>

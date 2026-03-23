@@ -3,6 +3,8 @@
     ViewData["Title"] = "Find Freelancers";
     var skills = ViewBag.Skills as List<SGP_Freelancing.Models.Entities.Skill> ?? new List<SGP_Freelancing.Models.Entities.Skill>();
     var searchDto = ViewBag.SearchDto as SGP_Freelancing.Models.DTOs.FreelancerSearchDto ?? new SGP_Freelancing.Models.DTOs.FreelancerSearchDto();
+    var bookmarkedIdsResponse = ViewBag.BookmarkedFreelancerIds as SGP_Freelancing.Utilities.ApiResponse<List<int>>;
+    var bookmarkedIds = bookmarkedIdsResponse?.Data ?? new List<int>();
 }
 
 <style>
@@ -25,7 +27,7 @@
     }
 
     .freelancer-card:hover {
-        transform: translateY(-8px);
+        transform: translateY(-6px);
     }
 
     html:not(.dark) .freelancer-card:hover {
@@ -37,69 +39,181 @@
         box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5), 0 0 20px rgba(99, 102, 241, 0.05);
         border-color: rgba(99, 102, 241, 0.2);
     }
+
+    .skill-tag-selected {
+        background: rgba(99, 102, 241, 0.15) !important;
+        border-color: rgba(99, 102, 241, 0.4) !important;
+        color: rgb(99, 102, 241) !important;
+    }
 </style>
+
+@section Scripts {
+<script>
+    function toggleBookmark(freelancerId, button) {
+        const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+        fetch('/Bookmark/Toggle', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': token,
+                'X-CSRF-TOKEN': token
+            },
+            body: JSON.stringify({ bookmarkType: 'Freelancer', itemId: freelancerId })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                const icon = button.querySelector('i');
+                if (data.isBookmarked) {
+                    icon.classList.remove('far');
+                    icon.classList.add('fas');
+                    button.classList.add('text-red-500', 'dark:text-red-400');
+                    button.classList.remove('text-slate-400', 'dark:text-slate-500');
+                } else {
+                    icon.classList.remove('fas');
+                    icon.classList.add('far');
+                    button.classList.remove('text-red-500', 'dark:text-red-400');
+                    button.classList.add('text-slate-400', 'dark:text-slate-500');
+                }
+            }
+        });
+    }
+
+    function toggleSkillFilter(skillId, btn) {
+        const input = btn.querySelector('input');
+        input.checked = !input.checked;
+        btn.classList.toggle('skill-tag-selected', input.checked);
+    }
+</script>
+}
+
+@Html.AntiForgeryToken()
 
 <div class="container mx-auto px-6 py-8">
     <!-- Header -->
-    <div class="mb-8">
-        <h1 class="text-4xl font-bold text-slate-900 dark:text-white mb-2">Find Freelancers</h1>
-        <p class="text-slate-600 dark:text-slate-400">Discover talented professionals for your next project</p>
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 class="text-4xl font-bold text-slate-900 dark:text-white mb-2">Find Freelancers</h1>
+            <p class="text-slate-600 dark:text-slate-400">Discover talented professionals for your next project</p>
+        </div>
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <a asp-controller="Bookmark" asp-action="Index" asp-route-type="Freelancer" class="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 text-slate-700 dark:text-slate-300 font-semibold text-sm rounded-xl transition-all border border-slate-200 dark:border-white/10">
+                <i class="fas fa-heart text-red-500"></i>
+                Saved Freelancers
+            </a>
+        }
     </div>
 
     <!-- Search and Filter Section -->
     <form method="get" asp-action="Index" class="mb-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-            <!-- Search -->
-            <div>
-                <input type="text" 
-                       name="Search" 
-                       value="@searchDto.Search" 
-                       placeholder="Search by name, title, or skills..." 
-                       class="w-full px-4 py-3 rounded-xl border bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400" />
+        <div class="bento-card p-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
+                <!-- Search -->
+                <div class="lg:col-span-2">
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wider">Search</label>
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" 
+                               name="Search" 
+                               value="@searchDto.Search" 
+                               placeholder="Search by name, title, or skills..." 
+                               class="w-full pl-10 pr-4 py-3 rounded-xl border bg-white dark:bg-[#12141a] border-slate-200 dark:border-white/10 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-sm" />
+                    </div>
+                </div>
+
+                <!-- Min Rate -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wider">Min Rate</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
+                        <input type="number" 
+                               name="MinHourlyRate" 
+                               value="@searchDto.MinHourlyRate" 
+                               placeholder="0" 
+                               step="5" min="0"
+                               class="w-full pl-7 pr-4 py-3 rounded-xl border bg-white dark:bg-[#12141a] border-slate-200 dark:border-white/10 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-sm" />
+                    </div>
+                </div>
+
+                <!-- Max Rate -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wider">Max Rate</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
+                        <input type="number" 
+                               name="MaxHourlyRate" 
+                               value="@searchDto.MaxHourlyRate" 
+                               placeholder="Any" 
+                               step="5" min="0"
+                               class="w-full pl-7 pr-4 py-3 rounded-xl border bg-white dark:bg-[#12141a] border-slate-200 dark:border-white/10 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-sm" />
+                    </div>
+                </div>
+
+                <!-- Sort By -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wider">Sort By</label>
+                    <select name="SortBy" 
+                            class="w-full px-4 py-3 rounded-xl border bg-white dark:bg-[#12141a] border-slate-200 dark:border-white/10 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-sm appearance-none">
+                        <option value="">Best Match</option>
+                        <option value="rating" selected="@(searchDto.SortBy == "rating")">Highest Rated</option>
+                        <option value="rate-asc" selected="@(searchDto.SortBy == "rate-asc")">Lowest Rate</option>
+                        <option value="rate-desc" selected="@(searchDto.SortBy == "rate-desc")">Highest Rate</option>
+                        <option value="completed" selected="@(searchDto.SortBy == "completed")">Most Projects</option>
+                        <option value="newest" selected="@(searchDto.SortBy == "newest")">Newest</option>
+                    </select>
+                </div>
             </div>
 
-            <!-- Min Rate -->
-            <div>
-                <input type="number" 
-                       name="MinHourlyRate" 
-                       value="@searchDto.MinHourlyRate" 
-                       placeholder="Min hourly rate ($)" 
-                       step="1"
-                       class="w-full px-4 py-3 rounded-xl border bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400" />
+            <!-- Min Rating -->
+            <div class="flex flex-wrap items-center gap-3 mb-4">
+                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Min Rating:</span>
+                @for (int r = 1; r <= 5; r++)
+                {
+                    var isActive = searchDto.MinRating.HasValue && searchDto.MinRating.Value == r;
+                    <label class="inline-flex items-center gap-1 cursor-pointer px-3 py-1.5 rounded-full border transition-all text-sm font-semibold @(isActive ? "bg-yellow-50 dark:bg-yellow-900/20 border-yellow-300 dark:border-yellow-700 text-yellow-700 dark:text-yellow-400" : "bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/10")">
+                        <input type="radio" name="MinRating" value="@r" class="hidden" @(isActive ? "checked" : "")>
+                        @for (int s = 0; s < r; s++)
+                        {
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                        }
+                        <span>@r+</span>
+                    </label>
+                }
+                @if (searchDto.MinRating.HasValue)
+                {
+                    <label class="inline-flex items-center gap-1 cursor-pointer px-3 py-1.5 rounded-full border bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-400 text-sm font-semibold hover:bg-slate-50 dark:hover:bg-white/10">
+                        <input type="radio" name="MinRating" value="" class="hidden">
+                        <i class="fas fa-times text-xs"></i> Clear
+                    </label>
+                }
             </div>
 
-            <!-- Max Rate -->
-            <div>
-                <input type="number" 
-                       name="MaxHourlyRate" 
-                       value="@searchDto.MaxHourlyRate" 
-                       placeholder="Max hourly rate ($)" 
-                       step="1"
-                       class="w-full px-4 py-3 rounded-xl border bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400" />
+            <!-- Skills Filter -->
+            <div class="mb-4">
+                <span class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">Filter by Skills</span>
+                <div class="flex flex-wrap gap-2">
+                    @foreach (var skill in skills.Take(20))
+                    {
+                        var isSelected = searchDto.SkillIds != null && searchDto.SkillIds.Contains(skill.Id);
+                        <label onclick="toggleSkillFilter(@skill.Id, this)" class="inline-flex items-center gap-1.5 cursor-pointer px-3 py-1.5 rounded-full border transition-all text-xs font-bold @(isSelected ? "skill-tag-selected" : "bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/10")">
+                            <input type="checkbox" name="SkillIds" value="@skill.Id" class="hidden" @(isSelected ? "checked" : "")>
+                            @skill.Name
+                        </label>
+                    }
+                </div>
             </div>
 
-            <!-- Sort By -->
-            <div>
-                <select name="SortBy" 
-                        class="w-full px-4 py-3 rounded-xl border bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400">
-                    <option value="">Sort by: Best Match</option>
-                    <option value="rating" selected="@(searchDto.SortBy == "rating")">Highest Rated</option>
-                    <option value="rate-asc" selected="@(searchDto.SortBy == "rate-asc")">Lowest Rate</option>
-                    <option value="rate-desc" selected="@(searchDto.SortBy == "rate-desc")">Highest Rate</option>
-                    <option value="completed" selected="@(searchDto.SortBy == "completed")">Most Projects</option>
-                </select>
+            <div class="flex gap-3">
+                <button type="submit" 
+                        class="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold rounded-xl transition-all text-sm shadow-[0_0_20px_rgba(99,102,241,0.2)]">
+                    <i class="fas fa-search mr-2"></i>Search
+                </button>
+                <a asp-action="Index" 
+                   class="px-6 py-2.5 bg-white dark:bg-white/5 text-slate-700 dark:text-slate-300 font-bold rounded-xl border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10 transition-all text-sm">
+                    Clear Filters
+                </a>
             </div>
-        </div>
-
-        <div class="flex gap-4">
-            <button type="submit" 
-                    class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl transition-all">
-                <i class="fas fa-search mr-2"></i>Search
-            </button>
-            <a asp-action="Index" 
-               class="px-6 py-3 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
-                Clear Filters
-            </a>
         </div>
     </form>
 
@@ -119,10 +233,11 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             @foreach (var freelancer in Model.Items)
             {
+                var isBookmarked = bookmarkedIds.Contains(freelancer.Id);
                 <div class="freelancer-card p-6">
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex items-center gap-4">
-                            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xl font-bold">
+                            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xl font-bold shadow-lg">
                                 @(freelancer.Title?.Substring(0, 1).ToUpper() ?? "F")
                             </div>
                             <div>
@@ -131,11 +246,18 @@
                                 {
                                     <div class="flex items-center gap-1">
                                         <i class="fas fa-star text-yellow-400 text-sm"></i>
-                                        <span class="text-slate-600 dark:text-slate-400 text-sm">@freelancer.AverageRating.ToString("F1")</span>
+                                        <span class="text-slate-600 dark:text-slate-400 text-sm font-semibold">@freelancer.AverageRating.ToString("F1")</span>
                                     </div>
                                 }
                             </div>
                         </div>
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <button type="button" onclick="toggleBookmark(@freelancer.Id, this)" title="@(isBookmarked ? "Remove from saved" : "Save freelancer")"
+                                    class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-white/5 transition-all @(isBookmarked ? "text-red-500 dark:text-red-400" : "text-slate-400 dark:text-slate-500")">
+                                <i class="@(isBookmarked ? "fas" : "far") fa-heart text-lg"></i>
+                            </button>
+                        }
                     </div>
 
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4 line-clamp-3">
@@ -148,13 +270,13 @@
                         <div class="flex flex-wrap gap-2 mb-4">
                             @foreach (var skill in freelancer.Skills.Take(4))
                             {
-                                <span class="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-xs rounded-full">
+                                <span class="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-xs rounded-full font-semibold">
                                     @skill.Name
                                 </span>
                             }
                             @if (freelancer.Skills.Count > 4)
                             {
-                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs rounded-full">
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 text-xs rounded-full font-semibold">
                                     +@(freelancer.Skills.Count - 4) more
                                 </span>
                             }
@@ -168,14 +290,15 @@
                             <span class="text-slate-500 dark:text-slate-400 text-sm">/hr</span>
                         </div>
                         <a asp-action="Details" asp-route-id="@freelancer.Id" 
-                           class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-all">
+                           class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-all text-sm">
                             View Profile
                         </a>
                     </div>
 
                     @if (freelancer.CompletedProjects > 0)
                     {
-                        <div class="mt-2 text-xs text-slate-500 dark:text-slate-400">
+                        <div class="mt-2 text-xs text-slate-500 dark:text-slate-400 font-medium">
+                            <i class="fas fa-check-circle text-emerald-500 mr-1"></i>
                             @freelancer.CompletedProjects project@(freelancer.CompletedProjects != 1 ? "s" : "") completed
                         </div>
                     }
@@ -190,13 +313,13 @@
                 @if (Model.HasPreviousPage)
                 {
                     <a asp-action="Index" 
-                       asp-route-search="@searchDto.Search"
-                       asp-route-minHourlyRate="@searchDto.MinHourlyRate"
-                       asp-route-maxHourlyRate="@searchDto.MaxHourlyRate"
-                       asp-route-minRating="@searchDto.MinRating"
-                       asp-route-sortBy="@searchDto.SortBy"
-                       asp-route-page="@(Model.PageNumber - 1)"
-                       class="px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
+                       asp-route-Search="@searchDto.Search"
+                       asp-route-MinHourlyRate="@searchDto.MinHourlyRate"
+                       asp-route-MaxHourlyRate="@searchDto.MaxHourlyRate"
+                       asp-route-MinRating="@searchDto.MinRating"
+                       asp-route-SortBy="@searchDto.SortBy"
+                       asp-route-Page="@(Model.PageNumber - 1)"
+                       class="px-4 py-2 bg-white dark:bg-white/5 text-slate-700 dark:text-slate-300 font-semibold rounded-lg border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10 transition-all">
                         <i class="fas fa-chevron-left"></i>
                     </a>
                 }
@@ -204,13 +327,13 @@
                 @for (int i = Math.Max(1, Model.PageNumber - 2); i <= Math.Min(Model.TotalPages, Model.PageNumber + 2); i++)
                 {
                     <a asp-action="Index" 
-                       asp-route-search="@searchDto.Search"
-                       asp-route-minHourlyRate="@searchDto.MinHourlyRate"
-                       asp-route-maxHourlyRate="@searchDto.MaxHourlyRate"
-                       asp-route-minRating="@searchDto.MinRating"
-                       asp-route-sortBy="@searchDto.SortBy"
-                       asp-route-page="@i"
-                       class="px-4 py-2 @(i == Model.PageNumber ? "bg-indigo-600 text-white" : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300") font-semibold rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-indigo-700 hover:text-white transition-all">
+                       asp-route-Search="@searchDto.Search"
+                       asp-route-MinHourlyRate="@searchDto.MinHourlyRate"
+                       asp-route-MaxHourlyRate="@searchDto.MaxHourlyRate"
+                       asp-route-MinRating="@searchDto.MinRating"
+                       asp-route-SortBy="@searchDto.SortBy"
+                       asp-route-Page="@i"
+                       class="px-4 py-2 @(i == Model.PageNumber ? "bg-indigo-600 text-white" : "bg-white dark:bg-white/5 text-slate-700 dark:text-slate-300") font-semibold rounded-lg border border-slate-200 dark:border-white/10 hover:bg-indigo-700 hover:text-white transition-all">
                         @i
                     </a>
                 }
@@ -218,13 +341,13 @@
                 @if (Model.HasNextPage)
                 {
                     <a asp-action="Index" 
-                       asp-route-search="@searchDto.Search"
-                       asp-route-minHourlyRate="@searchDto.MinHourlyRate"
-                       asp-route-maxHourlyRate="@searchDto.MaxHourlyRate"
-                       asp-route-minRating="@searchDto.MinRating"
-                       asp-route-sortBy="@searchDto.SortBy"
-                       asp-route-page="@(Model.PageNumber + 1)"
-                       class="px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
+                       asp-route-Search="@searchDto.Search"
+                       asp-route-MinHourlyRate="@searchDto.MinHourlyRate"
+                       asp-route-MaxHourlyRate="@searchDto.MaxHourlyRate"
+                       asp-route-MinRating="@searchDto.MinRating"
+                       asp-route-SortBy="@searchDto.SortBy"
+                       asp-route-Page="@(Model.PageNumber + 1)"
+                       class="px-4 py-2 bg-white dark:bg-white/5 text-slate-700 dark:text-slate-300 font-semibold rounded-lg border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10 transition-all">
                         <i class="fas fa-chevron-right"></i>
                     </a>
                 }
@@ -233,10 +356,12 @@
     }
     else
     {
-        <div class="text-center py-12">
-            <i class="fas fa-users text-6xl text-slate-300 dark:text-slate-600 mb-4"></i>
+        <div class="text-center py-16">
+            <div class="w-20 h-20 bg-slate-200 dark:bg-[#12141a] border border-slate-300 dark:border-white/5 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <i class="fas fa-users text-3xl text-slate-400 dark:text-slate-500"></i>
+            </div>
             <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">No Freelancers Found</h3>
-            <p class="text-slate-600 dark:text-slate-400 mb-4">Try adjusting your search filters</p>
+            <p class="text-slate-600 dark:text-slate-400 mb-6">Try adjusting your search filters</p>
             <a asp-action="Index" 
                class="inline-block px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-all">
                 View All Freelancers

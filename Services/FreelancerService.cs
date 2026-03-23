@@ -35,7 +35,16 @@ namespace SGP_Freelancing.Services
                     var searchLower = searchDto.Search.ToLower();
                     profiles = profiles.Where(p =>
                         (p.Title != null && p.Title.ToLower().Contains(searchLower)) ||
-                        (p.Bio != null && p.Bio.ToLower().Contains(searchLower))
+                        (p.Bio != null && p.Bio.ToLower().Contains(searchLower)) ||
+                        (p.User != null && (p.User.FirstName + " " + p.User.LastName).ToLower().Contains(searchLower))
+                    ).ToList();
+                }
+
+                // Filter by skills
+                if (searchDto.SkillIds != null && searchDto.SkillIds.Any())
+                {
+                    profiles = profiles.Where(p => 
+                        p.FreelancerSkills.Any(fs => searchDto.SkillIds.Contains(fs.SkillId))
                     ).ToList();
                 }
 
@@ -62,6 +71,7 @@ namespace SGP_Freelancing.Services
                     "rate-asc" => profiles.OrderBy(p => p.HourlyRate).ToList(),
                     "rate-desc" => profiles.OrderByDescending(p => p.HourlyRate).ToList(),
                     "completed" => profiles.OrderByDescending(p => p.CompletedProjects).ToList(),
+                    "newest" => profiles.OrderByDescending(p => p.CreatedAt).ToList(),
                     _ => profiles.OrderByDescending(p => p.AverageRating).ThenByDescending(p => p.CompletedProjects).ToList()
                 };
 

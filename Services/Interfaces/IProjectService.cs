@@ -7,6 +7,7 @@ namespace SGP_Freelancing.Services.Interfaces
     public interface IProjectService
     {
         Task<PagedResult<ProjectDto>> GetAllProjectsAsync(int pageNumber, int pageSize, int? categoryId = null, string? searchTerm = null);
+        Task<PagedResult<ProjectDto>> AdvancedSearchAsync(ProjectSearchDto searchDto);
         Task<ProjectDto?> GetProjectByIdAsync(int id);
         Task<ProjectDetailsViewModel?> GetProjectDetailsAsync(int id, string? currentUserId);
         Task<ApiResponse<ProjectDto>> CreateProjectAsync(CreateProjectDto dto, string clientId);

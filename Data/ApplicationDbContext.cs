@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SGP_Freelancing.Models;
 using SGP_Freelancing.Models.Entities;
@@ -40,6 +40,9 @@ namespace SGP_Freelancing.Data
         
         // File attachments
         public DbSet<FileAttachment> FileAttachments { get; set; }
+        
+        // Bookmark/Save entities
+        public DbSet<Bookmark> Bookmarks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -59,6 +62,7 @@ namespace SGP_Freelancing.Data
             ConfigureReviewRelationships(modelBuilder);
             ConfigureMessageRelationships(modelBuilder);
             ConfigurePortfolioRelationships(modelBuilder);
+            ConfigureBookmarkRelationships(modelBuilder);
 
             // Configure decimal precision
             ConfigureDecimalPrecision(modelBuilder);
@@ -179,6 +183,26 @@ namespace SGP_Freelancing.Data
                 .OnDelete(DeleteBehavior.Restrict);
         }
 
+        private void ConfigureBookmarkRelationships(ModelBuilder modelBuilder)
+        {
+            // Bookmark -> User
+            modelBuilder.Entity<Bookmark>()
+                .HasOne(b => b.User)
+                .WithMany(u => u.Bookmarks)
+                .HasForeignKey(b => b.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Unique constraint: User can only bookmark an item once
+            modelBuilder.Entity<Bookmark>()
+                .HasIndex(b => new { b.UserId, b.BookmarkType, b.ItemId })
+                .IsUnique()
+                .HasFilter("IsDeleted = 0");
+
+            // Index for fast bookmark lookups
+            modelBuilder.Entity<Bookmark>()
+                .HasIndex(b => new { b.UserId, b.BookmarkType });
+        }
+
         private void ConfigurePortfolioRelationships(ModelBuilder modelBuilder)
         {
             // Portfolio -> FreelancerProfile (One-to-One)
@@ -290,6 +314,7 @@ namespace SGP_Freelancing.Data
             modelBuilder.Entity<PortfolioCase>().HasQueryFilter(e => !e.IsDeleted);
             modelBuilder.Entity<PortfolioImage>().HasQueryFilter(e => !e.IsDeleted);
             modelBuilder.Entity<ProjectTestimonial>().HasQueryFilter(e => !e.IsDeleted);
+            modelBuilder.Entity<Bookmark>().HasQueryFilter(e => !e.IsDeleted);
         }
 
         private void SeedData(ModelBuilder modelBuilder)

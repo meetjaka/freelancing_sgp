@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
@@ -114,6 +114,7 @@ namespace SGP_Freelancing
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IProfileService, SGP_Freelancing.Services.ProfileService>();
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IFreelancerService, SGP_Freelancing.Services.FreelancerService>();
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IFileUploadService, SGP_Freelancing.Services.FileUploadService>();
+            builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IBookmarkService, SGP_Freelancing.Services.BookmarkService>();
 
             // Email & OTP Services
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IEmailService, SGP_Freelancing.Services.EmailService>();

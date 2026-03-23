@@ -25,5 +25,6 @@ namespace SGP_Freelancing.Models.Entities
         public ICollection<Review> ReviewsReceived { get; set; } = new List<Review>();
         public ICollection<Message> SentMessages { get; set; } = new List<Message>();
         public ICollection<Message> ReceivedMessages { get; set; } = new List<Message>();
+        public ICollection<Bookmark> Bookmarks { get; set; } = new List<Bookmark>();
     }
 }

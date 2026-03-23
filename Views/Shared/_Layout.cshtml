@@ -353,10 +353,10 @@
                         </button>
 
                         <a class="nav-link px-4 py-2 flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-white/5 transition-all duration-300" href="/Project">
-                            <i class="fas fa-compass text-indigo-500/80 dark:text-[#8B5CF6]"></i> Explore
+                            <i class="fas fa-compass text-indigo-500/80 dark:text-[#8B5CF6]"></i> Explore Projects
                         </a>
-                        <a class="nav-link px-4 py-2 flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-white/5 transition-all duration-300" href="#">
-                            <i class="fas fa-store text-emerald-500/80 dark:text-[#10B981]"></i> Become a Seller
+                        <a class="nav-link px-4 py-2 flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-white/5 transition-all duration-300" href="/Freelancer">
+                            <i class="fas fa-users text-purple-500/80 dark:text-purple-400"></i> Find Freelancers
                         </a>
                         @if (User.Identity.IsAuthenticated)
                         {
@@ -449,11 +449,11 @@
                         }
                         <a class="flex items-center px-4 py-2 text-slate-700 dark:text-white/80 font-semibold rounded-lg hover:bg-indigo-500/10 dark:hover:bg-indigo-500/20 hover:text-indigo-600 dark:hover:text-white transition-all" 
                            asp-area="" asp-controller="Project" asp-action="Index">
-                            <i class="fas fa-briefcase w-5 mr-3"></i>Projects
+                            <i class="fas fa-briefcase w-5 mr-3"></i>Explore Projects
                         </a>
                         <a class="flex items-center px-4 py-2 text-slate-700 dark:text-white/80 font-semibold rounded-lg hover:bg-indigo-500/10 dark:hover:bg-indigo-500/20 hover:text-indigo-600 dark:hover:text-white transition-all" 
-                           asp-area="" asp-controller="Portfolio" asp-action="Index">
-                            <i class="fas fa-gallery w-5 mr-3"></i>View Portfolios
+                           asp-area="" asp-controller="Freelancer" asp-action="Index">
+                            <i class="fas fa-users w-5 mr-3"></i>Find Freelancers
                         </a>
                     </div>
 

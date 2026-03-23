@@ -475,6 +475,52 @@ namespace SGP_Freelancing.Models.DTOs
         public string? SortBy { get; set; } // "rating", "rate-asc", "rate-desc", "completed"
     }
 
+    // Project Search DTO (Advanced Filters)
+    public class ProjectSearchDto
+    {
+        public string? SearchTerm { get; set; }
+        public int? CategoryId { get; set; }
+        public decimal? MinBudget { get; set; }
+        public decimal? MaxBudget { get; set; }
+        public List<int>? SkillIds { get; set; }
+        public string? SortBy { get; set; } // "newest", "oldest", "budget-asc", "budget-desc", "most-bids", "deadline"
+        public int? DeadlineWithinDays { get; set; } // e.g., projects due within 7, 14, 30 days
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 12;
+    }
+
+    // Bookmark DTOs
+    public class CreateBookmarkDto
+    {
+        [Required]
+        public string BookmarkType { get; set; } = null!; // "Project" or "Freelancer"
+        
+        [Required]
+        public int ItemId { get; set; }
+        
+        [StringLength(500)]
+        public string? Note { get; set; }
+    }
+
+    public class BookmarkDto
+    {
+        public int Id { get; set; }
+        public string BookmarkType { get; set; } = null!;
+        public int ItemId { get; set; }
+        public string? Note { get; set; }
+        public DateTime CreatedAt { get; set; }
+        
+        // Populated based on BookmarkType
+        public string? ItemTitle { get; set; }
+        public string? ItemDescription { get; set; }
+        public decimal? ItemBudgetOrRate { get; set; }
+        public string? ItemCategory { get; set; }
+        public string? ItemOwnerName { get; set; }
+        public decimal? ItemRating { get; set; }
+        public int? ItemBidsCount { get; set; }
+        public List<string>? ItemSkills { get; set; }
+    }
+
     // Paging Result
     public class PagedResult<T>
     {

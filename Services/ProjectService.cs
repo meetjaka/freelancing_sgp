@@ -64,6 +64,85 @@ namespace SGP_Freelancing.Services
             }
         }
 
+        public async Task<PagedResult<ProjectDto>> AdvancedSearchAsync(ProjectSearchDto searchDto)
+        {
+            try
+            {
+                var query = _unitOfWork.Projects.Query()
+                    .Include(p => p.Category)
+                    .Include(p => p.Client)
+                    .Include(p => p.Bids)
+                    .Include(p => p.ProjectSkills)
+                        .ThenInclude(ps => ps.Skill)
+                    .Where(p => p.Status == ProjectStatus.Open);
+
+                // Text search
+                if (!string.IsNullOrWhiteSpace(searchDto.SearchTerm))
+                {
+                    var term = searchDto.SearchTerm.ToLower();
+                    query = query.Where(p => p.Title.ToLower().Contains(term) 
+                        || p.Description.ToLower().Contains(term));
+                }
+
+                // Category filter
+                if (searchDto.CategoryId.HasValue)
+                    query = query.Where(p => p.CategoryId == searchDto.CategoryId.Value);
+
+                // Budget range filter
+                if (searchDto.MinBudget.HasValue)
+                    query = query.Where(p => p.Budget >= searchDto.MinBudget.Value);
+
+                if (searchDto.MaxBudget.HasValue)
+                    query = query.Where(p => p.Budget <= searchDto.MaxBudget.Value);
+
+                // Skill-based filtering
+                if (searchDto.SkillIds != null && searchDto.SkillIds.Any())
+                {
+                    query = query.Where(p => p.ProjectSkills.Any(ps => searchDto.SkillIds.Contains(ps.SkillId)));
+                }
+
+                // Deadline filter (projects due within X days)
+                if (searchDto.DeadlineWithinDays.HasValue)
+                {
+                    var deadlineLimit = DateTime.UtcNow.AddDays(searchDto.DeadlineWithinDays.Value);
+                    query = query.Where(p => p.Deadline.HasValue && p.Deadline.Value <= deadlineLimit);
+                }
+
+                var totalCount = await query.CountAsync();
+
+                // Sorting
+                query = searchDto.SortBy?.ToLower() switch
+                {
+                    "oldest" => query.OrderBy(p => p.CreatedAt),
+                    "budget-asc" => query.OrderBy(p => p.Budget),
+                    "budget-desc" => query.OrderByDescending(p => p.Budget),
+                    "most-bids" => query.OrderByDescending(p => p.Bids.Count),
+                    "deadline" => query.OrderBy(p => p.Deadline),
+                    _ => query.OrderByDescending(p => p.CreatedAt) // "newest" default
+                };
+
+                var projects = await query
+                    .Skip((searchDto.PageNumber - 1) * searchDto.PageSize)
+                    .Take(searchDto.PageSize)
+                    .ToListAsync();
+
+                var projectDtos = _mapper.Map<List<ProjectDto>>(projects);
+
+                return new PagedResult<ProjectDto>
+                {
+                    Items = projectDtos,
+                    PageNumber = searchDto.PageNumber,
+                    PageSize = searchDto.PageSize,
+                    TotalCount = totalCount
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in advanced project search");
+                throw;
+            }
+        }
+
         public async Task<ProjectDto?> GetProjectByIdAsync(int id)
         {
             var project = await _unitOfWork.Projects.GetProjectWithBidsAsync(id);
