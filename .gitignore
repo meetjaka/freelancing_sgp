@@ -37,14 +37,23 @@ DataProtection-Keys/
 .vs/
 
 # Visual Studio Code
-.vscode/
+.vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+*.code-workspace
 
-# Rider
-.idea/
+# Python
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+__pycache__/
+*.py[cod]
+*$py.class
+a/
 *.sln.iml
 
 # Visual Studio profiler

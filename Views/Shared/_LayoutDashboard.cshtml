@@ -164,7 +164,10 @@
                                 else
                                 {
                                     <a asp-controller="Project" asp-action="Index" class="nav-link px-5 py-2 rounded-full text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Project" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
-                                        Projects
+                                        Browse Projects
+                                    </a>
+                                    <a asp-controller="Project" asp-action="Recommended" class="nav-link px-5 py-2 rounded-full text-sm font-medium flex items-center gap-1 @(ViewContext.RouteData.Values["action"]?.ToString() == "Recommended" ? "active text-indigo-500" : "")">
+                                        <i class="fas fa-magic text-[10px] text-indigo-500"></i> AI Matches
                                     </a>
                                     <a asp-controller="Portfolio" asp-action="Index" class="nav-link px-5 py-2 rounded-full text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Portfolio" ? "active" : "")">
                                         Portfolios

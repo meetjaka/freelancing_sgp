@@ -6,6 +6,10 @@ using SGP_Freelancing.Models.ViewModels;
 using SGP_Freelancing.Repositories;
 using SGP_Freelancing.Services.Interfaces;
 using SGP_Freelancing.Utilities;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace SGP_Freelancing.Services
 {
@@ -14,12 +18,16 @@ namespace SGP_Freelancing.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILogger<ProjectService> _logger;
+        private readonly HttpClient _httpClient;
+        private readonly IConfiguration _configuration;
 
-        public ProjectService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<ProjectService> logger)
+        public ProjectService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<ProjectService> logger, HttpClient httpClient, IConfiguration configuration)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;
+            _httpClient = httpClient;
+            _configuration = configuration;
         }
 
         public async Task<PagedResult<ProjectDto>> GetAllProjectsAsync(int pageNumber, int pageSize, int? categoryId = null, string? searchTerm = null)
@@ -293,26 +301,99 @@ namespace SGP_Freelancing.Services
 
         public async Task<List<ProjectDto>> GetRecommendedProjectsAsync(string freelancerId, int count = 10)
         {
-            // Get freelancer skills
-            var freelancerProfile = await _unitOfWork.FreelancerProfiles.GetByUserIdAsync(freelancerId);
-            if (freelancerProfile == null)
-                return new List<ProjectDto>();
+            try
+            {
+                // 1. Fetch Freelancer Info
+                var freelancerProfile = await _unitOfWork.FreelancerProfiles.Query()
+                    .Include(fp => fp.FreelancerSkills)
+                    .ThenInclude(fs => fs.Skill)
+                    .FirstOrDefaultAsync(fp => fp.UserId == freelancerId);
 
-            var freelancerSkillIds = freelancerProfile.FreelancerSkills.Select(fs => fs.SkillId).ToList();
+                if (freelancerProfile == null)
+                    return new List<ProjectDto>();
 
-            // Find projects matching skills
-            var projects = await _unitOfWork.Projects.Query()
+                var freelancerSkills = freelancerProfile.FreelancerSkills.Select(fs => fs.Skill.Name).ToList();
+                var bio = freelancerProfile.Bio ?? "";
+
+                // 2. Fetch Open Projects
+                var openProjects = await _unitOfWork.Projects.Query()
+                    .Include(p => p.Category)
+                    .Include(p => p.Client)
+                    .Include(p => p.ProjectSkills)
+                        .ThenInclude(ps => ps.Skill)
+                    .Where(p => p.Status == ProjectStatus.Open)
+                    .ToListAsync();
+
+                var projectInputs = openProjects.Select(p => new {
+                    id = p.Id,
+                    title = p.Title,
+                    description = p.Description ?? "",
+                    skills = p.ProjectSkills.Select(ps => ps.Skill.Name).ToList(),
+                    category = p.Category?.Name ?? "Other",
+                    budget = p.Budget
+                }).ToList();
+
+                var requestPayload = new {
+                    freelancer_skills = freelancerSkills,
+                    freelancer_bio = bio,
+                    available_projects = projectInputs,
+                    top_n = count
+                };
+
+                // 3. Call AI Microservice
+                var aiUrl = _configuration["AiConfig:MicroserviceUrl"] ?? "http://localhost:8000";
+                var aiEndpoint = $"{aiUrl}/recommend";
+                
+                var jsonPayload = JsonSerializer.Serialize(requestPayload);
+                var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+                
+                var response = await _httpClient.PostAsync(aiEndpoint, content);
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseJson = await response.Content.ReadAsStringAsync();
+                    var aiResult = JsonDocument.Parse(responseJson);
+                    var recommendations = aiResult.RootElement.GetProperty("recommendations");
+                    
+                    var recommendedProjectIds = new List<int>();
+                    foreach (var rec in recommendations.EnumerateArray())
+                    {
+                        var pid = (int)rec.GetProperty("project_id").GetDouble();
+                        recommendedProjectIds.Add(pid);
+                    }
+                    
+                    // Order matching projects by the returned array
+                    var orderedProjects = recommendedProjectIds
+                        .Select(id => openProjects.FirstOrDefault(p => p.Id == id))
+                        .Where(p => p != null)
+                        .ToList();
+                        
+                    return _mapper.Map<List<ProjectDto>>(orderedProjects!);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Failed to reach AI Microservice. Falling back to basic DB recommendations.");
+            }
+
+            // Fallback: Find projects matching skills via DB queries
+            _logger.LogInformation("Using fallback DB query for recommendations.");
+            
+            var profile = await _unitOfWork.FreelancerProfiles.GetByUserIdAsync(freelancerId);
+            var fsIds = profile?.FreelancerSkills.Select(fs => fs.SkillId).ToList() ?? new List<int>();
+
+            var fallbackProjects = await _unitOfWork.Projects.Query()
                 .Include(p => p.Category)
                 .Include(p => p.Client)
                 .Include(p => p.ProjectSkills)
                     .ThenInclude(ps => ps.Skill)
                 .Where(p => p.Status == ProjectStatus.Open && 
-                           p.ProjectSkills.Any(ps => freelancerSkillIds.Contains(ps.SkillId)))
+                           p.ProjectSkills.Any(ps => fsIds.Contains(ps.SkillId)))
                 .OrderByDescending(p => p.CreatedAt)
                 .Take(count)
                 .ToListAsync();
 
-            return _mapper.Map<List<ProjectDto>>(projects);
+            return _mapper.Map<List<ProjectDto>>(fallbackProjects);
         }
     }
 }

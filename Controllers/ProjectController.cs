@@ -286,5 +286,23 @@ namespace SGP_Freelancing.Controllers
                 return View(new List<ProjectDto>());
             }
         }
+
+        [Authorize]
+        public async Task<IActionResult> Recommended()
+        {
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+                var recommendedProjects = await _projectService.GetRecommendedProjectsAsync(userId, 10);
+                
+                return View(recommendedProjects);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading recommended projects");
+                TempData["Error"] = "Error loading your recommended projects";
+                return View(new List<ProjectDto>());
+            }
+        }
     }
 }

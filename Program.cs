@@ -116,6 +116,9 @@ namespace SGP_Freelancing
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IFileUploadService, SGP_Freelancing.Services.FileUploadService>();
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IBookmarkService, SGP_Freelancing.Services.BookmarkService>();
 
+            // Add HttpClient for calling AI Microservice
+            builder.Services.AddHttpClient();
+
             // Email & OTP Services
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IEmailService, SGP_Freelancing.Services.EmailService>();
             builder.Services.AddSingleton<SGP_Freelancing.Services.OtpService>();
