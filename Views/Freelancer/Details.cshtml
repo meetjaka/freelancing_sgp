@@ -75,9 +75,9 @@
             </div>
 
             <div class="flex flex-col gap-3">
-                @if (User.IsInRole("Client"))
+                @if (User.IsInRole("Client") && !string.IsNullOrEmpty(Model.UserId))
                 {
-                    <a asp-controller="Message" asp-action="New" asp-route-recipientId="@Model.Id" 
+                    <a asp-controller="Message" asp-action="New" asp-route-recipientId="@Model.UserId" 
                        class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl transition-all text-center">
                         <i class="fas fa-envelope mr-2"></i>Contact
                     </a>

@@ -38,8 +38,19 @@ namespace SGP_Freelancing.Controllers
                     RecentActivities = new List<ActivityDto>()
                 };
 
-                // Fake data for profile views
-                viewModel.ProfileViews = new Random().Next(50, 500);
+                static decimal CalculatePercentageChange(int currentPeriod, int previousPeriod)
+                {
+                    if (previousPeriod <= 0)
+                    {
+                        return currentPeriod > 0 ? 100 : 0;
+                    }
+
+                    return Math.Round(((decimal)(currentPeriod - previousPeriod) / previousPeriod) * 100, 1);
+                }
+
+                var now = DateTime.UtcNow;
+                var currentPeriodStart = now.AddDays(-30);
+                var previousPeriodStart = currentPeriodStart.AddDays(-30);
 
                 if (isClient)
                 {
@@ -47,6 +58,27 @@ namespace SGP_Freelancing.Controllers
                         .Include(p => p.Bids)
                         .Where(p => p.ClientId == userId && !p.IsDeleted)
                         .ToListAsync();
+
+                    var bidsOnProjects = await _context.Bids
+                        .Include(b => b.Project)
+                        .Where(b => b.Project.ClientId == userId && !b.IsDeleted && !b.Project.IsDeleted)
+                        .ToListAsync();
+
+                    viewModel.PrimaryMetricLabel = "Bid Interest";
+                    viewModel.ProfileViews = bidsOnProjects.Count;
+
+                    var currentBidInterest = bidsOnProjects.Count(b => b.CreatedAt >= currentPeriodStart);
+                    var previousBidInterest = bidsOnProjects.Count(b => b.CreatedAt >= previousPeriodStart && b.CreatedAt < currentPeriodStart);
+                    viewModel.PrimaryMetricChange = CalculatePercentageChange(currentBidInterest, previousBidInterest);
+
+                    viewModel.TrendLabel = "Projects Posted (Last 6 Months)";
+                    var monthStarts = Enumerable.Range(5, 6)
+                        .Select(offset => new DateTime(now.Year, now.Month, 1).AddMonths(-offset))
+                        .ToList();
+                    viewModel.TrendLabels = monthStarts.Select(m => m.ToString("MMM")).ToList();
+                    viewModel.TrendValues = monthStarts
+                        .Select(month => projects.Count(p => p.CreatedAt.Year == month.Year && p.CreatedAt.Month == month.Month))
+                        .ToList();
 
                     var contracts = await _context.Contracts
                         .Where(c => c.ClientId == userId && !c.IsDeleted)
@@ -111,6 +143,26 @@ namespace SGP_Freelancing.Controllers
                     var contracts = await _context.Contracts
                         .Where(c => c.FreelancerId == userId && !c.IsDeleted)
                         .ToListAsync();
+
+                    var receivedMessages = await _context.Messages
+                        .Where(m => m.ReceiverId == userId && !m.IsDeleted && m.Subject != "SYSTEM_CONVERSATION_CLOSED")
+                        .ToListAsync();
+
+                    viewModel.PrimaryMetricLabel = "Inbound Messages";
+                    viewModel.ProfileViews = receivedMessages.Count;
+
+                    var currentInbound = receivedMessages.Count(m => m.CreatedAt >= currentPeriodStart);
+                    var previousInbound = receivedMessages.Count(m => m.CreatedAt >= previousPeriodStart && m.CreatedAt < currentPeriodStart);
+                    viewModel.PrimaryMetricChange = CalculatePercentageChange(currentInbound, previousInbound);
+
+                    viewModel.TrendLabel = "Proposals Submitted (Last 6 Months)";
+                    var monthStarts = Enumerable.Range(5, 6)
+                        .Select(offset => new DateTime(now.Year, now.Month, 1).AddMonths(-offset))
+                        .ToList();
+                    viewModel.TrendLabels = monthStarts.Select(m => m.ToString("MMM")).ToList();
+                    viewModel.TrendValues = monthStarts
+                        .Select(month => bids.Count(b => b.CreatedAt.Year == month.Year && b.CreatedAt.Month == month.Month))
+                        .ToList();
 
                     viewModel.DealsClosed = contracts.Count;
                     var totalBids = bids.Count;

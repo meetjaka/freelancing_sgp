@@ -1,56 +1,152 @@
 @using System.Security.Claims
-@model List<SGP_Freelancing.Models.DTOs.MessageDto>
+@model SGP_Freelancing.Models.DTOs.PagedResult<SGP_Freelancing.Models.DTOs.MessageDto>
 @{
     ViewData["Title"] = "Conversation";
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
     var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
     var otherUserId = ViewBag.OtherUserId as string;
-    var otherUserName = Model.FirstOrDefault()?.SenderId == currentUserId 
-        ? Model.FirstOrDefault()?.ReceiverName 
-        : Model.FirstOrDefault()?.SenderName;
+    var firstMessage = Model.Items.FirstOrDefault();
+    var otherUserName = firstMessage?.SenderId == currentUserId 
+        ? firstMessage?.ReceiverName 
+        : firstMessage?.SenderName;
+    var canSend = ViewBag.CanSend as bool? ?? true;
+    var chatStatusMessage = ViewBag.ChatStatusMessage as string;
 }
 
-<div class="max-w-4xl mx-auto px-4 bg-slate-50 dark:bg-[#0B1120] transition-colors duration-300">
-    <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-6 rounded-t-2xl flex items-center justify-between">
-        <div class="flex items-center gap-4">
-            <a href="/Message" class="w-10 h-10 rounded-full bg-white/20 border-none text-white flex items-center justify-center transition-all hover:bg-white/30 hover:scale-110 cursor-pointer">
+<style>
+    .wa-shell {
+        height: calc(100vh - 110px);
+        background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+    }
+
+    .wa-header {
+        background: linear-gradient(135deg, #1e293b 0%, #4f46e5 100%);
+    }
+
+    .wa-message-in {
+        background: #ffffff;
+        border: 1px solid rgba(99, 102, 241, 0.15);
+    }
+
+    .wa-message-out {
+        background: #e0e7ff;
+        border: 1px solid rgba(99, 102, 241, 0.25);
+    }
+
+    .wa-footer {
+        background: #f8fafc;
+    }
+
+    .file-pill {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(15, 23, 42, 0.06);
+        border: 1px solid rgba(15, 23, 42, 0.1);
+        border-radius: 0.75rem;
+        padding: 0.5rem 0.65rem;
+        text-decoration: none;
+        color: #334155;
+        margin-top: 0.5rem;
+        max-width: 100%;
+    }
+
+    .file-pill:hover {
+        background: rgba(79, 70, 229, 0.12);
+        border-color: rgba(79, 70, 229, 0.28);
+    }
+
+    .message-row {
+        margin-bottom: 0.75rem;
+        display: flex;
+    }
+
+    .message-row.sent {
+        justify-content: end;
+    }
+
+    .message-row.received {
+        justify-content: start;
+    }
+</style>
+
+<div class="wa-shell w-full rounded-none overflow-hidden border-y border-slate-200 dark:border-white/10">
+    <div class="wa-header text-white px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-4 min-w-0">
+            <a href="/Message" class="w-10 h-10 rounded-full bg-white/20 border-none text-white flex items-center justify-center transition-all hover:bg-white/30 cursor-pointer">
                 <i class="fas fa-arrow-left"></i>
             </a>
             @if (!string.IsNullOrEmpty(otherUserName))
             {
                 var initial = otherUserName[0].ToString().ToUpper();
-                <div class="w-12 h-12 rounded-full bg-white/30 text-white flex items-center justify-center text-lg font-bold">@initial</div>
-                <div class="flex-grow">
-                    <h1 class="text-xl font-bold m-0">@otherUserName</h1>
-                    <p class="text-sm opacity-90 m-0">Active</p>
+                <div class="w-11 h-11 rounded-full bg-white/25 text-white flex items-center justify-center text-base font-bold shrink-0">@initial</div>
+                <div class="min-w-0">
+                    <h1 class="text-lg font-bold truncate">@otherUserName</h1>
+                    <p class="text-xs opacity-90">online</p>
                 </div>
             }
         </div>
+        <div class="flex items-center gap-3 text-white/90">
+            <form asp-action="DeleteConversation" method="post" onsubmit="return confirm('Delete entire chat with this user? This cannot be undone.');" class="inline">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="otherUserId" value="@otherUserId" />
+                <button type="submit" class="text-xs px-3 py-1.5 rounded-full bg-white/15 hover:bg-white/25 transition-all font-semibold">
+                    <i class="fas fa-trash-alt mr-1"></i> Delete Chat
+                </button>
+            </form>
+        </div>
     </div>
     
-    <div id="messageContainer" class="bg-white dark:bg-slate-800 h-96 overflow-y-auto px-8 py-8 border-l border-r border-gray-200 dark:border-slate-700 transition-colors duration-300">
-        @if (Model.Any())
+    @if (!string.IsNullOrWhiteSpace(chatStatusMessage))
+    {
+        <div class="bg-amber-50 border border-amber-200 px-6 py-3 text-amber-700 font-medium text-sm">
+            @chatStatusMessage
+        </div>
+    }
+
+    <div id="messageContainer" class="h-[calc(100%-140px)] overflow-y-auto px-5 py-5">
+        @if (Model.Items.Any())
         {
-            @foreach (var message in Model.OrderBy(m => m.CreatedAt))
+            @foreach (var message in Model.Items.OrderBy(m => m.CreatedAt))
             {
                 var isCurrentUser = message.SenderId == currentUserId;
-                var senderInitial = isCurrentUser ? "Y" : (string.IsNullOrEmpty(message.SenderName) ? "?" : message.SenderName[0].ToString().ToUpper());
                 
-                <div class="mb-6 flex @(isCurrentUser ? "flex-row-reverse" : "flex-row") items-end">
-                    <div class="@(isCurrentUser ? "bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-br-none" : "bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-white rounded-bl-none") max-w-xs px-5 py-4 rounded-2xl transition-colors duration-300">
-                        <div class="text-xs font-bold mb-1">@(isCurrentUser ? "You" : message.SenderName)</div>
-                        <p class="text-base leading-relaxed m-0 break-words">@message.Content</p>
-                        <span class="text-xs @(isCurrentUser ? "text-white/70" : "text-gray-500 dark:text-slate-400") mt-1 block transition-colors duration-300">@message.CreatedAt.ToString("hh:mm tt")</span>
+                <div class="mb-3 flex @(isCurrentUser ? "justify-end" : "justify-start") items-start gap-2">
+                    @if (isCurrentUser)
+                    {
+                        <form asp-action="DeleteMessage" method="post" onsubmit="return confirm('Delete this message?');" class="pt-1">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="messageId" value="@message.Id" />
+                            <input type="hidden" name="otherUserId" value="@otherUserId" />
+                            <button type="submit" class="w-7 h-7 rounded-full text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-all" title="Delete message">
+                                <i class="fas fa-trash text-xs"></i>
+                            </button>
+                        </form>
+                    }
+                    <div class="@(isCurrentUser ? "wa-message-out" : "wa-message-in") max-w-[70%] px-4 py-2.5 rounded-lg shadow-sm">
+                        <p class="text-[15px] leading-relaxed text-slate-800 m-0 break-words">@message.Content</p>
+                        @if (message.Attachments != null && message.Attachments.Any())
+                        {
+                            @foreach (var attachment in message.Attachments)
+                            {
+                                <a class="file-pill" href="/Message/DownloadAttachment/@attachment.Id" title="@attachment.FileName">
+                                    <i class="fas fa-paperclip text-indigo-600"></i>
+                                    <span class="truncate text-sm font-medium">@attachment.FileName</span>
+                                    <span class="text-xs text-slate-500">(@Math.Round(attachment.FileSize / 1024.0, 1) KB)</span>
+                                </a>
+                            }
+                        }
+                        <span class="text-[11px] text-slate-500 mt-1 block text-right">@message.CreatedAt.ToString("hh:mm tt")</span>
                     </div>
                 </div>
             }
         }
         else
         {
-            <div class="h-96 flex items-center justify-center text-center text-gray-400 dark:text-slate-500 transition-colors duration-300">
+            <div class="h-full flex items-center justify-center text-center text-slate-500">
                 <div>
-                    <div class="text-5xl mb-4 opacity-50">
-                        <i class="fas fa-comments"></i>
+                    <div class="text-5xl mb-4 opacity-40 text-[#128c7e]">
+                        <i class="fas fa-comment-dots"></i>
                     </div>
                     <p>No messages yet. Start the conversation!</p>
                 </div>
@@ -58,11 +154,16 @@
         }
     </div>
     
-    <div class="bg-white dark:bg-slate-800 px-8 py-6 rounded-b-2xl border border-t-0 border-gray-200 dark:border-slate-700 transition-colors duration-300">
+    <div class="wa-footer px-5 py-3 border-t border-slate-200">
+        <div id="sendError" class="hidden mb-3 px-4 py-2 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-700 text-rose-700 dark:text-rose-300 text-sm font-medium"></div>
         <form id="messageForm" class="flex gap-3 items-center">
             @Html.AntiForgeryToken()
-            <input type="text" id="messageInput" class="flex-grow border-2 border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 rounded-full px-6 py-3 text-base focus:border-indigo-600 focus:outline-none focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900/30 transition-all" placeholder="Type your message..." required />
-            <button type="submit" class="w-14 h-14 rounded-full bg-gradient-to-r from-indigo-600 to-blue-600 border-none text-white text-xl flex items-center justify-center transition-all hover:scale-110 hover:shadow-lg active:scale-95 flex-shrink-0">
+            <input type="file" id="fileInput" class="hidden" />
+            <button id="fileUploadButton" type="button" class="w-11 h-11 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 text-base flex items-center justify-center transition-all" @(canSend ? "" : "disabled")>
+                <i class="fas fa-paperclip"></i>
+            </button>
+            <input type="text" id="messageInput" class="flex-grow border border-slate-300 bg-white text-slate-800 placeholder-slate-400 rounded-full px-5 py-3 text-base focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-300/50 transition-all" placeholder="Type your message..." required @(canSend ? "" : "disabled") />
+            <button type="submit" class="w-12 h-12 rounded-full bg-indigo-600 hover:bg-indigo-700 border-none text-white text-lg flex items-center justify-center transition-all active:scale-95 flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed" @(canSend ? "" : "disabled")>
                 <i class="fas fa-paper-plane"></i>
             </button>
         </form>
@@ -73,6 +174,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
     <script>
         const receiverId = '@otherUserId';
+        const sendError = document.getElementById('sendError');
+        const fileUploadButton = document.getElementById('fileUploadButton');
+        const fileInput = document.getElementById('fileInput');
+        const antiForgeryToken = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
         
         // Initialize SignalR connection
         const connection = new signalR.HubConnectionBuilder()
@@ -81,7 +186,20 @@
 
         connection.on("ReceiveMessage", function (senderId, senderName, message, timestamp) {
             if (senderId === receiverId) {
-                appendMessage(senderName, message, timestamp, false);
+                appendMessage({ senderName, content: message, timestamp, isCurrentUser: false });
+                scrollToBottom();
+            }
+        });
+
+        connection.on("ReceiveFileMessage", function (senderId, senderName, fileName, fileUrl, caption, timestamp) {
+            if (senderId === receiverId) {
+                appendMessage({
+                    senderName,
+                    content: caption || ('Shared a file: ' + fileName),
+                    timestamp,
+                    isCurrentUser: false,
+                    attachment: { fileName, fileUrl }
+                });
                 scrollToBottom();
             }
         });
@@ -93,51 +211,161 @@
         // Handle form submission
         document.getElementById('messageForm').addEventListener('submit', function(e) {
             e.preventDefault();
+
+            if (sendError) {
+                sendError.classList.add('hidden');
+                sendError.textContent = '';
+            }
+
+            if (!@canSend.ToString().ToLower()) {
+                return;
+            }
             
             const messageInput = document.getElementById('messageInput');
             const message = messageInput.value.trim();
             
             if (message) {
-                // Send via SignalR
-                connection.invoke("SendMessage", receiverId, message).catch(function (err) {
-                    console.error(err.toString());
-                });
+                // Save to database first (authorization + persistence)
+                const payload = new URLSearchParams();
+                payload.append('ReceiverId', receiverId);
+                payload.append('Subject', 'Project Discussion');
+                payload.append('Content', message);
+                if (antiForgeryToken) {
+                    payload.append('__RequestVerificationToken', antiForgeryToken);
+                }
 
-                // Also save to database via API
                 fetch('/Message/Send', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
                     },
-                    body: JSON.stringify({
-                        ReceiverId: receiverId,
-                        Content: message
-                    })
+                    body: payload.toString()
                 })
-                .then(response => response.json())
+                .then(async response => {
+                    const contentType = response.headers.get('content-type') || '';
+                    if (contentType.includes('application/json')) {
+                        return response.json();
+                    }
+
+                    const text = await response.text();
+                    return { success: false, message: text || 'Unable to send message.' };
+                })
                 .then(data => {
                     if (data.success) {
-                        appendMessage('You', message, new Date(), true);
+                        // Broadcast in real-time only after successful save
+                        connection.invoke("SendMessage", receiverId, message).catch(function (err) {
+                            console.error(err.toString());
+                        });
+
+                        appendMessage({ senderName: 'You', content: message, timestamp: new Date(), isCurrentUser: true });
                         messageInput.value = '';
                         scrollToBottom();
+                    } else if (sendError) {
+                        sendError.textContent = data.message || 'Unable to send message.';
+                        sendError.classList.remove('hidden');
+                    }
+                })
+                .catch(() => {
+                    if (sendError) {
+                        sendError.textContent = 'Network error while sending message.';
+                        sendError.classList.remove('hidden');
                     }
                 });
             }
         });
 
-        function appendMessage(senderName, content, timestamp, isCurrentUser) {
+        if (fileUploadButton && fileInput) {
+            fileUploadButton.addEventListener('click', function() {
+                if (!@canSend.ToString().ToLower()) {
+                    return;
+                }
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', function() {
+                const selectedFile = fileInput.files?.[0];
+                if (!selectedFile || !@canSend.ToString().ToLower()) {
+                    return;
+                }
+
+                if (sendError) {
+                    sendError.classList.add('hidden');
+                    sendError.textContent = '';
+                }
+
+                const caption = document.getElementById('messageInput').value.trim();
+                const formData = new FormData();
+                formData.append('receiverId', receiverId);
+                formData.append('file', selectedFile);
+                formData.append('caption', caption);
+                if (antiForgeryToken) {
+                    formData.append('__RequestVerificationToken', antiForgeryToken);
+                }
+
+                fetch('/Message/UploadFile', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.success) {
+                        throw new Error(data.message || 'Unable to upload file.');
+                    }
+
+                    const attachmentUrl = '/Message/DownloadAttachment/' + data.attachment.id;
+                    appendMessage({
+                        senderName: 'You',
+                        content: data.sentMessage?.content || ('Shared a file: ' + selectedFile.name),
+                        timestamp: new Date(),
+                        isCurrentUser: true,
+                        attachment: {
+                            fileName: data.attachment.fileName,
+                            fileUrl: attachmentUrl
+                        }
+                    });
+
+                    connection.invoke('SendFileMessage', receiverId, data.attachment.fileName, attachmentUrl, data.sentMessage?.content || caption).catch(function (err) {
+                        console.error(err.toString());
+                    });
+
+                    document.getElementById('messageInput').value = '';
+                    fileInput.value = '';
+                    scrollToBottom();
+                })
+                .catch(error => {
+                    if (sendError) {
+                        sendError.textContent = error.message || 'Failed to upload file.';
+                        sendError.classList.remove('hidden');
+                    }
+                });
+            });
+        }
+
+        function appendMessage({ senderName, content, timestamp, isCurrentUser, attachment }) {
             const container = document.getElementById('messageContainer');
             const messageDiv = document.createElement('div');
-            messageDiv.className = `message-bubble ${isCurrentUser ? 'sent' : 'received'}`;
+            messageDiv.className = `message-row ${isCurrentUser ? 'sent' : 'received'}`;
             
             const time = new Date(timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            const safeContent = (content || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            let attachmentHtml = '';
+
+            if (attachment?.fileName && attachment?.fileUrl) {
+                const safeFileName = attachment.fileName.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                const safeFileUrl = attachment.fileUrl.replace(/"/g, '&quot;');
+                attachmentHtml = `
+                    <a class="file-pill" href="${safeFileUrl}" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-paperclip text-indigo-600"></i>
+                        <span class="truncate text-sm font-medium">${safeFileName}</span>
+                    </a>
+                `;
+            }
             
             messageDiv.innerHTML = `
-                <div class="message-bubble-content">
-                    <div class="message-sender">${senderName}</div>
-                    <p class="message-text">${content}</p>
-                    <span class="message-time">${time}</span>
+                <div class="${isCurrentUser ? 'wa-message-out' : 'wa-message-in'} max-w-[70%] px-4 py-2.5 rounded-lg shadow-sm">
+                    <p class="text-[15px] leading-relaxed text-slate-800 m-0 break-words">${safeContent}</p>
+                    ${attachmentHtml}
+                    <span class="text-[11px] text-slate-500 mt-1 block text-right">${time}</span>
                 </div>
             `;
             

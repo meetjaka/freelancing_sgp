@@ -15,6 +15,7 @@ namespace SGP_Freelancing.Controllers
         private readonly IProjectService _projectService;
         private readonly IBidService _bidService;
         private readonly IBookmarkService _bookmarkService;
+        private readonly IFileUploadService _fileUploadService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<ProjectController> _logger;
 
@@ -22,12 +23,14 @@ namespace SGP_Freelancing.Controllers
             IProjectService projectService, 
             IBidService bidService, 
             IBookmarkService bookmarkService,
+            IFileUploadService fileUploadService,
             IUnitOfWork unitOfWork,
             ILogger<ProjectController> logger)
         {
             _projectService = projectService;
             _bidService = bidService;
             _bookmarkService = bookmarkService;
+            _fileUploadService = fileUploadService;
             _unitOfWork = unitOfWork;
             _logger = logger;
         }
@@ -95,7 +98,7 @@ namespace SGP_Freelancing.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateProjectDto dto)
+        public async Task<IActionResult> Create(CreateProjectDto dto, List<IFormFile>? projectFiles)
         {
             if (!ModelState.IsValid)
                 return View(dto);
@@ -107,6 +110,18 @@ namespace SGP_Freelancing.Controllers
                 
                 if (result.Success)
                 {
+                    if (projectFiles != null && projectFiles.Any() && result.Data != null)
+                    {
+                        foreach (var file in projectFiles.Where(f => f != null && f.Length > 0))
+                        {
+                            var uploadResult = await _fileUploadService.UploadFileAsync(file, userId, projectId: result.Data.Id);
+                            if (!uploadResult.Success)
+                            {
+                                _logger.LogWarning("Project file upload failed for project {ProjectId}: {Message}", result.Data.Id, uploadResult.Message);
+                            }
+                        }
+                    }
+
                     TempData["Success"] = result.Message;
                     return RedirectToAction(nameof(Details), new { id = result.Data!.Id });
                 }

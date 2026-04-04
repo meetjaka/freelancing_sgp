@@ -120,6 +120,27 @@
                                 </div>
                             </div>
                         }
+
+                        @if (Model.Attachments.Any())
+                        {
+                            <div class="mt-8 pt-8 border-t border-slate-100 dark:border-slate-700">
+                                <h4 class="text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wider mb-4">Requirement Files</h4>
+                                <div class="space-y-3">
+                                    @foreach (var file in Model.Attachments)
+                                    {
+                                        <a href="@file.FilePath" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between gap-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-500 transition-colors">
+                                            <div class="flex items-center gap-3 min-w-0">
+                                                <span class="w-9 h-9 rounded-lg bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-300 flex items-center justify-center">
+                                                    <i class="fas fa-file-alt"></i>
+                                                </span>
+                                                <span class="truncate text-sm font-semibold text-slate-800 dark:text-slate-200">@file.FileName</span>
+                                            </div>
+                                            <span class="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">@Math.Round(file.FileSize / 1024.0, 1) KB</span>
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
 
@@ -153,7 +174,7 @@
                                                         <i class="fas fa-star"></i>
                                                         <i class="fas fa-star"></i>
                                                     </div>
-                                                    <span>5.0 (12 jobs)</span> <!-- Placeholder for actual rating if available -->
+                                                    <span>@bid.FreelancerRating.ToString("0.0") (@bid.FreelancerCompletedProjects jobs)</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -295,7 +316,7 @@
                             </div>
                             <div>
                                 <div class="font-bold text-slate-900 dark:text-white">@Model.Project.ClientName</div>
-                                <div class="text-xs text-slate-500 dark:text-slate-400">Member since 2024</div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400">Member since @Model.Project.ClientCreatedAt.ToString("MMM yyyy")</div>
                             </div>
                         </div>
                         
@@ -306,7 +327,7 @@
                             </div>
                             <div class="flex items-center justify-between text-sm">
                                 <span class="text-slate-500 dark:text-slate-400">Projects Posted</span>
-                                <span class="font-medium text-slate-900 dark:text-white">12</span>
+                                <span class="font-medium text-slate-900 dark:text-white">@Model.Project.ClientProjectsCount</span>
                             </div>
                             <!-- Add more client stats if available -->
                         </div>

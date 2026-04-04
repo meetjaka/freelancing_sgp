@@ -75,14 +75,21 @@ namespace SGP_Freelancing.Services
                     UpdatedAt = DateTime.UtcNow
                 };
 
-                // TODO: Add FileAttachments repository to IUnitOfWork and run migration
-                // await _unitOfWork.FileAttachments.AddAsync(fileAttachment);
-                // await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.Repository<FileAttachment>().AddAsync(fileAttachment);
+                await _unitOfWork.SaveChangesAsync();
+
+                var savedAttachment = await _unitOfWork.Repository<FileAttachment>()
+                    .Query()
+                    .Include(f => f.UploadedBy)
+                    .FirstOrDefaultAsync(f => f.Id == fileAttachment.Id);
 
                 _logger.LogInformation($"File uploaded: {file.FileName} by user {userId}");
 
-                // For now, return the DTO without saving to DB
-                var fileDto = _mapper.Map<FileAttachmentDto>(fileAttachment);
+                var fileDto = _mapper.Map<FileAttachmentDto>(savedAttachment ?? fileAttachment);
+                if (string.IsNullOrWhiteSpace(fileDto.UploadedByName))
+                {
+                    fileDto.UploadedByName = "User";
+                }
                 return ApiResponse<FileAttachmentDto>.SuccessResponse(fileDto, "File uploaded successfully");
             }
             catch (Exception ex)
@@ -124,8 +131,32 @@ namespace SGP_Freelancing.Services
         {
             try
             {
-                // TODO: Add FileAttachments repository to IUnitOfWork and run migration
-                return ApiResponse<bool>.ErrorResponse("File management not yet implemented - pending database migration");
+                var fileAttachment = await _unitOfWork.Repository<FileAttachment>()
+                    .FirstOrDefaultAsync(f => f.Id == fileId && !f.IsDeleted);
+
+                if (fileAttachment == null)
+                {
+                    return ApiResponse<bool>.ErrorResponse("File not found");
+                }
+
+                if (fileAttachment.UploadedById != userId)
+                {
+                    return ApiResponse<bool>.ErrorResponse("You are not authorized to delete this file");
+                }
+
+                var relativePath = fileAttachment.FilePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar);
+                var physicalPath = Path.Combine(_environment.WebRootPath, relativePath);
+                if (File.Exists(physicalPath))
+                {
+                    File.Delete(physicalPath);
+                }
+
+                fileAttachment.IsDeleted = true;
+                fileAttachment.UpdatedAt = DateTime.UtcNow;
+                _unitOfWork.Repository<FileAttachment>().Update(fileAttachment);
+                await _unitOfWork.SaveChangesAsync();
+
+                return ApiResponse<bool>.SuccessResponse(true, "File deleted successfully");
             }
             catch (Exception ex)
             {
@@ -138,8 +169,18 @@ namespace SGP_Freelancing.Services
         {
             try
             {
-                // TODO: Add FileAttachments repository to IUnitOfWork and run migration
-                return ApiResponse<FileAttachmentDto>.ErrorResponse("File management not yet implemented - pending database migration");
+                var fileAttachment = await _unitOfWork.Repository<FileAttachment>()
+                    .Query()
+                    .Include(f => f.UploadedBy)
+                    .FirstOrDefaultAsync(f => f.Id == fileId && !f.IsDeleted);
+
+                if (fileAttachment == null)
+                {
+                    return ApiResponse<FileAttachmentDto>.ErrorResponse("File not found");
+                }
+
+                var fileDto = _mapper.Map<FileAttachmentDto>(fileAttachment);
+                return ApiResponse<FileAttachmentDto>.SuccessResponse(fileDto);
             }
             catch (Exception ex)
             {
@@ -152,8 +193,14 @@ namespace SGP_Freelancing.Services
         {
             try
             {
-                // TODO: Add FileAttachments repository to IUnitOfWork and run migration
-                return new List<FileAttachmentDto>();
+                var files = await _unitOfWork.Repository<FileAttachment>()
+                    .Query()
+                    .Include(f => f.UploadedBy)
+                    .Where(f => f.ProjectId == projectId && !f.IsDeleted)
+                    .OrderByDescending(f => f.CreatedAt)
+                    .ToListAsync();
+
+                return _mapper.Map<List<FileAttachmentDto>>(files);
             }
             catch (Exception ex)
             {
@@ -166,8 +213,14 @@ namespace SGP_Freelancing.Services
         {
             try
             {
-                // TODO: Add FileAttachments repository to IUnitOfWork and run migration
-                return new List<FileAttachmentDto>();
+                var files = await _unitOfWork.Repository<FileAttachment>()
+                    .Query()
+                    .Include(f => f.UploadedBy)
+                    .Where(f => f.ContractId == contractId && !f.IsDeleted)
+                    .OrderByDescending(f => f.CreatedAt)
+                    .ToListAsync();
+
+                return _mapper.Map<List<FileAttachmentDto>>(files);
             }
             catch (Exception ex)
             {
@@ -180,8 +233,14 @@ namespace SGP_Freelancing.Services
         {
             try
             {
-                // TODO: Add FileAttachments repository to IUnitOfWork and run migration
-                return new List<FileAttachmentDto>();
+                var files = await _unitOfWork.Repository<FileAttachment>()
+                    .Query()
+                    .Include(f => f.UploadedBy)
+                    .Where(f => f.MessageId == messageId && !f.IsDeleted)
+                    .OrderByDescending(f => f.CreatedAt)
+                    .ToListAsync();
+
+                return _mapper.Map<List<FileAttachmentDto>>(files);
             }
             catch (Exception ex)
             {

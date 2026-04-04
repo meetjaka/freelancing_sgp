@@ -3,30 +3,97 @@
     ViewData["Title"] = "Post New Project";
 }
 
+<style>
+    .glass-panel {
+        backdrop-filter: blur(18px);
+        border: 1px solid rgba(99, 102, 241, 0.12);
+        box-shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
+    }
+
+    html.dark .glass-panel {
+        background: rgba(15, 17, 21, 0.72);
+        border-color: rgba(255, 255, 255, 0.06);
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+    }
+
+    .hero-orb {
+        position: absolute;
+        border-radius: 9999px;
+        filter: blur(36px);
+        pointer-events: none;
+    }
+</style>
+
 <!-- Header -->
-<div class="relative bg-gradient-to-br from-indigo-600 to-purple-700 py-16 mb-8 overflow-hidden">
-    <div class="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -mr-48 -mt-48"></div>
-    <div class="max-w-4xl mx-auto px-4 relative z-10 text-center text-white">
-        <h1 class="text-5xl font-extrabold mb-4">Post Your Project</h1>
-        <p class="text-lg opacity-95">Find the perfect freelancer for your needs</p>
+<div class="relative overflow-hidden mb-8 rounded-b-[2rem]">
+    <div class="absolute inset-0 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600"></div>
+    <div class="absolute top-0 right-0 w-96 h-96 bg-white/15 rounded-full blur-3xl -mr-48 -mt-48"></div>
+    <div class="absolute bottom-0 left-0 w-80 h-80 bg-cyan-300/15 rounded-full blur-3xl -ml-48 -mb-48"></div>
+    <div class="max-w-6xl mx-auto px-6 py-16 relative z-10 text-white">
+        <div class="max-w-3xl">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/20 bg-white/10 text-xs font-bold uppercase tracking-[0.25em] mb-5">
+                <i class="fas fa-sparkles"></i>
+                Client Workspace
+            </div>
+            <h1 class="text-4xl md:text-5xl font-black tracking-tight mb-4">Post a project that attracts serious freelancers</h1>
+            <p class="text-base md:text-lg text-white/85 max-w-2xl leading-relaxed">Describe the work clearly, set the budget, and let the platform surface the right talent for the job.</p>
+        </div>
     </div>
 </div>
 
-<div class="max-w-5xl mx-auto px-4 pb-8 bg-slate-50 dark:bg-[#0B1120] transition-colors duration-300">
-    <div class="bg-white dark:bg-slate-800 rounded-3xl p-12 shadow-xl dark:shadow-slate-900/50 transition-colors duration-300">
-        <!-- Info Card -->
-        <div class="bg-gradient-to-r from-blue-50 to-gray-50 dark:from-blue-900/20 dark:to-slate-700/30 border-l-4 border-indigo-600 dark:border-indigo-400 rounded-xl p-6 mb-8 transition-colors duration-300">
-            <div class="flex items-center gap-2 font-bold text-gray-800 dark:text-white mb-2 transition-colors duration-300">
-                <i class="fas fa-lightbulb text-indigo-600 dark:text-indigo-400 transition-colors duration-300"></i>
-                Tips for Success
+<div class="max-w-6xl mx-auto px-6 pb-10">
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
+        <div class="xl:col-span-4">
+            <div class="glass-panel bg-white/90 dark:bg-[#11131a]/80 rounded-[1.75rem] p-6 md:p-8 sticky top-28">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 text-white flex items-center justify-center shadow-lg shadow-indigo-500/25">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-indigo-500 dark:text-indigo-400">Tips for Success</p>
+                        <h2 class="text-xl font-black text-slate-900 dark:text-white">Write for clarity</h2>
+                    </div>
+                </div>
+
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    A stronger brief gets better bids. Keep the title specific, explain the outcome you want, and mention the skills or tools you expect.
+                </p>
+
+                <div class="space-y-4">
+                    <div class="flex gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center shrink-0">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-900 dark:text-white">Use a clear title</p>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Describe the project in one sentence.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5">
+                        <div class="w-10 h-10 rounded-xl bg-violet-500/10 text-violet-500 flex items-center justify-center shrink-0">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-900 dark:text-white">Mention the stack</p>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Add technologies so the right freelancers respond.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5">
+                        <div class="w-10 h-10 rounded-xl bg-fuchsia-500/10 text-fuchsia-500 flex items-center justify-center shrink-0">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-900 dark:text-white">Set a realistic budget</p>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Good budgets get stronger proposals.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p class="text-gray-600 dark:text-slate-400 text-sm leading-relaxed transition-colors duration-300">
-                Write a clear, detailed description of your project. Include specific requirements, 
-                preferred skills, and expected deliverables to attract the best freelancers.
-            </p>
         </div>
 
-        <form asp-action="Create" method="post">
+        <div class="xl:col-span-8">
+            <div class="glass-panel bg-white/90 dark:bg-[#11131a]/80 rounded-[1.75rem] p-6 md:p-10">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg mb-6 transition-colors duration-300"></div>
             
@@ -117,6 +184,25 @@
 
             <div class="h-px bg-gradient-to-r from-transparent via-gray-200 dark:via-slate-600 to-transparent my-10 transition-colors duration-300"></div>
 
+            <!-- Requirements Files -->
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center text-white">
+                    <i class="fas fa-paperclip"></i>
+                </div>
+                <h2 class="text-xl font-bold text-gray-800 dark:text-white transition-colors duration-300">Project Requirement Files</h2>
+            </div>
+
+            <div class="mb-8">
+                <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2 transition-colors duration-300">
+                    Upload Files (Optional)
+                </label>
+                <input type="file" name="projectFiles" multiple class="w-full px-5 py-4 border-2 border-dashed border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white rounded-xl text-base transition-all focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900/30 outline-none" />
+                <div class="text-xs text-gray-500 dark:text-slate-400 mt-1 transition-colors duration-300">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    You can add requirement docs, reference images, zip files, and other project materials (max 10MB each).
+                </div>
+            </div>
+
             <!-- Action Buttons -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div class="md:col-span-3">
@@ -136,6 +222,9 @@
                 Your project will be visible to thousands of qualified freelancers
             </p>
         </form>
+            </div>
+        </div>
+    </div>
     </div>
 </div>
 

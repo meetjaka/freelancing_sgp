@@ -51,6 +51,24 @@ namespace SGP_Freelancing.Hubs
             await Clients.Caller.SendAsync("MessageSent", receiverId, message, DateTime.UtcNow);
         }
 
+        public async Task SendFileMessage(string receiverId, string fileName, string fileUrl, string? caption)
+        {
+            var senderId = Context.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+            var senderName = Context.User?.Identity?.Name ?? "Unknown";
+
+            if (string.IsNullOrEmpty(senderId))
+                return;
+
+            await Clients.Group(receiverId).SendAsync(
+                "ReceiveFileMessage",
+                senderId,
+                senderName,
+                fileName,
+                fileUrl,
+                caption,
+                DateTime.UtcNow);
+        }
+
         public async Task NotifyTyping(string receiverId)
         {
             var senderId = Context.User?.FindFirstValue(ClaimTypes.NameIdentifier);

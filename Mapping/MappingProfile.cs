@@ -15,6 +15,8 @@ namespace SGP_Freelancing.Mapping
             // Project mappings
             CreateMap<Project, ProjectDto>()
                 .ForMember(dest => dest.ClientName, opt => opt.MapFrom(src => src.Client.FirstName + " " + src.Client.LastName))
+                .ForMember(dest => dest.ClientCreatedAt, opt => opt.MapFrom(src => src.Client.CreatedAt))
+                .ForMember(dest => dest.ClientProjectsCount, opt => opt.MapFrom(src => src.Client.ClientProjects.Count))
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
                 .ForMember(dest => dest.BidsCount, opt => opt.MapFrom(src => src.Bids.Count))
                 .ForMember(dest => dest.Skills, opt => opt.MapFrom(src => src.ProjectSkills.Select(ps => ps.Skill.Name).ToList()))
@@ -26,6 +28,8 @@ namespace SGP_Freelancing.Mapping
             // Bid mappings
             CreateMap<Bid, BidDto>()
                 .ForMember(dest => dest.FreelancerName, opt => opt.MapFrom(src => src.Freelancer.FirstName + " " + src.Freelancer.LastName))
+                .ForMember(dest => dest.FreelancerRating, opt => opt.MapFrom(src => src.Freelancer.FreelancerProfile != null ? src.Freelancer.FreelancerProfile.AverageRating : 0))
+                .ForMember(dest => dest.FreelancerCompletedProjects, opt => opt.MapFrom(src => src.Freelancer.FreelancerProfile != null ? src.Freelancer.FreelancerProfile.CompletedProjects : 0))
                 .ForMember(dest => dest.ProjectTitle, opt => opt.MapFrom(src => src.Project.Title))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
 
@@ -33,6 +37,9 @@ namespace SGP_Freelancing.Mapping
 
             // Profile mappings
             CreateMap<FreelancerProfile, FreelancerProfileDto>()
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User != null
+                    ? src.User.FirstName + " " + src.User.LastName
+                    : "Freelancer"))
                 .ForMember(dest => dest.Skills, opt => opt.MapFrom(src => src.FreelancerSkills.Select(fs => new SkillDto
                 {
                     Id = fs.Skill.Id,
@@ -65,7 +72,13 @@ namespace SGP_Freelancing.Mapping
                 .ForMember(dest => dest.ClientName, opt => opt.MapFrom(src => src.Client.FirstName + " " + src.Client.LastName))
                 .ForMember(dest => dest.FreelancerId, opt => opt.MapFrom(src => src.FreelancerId))
                 .ForMember(dest => dest.FreelancerName, opt => opt.MapFrom(src => src.Freelancer.FirstName + " " + src.Freelancer.LastName))
+                .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.AgreedAmount))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
+
+            CreateMap<Contract, ContractDetailsViewModel>()
+                .ForMember(dest => dest.Contract, opt => opt.MapFrom(src => src))
+                .ForMember(dest => dest.Transactions, opt => opt.MapFrom(src => src.PaymentTransactions))
+                .ForMember(dest => dest.CanReview, opt => opt.Ignore());
 
             CreateMap<CreateContractDto, Contract>();
 

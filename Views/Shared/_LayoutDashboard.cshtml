@@ -44,6 +44,7 @@
             position: relative;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             color: #64748b; /* text-slate-500 */
+            white-space: nowrap;
         }
         html.dark .nav-link {
             color: #94a3b8; /* text-slate-400 */
@@ -137,12 +138,10 @@
                         
                         <!-- Left: Logo -->
                         <div class="flex-shrink-0 flex items-center gap-3 logo-container mr-8">
-                            <div class="logo-icon w-10 h-10 bg-indigo-500/10 border border-indigo-500/20 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(99,102,241,0.2)]">
-                                <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                                </svg>
+                            <div class="logo-icon w-10 h-10 bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 rounded-2xl flex items-center justify-center shadow-[0_0_18px_rgba(99,102,241,0.35)] border border-white/10">
+                                <span class="text-white font-black text-lg tracking-tight">F</span>
                             </div>
-                            <span class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">SGP<span class="text-indigo-600 dark:text-indigo-400">.io</span></span>
+                            <span class="text-xl font-black tracking-tight text-slate-900 dark:text-white">Freeio</span>
                         </div>
 
                         <!-- Center: Desktop Navigation -->
@@ -165,9 +164,6 @@
                                 {
                                     <a asp-controller="Project" asp-action="Index" class="nav-link px-5 py-2 rounded-full text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Project" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
                                         Browse Projects
-                                    </a>
-                                    <a asp-controller="Project" asp-action="Recommended" class="nav-link px-5 py-2 rounded-full text-sm font-medium flex items-center gap-1 @(ViewContext.RouteData.Values["action"]?.ToString() == "Recommended" ? "active text-indigo-500" : "")">
-                                        <i class="fas fa-magic text-[10px] text-indigo-500"></i> AI Matches
                                     </a>
                                     <a asp-controller="Portfolio" asp-action="Index" class="nav-link px-5 py-2 rounded-full text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Portfolio" ? "active" : "")">
                                         Portfolios
@@ -322,7 +318,7 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex items-center justify-between h-16">
                         <a href="/" class="flex items-center text-white font-bold text-xl">
-                            <i class="fas fa-handshake mr-2"></i>SGP Freelancing
+                            <i class="fas fa-handshake mr-2"></i>Freeio
                         </a>
                         <div class="hidden md:flex items-center space-x-8">
                             <a asp-controller="Home" asp-action="Index" class="text-white/80 hover:text-white transition-colors">
@@ -353,7 +349,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div>
-                        <h5 class="text-xl font-bold mb-4"><i class="fas fa-handshake mr-2"></i>SGP Freelancing</h5>
+                        <h5 class="text-xl font-bold mb-4"><i class="fas fa-handshake mr-2"></i>Freeio</h5>
                         <p class="text-slate-500 dark:text-slate-400">Connect with top freelancers and find exciting projects worldwide.</p>
                     </div>
                     <div>

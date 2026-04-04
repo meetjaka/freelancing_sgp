@@ -25,13 +25,20 @@
             <div class="w-12 h-12 bg-indigo-500/10 border border-indigo-500/20 rounded-xl flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform">
                 <i class="fas fa-eye text-xl"></i>
             </div>
-            <span class="inline-flex items-center gap-1 text-xs font-bold text-indigo-400 bg-indigo-400/10 px-2 py-1 rounded-full border border-indigo-400/20">
-                <i class="fas fa-arrow-up text-[10px]"></i>
-                12.5%
+            @{
+                var metricChange = Model.PrimaryMetricChange;
+                var metricIncrease = metricChange >= 0;
+                var metricChangeClass = metricIncrease
+                    ? "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20"
+                    : "text-rose-600 dark:text-rose-400 bg-rose-500/10 border border-rose-500/20";
+            }
+            <span class="inline-flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-full @metricChangeClass">
+                <i class="fas @(metricIncrease ? "fa-arrow-up" : "fa-arrow-down") text-[10px]"></i>
+                @Math.Abs(metricChange).ToString("0.0")%
             </span>
         </div>
         <div>
-            <p class="text-sm font-bold text-slate-500 dark:text-slate-400 mb-1">Profile Views</p>
+            <p class="text-sm font-bold text-slate-500 dark:text-slate-400 mb-1">@Model.PrimaryMetricLabel</p>
             <p class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">@Model.ProfileViews.ToString("N0")</p>
         </div>
     </div>
@@ -82,20 +89,38 @@
     <!-- View Chart Placeholder -->
     <div class="lg:col-span-2 bento-card p-6 relative overflow-hidden group">
         <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6 relative z-10">Performance Overview</h3>
-        
-        <!-- Visible grid pattern in dark mode -->
-        <div class="absolute inset-x-0 bottom-0 h-[280px] z-0 opacity-10 dark:opacity-20 pointer-events-none" style="background-image: linear-gradient(#6366f1 1px, transparent 1px), linear-gradient(90deg, #6366f1 1px, transparent 1px); background-size: 30px 30px;"></div>
-        <div class="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-white dark:from-[#12141a] to-transparent z-0 pointer-events-none"></div>
 
-        <div class="flex items-center justify-center py-20 relative z-10">
-            <div class="text-center transition-transform group-hover:scale-105">
-                <div class="w-20 h-20 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
-                    <i class="fas fa-chart-line text-2xl text-indigo-500 dark:text-indigo-400"></i>
-                </div>
-                <p class="text-slate-500 dark:text-slate-400 mb-1 font-bold">Chart visualization structure ready</p>
-                <p class="text-sm text-slate-400 dark:text-slate-500">More data is needed to render meaningful performance charts.</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">@Model.TrendLabel</p>
+        @if (Model.TrendValues.Any())
+        {
+            var maxValue = Math.Max(1, Model.TrendValues.Max());
+            <div class="grid grid-cols-6 gap-3 items-end h-52">
+                @for (var i = 0; i < Model.TrendValues.Count; i++)
+                {
+                    var value = Model.TrendValues[i];
+                    var barHeight = Math.Max(10, (int)Math.Round((value / (decimal)maxValue) * 160));
+                    <div class="flex flex-col items-center gap-2">
+                        <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">@value</span>
+                        <div class="w-full rounded-xl bg-indigo-500/15 border border-indigo-500/20 flex items-end">
+                            <div class="w-full rounded-xl bg-gradient-to-t from-indigo-600 to-indigo-400" style="height: @(barHeight)px"></div>
+                        </div>
+                        <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">@Model.TrendLabels[i]</span>
+                    </div>
+                }
             </div>
-        </div>
+        }
+        else
+        {
+            <div class="flex items-center justify-center py-20 relative z-10">
+                <div class="text-center transition-transform group-hover:scale-105">
+                    <div class="w-20 h-20 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+                        <i class="fas fa-chart-line text-2xl text-indigo-500 dark:text-indigo-400"></i>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 mb-1 font-bold">No trend data yet</p>
+                    <p class="text-sm text-slate-400 dark:text-slate-500">Complete more activity to unlock this chart.</p>
+                </div>
+            </div>
+        }
     </div>
 
     <!-- Top Skills -->

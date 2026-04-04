@@ -142,6 +142,25 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="mt-6 space-y-3">
+                    <a asp-controller="Message" asp-action="Conversation" asp-route-userId="@otherPartyId" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-all">
+                        <i class="fas fa-comment-dots"></i>
+                        Message @(isClient ? "Freelancer" : "Client")
+                    </a>
+
+                    @if (isClient && Model.Contract.Status == "Completed")
+                    {
+                        <form asp-controller="Message" asp-action="CloseConversation" method="post" class="w-full">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="otherUserId" value="@otherPartyId" />
+                            <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-rose-50 hover:bg-rose-100 dark:bg-rose-900/20 dark:hover:bg-rose-900/30 text-rose-700 dark:text-rose-300 font-semibold rounded-xl border border-rose-200 dark:border-rose-700 transition-all">
+                                <i class="fas fa-lock"></i>
+                                Close Conversation
+                            </button>
+                        </form>
+                    }
+                </div>
             </div>
 
             <div class="bg-slate-100 dark:bg-slate-900 rounded-2xl p-6 text-slate-900 dark:text-white overflow-hidden relative">

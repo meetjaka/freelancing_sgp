@@ -91,10 +91,10 @@
 
 <div class="container mx-auto px-6 py-8">
     <!-- Header -->
-    <div class="flex items-center justify-between mb-8">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-8 rounded-2xl border border-indigo-200/50 dark:border-indigo-500/20 bg-gradient-to-r from-white to-indigo-50 dark:from-[#12141a] dark:to-[#1b2140] p-6">
         <div>
             <h1 class="text-4xl font-bold text-slate-900 dark:text-white mb-2">Find Freelancers</h1>
-            <p class="text-slate-600 dark:text-slate-400">Discover talented professionals for your next project</p>
+            <p class="text-slate-600 dark:text-slate-400">Discover verified professionals with real ratings, rates, and completed work history</p>
         </div>
         @if (User.Identity?.IsAuthenticated == true)
         {
@@ -238,10 +238,11 @@
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex items-center gap-4">
                             <div class="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xl font-bold shadow-lg">
-                                @(freelancer.Title?.Substring(0, 1).ToUpper() ?? "F")
+                                @(string.IsNullOrWhiteSpace(freelancer.FullName) ? "F" : freelancer.FullName.Substring(0, 1).ToUpper())
                             </div>
                             <div>
-                                <h3 class="text-lg font-bold text-slate-900 dark:text-white">@freelancer.Title</h3>
+                                <h3 class="text-lg font-bold text-slate-900 dark:text-white">@(string.IsNullOrWhiteSpace(freelancer.FullName) ? "Freelancer" : freelancer.FullName)</h3>
+                                <p class="text-sm text-slate-500 dark:text-slate-400">@(string.IsNullOrWhiteSpace(freelancer.Title) ? "Professional" : freelancer.Title)</p>
                                 @if (freelancer.AverageRating > 0)
                                 {
                                     <div class="flex items-center gap-1">

@@ -59,6 +59,8 @@ namespace SGP_Freelancing.Models.DTOs
         public string Status { get; set; } = null!;
         public DateTime? Deadline { get; set; }
         public string ClientName { get; set; } = null!;
+        public DateTime ClientCreatedAt { get; set; }
+        public int ClientProjectsCount { get; set; }
         public string CategoryName { get; set; } = null!;
         public int BidsCount { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -94,6 +96,8 @@ namespace SGP_Freelancing.Models.DTOs
         public string CoverLetter { get; set; } = null!;
         public string Status { get; set; } = null!;
         public string FreelancerName { get; set; } = null!;
+        public decimal FreelancerRating { get; set; }
+        public int FreelancerCompletedProjects { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 
@@ -101,6 +105,8 @@ namespace SGP_Freelancing.Models.DTOs
     public class FreelancerProfileDto
     {
         public int Id { get; set; }
+        public string? UserId { get; set; }
+        public string? FullName { get; set; }
         public string? Title { get; set; }
         public string? Bio { get; set; }
         public decimal HourlyRate { get; set; }
@@ -155,9 +161,8 @@ namespace SGP_Freelancing.Models.DTOs
         [Required]
         public string ReceiverId { get; set; } = null!;
 
-        [Required]
         [StringLength(200)]
-        public string Subject { get; set; } = null!;
+        public string? Subject { get; set; }
 
         [Required]
         [StringLength(5000)]
@@ -175,6 +180,7 @@ namespace SGP_Freelancing.Models.DTOs
         public string Content { get; set; } = null!;
         public bool IsRead { get; set; }
         public DateTime CreatedAt { get; set; }
+        public List<FileAttachmentDto> Attachments { get; set; } = new();
     }
 
     // Review DTOs

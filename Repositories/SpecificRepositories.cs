@@ -43,8 +43,10 @@ namespace SGP_Freelancing.Repositories
             return await _dbSet
                 .Include(p => p.Category)
                 .Include(p => p.Client)
+                    .ThenInclude(c => c.ClientProjects)
                 .Include(p => p.Bids)
                     .ThenInclude(b => b.Freelancer)
+                        .ThenInclude(u => u.FreelancerProfile)
                 .FirstOrDefaultAsync(p => p.Id == projectId);
         }
 

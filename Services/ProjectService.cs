@@ -166,6 +166,12 @@ namespace SGP_Freelancing.Services
             {
                 Project = _mapper.Map<ProjectDto>(project),
                 Bids = _mapper.Map<List<BidDto>>(project.Bids),
+                Attachments = _mapper.Map<List<FileAttachmentDto>>(await _unitOfWork.Repository<FileAttachment>()
+                    .Query()
+                    .Include(f => f.UploadedBy)
+                    .Where(f => f.ProjectId == id && !f.IsDeleted)
+                    .OrderByDescending(f => f.CreatedAt)
+                    .ToListAsync()),
                 IsOwner = project.ClientId == currentUserId,
                 CanBid = !string.IsNullOrEmpty(currentUserId) && project.ClientId != currentUserId
             };

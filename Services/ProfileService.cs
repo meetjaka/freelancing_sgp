@@ -25,8 +25,7 @@ namespace SGP_Freelancing.Services
         {
             try
             {
-                var allProfiles = await _unitOfWork.FreelancerProfiles.GetAllAsync();
-                var profile = allProfiles.FirstOrDefault(p => p.UserId == userId);
+                var profile = await _unitOfWork.FreelancerProfiles.GetByUserIdAsync(userId);
 
                 if (profile == null)
                 {
@@ -47,8 +46,7 @@ namespace SGP_Freelancing.Services
         {
             try
             {
-                var allProfiles = await _unitOfWork.FreelancerProfiles.GetAllAsync();
-                var profile = allProfiles.FirstOrDefault(p => p.UserId == userId);
+                var profile = await _unitOfWork.FreelancerProfiles.GetByUserIdAsync(userId);
 
                 if (profile == null)
                 {
@@ -69,8 +67,33 @@ namespace SGP_Freelancing.Services
                 profile.PortfolioUrl = dto.PortfolioUrl;
                 profile.UpdatedAt = DateTime.UtcNow;
 
-                // Update skills - simplified without junction table direct access
-                // Skills are loaded via FreelancerSkills navigation property
+                var selectedSkillIds = dto.SkillIds?.Distinct().ToList() ?? new List<int>();
+                var selectedSkills = selectedSkillIds.Count > 0
+                    ? (await _unitOfWork.Repository<Skill>().FindAsync(s => selectedSkillIds.Contains(s.Id))).ToList()
+                    : new List<Skill>();
+
+                if (selectedSkillIds.Count > 0 && selectedSkills.Count != selectedSkillIds.Count)
+                {
+                    var missingSkillIds = selectedSkillIds.Except(selectedSkills.Select(s => s.Id)).ToList();
+                    _logger.LogWarning("Some selected skills were not found for freelancer profile {UserId}: {SkillIds}", userId, string.Join(",", missingSkillIds));
+                }
+
+                var existingFreelancerSkills = profile.FreelancerSkills?.ToList() ?? new List<FreelancerSkill>();
+                if (existingFreelancerSkills.Any())
+                {
+                    _unitOfWork.Repository<FreelancerSkill>().RemoveRange(existingFreelancerSkills);
+                }
+
+                profile.FreelancerSkills.Clear();
+                foreach (var skill in selectedSkills)
+                {
+                    profile.FreelancerSkills.Add(new FreelancerSkill
+                    {
+                        FreelancerProfileId = profile.Id,
+                        SkillId = skill.Id,
+                        YearsOfExperience = 0
+                    });
+                }
                 
                 _unitOfWork.FreelancerProfiles.Update(profile);
                 await _unitOfWork.SaveChangesAsync();

@@ -22,6 +22,8 @@ namespace SGP_Freelancing
             try
             {
                 var builder = WebApplication.CreateBuilder(args);
+                var seedDummyEmailData = args.Any(a => string.Equals(a, "--seed-dummy-email-data", StringComparison.OrdinalIgnoreCase));
+                var seedDummyMarketData = args.Any(a => string.Equals(a, "--seed-dummy-market-data", StringComparison.OrdinalIgnoreCase));
 
                 // ========== Configure Serilog ==========
                 Log.Logger = new LoggerConfiguration()
@@ -293,6 +295,18 @@ namespace SGP_Freelancing
 
                     // Seed Categories and Skills
                     SeedCategoriesAndSkillsAsync(context).Wait();
+
+                    if (seedDummyEmailData || seedDummyMarketData)
+                    {
+                        SeedDummyEmailDataAsync(services).Wait();
+                    }
+
+                    if (seedDummyMarketData)
+                    {
+                        SeedDummyMarketDataAsync(services).Wait();
+                        Log.Information("Dummy email data seeding completed. Exiting without starting the web host.");
+                        return;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -528,6 +542,418 @@ namespace SGP_Freelancing
                 await context.SaveChangesAsync();
                 Log.Information($"{skills.Length} skills seeded");
             }
+        }
+
+        private static async Task SeedDummyEmailDataAsync(IServiceProvider services)
+        {
+            var context = services.GetRequiredService<ApplicationDbContext>();
+            var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+
+            var dummyUsers = new[]
+            {
+                new
+                {
+                    Email = "client.demo1@sgpfreelancing.local",
+                    Password = "Demo@1234",
+                    FirstName = "Aarav",
+                    LastName = "Sharma",
+                    Role = Constants.Roles.Client,
+                    EmailConfirmed = true,
+                    Otp = "123456"
+                },
+                new
+                {
+                    Email = "freelancer.demo1@sgpfreelancing.local",
+                    Password = "Demo@1234",
+                    FirstName = "Meera",
+                    LastName = "Verma",
+                    Role = Constants.Roles.Freelancer,
+                    EmailConfirmed = false,
+                    Otp = "654321"
+                },
+                new
+                {
+                    Email = "freelancer.demo2@sgpfreelancing.local",
+                    Password = "Demo@1234",
+                    FirstName = "Rohan",
+                    LastName = "Khan",
+                    Role = Constants.Roles.Freelancer,
+                    EmailConfirmed = false,
+                    Otp = "778899"
+                },
+                new
+                {
+                    Email = "client.demo2@sgpfreelancing.local",
+                    Password = "Demo@1234",
+                    FirstName = "Kabir",
+                    LastName = "Singh",
+                    Role = Constants.Roles.Client,
+                    EmailConfirmed = false,
+                    Otp = "112233"
+                }
+            };
+
+            foreach (var dummy in dummyUsers)
+            {
+                var user = await userManager.FindByEmailAsync(dummy.Email);
+                if (user == null)
+                {
+                    user = new ApplicationUser
+                    {
+                        UserName = dummy.Email,
+                        Email = dummy.Email,
+                        FirstName = dummy.FirstName,
+                        LastName = dummy.LastName,
+                        EmailConfirmed = dummy.EmailConfirmed,
+                        IsActive = true
+                    };
+
+                    var createResult = await userManager.CreateAsync(user, dummy.Password);
+                    if (!createResult.Succeeded)
+                    {
+                        var errors = string.Join("; ", createResult.Errors.Select(e => e.Description));
+                        throw new InvalidOperationException($"Failed to create dummy user {dummy.Email}: {errors}");
+                    }
+
+                    await userManager.AddToRoleAsync(user, dummy.Role);
+
+                    if (dummy.Role == Constants.Roles.Freelancer)
+                    {
+                        var profile = new FreelancerProfile
+                        {
+                            UserId = user.Id,
+                            Title = "Full Stack Developer",
+                            Bio = "Demo freelancer account for testing email and OTP flows.",
+                            HourlyRate = 1500,
+                            TotalEarnings = 45000,
+                            CompletedProjects = 12,
+                            AverageRating = 4.7m,
+                            CreatedAt = DateTime.UtcNow,
+                            UpdatedAt = DateTime.UtcNow
+                        };
+
+                        await context.FreelancerProfiles.AddAsync(profile);
+                    }
+                    else if (dummy.Role == Constants.Roles.Client)
+                    {
+                        var profile = new ClientProfile
+                        {
+                            UserId = user.Id,
+                            CompanyName = "Demo Client Pvt Ltd",
+                            CompanyDescription = "Demo client account for testing email and OTP flows.",
+                            Website = "https://example.com",
+                            TotalProjectsPosted = 5,
+                            AverageRating = 4.5m,
+                            CreatedAt = DateTime.UtcNow,
+                            UpdatedAt = DateTime.UtcNow
+                        };
+
+                        await context.ClientProfiles.AddAsync(profile);
+                    }
+
+                    Log.Information("Created dummy user {Email}", dummy.Email);
+                }
+
+                var existingOtp = await context.OtpRecords
+                    .Where(r => r.Email == dummy.Email)
+                    .ToListAsync();
+
+                context.OtpRecords.RemoveRange(existingOtp);
+                context.OtpRecords.Add(new OtpRecord
+                {
+                    Email = dummy.Email,
+                    Otp = dummy.Otp,
+                    ExpiresAt = DateTime.UtcNow.AddMinutes(10),
+                    CreatedAt = DateTime.UtcNow
+                });
+            }
+
+            await context.SaveChangesAsync();
+            Log.Information("Seeded dummy email users and OTP records for testing");
+        }
+
+        private static async Task SeedDummyMarketDataAsync(IServiceProvider services)
+        {
+            var context = services.GetRequiredService<ApplicationDbContext>();
+
+            var clientUser = await context.Users.FirstOrDefaultAsync(u => u.Email == "client.demo1@sgpfreelancing.local");
+            if (clientUser == null)
+            {
+                Log.Error("Client demo user not found. Run --seed-dummy-email-data first");
+                return;
+            }
+
+            var freelancerUser1 = await context.Users.FirstOrDefaultAsync(u => u.Email == "freelancer.demo1@sgpfreelancing.local");
+            var freelancerUser2 = await context.Users.FirstOrDefaultAsync(u => u.Email == "freelancer.demo2@sgpfreelancing.local");
+
+            if (freelancerUser1 == null || freelancerUser2 == null)
+            {
+                Log.Error("Freelancer demo users not found. Run --seed-dummy-email-data first");
+                return;
+            }
+
+            var clientProfile = await context.ClientProfiles.FirstOrDefaultAsync(p => p.UserId == clientUser.Id);
+            var freelancerProfile1 = await context.FreelancerProfiles.FirstOrDefaultAsync(p => p.UserId == freelancerUser1.Id);
+            var freelancerProfile2 = await context.FreelancerProfiles.FirstOrDefaultAsync(p => p.UserId == freelancerUser2.Id);
+
+            if (clientProfile == null || freelancerProfile1 == null || freelancerProfile2 == null)
+            {
+                Log.Error("Client or freelancer profiles not found. Run --seed-dummy-email-data first");
+                return;
+            }
+
+            var skillNames = new[] { "Python", "Machine Learning", "SQL", "ASP.NET Core", "React", "JavaScript", "HTML/CSS", "Django" };
+            var skills = await context.Skills.Where(s => skillNames.Contains(s.Name)).ToListAsync();
+
+            async Task<Skill> GetSkillAsync(string name)
+            {
+                var skill = skills.FirstOrDefault(s => s.Name == name);
+                if (skill != null)
+                {
+                    return skill;
+                }
+
+                skill = await context.Skills.FirstOrDefaultAsync(s => s.Name == name);
+                if (skill != null)
+                {
+                    skills.Add(skill);
+                    return skill;
+                }
+
+                Log.Warning("Skill '{SkillName}' not found, creating it dynamically", name);
+                skill = new Skill
+                {
+                    Name = name,
+                    Description = $"Auto-created skill: {name}",
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+                await context.Skills.AddAsync(skill);
+                await context.SaveChangesAsync();
+                skills.Add(skill);
+                return skill;
+            }
+
+            async Task EnsureFreelancerSkillAsync(int freelancerProfileId, string skillName, int years)
+            {
+                var skill = await GetSkillAsync(skillName);
+                var exists = await context.FreelancerSkills.AnyAsync(fs => fs.FreelancerProfileId == freelancerProfileId && fs.SkillId == skill.Id);
+                if (!exists)
+                {
+                    await context.FreelancerSkills.AddAsync(new FreelancerSkill
+                    {
+                        FreelancerProfileId = freelancerProfileId,
+                        SkillId = skill.Id,
+                        YearsOfExperience = years
+                    });
+                }
+            }
+
+            async Task EnsureProjectSkillAsync(int projectId, string skillName)
+            {
+                var skill = await GetSkillAsync(skillName);
+                var exists = await context.ProjectSkills.AnyAsync(ps => ps.ProjectId == projectId && ps.SkillId == skill.Id);
+                if (!exists)
+                {
+                    await context.ProjectSkills.AddAsync(new ProjectSkill
+                    {
+                        ProjectId = projectId,
+                        SkillId = skill.Id
+                    });
+                }
+            }
+
+            await EnsureFreelancerSkillAsync(freelancerProfile1.Id, "Python", 4);
+            await EnsureFreelancerSkillAsync(freelancerProfile1.Id, "Django", 3);
+            await EnsureFreelancerSkillAsync(freelancerProfile1.Id, "SQL", 4);
+            await EnsureFreelancerSkillAsync(freelancerProfile2.Id, "React", 4);
+            await EnsureFreelancerSkillAsync(freelancerProfile2.Id, "JavaScript", 5);
+            await EnsureFreelancerSkillAsync(freelancerProfile2.Id, "HTML/CSS", 5);
+
+            var webCategory = await context.Categories.FirstOrDefaultAsync(c => c.Name == "Web Development");
+            if (webCategory == null)
+            {
+                webCategory = new Category
+                {
+                    Name = "Web Development",
+                    Description = "Build websites and web applications",
+                    IconClass = "fa-globe",
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+                await context.Categories.AddAsync(webCategory);
+                await context.SaveChangesAsync();
+                Log.Warning("Web Development category created dynamically");
+            }
+
+            var aiCategory = await context.Categories.FirstOrDefaultAsync(c => c.Name == "Data Science & Analytics");
+            if (aiCategory == null)
+            {
+                aiCategory = new Category
+                {
+                    Name = "Data Science & Analytics",
+                    Description = "Data analysis, machine learning, AI",
+                    IconClass = "fa-chart-bar",
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+                await context.Categories.AddAsync(aiCategory);
+                await context.SaveChangesAsync();
+                Log.Warning("Data Science & Analytics category created dynamically");
+            }
+
+            var project1 = await context.Projects.FirstOrDefaultAsync(p => p.Title == "AI Job Matching Dashboard");
+            if (project1 == null)
+            {
+                project1 = new Project
+                {
+                    Title = "AI Job Matching Dashboard",
+                    Description = "Build a dashboard that recommends jobs to freelancers using profile skills and project metadata.",
+                    Budget = 45000,
+                    Deadline = DateTime.UtcNow.AddDays(21),
+                    Status = ProjectStatus.Open,
+                    ClientId = clientUser.Id,
+                    CategoryId = aiCategory.Id,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+
+                await context.Projects.AddAsync(project1);
+                await context.SaveChangesAsync();
+
+                await EnsureProjectSkillAsync(project1.Id, "Python");
+                await EnsureProjectSkillAsync(project1.Id, "Machine Learning");
+                await EnsureProjectSkillAsync(project1.Id, "SQL");
+            }
+
+            var project2 = await context.Projects.FirstOrDefaultAsync(p => p.Title == "Freelance Marketplace Frontend Refresh");
+            if (project2 == null)
+            {
+                project2 = new Project
+                {
+                    Title = "Freelance Marketplace Frontend Refresh",
+                    Description = "Redesign the client and freelancer landing pages with a clean responsive UI and better search flows.",
+                    Budget = 30000,
+                    Deadline = DateTime.UtcNow.AddDays(14),
+                    Status = ProjectStatus.Open,
+                    ClientId = clientUser.Id,
+                    CategoryId = webCategory.Id,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+
+                await context.Projects.AddAsync(project2);
+                await context.SaveChangesAsync();
+
+                await EnsureProjectSkillAsync(project2.Id, "React");
+                await EnsureProjectSkillAsync(project2.Id, "JavaScript");
+                await EnsureProjectSkillAsync(project2.Id, "HTML/CSS");
+            }
+
+            await context.SaveChangesAsync();
+
+            var bid1 = await context.Bids.FirstOrDefaultAsync(b => b.ProjectId == project1.Id && b.FreelancerId == freelancerUser1.Id);
+            if (bid1 == null)
+            {
+                bid1 = new Bid
+                {
+                    FreelancerId = freelancerUser1.Id,
+                    ProjectId = project1.Id,
+                    ProposedAmount = 42000,
+                    EstimatedDurationDays = 18,
+                    CoverLetter = "I can build the AI matching dashboard with project scoring, recommendation cards, and admin insights.",
+                    Status = BidStatus.Accepted,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+
+                await context.Bids.AddAsync(bid1);
+            }
+
+            var bid2 = await context.Bids.FirstOrDefaultAsync(b => b.ProjectId == project2.Id && b.FreelancerId == freelancerUser2.Id);
+            if (bid2 == null)
+            {
+                bid2 = new Bid
+                {
+                    FreelancerId = freelancerUser2.Id,
+                    ProjectId = project2.Id,
+                    ProposedAmount = 28000,
+                    EstimatedDurationDays = 12,
+                    CoverLetter = "I can refresh the marketplace frontend with responsive layouts and a polished browse experience.",
+                    Status = BidStatus.Pending,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+
+                await context.Bids.AddAsync(bid2);
+            }
+
+            await context.SaveChangesAsync();
+
+            var contract = await context.Contracts.FirstOrDefaultAsync(c => c.ProjectId == project1.Id);
+            if (contract == null)
+            {
+                contract = new Contract
+                {
+                    ProjectId = project1.Id,
+                    ClientId = clientUser.Id,
+                    FreelancerId = freelancerUser1.Id,
+                    AgreedAmount = 42000,
+                    StartDate = DateTime.UtcNow.AddDays(-2),
+                    EndDate = DateTime.UtcNow.AddDays(18),
+                    Terms = "Demo contract for AI dashboard delivery and testing.",
+                    Status = ContractStatus.Active,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+
+                await context.Contracts.AddAsync(contract);
+                await context.SaveChangesAsync();
+
+                await context.PaymentTransactions.AddAsync(new PaymentTransaction
+                {
+                    ContractId = contract.Id,
+                    Amount = 12600,
+                    Type = PaymentType.Deposit,
+                    Status = PaymentStatus.Completed,
+                    TransactionId = "DEMO-ESCROW-001",
+                    Description = "Initial escrow deposit for AI dashboard project",
+                    ProcessedAt = DateTime.UtcNow,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                });
+
+                await context.Messages.AddAsync(new Message
+                {
+                    SenderId = clientUser.Id,
+                    ReceiverId = freelancerUser1.Id,
+                    Subject = "Welcome to the demo project",
+                    Content = "Please use this demo project to test messaging, contracts, and AI matching flows.",
+                    IsRead = false,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                });
+
+                await context.Reviews.AddAsync(new Review
+                {
+                    ContractId = contract.Id,
+                    ReviewerId = clientUser.Id,
+                    RevieweeId = freelancerUser1.Id,
+                    Rating = 5,
+                    Comment = "Excellent demo work and quick turnaround.",
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                });
+
+                freelancerProfile1.CompletedProjects += 1;
+                freelancerProfile1.AverageRating = 4.8m;
+                clientProfile.TotalProjectsPosted += 2;
+                clientProfile.AverageRating = 4.7m;
+
+                await context.SaveChangesAsync();
+            }
+
+            Log.Information("Seeded dummy marketplace data for AI matching, bids, contracts, messaging, and reviews");
         }
     }
 }

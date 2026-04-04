@@ -39,7 +39,9 @@ namespace SGP_Freelancing.Services
                 var contract = new Contract
                 {
                     ProjectId = dto.ProjectId,
+                    ClientId = clientId,
                     FreelancerId = dto.FreelancerId,
+                    AgreedAmount = dto.Amount,
                     StartDate = dto.StartDate,
                     EndDate = dto.EndDate,
                     Terms = dto.Terms,
@@ -65,13 +67,12 @@ namespace SGP_Freelancing.Services
         {
             try
             {
-                var contract = await _unitOfWork.Contracts.GetByIdAsync(id);
+                var contract = await _unitOfWork.Contracts.GetContractWithTransactionsAsync(id);
                 if (contract == null)
                     return null;
 
                 // Check permission
-                var project = await _unitOfWork.Projects.GetByIdAsync(contract.ProjectId);
-                if (project == null || (project.ClientId != userId && contract.FreelancerId != userId))
+                if (contract.ClientId != userId && contract.FreelancerId != userId)
                     return null;
 
                 var viewModel = _mapper.Map<ContractDetailsViewModel>(contract);
@@ -88,11 +89,7 @@ namespace SGP_Freelancing.Services
         {
             try
             {
-                var allProjects = await _unitOfWork.Projects.GetAllAsync();
-                var clientProjects = allProjects.Where(p => p.ClientId == clientId).ToList();
-                
-                var allContracts = await _unitOfWork.Contracts.GetAllAsync();
-                var contracts = allContracts.Where(c => clientProjects.Any(p => p.Id == c.ProjectId)).ToList();
+                var contracts = (await _unitOfWork.Contracts.GetContractsByClientAsync(clientId)).ToList();
 
                 return _mapper.Map<List<ContractDto>>(contracts);
             }
@@ -107,8 +104,7 @@ namespace SGP_Freelancing.Services
         {
             try
             {
-                var allContracts = await _unitOfWork.Contracts.GetAllAsync();
-                var contracts = allContracts.Where(c => c.FreelancerId == freelancerId).ToList();
+                var contracts = (await _unitOfWork.Contracts.GetContractsByFreelancerAsync(freelancerId)).ToList();
                 
                 return _mapper.Map<List<ContractDto>>(contracts);
             }
@@ -123,8 +119,7 @@ namespace SGP_Freelancing.Services
         {
             try
             {
-                var allContracts = await _unitOfWork.Contracts.GetAllAsync();
-                var activeContracts = allContracts.Where(c => c.Status == ContractStatus.Active).ToList();
+                var activeContracts = (await _unitOfWork.Contracts.GetActiveContractsAsync()).ToList();
                 
                 return _mapper.Map<List<ContractDto>>(activeContracts);
             }
@@ -195,12 +190,7 @@ namespace SGP_Freelancing.Services
         {
             try
             {
-                var allProjects = await _unitOfWork.Projects.GetAllAsync();
-                var clientProjects = allProjects.Where(p => p.ClientId == clientId).ToList();
-                
-                var allContracts = await _unitOfWork.Contracts.GetAllAsync();
-                var contracts = allContracts
-                    .Where(c => clientProjects.Any(p => p.Id == c.ProjectId))
+                var contracts = (await _unitOfWork.Contracts.GetContractsByClientAsync(clientId))
                     .OrderByDescending(c => c.CreatedAt)
                     .ToList();
 
@@ -235,9 +225,7 @@ namespace SGP_Freelancing.Services
         {
             try
             {
-                var allContracts = await _unitOfWork.Contracts.GetAllAsync();
-                var contracts = allContracts
-                    .Where(c => c.FreelancerId == freelancerId)
+                var contracts = (await _unitOfWork.Contracts.GetContractsByFreelancerAsync(freelancerId))
                     .OrderByDescending(c => c.CreatedAt)
                     .ToList();
 

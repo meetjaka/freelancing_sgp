@@ -30,6 +30,7 @@ namespace SGP_Freelancing.Models.ViewModels
     {
         public ProjectDto Project { get; set; } = null!;
         public List<BidDto> Bids { get; set; } = new();
+        public List<FileAttachmentDto> Attachments { get; set; } = new();
         public bool CanBid { get; set; }
         public bool IsOwner { get; set; }
     }
@@ -149,12 +150,17 @@ namespace SGP_Freelancing.Models.ViewModels
     public class AnalyticsViewModel
     {
         public int ProfileViews { get; set; }
+        public string PrimaryMetricLabel { get; set; } = "Profile Views";
+        public decimal PrimaryMetricChange { get; set; }
         public int DealsClosed { get; set; }
         public decimal SuccessRate { get; set; } // e.g. Accepted / Total
         public decimal AverageRating { get; set; }
         public int TotalReviews { get; set; }
         public List<SkillProgressDto> TopSkills { get; set; } = new();
         public List<ActivityDto> RecentActivities { get; set; } = new();
+        public string TrendLabel { get; set; } = "Activity Trend (Last 6 Months)";
+        public List<string> TrendLabels { get; set; } = new();
+        public List<int> TrendValues { get; set; } = new();
         public bool IsClient { get; set; }
     }
 

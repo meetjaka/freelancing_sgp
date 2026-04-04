@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using SGP_Freelancing.Models.DTOs;
+using SGP_Freelancing.Models.Entities;
 using SGP_Freelancing.Repositories;
 using SGP_Freelancing.Services.Interfaces;
 using SGP_Freelancing.Utilities;
@@ -24,10 +25,14 @@ namespace SGP_Freelancing.Services
         {
             try
             {
-                // Get all freelancers first, then filter in memory
-                // TODO: Optimize with direct DB queries when IQueryable support is added
-                var allProfiles = await _unitOfWork.FreelancerProfiles.GetAllAsync();
-                var profiles = allProfiles.ToList();
+                // Load related entities so list and filters use real backend data.
+                var profiles = await _unitOfWork.Repository<FreelancerProfile>()
+                    .Query()
+                    .Include(p => p.User)
+                    .Include(p => p.FreelancerSkills)
+                        .ThenInclude(fs => fs.Skill)
+                    .AsNoTracking()
+                    .ToListAsync();
 
                 // Search by name, title, or bio
                 if (!string.IsNullOrWhiteSpace(searchDto.Search))
@@ -107,7 +112,12 @@ namespace SGP_Freelancing.Services
         {
             try
             {
-                var profile = await _unitOfWork.FreelancerProfiles.GetByIdAsync(profileId);
+                var profile = await _unitOfWork.Repository<FreelancerProfile>()
+                    .Query()
+                    .Include(p => p.User)
+                    .Include(p => p.FreelancerSkills)
+                        .ThenInclude(fs => fs.Skill)
+                    .FirstOrDefaultAsync(p => p.Id == profileId);
 
                 if (profile == null)
                 {
