@@ -17,6 +17,7 @@ namespace SGP_Freelancing.Controllers
         private readonly IBookmarkService _bookmarkService;
         private readonly IFileUploadService _fileUploadService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMLService _mlService;
         private readonly ILogger<ProjectController> _logger;
 
         public ProjectController(
@@ -25,6 +26,7 @@ namespace SGP_Freelancing.Controllers
             IBookmarkService bookmarkService,
             IFileUploadService fileUploadService,
             IUnitOfWork unitOfWork,
+            IMLService mlService,
             ILogger<ProjectController> logger)
         {
             _projectService = projectService;
@@ -32,6 +34,7 @@ namespace SGP_Freelancing.Controllers
             _bookmarkService = bookmarkService;
             _fileUploadService = fileUploadService;
             _unitOfWork = unitOfWork;
+            _mlService = mlService;
             _logger = logger;
         }
 
@@ -40,7 +43,49 @@ namespace SGP_Freelancing.Controllers
         {
             try
             {
-                var result = await _projectService.AdvancedSearchAsync(searchDto);
+                PagedResult<ProjectDto> result;
+
+                // If user is searching by text, use our shiny new AI vector search!
+                if (!string.IsNullOrWhiteSpace(searchDto.SearchTerm))
+                {
+                    var aiRequest = new SemanticSearchRequest 
+                    { 
+                        Query = searchDto.SearchTerm, 
+                        TopN = 30 
+                    };
+                    var aiResponse = await _mlService.SearchAsync(aiRequest);
+                    
+                    var aiProjects = aiResponse?.Results.Select(r => new ProjectDto
+                    {
+                        Id = -1 * new Random().Next(1000, 9999), // Negative ID signals "Market Deal"
+                        Title = r.Title,
+                        Description = r.DescriptionSnippet + " [Market Data extracted from AI Database]",
+                        CategoryName = r.Category,
+                        Budget = r.Budget,
+                        Status = "Open",
+                        CreatedAt = DateTime.UtcNow,
+                        ClientName = "Market Deal (AI Match)",
+                        ClientProjectsCount = 1,
+                        Skills = new List<string>()
+                        // We use a fake ID so it renders seamlessly in our existing views.
+                    }).ToList() ?? new List<ProjectDto>();
+
+                    result = new PagedResult<ProjectDto> 
+                    {
+                        Items = aiProjects,
+                        TotalCount = aiProjects.Count,
+                        PageNumber = 1,
+                        PageSize = 30
+                    };
+                    
+                    if (aiProjects.Any())
+                        TempData["Success"] = $"AI Semantic Search found {aiProjects.Count} relevant matches based on your phrasing!";
+                }
+                else
+                {
+                    // Fall back to standard SQL Server logic
+                    result = await _projectService.AdvancedSearchAsync(searchDto);
+                }
                 
                 ViewBag.SearchDto = searchDto;
                 
@@ -90,8 +135,10 @@ namespace SGP_Freelancing.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var skills = await _unitOfWork.Skills.GetAllAsync();
+            ViewBag.Skills = skills.OrderBy(s => s.Name).ToList();
             return View();
         }
 
@@ -106,6 +153,24 @@ namespace SGP_Freelancing.Controllers
             try
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+                // --- AI Spam Detection ---
+                var spamRequest = new SpamCheckRequest
+                {
+                    Title = dto.Title,
+                    Description = dto.Description,
+                    Budget = dto.Budget
+                };
+                
+                var spamResult = await _mlService.CheckSpamAsync(spamRequest);
+                if (spamResult != null && spamResult.IsSpam && spamResult.RiskScore > 75)
+                {
+                    _logger.LogWarning("Spam project blocked: Risk {RiskScore}. Title: {Title}", spamResult.RiskScore, dto.Title);
+                    ModelState.AddModelError("", $"Project blocked by AI Anti-Spam filter (Risk {spamResult.RiskScore}%). Reason: {spamResult.Message}");
+                    return View(dto);
+                }
+                // -------------------------
+
                 var result = await _projectService.CreateProjectAsync(dto, userId);
                 
                 if (result.Success)

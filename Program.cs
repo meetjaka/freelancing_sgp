@@ -117,6 +117,7 @@ namespace SGP_Freelancing
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IFreelancerService, SGP_Freelancing.Services.FreelancerService>();
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IFileUploadService, SGP_Freelancing.Services.FileUploadService>();
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IBookmarkService, SGP_Freelancing.Services.BookmarkService>();
+            builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IMLService, SGP_Freelancing.Services.MLService>();
 
             // Add HttpClient for calling AI Microservice
             builder.Services.AddHttpClient();
