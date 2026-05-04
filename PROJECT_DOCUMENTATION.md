@@ -35,10 +35,11 @@ Controllers/ → Services/ → Repositories/ → EF Core → SQL Server
 
 ---
 
-## Entities (20)
+## Entities (21)
 
 | Entity | Key Fields |
 |--------|-----------|
+| **Bookmark** | UserId, BookmarkType, ItemId, Note |
 | **ApplicationUser** (IdentityUser) | FirstName, LastName, ProfilePictureUrl, IsActive |
 | **FreelancerProfile** | UserId, Title, Bio, HourlyRate, Availability, ExperienceYears |
 | **ClientProfile** | UserId, CompanyName, BusinessType, Website |
@@ -64,10 +65,12 @@ Controllers/ → Services/ → Repositories/ → EF Core → SQL Server
 
 ---
 
-## Services (12)
+## Services (14)
 
 | Service | Key Methods |
 |---------|------------|
+| **BookmarkService** | ToggleBookmarkAsync, CheckBookmarkStatusAsync, GetUserBookmarksAsync |
+| **MLService** | PredictBudgetAsync, PredictCategoryAsync, CheckSpamAsync, ExtractSkillsAsync, SearchAsync, RecommendAsync |
 | **ProjectService** | GetAllProjectsAsync (paginated+filter+search), CRUD, GetRecommended, GetByClient |
 | **BidService** | Create (duplicate prevention), Accept/Reject, Withdraw, GetByProject/Freelancer |
 | **ContractService** | CreateFromBid, Complete/Cancel, GetByClient/Freelancer (paginated), GetActive |
@@ -87,7 +90,8 @@ Controllers/ → Services/ → Repositories/ → EF Core → SQL Server
 | Controller | Actions |
 |-----------|---------|
 | **HomeController** | Index, Privacy, TailwindTest, Error |
-| **AccountController** | Login, Register, VerifyOtp, ResendOtp, Logout, Profile, AccessDenied |
+| **BookmarkController** | Index, Toggle, Status |
+| **AccountController** | Login, Register, VerifyOtp, ResendOtp, Logout, ForgotPassword, ResetPassword, Profile, AccessDenied |
 | **DashboardController** | Index (stats: projects, messages, activity) |
 | **ProjectController** | Index (paginated+search+filter), Details, Create, Edit, Delete, MyProjects, SubmitBid, AcceptBid |
 | **ContractController** | Index (paginated), Details, Complete |
@@ -99,6 +103,19 @@ Controllers/ → Services/ → Repositories/ → EF Core → SQL Server
 | **AnalyticsController** | Index |
 | **EarningsController** | Index |
 | **SettingsController** | Index, ChangePassword |
+
+- `MessageController`: UI for the direct messaging inbox and threads.
+- `PortfolioController`: Adding/removing portfolio items to a profile.
+- `ReviewController`: Submitting feedback after contract completion.
+- `BookmarkController`: Visual management of user's saved items.
+
+#### Platform Feature Controllers
+- `MilestoneController`: API/Action endpoints for funding and approving milestones.
+- `GigController`: Manages the marketplace catalog, search interface, and individual Gig order flow.
+- `ConnectsController`: Dashboard interface for freelancers to view transaction ledgers and current token balance.
+- `DisputeController`: Ticketing UI for users and mediation views for Admins.
+- `VerificationController`: Document submission portal for users and a review index for Admins.
+- `TimeTrackingController`: Interface displaying weekly/contract timesheets and providing approval dashboards for clients.
 
 ---
 
@@ -119,6 +136,8 @@ Views/
 ├── Portfolio/                      → Index, Details, MyPortfolio, Create, Edit, AddCase, EditCase
 ├── Freelancer/                     → Index (search), Details
 ├── Profile/                        → EditFreelancer, EditClient
+├── Bookmark/Index.cshtml           → User's saved bookmarks
+├── RecommendationView/             → ML-driven job recommendations
 ├── Analytics/Index.cshtml          → Metrics, charts, skills, activity table
 ├── Earnings/Index.cshtml           → Earnings overview
 └── Settings/Index.cshtml           → Password change, preferences
@@ -163,7 +182,7 @@ Views/
 
 | Lifetime | Registrations |
 |----------|--------------|
-| Scoped | DbContext, IUnitOfWork, IProjectService, IBidService, IMessageService, IContractService, IReviewService, IPortfolioService, IProfileService, IFreelancerService, IFileUploadService, IEmailService |
+| Scoped | DbContext, IUnitOfWork, IProjectService, IBidService, IMessageService, IContractService, IReviewService, IPortfolioService, IProfileService, IFreelancerService, IFileUploadService, IBookmarkService, IMLService, IEmailService |
 | Singleton | OtpService |
 | Framework | Identity, JWT, AutoMapper, SignalR, MVC, Swagger, CORS, Session, DataProtection |
 
@@ -185,6 +204,23 @@ Views/
 | `PortfolioDto / PortfolioCaseDto / PortfolioImageDto` | Portfolio system |
 | `FileAttachmentDto` | File uploads |
 | `ChangePasswordDto` | Settings |
+
+---
+
+## 🚀 Recently Implemented Features (Phase 2+)
+1. **Milestone-Based Contracts**: Allows breaking down larger projects into sequential, funded deliverables.
+2. **Gig/Service Marketplace**: A Fiverr-style catalog where freelancers list predefined packages for clients to purchase.
+3. **Connects Wallet System**: Token-based bidding monetization limit out-of-the-box spans and bids per user.
+4. **Escrow/Payment Ledger System**: Simulated transaction states holds funds (in-escrow) until a milestone or order is completed.
+5. **Dispute Resolution**: Dedicated workflow for users to raise issues and Admins to provide mediation.
+6. **KYC Document Verification**: Users can submit identity documents for an Admin to review and grant verified badges.
+7. **Time Tracking System**: Timesheets allow freelancers to log hours and clients to approve them for hourly contracts.
+8. **Secure Password Reset**: Integrated a token-based Forgot Password flow with professional email templates.
+9. **UI/UX Modernization**: Redesigned the Project Browse and Gig Marketplace using a clean, "bento-style" layout with light/dark mode support.
+
+## 2. Core Entities
+
+The data models representing the platform's domain:
 
 ---
 

@@ -24,7 +24,7 @@
             <div class="px-8 md:px-12 py-10">
                 <form method="post" class="space-y-8">
                     <!-- Errors -->
-                    @if (ViewData.ModelState.Any(x => x.Value.Errors.Any()))
+                    @if (ViewData.ModelState.Any(x => x.Value != null && x.Value.Errors.Any()))
                     {
                         <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-lg">
                             <div class="flex items-start">
@@ -32,7 +32,7 @@
                                 <div>
                                     <h3 class="font-bold text-red-800 mb-2">Please fix the following errors:</h3>
                                     <ul class="space-y-1">
-                                        @foreach (var error in ViewData.ModelState.Values.SelectMany(x => x.Errors))
+                                        @foreach (var error in ViewData.ModelState.Values.Where(v => v != null).SelectMany(x => x.Errors))
                                         {
                                             <li class="text-red-700">• @error.ErrorMessage</li>
                                         }

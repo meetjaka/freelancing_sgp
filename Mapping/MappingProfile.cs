@@ -14,23 +14,30 @@ namespace SGP_Freelancing.Mapping
 
             // Project mappings
             CreateMap<Project, ProjectDto>()
-                .ForMember(dest => dest.ClientName, opt => opt.MapFrom(src => src.Client.FirstName + " " + src.Client.LastName))
-                .ForMember(dest => dest.ClientCreatedAt, opt => opt.MapFrom(src => src.Client.CreatedAt))
-                .ForMember(dest => dest.ClientProjectsCount, opt => opt.MapFrom(src => src.Client.ClientProjects.Count))
-                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
-                .ForMember(dest => dest.BidsCount, opt => opt.MapFrom(src => src.Bids.Count))
-                .ForMember(dest => dest.Skills, opt => opt.MapFrom(src => src.ProjectSkills.Select(ps => ps.Skill.Name).ToList()))
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
+                .ForMember(dest => dest.ClientName, opt => opt.MapFrom(src => src.Client != null 
+                    ? (src.Client.FirstName + " " + src.Client.LastName).Trim() 
+                    : "Client"))
+                .ForMember(dest => dest.ClientCreatedAt, opt => opt.MapFrom(src => src.Client != null ? src.Client.CreatedAt : DateTime.MinValue))
+                .ForMember(dest => dest.ClientProjectsCount, opt => opt.MapFrom(src => src.Client != null && src.Client.ClientProjects != null ? src.Client.ClientProjects.Count : 0))
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category != null ? src.Category.Name : "Other"))
+                .ForMember(dest => dest.BidsCount, opt => opt.MapFrom(src => src.Bids != null ? src.Bids.Count : 0))
+                .ForMember(dest => dest.Skills, opt => opt.MapFrom(src => src.ProjectSkills != null 
+                    ? src.ProjectSkills.Where(ps => ps.Skill != null).Select(ps => ps.Skill.Name).ToList() 
+                    : new List<string>()))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
+                .ForMember(dest => dest.ContractId, opt => opt.MapFrom(src => src.Contract != null ? (int?)src.Contract.Id : null));
 
             CreateMap<CreateProjectDto, Project>();
             CreateMap<UpdateProjectDto, Project>();
 
             // Bid mappings
             CreateMap<Bid, BidDto>()
-                .ForMember(dest => dest.FreelancerName, opt => opt.MapFrom(src => src.Freelancer.FirstName + " " + src.Freelancer.LastName))
-                .ForMember(dest => dest.FreelancerRating, opt => opt.MapFrom(src => src.Freelancer.FreelancerProfile != null ? src.Freelancer.FreelancerProfile.AverageRating : 0))
-                .ForMember(dest => dest.FreelancerCompletedProjects, opt => opt.MapFrom(src => src.Freelancer.FreelancerProfile != null ? src.Freelancer.FreelancerProfile.CompletedProjects : 0))
-                .ForMember(dest => dest.ProjectTitle, opt => opt.MapFrom(src => src.Project.Title))
+                .ForMember(dest => dest.FreelancerName, opt => opt.MapFrom(src => src.Freelancer != null 
+                    ? (src.Freelancer.FirstName + " " + src.Freelancer.LastName).Trim() 
+                    : "Freelancer"))
+                .ForMember(dest => dest.FreelancerRating, opt => opt.MapFrom(src => (src.Freelancer != null && src.Freelancer.FreelancerProfile != null) ? src.Freelancer.FreelancerProfile.AverageRating : 0))
+                .ForMember(dest => dest.FreelancerCompletedProjects, opt => opt.MapFrom(src => (src.Freelancer != null && src.Freelancer.FreelancerProfile != null) ? src.Freelancer.FreelancerProfile.CompletedProjects : 0))
+                .ForMember(dest => dest.ProjectTitle, opt => opt.MapFrom(src => src.Project != null ? src.Project.Title : "Project"))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
 
             CreateMap<CreateBidDto, Bid>();
@@ -67,11 +74,15 @@ namespace SGP_Freelancing.Mapping
 
             // Contract mappings
             CreateMap<Contract, ContractDto>()
-                .ForMember(dest => dest.ProjectTitle, opt => opt.MapFrom(src => src.Project.Title))
+                .ForMember(dest => dest.ProjectTitle, opt => opt.MapFrom(src => src.Project != null ? src.Project.Title : "Project"))
                 .ForMember(dest => dest.ClientId, opt => opt.MapFrom(src => src.ClientId))
-                .ForMember(dest => dest.ClientName, opt => opt.MapFrom(src => src.Client.FirstName + " " + src.Client.LastName))
+                .ForMember(dest => dest.ClientName, opt => opt.MapFrom(src => src.Client != null 
+                    ? (src.Client.FirstName + " " + src.Client.LastName).Trim() 
+                    : "Client"))
                 .ForMember(dest => dest.FreelancerId, opt => opt.MapFrom(src => src.FreelancerId))
-                .ForMember(dest => dest.FreelancerName, opt => opt.MapFrom(src => src.Freelancer.FirstName + " " + src.Freelancer.LastName))
+                .ForMember(dest => dest.FreelancerName, opt => opt.MapFrom(src => src.Freelancer != null 
+                    ? (src.Freelancer.FirstName + " " + src.Freelancer.LastName).Trim() 
+                    : "Freelancer"))
                 .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.AgreedAmount))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
 
@@ -94,6 +105,58 @@ namespace SGP_Freelancing.Mapping
             // File Attachment mappings
             CreateMap<FileAttachment, FileAttachmentDto>()
                 .ForMember(dest => dest.UploadedByName, opt => opt.MapFrom(src => src.UploadedBy.FirstName + " " + src.UploadedBy.LastName));
+
+            // Milestone mappings
+            CreateMap<Milestone, MilestoneDto>()
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
+            CreateMap<CreateMilestoneDto, Milestone>();
+
+            // FreelancerService (Gig) mappings
+            CreateMap<FreelancerService, FreelancerServiceDto>()
+                .ForMember(dest => dest.FreelancerName, opt => opt.MapFrom(src => src.Freelancer != null 
+                    ? (src.Freelancer.FirstName + " " + src.Freelancer.LastName).Trim() 
+                    : "Freelancer"))
+                .ForMember(dest => dest.FreelancerImage, opt => opt.MapFrom(src => src.Freelancer != null ? src.Freelancer.ProfilePictureUrl : null))
+                .ForMember(dest => dest.FreelancerRating, opt => opt.MapFrom(src => (src.Freelancer != null && src.Freelancer.FreelancerProfile != null) ? src.Freelancer.FreelancerProfile.AverageRating : 0))
+                .ForMember(dest => dest.FreelancerIsVerified, opt => opt.MapFrom(src => src.Freelancer != null && src.Freelancer.IsVerified))
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category != null ? src.Category.Name : "Other"))
+                .ForMember(dest => dest.Skills, opt => opt.MapFrom(src => src.ServiceSkills != null 
+                    ? src.ServiceSkills.Where(ss => ss.Skill != null).Select(ss => ss.Skill.Name).ToList() 
+                    : new List<string>()));
+            CreateMap<CreateFreelancerServiceDto, FreelancerService>();
+
+            // ServiceOrder mappings
+            CreateMap<ServiceOrder, ServiceOrderDto>()
+                .ForMember(dest => dest.ServiceId, opt => opt.MapFrom(src => src.FreelancerServiceId))
+                .ForMember(dest => dest.ServiceTitle, opt => opt.MapFrom(src => src.FreelancerService != null ? src.FreelancerService.Title : "Service"))
+                .ForMember(dest => dest.ClientName, opt => opt.MapFrom(src => src.Client != null 
+                    ? (src.Client.FirstName + " " + src.Client.LastName).Trim() 
+                    : "Client"))
+                .ForMember(dest => dest.FreelancerName, opt => opt.MapFrom(src => src.Freelancer != null 
+                    ? (src.Freelancer.FirstName + " " + src.Freelancer.LastName).Trim() 
+                    : "Freelancer"))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
+
+            // Dispute mappings
+            CreateMap<Dispute, DisputeDto>()
+                .ForMember(dest => dest.RaisedByName, opt => opt.MapFrom(src => src.RaisedByUser != null 
+                    ? (src.RaisedByUser.FirstName + " " + src.RaisedByUser.LastName).Trim() 
+                    : "User"))
+                .ForMember(dest => dest.ProjectTitle, opt => opt.MapFrom(src => (src.Contract != null && src.Contract.Project != null) ? src.Contract.Project.Title : "Project"))
+                .ForMember(dest => dest.ClientName, opt => opt.MapFrom(src => (src.Contract != null && src.Contract.Client != null) ? (src.Contract.Client.FirstName + " " + src.Contract.Client.LastName).Trim() : "Client"))
+                .ForMember(dest => dest.FreelancerName, opt => opt.MapFrom(src => (src.Contract != null && src.Contract.Freelancer != null) ? (src.Contract.Freelancer.FirstName + " " + src.Contract.Freelancer.LastName).Trim() : "Freelancer"))
+                .ForMember(dest => dest.ResolvedByAdminName, opt => opt.MapFrom(src => src.ResolvedByAdmin != null ? (src.ResolvedByAdmin.FirstName + " " + src.ResolvedByAdmin.LastName).Trim() : null))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
+
+            // TimeEntry mappings
+            CreateMap<TimeEntry, TimeEntryDto>()
+                .ForMember(dest => dest.FreelancerName, opt => opt.MapFrom(src => src.Freelancer.FirstName + " " + src.Freelancer.LastName))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
+            CreateMap<CreateTimeEntryDto, TimeEntry>();
+
+            // ConnectsTransaction mappings
+            CreateMap<ConnectsTransaction, ConnectsTransactionDto>()
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type.ToString()));
         }
     }
 }

@@ -6,8 +6,9 @@ A full-stack freelancing marketplace built with ASP.NET Core 8.0 MVC, connecting
 
 ## Features
 
-- **User Registration & Authentication** — Role-based (Client / Freelancer / Admin) with OTP email verification
-- **Project Marketplace** — Browse, search, filter by category, and paginate projects
+- **User Registration & Authentication** — Role-based (Client / Freelancer / Admin) with OTP email verification and a secure **Forgot Password flow**.
+- **Project Marketplace** — Browse, search, filter by category, and paginate projects with a modern, high-performance UI.
+- **Gig Marketplace** — Service catalog where freelancers list predefined packages with a clean, bento-style design.
 - **Bidding System** — Submit proposals with duplicate prevention, accept/reject, withdraw
 - **Contract Management** — Auto-created from accepted bids, complete/cancel workflows
 - **Real-time Messaging** — SignalR-powered chat with typing indicators and online status

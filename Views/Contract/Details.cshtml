@@ -1,178 +1,280 @@
 @model SGP_Freelancing.Models.ViewModels.ContractDetailsViewModel
-@using System.Security.Claims
 @{
     ViewData["Title"] = "Contract Details";
-    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+    var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
     var isClient = User.IsInRole("Client");
-    var otherPartyId = isClient ? Model.Contract.FreelancerId : Model.Contract.ClientId; 
+    var isFreelancer = User.IsInRole("Freelancer");
 }
 
-<div class="max-w-4xl mx-auto py-8 px-4">
-    <nav class="flex mb-8 text-sm" aria-label="Breadcrumb">
-        <ol class="flex items-center space-x-2">
-            <li><a asp-action="Index" class="text-slate-500 hover:text-indigo-600">Contracts</a></li>
-            <li><i class="fas fa-chevron-right text-slate-300 text-[10px]"></i></li>
-            <li class="text-slate-900 dark:text-white font-bold">@Model.Contract.ProjectTitle</li>
-        </ol>
-    </nav>
-
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Main Content -->
-        <div class="lg:col-span-2 space-y-6">
-            <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 shadow-sm">
-                <div class="flex justify-between items-start mb-6">
-                    <div>
-                        <h1 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">@Model.Contract.ProjectTitle</h1>
-                        <p class="text-slate-500 text-sm">Contract ID: #@Model.Contract.Id</p>
-                    </div>
-                    @{
-                        string badgeClass = Model.Contract.Status switch
-                        {
-                            "Active" => "bg-indigo-50 text-indigo-700 dark:bg-indigo-900/20 dark:text-indigo-400",
-                            "Completed" => "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400",
-                            "Cancelled" => "bg-rose-50 text-rose-700 dark:bg-rose-900/20 dark:text-rose-400",
-                            _ => "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400"
-                        };
-                    }
-                    <span class="px-4 py-1.5 text-sm font-semibold rounded-full @badgeClass">
-                        @Model.Contract.Status
-                    </span>
-                </div>
-
-                <div class="grid grid-cols-2 gap-6 py-6 border-y border-slate-100 dark:border-slate-700">
-                    <div>
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Amount</p>
-                        <p class="text-xl font-black text-slate-900 dark:text-white">$@Model.Contract.Amount.ToString("N2")</p>
-                    </div>
-                    <div>
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Start Date</p>
-                        <p class="text-slate-900 dark:text-white">@Model.Contract.StartDate.ToString("MMMM d, yyyy")</p>
-                    </div>
-                </div>
-
-                <div class="mt-6">
-                    <h3 class="font-bold text-slate-900 dark:text-white mb-3">Terms of Agreement</h3>
-                    <div class="text-slate-600 dark:text-slate-400 prose dark:prose-invert max-w-none">
-                        @Html.Raw(Model.Contract.Terms?.Replace("\n", "<br/>") ?? "No specific terms provided.")
-                    </div>
-                </div>
-            </div>
-
-            <!-- Review Section -->
-            @if (Model.Contract.Status == "Completed")
-            {
-                <div class="bg-indigo-600 rounded-2xl p-8 text-white shadow-lg shadow-indigo-500/20">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                            <i class="fas fa-star text-2xl"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-xl font-bold">Leave a Review</h2>
-                            <p class="text-white/80 text-sm">How was your experience working on this project?</p>
-                        </div>
-                    </div>
-
-                    <form asp-controller="Review" asp-action="SubmitReview" method="post" class="space-y-4">
-                        <input type="hidden" name="ContractId" value="@Model.Contract.Id" />
-                        @* We need the RevieweeId here. Let's assume we pass it in ViewBag or it's in the DTO *@
-                        <input type="hidden" name="RevieweeId" value="@otherPartyId" />
-                        
-                        <div>
-                            <label class="block text-sm font-semibold mb-2">Rating</label>
-                            <div class="flex gap-2">
-                                @for (int i = 1; i <= 5; i++)
-                                {
-                                    <label class="cursor-pointer group">
-                                        <input type="radio" name="Rating" value="@i" class="hidden peer" required @(i == 5 ? "checked" : "") />
-                                        <i class="fas fa-star text-2xl text-white/30 peer-checked:text-amber-400 group-hover:text-amber-300 transition-colors"></i>
-                                    </label>
-                                }
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold mb-2">Your Feedback</label>
-                            <textarea name="Comment" rows="3" class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30" placeholder="Describe your experience..."></textarea>
-                        </div>
-
-                        <button type="submit" class="w-full bg-white text-indigo-600 font-bold py-3 rounded-xl hover:bg-slate-100 transition-all shadow-md">
-                            Submit Review
-                        </button>
-                    </form>
-                </div>
+<div class="space-y-8">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-3xl font-black text-slate-900 dark:text-white">@Model.Contract.ProjectTitle</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Contract #@Model.Contract.Id</p>
+        </div>
+        <div class="flex items-center gap-3">
+            @{
+                var statusColor = Model.Contract.Status switch {
+                    "Active" => "bg-emerald-500/10 text-emerald-500 border-emerald-500/20",
+                    "Completed" => "bg-indigo-500/10 text-indigo-500 border-indigo-500/20",
+                    "Disputed" => "bg-red-500/10 text-red-500 border-red-500/20",
+                    _ => "bg-slate-500/10 text-slate-500 border-slate-500/20"
+                };
             }
-            else if (Model.Contract.Status == "Active")
+            <span class="px-4 py-2 rounded-full text-sm font-bold border @statusColor">@Model.Contract.Status</span>
+            
+            @if (isFreelancer && Model.Contract.Status == "Active")
             {
-                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
-                    <div class="flex flex-col items-center text-center space-y-4">
-                        <div class="w-16 h-16 bg-amber-50 dark:bg-amber-900/20 text-amber-600 rounded-full flex items-center justify-center">
-                            <i class="fas fa-info-circle text-2xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-bold text-slate-900 dark:text-white">In Progress</h3>
-                            <p class="text-slate-500 max-w-sm mx-auto">Once the work is delivered and approved, mark the contract as completed to leave feedback.</p>
-                        </div>
-                        <form asp-action="Complete" asp-route-id="@Model.Contract.Id" method="post">
-                            <button type="submit" class="px-8 py-3 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700 transition-all shadow-md">
-                                Mark as Completed
-                            </button>
-                        </form>
-                    </div>
-                </div>
+                <a asp-controller="TimeTracking" asp-action="Timesheet" asp-route-contractId="@Model.Contract.Id"
+                   class="flex items-center gap-2 px-4 py-2 bg-violet-500/10 text-violet-500 border border-violet-500/20 rounded-full text-sm font-bold hover:bg-violet-500/20 transition-all">
+                    <i class="fas fa-clock"></i> Timesheet
+                </a>
+            }
+            @if (isClient && Model.Contract.Status == "Active")
+            {
+                <a asp-controller="TimeTracking" asp-action="Timesheet" asp-route-contractId="@Model.Contract.Id"
+                   class="flex items-center gap-2 px-4 py-2 bg-violet-500/10 text-violet-500 border border-violet-500/20 rounded-full text-sm font-bold hover:bg-violet-500/20 transition-all">
+                    <i class="fas fa-clock"></i> View Timesheet
+                </a>
             }
         </div>
+    </div>
 
-        <!-- Sidebar -->
-        <div class="space-y-6">
-            <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm">
-                <h3 class="font-bold text-slate-900 dark:text-white mb-4">Agreement Parties</h3>
-                <div class="space-y-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center text-slate-500 font-bold">C</div>
-                        <div>
-                            <p class="text-xs text-slate-400 font-bold uppercase">Client</p>
-                            <p class="text-sm font-semibold text-slate-900 dark:text-white">@Model.Contract.ClientName</p>
-                        </div>
+    <!-- Main Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left: Contract Info -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Contract Details Card -->
+            <div class="bento-card p-6 space-y-4">
+                <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fas fa-file-contract text-indigo-500"></i> Contract Overview
+                </h2>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div class="bg-slate-50 dark:bg-white/5 rounded-xl p-4 text-center">
+                        <p class="text-2xl font-black text-indigo-500">$@Model.Contract.Amount.ToString("N2")</p>
+                        <p class="text-xs text-slate-500 mt-1">Total Amount</p>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 rounded-full flex items-center justify-center font-bold">F</div>
-                        <div>
-                            <p class="text-xs text-slate-400 font-bold uppercase">Freelancer</p>
-                            <p class="text-sm font-semibold text-slate-900 dark:text-white">@Model.Contract.FreelancerName</p>
-                        </div>
+                    <div class="bg-slate-50 dark:bg-white/5 rounded-xl p-4 text-center">
+                        <p class="text-lg font-bold text-slate-900 dark:text-white">@Model.Contract.ClientName</p>
+                        <p class="text-xs text-slate-500 mt-1">Client</p>
                     </div>
-                </div>
-
-                <div class="mt-6 space-y-3">
-                    <a asp-controller="Message" asp-action="Conversation" asp-route-userId="@otherPartyId" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-all">
-                        <i class="fas fa-comment-dots"></i>
-                        Message @(isClient ? "Freelancer" : "Client")
-                    </a>
-
-                    @if (isClient && Model.Contract.Status == "Completed")
-                    {
-                        <form asp-controller="Message" asp-action="CloseConversation" method="post" class="w-full">
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="otherUserId" value="@otherPartyId" />
-                            <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-rose-50 hover:bg-rose-100 dark:bg-rose-900/20 dark:hover:bg-rose-900/30 text-rose-700 dark:text-rose-300 font-semibold rounded-xl border border-rose-200 dark:border-rose-700 transition-all">
-                                <i class="fas fa-lock"></i>
-                                Close Conversation
-                            </button>
-                        </form>
-                    }
+                    <div class="bg-slate-50 dark:bg-white/5 rounded-xl p-4 text-center">
+                        <p class="text-lg font-bold text-slate-900 dark:text-white">@Model.Contract.FreelancerName</p>
+                        <p class="text-xs text-slate-500 mt-1">Freelancer</p>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-white/5 rounded-xl p-4 text-center">
+                        <p class="text-lg font-bold text-slate-900 dark:text-white">@Model.Contract.StartDate.ToString("MMM dd, yyyy")</p>
+                        <p class="text-xs text-slate-500 mt-1">Start Date</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-slate-100 dark:bg-slate-900 rounded-2xl p-6 text-slate-900 dark:text-white overflow-hidden relative">
-                <div class="relative z-10">
-                    <h3 class="font-bold mb-2">Need Help?</h3>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-4">If you're having trouble with this contract, our support team is here to help.</p>
-                    <a href="#" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 font-semibold text-sm flex items-center gap-2">
-                        Open a Dispute <i class="fas fa-arrow-right text-[10px]"></i>
-                    </a>
+            <!-- Milestones Section -->
+            <div class="bento-card p-6 space-y-4" id="milestones-section">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <i class="fas fa-tasks text-emerald-500"></i> Milestones
+                    </h2>
+                    @if (isClient && Model.Contract.Status == "Active")
+                    {
+                        <button onclick="document.getElementById('addMilestoneModal').classList.remove('hidden')"
+                                class="px-4 py-2 bg-indigo-500 text-white rounded-xl text-sm font-bold hover:bg-indigo-400 transition-all shadow-lg shadow-indigo-500/20">
+                            <i class="fas fa-plus mr-1"></i> Add Milestone
+                        </button>
+                    }
                 </div>
-                <i class="fas fa-gavel absolute -bottom-4 -right-4 text-7xl text-slate-200 dark:text-white/5 transform -rotate-12"></i>
+
+                <div id="milestones-list" class="space-y-3">
+                    <!-- Milestones loaded via JS -->
+                    <div class="text-center py-8 text-slate-400">
+                        <i class="fas fa-spinner fa-spin text-3xl mb-2"></i>
+                        <p>Loading milestones...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Transactions -->
+            <div class="bento-card p-6 space-y-4">
+                <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fas fa-receipt text-amber-500"></i> Payment History
+                </h2>
+                @if (Model.Transactions?.Any() == true)
+                {
+                    <div class="overflow-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="text-left text-slate-500 border-b border-slate-200 dark:border-white/10">
+                                    <th class="pb-3 font-medium">Date</th>
+                                    <th class="pb-3 font-medium">Type</th>
+                                    <th class="pb-3 font-medium">Amount</th>
+                                    <th class="pb-3 font-medium">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 dark:divide-white/5">
+                                @foreach (var tx in Model.Transactions)
+                                {
+                                    <tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+                                        <td class="py-3 text-slate-700 dark:text-slate-300">@tx.CreatedAt.ToString("MMM dd, yyyy")</td>
+                                        <td class="py-3"><span class="px-2 py-1 bg-indigo-500/10 text-indigo-500 rounded-lg text-xs font-bold">@tx.Type</span></td>
+                                        <td class="py-3 font-bold text-slate-900 dark:text-white">$@tx.Amount.ToString("N2")</td>
+                                        <td class="py-3"><span class="px-2 py-1 bg-emerald-500/10 text-emerald-500 rounded-lg text-xs font-bold">@tx.Status</span></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-center text-slate-400 py-4">No transactions yet</p>
+                }
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="space-y-6">
+            <!-- Actions Card -->
+            <div class="bento-card p-6 space-y-4">
+                <h3 class="font-bold text-slate-900 dark:text-white">Actions</h3>
+                @if (Model.Contract.Status == "Active")
+                {
+                    @if (isClient)
+                    {
+                        <form asp-controller="Contract" asp-action="Complete" method="post">
+                            <input type="hidden" name="id" value="@Model.Contract.Id" />
+                            <button type="submit" class="w-full px-4 py-3 bg-emerald-500 text-white rounded-xl font-bold hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/20">
+                                <i class="fas fa-check-circle mr-2"></i> Complete Contract
+                            </button>
+                        </form>
+                    }
+                    
+                    <button onclick="document.getElementById('disputeModal').classList.remove('hidden')"
+                            class="w-full px-4 py-3 bg-red-500/10 text-red-500 border border-red-500/20 rounded-xl font-bold hover:bg-red-500/20 transition-all">
+                        <i class="fas fa-exclamation-triangle mr-2"></i> Raise Dispute
+                    </button>
+                }
+
+                @if (Model.CanReview)
+                {
+                    <a asp-controller="Review" asp-action="Create" asp-route-contractId="@Model.Contract.Id"
+                       class="w-full block text-center px-4 py-3 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded-xl font-bold hover:bg-amber-500/20 transition-all">
+                        <i class="fas fa-star mr-2"></i> Leave Review
+                    </a>
+                }
+            </div>
+
+            <!-- Dispute History -->
+            <div class="bento-card p-6 space-y-4" id="disputes-section">
+                <h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fas fa-gavel text-red-400"></i> Disputes
+                </h3>
+                <div id="disputes-list" class="space-y-2">
+                    <p class="text-sm text-slate-400 text-center py-2">No disputes raised</p>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Add Milestone Modal -->
+<div id="addMilestoneModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#15171e] rounded-2xl shadow-2xl w-full max-w-md border border-slate-200 dark:border-white/10 p-6 space-y-4">
+        <div class="flex items-center justify-between">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Add Milestone</h3>
+            <button onclick="document.getElementById('addMilestoneModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600"><i class="fas fa-times"></i></button>
+        </div>
+        <form asp-controller="Milestone" asp-action="Create" method="post" class="space-y-4">
+            <input type="hidden" name="ContractId" value="@Model.Contract.Id" />
+            <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Title</label>
+                <input type="text" name="Title" required class="w-full px-4 py-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900 dark:text-white" />
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Description</label>
+                <textarea name="Description" rows="3" class="w-full px-4 py-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900 dark:text-white"></textarea>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Amount ($)</label>
+                    <input type="number" step="0.01" name="Amount" required class="w-full px-4 py-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900 dark:text-white" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Due Date</label>
+                    <input type="date" name="DueDate" class="w-full px-4 py-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900 dark:text-white" />
+                </div>
+            </div>
+            <button type="submit" class="w-full px-4 py-3 bg-indigo-500 text-white rounded-xl font-bold hover:bg-indigo-400 transition-all">Create Milestone</button>
+        </form>
+    </div>
+</div>
+
+<!-- Raise Dispute Modal -->
+<div id="disputeModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#15171e] rounded-2xl shadow-2xl w-full max-w-md border border-slate-200 dark:border-white/10 p-6 space-y-4">
+        <div class="flex items-center justify-between">
+            <h3 class="text-lg font-bold text-red-500">Raise a Dispute</h3>
+            <button onclick="document.getElementById('disputeModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600"><i class="fas fa-times"></i></button>
+        </div>
+        <form asp-controller="Dispute" asp-action="Create" method="post" class="space-y-4">
+            <input type="hidden" name="ContractId" value="@Model.Contract.Id" />
+            <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Reason for dispute</label>
+                <textarea name="Reason" rows="4" required class="w-full px-4 py-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-slate-900 dark:text-white" placeholder="Describe the issue..."></textarea>
+            </div>
+            <button type="submit" class="w-full px-4 py-3 bg-red-500 text-white rounded-xl font-bold hover:bg-red-400 transition-all">Submit Dispute</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    // Load milestones dynamically
+    async function loadMilestones() {
+        try {
+            const response = await fetch('/api/contract/@Model.Contract.Id/milestones');
+            if (!response.ok) throw new Error('Failed');
+            const milestones = await response.json();
+            renderMilestones(milestones);
+        } catch {
+            // Fallback: just show the page-loaded data
+            const container = document.getElementById('milestones-list');
+            container.innerHTML = `<p class="text-center text-slate-400 py-4">No milestones yet. ${@(isClient ? "true" : "false") ? 'Click "Add Milestone" to get started.' : ''}</p>`;
+        }
+    }
+
+    function renderMilestones(milestones) {
+        const container = document.getElementById('milestones-list');
+        if (!milestones || milestones.length === 0) {
+            container.innerHTML = `<p class="text-center text-slate-400 py-4">No milestones yet</p>`;
+            return;
+        }
+        const statusConfig = {
+            'Pending': { color: 'text-slate-400 bg-slate-100 dark:bg-white/5', icon: 'fa-circle', dot: 'bg-slate-400' },
+            'Funded': { color: 'text-blue-500 bg-blue-50 dark:bg-blue-500/10', icon: 'fa-wallet', dot: 'bg-blue-500' },
+            'InProgress': { color: 'text-amber-500 bg-amber-50 dark:bg-amber-500/10', icon: 'fa-spinner', dot: 'bg-amber-500' },
+            'Submitted': { color: 'text-violet-500 bg-violet-50 dark:bg-violet-500/10', icon: 'fa-paper-plane', dot: 'bg-violet-500' },
+            'Approved': { color: 'text-emerald-500 bg-emerald-50 dark:bg-emerald-500/10', icon: 'fa-check-circle', dot: 'bg-emerald-500' },
+            'Disputed': { color: 'text-red-500 bg-red-50 dark:bg-red-500/10', icon: 'fa-exclamation-triangle', dot: 'bg-red-500' }
+        };
+        container.innerHTML = milestones.map((m, i) => {
+            const cfg = statusConfig[m.status] || statusConfig['Pending'];
+            return `<div class="flex items-start gap-4 p-4 rounded-xl border border-slate-200 dark:border-white/5 hover:border-indigo-500/30 transition-all">
+                <div class="w-8 h-8 rounded-full ${cfg.dot} flex items-center justify-center text-white text-xs font-bold flex-shrink-0">${i+1}</div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-2">
+                        <h4 class="font-bold text-slate-900 dark:text-white truncate">${m.title}</h4>
+                        <span class="px-2 py-1 rounded-lg text-xs font-bold ${cfg.color} flex-shrink-0"><i class="fas ${cfg.icon} mr-1"></i>${m.status}</span>
+                    </div>
+                    <p class="text-sm text-slate-500 mt-1">${m.description || ''}</p>
+                    <div class="flex items-center gap-4 mt-2 text-sm"><span class="font-bold text-indigo-500">$${m.amount.toFixed(2)}</span>${m.dueDate ? `<span class="text-slate-400">Due: ${new Date(m.dueDate).toLocaleDateString()}</span>` : ''}</div>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    // Load milestones on page load - using the server rendered data as fallback
+    document.addEventListener('DOMContentLoaded', loadMilestones);
+</script>
+}

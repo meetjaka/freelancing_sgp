@@ -173,7 +173,8 @@ namespace SGP_Freelancing.Services
                     .OrderByDescending(f => f.CreatedAt)
                     .ToListAsync()),
                 IsOwner = project.ClientId == currentUserId,
-                CanBid = !string.IsNullOrEmpty(currentUserId) && project.ClientId != currentUserId
+                CanBid = !string.IsNullOrEmpty(currentUserId) && project.ClientId != currentUserId && !project.Bids.Any(b => b.FreelancerId == currentUserId),
+                IsHiredFreelancer = project.Contract != null && project.Contract.FreelancerId == currentUserId
             };
 
             return viewModel;
@@ -186,13 +187,21 @@ namespace SGP_Freelancing.Services
                 var project = _mapper.Map<Project>(dto);
                 project.ClientId = clientId;
                 project.Status = ProjectStatus.Open;
+                project.CreatedAt = DateTime.UtcNow;
+                project.UpdatedAt = DateTime.UtcNow;
 
                 await _unitOfWork.Projects.AddAsync(project);
+                await _unitOfWork.SaveChangesAsync(); // Save first to get the ID
 
-                // Add skills if provided
+                // Add skills after project is saved
                 if (dto.SkillIds != null && dto.SkillIds.Any())
                 {
-                    foreach (var skillId in dto.SkillIds)
+                    var existingSkillIds = await _unitOfWork.Repository<Skill>().Query()
+                        .Where(s => dto.SkillIds.Contains(s.Id))
+                        .Select(s => s.Id)
+                        .ToListAsync();
+
+                    foreach (var skillId in existingSkillIds)
                     {
                         var projectSkill = new ProjectSkill
                         {
@@ -201,17 +210,16 @@ namespace SGP_Freelancing.Services
                         };
                         await _unitOfWork.Repository<ProjectSkill>().AddAsync(projectSkill);
                     }
+                    await _unitOfWork.SaveChangesAsync(); // Save skills
                 }
-
-                await _unitOfWork.SaveChangesAsync();
 
                 var projectDto = await GetProjectByIdAsync(project.Id);
                 return ApiResponse<ProjectDto>.SuccessResponse(projectDto!, Constants.Messages.ProjectCreated);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error creating project");
-                return ApiResponse<ProjectDto>.ErrorResponse("Failed to create project");
+                _logger.LogError(ex, "Error creating project: {Message}", ex.Message);
+                return ApiResponse<ProjectDto>.ErrorResponse($"Failed to create project: {ex.InnerException?.Message ?? ex.Message}");
             }
         }
 

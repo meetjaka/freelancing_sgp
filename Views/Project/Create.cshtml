@@ -139,12 +139,13 @@
                 </div>
                 <select asp-for="CategoryId" class="w-full px-5 py-4 border-2 border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white rounded-xl text-base transition-all focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900/30 outline-none appearance-none bg-no-repeat bg-[length:1em] bg-[position:right_1rem_center] bg-[url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270%200%2016%2016%27%3e%3cpath fill=%27none%27 stroke=%27%238B7BE6%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27M2%205l6%206%206-6%27/%3e%3c/svg%3e')]">
                     <option value="">Select a category</option>
-                    <option value="1">💻 Web Development</option>
-                    <option value="2">📱 Mobile Development</option>
-                    <option value="3">🎨 Design & Creative</option>
-                    <option value="4">✍️ Writing & Translation</option>
-                    <option value="5">📊 Data Science & AI</option>
-                    <option value="6">📈 Digital Marketing</option>
+                    @if (ViewBag.Categories != null)
+                    {
+                        foreach (var cat in ViewBag.Categories)
+                        {
+                            <option value="@cat.Id">@cat.Name</option>
+                        }
+                    }
                 </select>
                 <span asp-validation-for="CategoryId" class="text-red-600 dark:text-red-400 text-sm transition-colors duration-300"></span>
             </div>
@@ -315,7 +316,8 @@
                         'writing translation': 'Writing & Translation',
                         'sales marketing': 'Digital Marketing',
                         'data entry': 'Data Science & AI',
-                        'admin support': 'Digital Marketing'
+                        'admin support': 'Digital Marketing',
+                        'mobile app development': 'Mobile Development'
                     };
                     
                     let aiSuggested = result.predicted_category.toLowerCase();
@@ -324,8 +326,11 @@
                     // Find the matching option text
                     let found = false;
                     for (let i = 0; i < categorySelect.options.length; i++) {
-                        if (categorySelect.options[i].text.toLowerCase().includes(targetText) || 
-                            categorySelect.options[i].text.toLowerCase().includes(aiSuggested)) {
+                        // Strip emojis and non-alphanumeric chars for cleaner matching
+                        let optionText = categorySelect.options[i].text.replace(/[^a-zA-Z\s]/g, '').trim().toLowerCase();
+                        let cleanTarget = targetText.replace(/[^a-zA-Z\s]/g, '').trim().toLowerCase();
+                        
+                        if (optionText.includes(cleanTarget) || cleanTarget.includes(optionText)) {
                             categorySelect.selectedIndex = i;
                             found = true;
                             // Add a visual flash

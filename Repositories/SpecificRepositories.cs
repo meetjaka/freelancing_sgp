@@ -47,6 +47,7 @@ namespace SGP_Freelancing.Repositories
                 .Include(p => p.Bids)
                     .ThenInclude(b => b.Freelancer)
                         .ThenInclude(u => u.FreelancerProfile)
+                .Include(p => p.Contract)
                 .FirstOrDefaultAsync(p => p.Id == projectId);
         }
 

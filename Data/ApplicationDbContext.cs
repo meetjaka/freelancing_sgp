@@ -43,6 +43,16 @@ namespace SGP_Freelancing.Data
         
         // Bookmark/Save entities
         public DbSet<Bookmark> Bookmarks { get; set; }
+        
+        // New Feature entities
+        public DbSet<Milestone> Milestones { get; set; }
+        public DbSet<FreelancerService> FreelancerServices { get; set; }
+        public DbSet<FreelancerServiceSkill> FreelancerServiceSkills { get; set; }
+        public DbSet<ServiceOrder> ServiceOrders { get; set; }
+        public DbSet<ConnectsWallet> ConnectsWallets { get; set; }
+        public DbSet<ConnectsTransaction> ConnectsTransactions { get; set; }
+        public DbSet<Dispute> Disputes { get; set; }
+        public DbSet<TimeEntry> TimeEntries { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -55,6 +65,9 @@ namespace SGP_Freelancing.Data
             modelBuilder.Entity<ProjectSkill>()
                 .HasKey(ps => new { ps.ProjectId, ps.SkillId });
 
+            modelBuilder.Entity<FreelancerServiceSkill>()
+                .HasKey(fss => new { fss.FreelancerServiceId, fss.SkillId });
+
             // Configure relationships
             ConfigureUserRelationships(modelBuilder);
             ConfigureProjectRelationships(modelBuilder);
@@ -63,6 +76,7 @@ namespace SGP_Freelancing.Data
             ConfigureMessageRelationships(modelBuilder);
             ConfigurePortfolioRelationships(modelBuilder);
             ConfigureBookmarkRelationships(modelBuilder);
+            ConfigureNewFeatureRelationships(modelBuilder);
 
             // Configure decimal precision
             ConfigureDecimalPrecision(modelBuilder);
@@ -264,6 +278,26 @@ namespace SGP_Freelancing.Data
             modelBuilder.Entity<ProjectTestimonial>()
                 .Property(pt => pt.Rating)
                 .HasPrecision(3, 2); // 0.00 to 5.00
+
+            modelBuilder.Entity<FreelancerService>()
+                .Property(fs => fs.AverageRating)
+                .HasPrecision(3, 2);
+
+            modelBuilder.Entity<FreelancerService>()
+                .Property(fs => fs.Price)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<ServiceOrder>()
+                .Property(so => so.Amount)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<TimeEntry>()
+                .Property(te => te.HoursWorked)
+                .HasPrecision(5, 2);
+
+            modelBuilder.Entity<Milestone>()
+                .Property(m => m.Amount)
+                .HasPrecision(18, 2);
         }
 
         private void ConfigureIndexes(ModelBuilder modelBuilder)
@@ -315,6 +349,13 @@ namespace SGP_Freelancing.Data
             modelBuilder.Entity<PortfolioImage>().HasQueryFilter(e => !e.IsDeleted);
             modelBuilder.Entity<ProjectTestimonial>().HasQueryFilter(e => !e.IsDeleted);
             modelBuilder.Entity<Bookmark>().HasQueryFilter(e => !e.IsDeleted);
+            modelBuilder.Entity<Milestone>().HasQueryFilter(e => !e.IsDeleted);
+            modelBuilder.Entity<FreelancerService>().HasQueryFilter(e => !e.IsDeleted);
+            modelBuilder.Entity<ServiceOrder>().HasQueryFilter(e => !e.IsDeleted);
+            modelBuilder.Entity<ConnectsWallet>().HasQueryFilter(e => !e.IsDeleted);
+            modelBuilder.Entity<ConnectsTransaction>().HasQueryFilter(e => !e.IsDeleted);
+            modelBuilder.Entity<Dispute>().HasQueryFilter(e => !e.IsDeleted);
+            modelBuilder.Entity<TimeEntry>().HasQueryFilter(e => !e.IsDeleted);
         }
 
         private void SeedData(ModelBuilder modelBuilder)
@@ -356,6 +397,129 @@ namespace SGP_Freelancing.Data
                 new Skill { Id = 19, Name = "Azure", Description = "Cloud platform", CreatedAt = DateTime.UtcNow },
                 new Skill { Id = 20, Name = "Git", Description = "Version control", CreatedAt = DateTime.UtcNow }
             );
+        }
+
+        private void ConfigureNewFeatureRelationships(ModelBuilder modelBuilder)
+        {
+            // Milestone -> Contract
+            modelBuilder.Entity<Milestone>()
+                .HasOne(m => m.Contract)
+                .WithMany(c => c.Milestones)
+                .HasForeignKey(m => m.ContractId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // PaymentTransaction -> Milestone (optional)
+            modelBuilder.Entity<PaymentTransaction>()
+                .HasOne(pt => pt.Milestone)
+                .WithMany(m => m.PaymentTransactions)
+                .HasForeignKey(pt => pt.MilestoneId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            // FreelancerService -> User
+            modelBuilder.Entity<FreelancerService>()
+                .HasOne(fs => fs.Freelancer)
+                .WithMany()
+                .HasForeignKey(fs => fs.FreelancerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // FreelancerService -> Category
+            modelBuilder.Entity<FreelancerService>()
+                .HasOne(fs => fs.Category)
+                .WithMany()
+                .HasForeignKey(fs => fs.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // FreelancerService -> Orders
+            modelBuilder.Entity<ServiceOrder>()
+                .HasOne(so => so.FreelancerService)
+                .WithMany(fs => fs.Orders)
+                .HasForeignKey(so => so.FreelancerServiceId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // ServiceOrder -> Client
+            modelBuilder.Entity<ServiceOrder>()
+                .HasOne(so => so.Client)
+                .WithMany()
+                .HasForeignKey(so => so.ClientId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // ServiceOrder -> Freelancer
+            modelBuilder.Entity<ServiceOrder>()
+                .HasOne(so => so.Freelancer)
+                .WithMany()
+                .HasForeignKey(so => so.FreelancerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // ConnectsWallet -> User (one-to-one)
+            modelBuilder.Entity<ConnectsWallet>()
+                .HasOne(cw => cw.User)
+                .WithOne(u => u.ConnectsWallet)
+                .HasForeignKey<ConnectsWallet>(cw => cw.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // ConnectsTransaction -> Wallet
+            modelBuilder.Entity<ConnectsTransaction>()
+                .HasOne(ct => ct.Wallet)
+                .WithMany(cw => cw.Transactions)
+                .HasForeignKey(ct => ct.WalletId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // ConnectsTransaction -> User
+            modelBuilder.Entity<ConnectsTransaction>()
+                .HasOne(ct => ct.User)
+                .WithMany()
+                .HasForeignKey(ct => ct.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Dispute -> Contract
+            modelBuilder.Entity<Dispute>()
+                .HasOne(d => d.Contract)
+                .WithMany(c => c.Disputes)
+                .HasForeignKey(d => d.ContractId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Dispute -> RaisedBy
+            modelBuilder.Entity<Dispute>()
+                .HasOne(d => d.RaisedByUser)
+                .WithMany()
+                .HasForeignKey(d => d.RaisedByUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Dispute -> ResolvedByAdmin (optional)
+            modelBuilder.Entity<Dispute>()
+                .HasOne(d => d.ResolvedByAdmin)
+                .WithMany()
+                .HasForeignKey(d => d.ResolvedByAdminId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            // TimeEntry -> Contract
+            modelBuilder.Entity<TimeEntry>()
+                .HasOne(te => te.Contract)
+                .WithMany(c => c.TimeEntries)
+                .HasForeignKey(te => te.ContractId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // TimeEntry -> Freelancer
+            modelBuilder.Entity<TimeEntry>()
+                .HasOne(te => te.Freelancer)
+                .WithMany()
+                .HasForeignKey(te => te.FreelancerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // TimeEntry -> ApprovedByClient (optional)
+            modelBuilder.Entity<TimeEntry>()
+                .HasOne(te => te.ApprovedByClient)
+                .WithMany()
+                .HasForeignKey(te => te.ApprovedByClientId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            // Indexes
+            modelBuilder.Entity<Milestone>().HasIndex(m => m.ContractId);
+            modelBuilder.Entity<Dispute>().HasIndex(d => d.Status);
+            modelBuilder.Entity<FreelancerService>().HasIndex(fs => fs.IsActive);
+            modelBuilder.Entity<ServiceOrder>().HasIndex(so => so.Status);
+            modelBuilder.Entity<TimeEntry>().HasIndex(te => new { te.ContractId, te.Date });
+            modelBuilder.Entity<ConnectsWallet>().HasIndex(cw => cw.UserId).IsUnique();
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

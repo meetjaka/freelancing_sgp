@@ -33,6 +33,7 @@ namespace SGP_Freelancing.Models.ViewModels
         public List<FileAttachmentDto> Attachments { get; set; } = new();
         public bool CanBid { get; set; }
         public bool IsOwner { get; set; }
+        public bool IsHiredFreelancer { get; set; }
     }
 
     public class CreateProjectViewModel
@@ -124,6 +125,24 @@ namespace SGP_Freelancing.Models.ViewModels
         public List<ProjectDto> RecentProjects { get; set; } = new();
     }
 
+    /// <summary>Home hub for users in the Admin role (/Dashboard when admin).</summary>
+    public class AdminHubViewModel
+    {
+        public int PendingVerificationCount { get; set; }
+        public int PendingDisputeCount { get; set; }
+        public int TotalRegisteredUsers { get; set; }
+        public int TotalOpenProjects { get; set; }
+    }
+
+    /// <summary>Account tab on Settings — backed by Identity user fields.</summary>
+    public class SettingsAccountViewModel
+    {
+        public string FirstName { get; set; } = "";
+        public string LastName { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string? PhoneNumber { get; set; }
+    }
+
     public class EarningsViewModel
     {
         public decimal TotalEarnings { get; set; }
@@ -179,5 +198,61 @@ namespace SGP_Freelancing.Models.ViewModels
         public string Status { get; set; } = null!;
         public string IconClass { get; set; } = null!;
         public string ColorClass { get; set; } = null!;
+    }
+
+    // ========== GIG / SERVICE VIEW MODELS ==========
+    public class GigMarketplaceViewModel
+    {
+        public List<FreelancerServiceDto> Services { get; set; } = new();
+        public List<CategoryDto> Categories { get; set; } = new();
+        public string? SearchTerm { get; set; }
+        public int? CategoryId { get; set; }
+        public int PageNumber { get; set; } = 1;
+        public int TotalCount { get; set; }
+        public int PageSize { get; set; } = 12;
+    }
+
+    public class GigDetailsViewModel
+    {
+        public FreelancerServiceDto Service { get; set; } = null!;
+        public List<ReviewDto> Reviews { get; set; } = new();
+        public bool CanOrder { get; set; }
+    }
+
+    public class CreateGigViewModel
+    {
+        public CreateFreelancerServiceDto Service { get; set; } = new();
+        public List<CategoryDto> Categories { get; set; } = new();
+        public List<SkillDto> Skills { get; set; } = new();
+    }
+
+    // ========== DISPUTE VIEW MODELS ==========
+    public class DisputeDetailsViewModel
+    {
+        public DisputeDto Dispute { get; set; } = null!;
+        public bool IsAdmin { get; set; }
+        public bool CanResolve { get; set; }
+    }
+
+    // ========== CONNECTS VIEW MODELS ==========
+    public class ConnectsViewModel
+    {
+        public ConnectsWalletDto Wallet { get; set; } = new();
+        public int CostPerBid { get; set; } = 2;
+    }
+
+    // ========== TIME TRACKING VIEW MODELS ==========
+    public class TimesheetViewModel
+    {
+        public TimesheetSummaryDto Summary { get; set; } = new();
+        public ContractDto Contract { get; set; } = null!;
+        public bool IsFreelancer { get; set; }
+    }
+
+    // ========== VERIFICATION VIEW MODELS ==========
+    public class VerificationViewModel
+    {
+        public VerificationStatusDto Status { get; set; } = new();
+        public bool HasUploaded { get; set; }
     }
 }

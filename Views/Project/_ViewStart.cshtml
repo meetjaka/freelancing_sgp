@@ -1,3 +1,5 @@
 @{
-    Layout = "_LayoutDashboard";
+    Layout = Context.User?.Identity?.IsAuthenticated == true
+        ? "_LayoutDashboard"
+        : "_Layout";
 }

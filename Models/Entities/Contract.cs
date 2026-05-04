@@ -38,6 +38,9 @@ namespace SGP_Freelancing.Models.Entities
         public ApplicationUser Freelancer { get; set; } = null!;
         
         public ICollection<PaymentTransaction> PaymentTransactions { get; set; } = new List<PaymentTransaction>();
+        public ICollection<Milestone> Milestones { get; set; } = new List<Milestone>();
+        public ICollection<Dispute> Disputes { get; set; } = new List<Dispute>();
+        public ICollection<TimeEntry> TimeEntries { get; set; } = new List<TimeEntry>();
     }
     
     public enum ContractStatus

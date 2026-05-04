@@ -1,0 +1,90 @@
+@model List<SGP_Freelancing.Models.DTOs.ServiceOrderDto>
+@{
+    ViewData["Title"] = "My Orders";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+    bool isClient = ViewBag.IsClient ?? false;
+}
+
+<div class="space-y-8">
+    <div>
+        <h1 class="text-3xl font-black text-slate-900 dark:text-white">My Orders</h1>
+        <p class="text-slate-500 mt-1">@(isClient ? "Services you've ordered" : "Orders you've received")</p>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="bento-card overflow-hidden">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="text-left bg-slate-50 dark:bg-white/5 text-slate-500">
+                        <th class="px-6 py-4 font-medium">Service</th>
+                        <th class="px-6 py-4 font-medium">@(isClient ? "Freelancer" : "Client")</th>
+                        <th class="px-6 py-4 font-medium">Amount</th>
+                        <th class="px-6 py-4 font-medium">Delivery</th>
+                        <th class="px-6 py-4 font-medium">Status</th>
+                        <th class="px-6 py-4 font-medium">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-white/5">
+                    @foreach (var order in Model)
+                    {
+                        var statusColor = order.Status switch {
+                            "Placed" => "bg-blue-500/10 text-blue-500",
+                            "InProgress" => "bg-amber-500/10 text-amber-500",
+                            "Delivered" => "bg-violet-500/10 text-violet-500",
+                            "Completed" => "bg-emerald-500/10 text-emerald-500",
+                            "Cancelled" => "bg-red-500/10 text-red-500",
+                            _ => "bg-slate-100 text-slate-500"
+                        };
+                        <tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+                            <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">@order.ServiceTitle</td>
+                            <td class="px-6 py-4 text-slate-600 dark:text-slate-400">@(isClient ? order.FreelancerName : order.ClientName)</td>
+                            <td class="px-6 py-4 font-bold text-indigo-500">$@order.Amount.ToString("N0")</td>
+                            <td class="px-6 py-4 text-slate-500">@(order.DeliveryDate?.ToString("MMM dd") ?? "N/A")</td>
+                            <td class="px-6 py-4"><span class="px-3 py-1 rounded-full text-xs font-bold @statusColor">@order.Status</span></td>
+                            <td class="px-6 py-4">
+                                @if (!isClient && order.Status == "Placed")
+                                {
+                                    <form asp-action="UpdateOrderStatus" method="post" class="inline">
+                                        <input type="hidden" name="orderId" value="@order.Id" />
+                                        <input type="hidden" name="status" value="InProgress" />
+                                        <button type="submit" class="px-3 py-1 bg-amber-500/10 text-amber-500 rounded-lg text-xs font-bold hover:bg-amber-500/20">Start</button>
+                                    </form>
+                                }
+                                @if (!isClient && order.Status == "InProgress")
+                                {
+                                    <form asp-action="UpdateOrderStatus" method="post" class="inline">
+                                        <input type="hidden" name="orderId" value="@order.Id" />
+                                        <input type="hidden" name="status" value="Delivered" />
+                                        <button type="submit" class="px-3 py-1 bg-violet-500/10 text-violet-500 rounded-lg text-xs font-bold hover:bg-violet-500/20">Deliver</button>
+                                    </form>
+                                }
+                                @if (isClient && order.Status == "Delivered")
+                                {
+                                    <form asp-action="UpdateOrderStatus" method="post" class="inline">
+                                        <input type="hidden" name="orderId" value="@order.Id" />
+                                        <input type="hidden" name="status" value="Completed" />
+                                        <button type="submit" class="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-lg text-xs font-bold hover:bg-emerald-500/20">Accept</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="bento-card p-12 text-center">
+            <i class="fas fa-shopping-cart text-5xl text-slate-300 mb-4"></i>
+            <h3 class="text-xl font-bold text-slate-600 dark:text-slate-400">No orders yet</h3>
+            @if (isClient)
+            {
+                <a asp-action="Index" class="inline-block mt-4 px-6 py-3 bg-indigo-500 text-white rounded-xl font-bold hover:bg-indigo-400 transition-all">
+                    Browse Services
+                </a>
+            }
+        </div>
+    }
+</div>

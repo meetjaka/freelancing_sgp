@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SGP_Freelancing.Models.DTOs;
 using SGP_Freelancing.Models.Entities;
+using SGP_Freelancing.Models.ViewModels;
 using System.Security.Claims;
 
 namespace SGP_Freelancing.Controllers
@@ -19,15 +20,23 @@ namespace SGP_Freelancing.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var userName = User.Identity?.Name ?? "User";
-            
-            ViewBag.UserName = userName;
-            ViewBag.UserId = userId;
-            
-            return View();
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return RedirectToAction("Login", "Account");
+
+            ViewBag.UserId = user.Id;
+            ViewBag.UserName = user.UserName;
+
+            var vm = new SettingsAccountViewModel
+            {
+                FirstName = user.FirstName ?? "",
+                LastName = user.LastName ?? "",
+                Email = user.Email ?? "",
+                PhoneNumber = user.PhoneNumber
+            };
+            return View(vm);
         }
 
         [HttpPost]

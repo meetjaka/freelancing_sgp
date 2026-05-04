@@ -60,11 +60,11 @@
                     <!-- Stats -->
                     <div class="row text-center">
                         <div class="col-6 mb-3">
-                            <div class="h5 fw-bold text-primary">@Model.Cases.Count</div>
+                            <div class="h5 fw-bold text-primary">@(Model.Cases?.Count ?? 0)</div>
                             <div class="small text-muted">Case Studies</div>
                         </div>
                         <div class="col-6 mb-3">
-                            <div class="h5 fw-bold text-success">@Model.Testimonials.Count</div>
+                            <div class="h5 fw-bold text-success">@(Model.Testimonials?.Count ?? 0)</div>
                             <div class="small text-muted">Testimonials</div>
                         </div>
                     </div>
@@ -260,11 +260,11 @@
                         <div class="small text-muted">Views</div>
                     </div>
                     <div class="col-4">
-                        <div class="h4 fw-bold text-success">@Model.Cases.Count</div>
+                        <div class="h4 fw-bold text-success">@(Model.Cases?.Count ?? 0)</div>
                         <div class="small text-muted">Projects</div>
                     </div>
                     <div class="col-4">
-                        <div class="h4 fw-bold text-info">@Model.Testimonials.Count</div>
+                        <div class="h4 fw-bold text-info">@(Model.Testimonials?.Count ?? 0)</div>
                         <div class="small text-muted">Reviews</div>
                     </div>
                 </div>

@@ -64,6 +64,7 @@ namespace SGP_Freelancing.Models.DTOs
         public string CategoryName { get; set; } = null!;
         public int BidsCount { get; set; }
         public DateTime CreatedAt { get; set; }
+        public int? ContractId { get; set; }
         public List<string> Skills { get; set; } = new();
     }
 
@@ -525,6 +526,189 @@ namespace SGP_Freelancing.Models.DTOs
         public decimal? ItemRating { get; set; }
         public int? ItemBidsCount { get; set; }
         public List<string>? ItemSkills { get; set; }
+    }
+
+    // ========== MILESTONE DTOs ==========
+    public class MilestoneDto
+    {
+        public int Id { get; set; }
+        public int ContractId { get; set; }
+        public string Title { get; set; } = null!;
+        public string? Description { get; set; }
+        public decimal Amount { get; set; }
+        public DateTime? DueDate { get; set; }
+        public int Order { get; set; }
+        public string Status { get; set; } = null!;
+        public DateTime CreatedAt { get; set; }
+    }
+
+    public class CreateMilestoneDto
+    {
+        [Required] public int ContractId { get; set; }
+        [Required][StringLength(200)] public string Title { get; set; } = null!;
+        [StringLength(2000)] public string? Description { get; set; }
+        [Required][Range(0.01, 1000000)] public decimal Amount { get; set; }
+        public DateTime? DueDate { get; set; }
+        public int Order { get; set; }
+    }
+
+    // ========== GIG / SERVICE DTOs ==========
+    public class FreelancerServiceDto
+    {
+        public int Id { get; set; }
+        public string FreelancerId { get; set; } = null!;
+        public string FreelancerName { get; set; } = null!;
+        public string? FreelancerImage { get; set; }
+        public decimal FreelancerRating { get; set; }
+        public bool FreelancerIsVerified { get; set; }
+        public string Title { get; set; } = null!;
+        public string Description { get; set; } = null!;
+        public string CategoryName { get; set; } = null!;
+        public decimal Price { get; set; }
+        public int DeliveryDays { get; set; }
+        public bool IsActive { get; set; }
+        public int TotalOrders { get; set; }
+        public decimal AverageRating { get; set; }
+        public string? ImageUrl { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public List<string> Skills { get; set; } = new();
+    }
+
+    public class CreateFreelancerServiceDto
+    {
+        [Required][StringLength(200)] public string Title { get; set; } = null!;
+        [Required][StringLength(5000)] public string Description { get; set; } = null!;
+        [Required] public int CategoryId { get; set; }
+        [Required][Range(1, 1000000)] public decimal Price { get; set; }
+        [Required][Range(1, 365)] public int DeliveryDays { get; set; }
+        public List<int>? SkillIds { get; set; }
+    }
+
+    public class ServiceOrderDto
+    {
+        public int Id { get; set; }
+        public int ServiceId { get; set; }
+        public string ServiceTitle { get; set; } = null!;
+        public string ClientName { get; set; } = null!;
+        public string FreelancerName { get; set; } = null!;
+        public decimal Amount { get; set; }
+        public string Status { get; set; } = null!;
+        public string? Requirements { get; set; }
+        public DateTime? DeliveryDate { get; set; }
+        public DateTime CreatedAt { get; set; }
+    }
+
+    public class CreateServiceOrderDto
+    {
+        [Required] public int ServiceId { get; set; }
+        [StringLength(5000)] public string? Requirements { get; set; }
+    }
+
+    // ========== CONNECTS DTOs ==========
+    public class ConnectsWalletDto
+    {
+        public int Balance { get; set; }
+        public int MonthlyAllocation { get; set; }
+        public DateTime? LastRefillDate { get; set; }
+        public List<ConnectsTransactionDto> RecentTransactions { get; set; } = new();
+    }
+
+    public class ConnectsTransactionDto
+    {
+        public int Id { get; set; }
+        public int Amount { get; set; }
+        public string Type { get; set; } = null!;
+        public string? Description { get; set; }
+        public DateTime CreatedAt { get; set; }
+    }
+
+    // ========== DISPUTE DTOs ==========
+    public class DisputeDto
+    {
+        public int Id { get; set; }
+        public int ContractId { get; set; }
+        public string ProjectTitle { get; set; } = null!;
+        public string RaisedByName { get; set; } = null!;
+        public string RaisedByUserId { get; set; } = null!;
+        public string Reason { get; set; } = null!;
+        public string Status { get; set; } = null!;
+        public string? Resolution { get; set; }
+        public string? ResolvedByAdminName { get; set; }
+        public DateTime? ResolvedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string ClientName { get; set; } = null!;
+        public string FreelancerName { get; set; } = null!;
+    }
+
+    public class CreateDisputeDto
+    {
+        [Required] public int ContractId { get; set; }
+        [Required][StringLength(5000)] public string Reason { get; set; } = null!;
+    }
+
+    public class ResolveDisputeDto
+    {
+        [Required] public int DisputeId { get; set; }
+        [Required][StringLength(5000)] public string Resolution { get; set; } = null!;
+    }
+
+    // ========== KYC VERIFICATION DTOs ==========
+    public class SubmitVerificationDto
+    {
+        [Required] public string DocumentUrl { get; set; } = null!;
+    }
+
+    public class VerificationStatusDto
+    {
+        public bool IsVerified { get; set; }
+        public string Status { get; set; } = null!;
+        public string? DocumentUrl { get; set; }
+        public DateTime? SubmittedAt { get; set; }
+        public DateTime? ReviewedAt { get; set; }
+        public string? Note { get; set; }
+    }
+
+    public class AdminVerificationDto
+    {
+        public string UserId { get; set; } = null!;
+        public string UserName { get; set; } = null!;
+        public string? UserEmail { get; set; }
+        public string? DocumentUrl { get; set; }
+        public string Status { get; set; } = null!;
+        public DateTime? SubmittedAt { get; set; }
+    }
+
+    // ========== TIME TRACKING DTOs ==========
+    public class TimeEntryDto
+    {
+        public int Id { get; set; }
+        public int ContractId { get; set; }
+        public DateTime Date { get; set; }
+        public decimal HoursWorked { get; set; }
+        public string Description { get; set; } = null!;
+        public string Status { get; set; } = null!;
+        public string FreelancerName { get; set; } = null!;
+        public DateTime CreatedAt { get; set; }
+    }
+
+    public class CreateTimeEntryDto
+    {
+        [Required] public int ContractId { get; set; }
+        [Required] public DateTime Date { get; set; }
+        [Required][Range(0.25, 24)] public decimal HoursWorked { get; set; }
+        [Required][StringLength(500)] public string Description { get; set; } = null!;
+    }
+
+    public class TimesheetSummaryDto
+    {
+        public int ContractId { get; set; }
+        public string ProjectTitle { get; set; } = null!;
+        public decimal TotalHours { get; set; }
+        public decimal ApprovedHours { get; set; }
+        public decimal PendingHours { get; set; }
+        public decimal HourlyRate { get; set; }
+        public decimal TotalEarnings { get; set; }
+        public List<TimeEntryDto> Entries { get; set; } = new();
     }
 
     // Paging Result

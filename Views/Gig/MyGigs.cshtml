@@ -1,0 +1,52 @@
+@model List<SGP_Freelancing.Models.DTOs.FreelancerServiceDto>
+@{
+    ViewData["Title"] = "My Services";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<div class="space-y-8">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-black text-slate-900 dark:text-white">My Services</h1>
+            <p class="text-slate-500 mt-1">Manage your listed services</p>
+        </div>
+        <a asp-action="Create" class="px-6 py-3 bg-indigo-500 text-white rounded-xl font-bold hover:bg-indigo-400 transition-all shadow-lg shadow-indigo-500/20">
+            <i class="fas fa-plus mr-2"></i> New Service
+        </a>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach (var service in Model)
+            {
+                <div class="bento-card p-5 space-y-3">
+                    <div class="flex items-start justify-between">
+                        <span class="px-2 py-1 text-xs font-bold rounded-lg @(service.IsActive ? "bg-emerald-500/10 text-emerald-500" : "bg-slate-100 text-slate-400 dark:bg-white/5")">
+                            @(service.IsActive ? "Active" : "Inactive")
+                        </span>
+                        <span class="text-xl font-black text-indigo-500">$@service.Price.ToString("N0")</span>
+                    </div>
+                    <h3 class="font-bold text-slate-900 dark:text-white">@service.Title</h3>
+                    <p class="text-sm text-slate-500 line-clamp-2">@service.Description</p>
+                    <div class="flex items-center gap-4 text-xs text-slate-400 pt-2 border-t border-slate-100 dark:border-white/5">
+                        <span><i class="fas fa-shopping-bag mr-1"></i> @service.TotalOrders orders</span>
+                        <span><i class="far fa-clock mr-1"></i> @service.DeliveryDays days</span>
+                        <span><i class="fas fa-star text-amber-400 mr-1"></i> @service.AverageRating.ToString("N1")</span>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="bento-card p-12 text-center">
+            <i class="fas fa-store text-5xl text-slate-300 mb-4"></i>
+            <h3 class="text-xl font-bold text-slate-600 dark:text-slate-400">No services yet</h3>
+            <p class="text-slate-400 mt-2 mb-6">Create your first service to start receiving orders</p>
+            <a asp-action="Create" class="px-6 py-3 bg-indigo-500 text-white rounded-xl font-bold hover:bg-indigo-400 transition-all">
+                <i class="fas fa-plus mr-2"></i> Create Service
+            </a>
+        </div>
+    }
+</div>

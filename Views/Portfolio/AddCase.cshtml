@@ -15,12 +15,12 @@
                 </div>
 
                 <div class="card-body p-5">
-                    @if (ViewData.ModelState.Any(x => x.Value.Errors.Any()))
+                    @if (ViewData.ModelState.Any(x => x.Value != null && x.Value.Errors.Any()))
                     {
                         <div class="alert alert-danger">
                             <strong>Please fix the following errors:</strong>
                             <ul class="mt-2 mb-0">
-                                @foreach (var error in ViewData.ModelState.Values.SelectMany(x => x.Errors))
+                                @foreach (var error in ViewData.ModelState.Values.Where(v => v != null).SelectMany(x => x.Errors))
                                 {
                                     <li>@error.ErrorMessage</li>
                                 }

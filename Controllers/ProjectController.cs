@@ -45,19 +45,25 @@ namespace SGP_Freelancing.Controllers
             {
                 PagedResult<ProjectDto> result;
 
-                // If user is searching by text, use our shiny new AI vector search!
-                if (!string.IsNullOrWhiteSpace(searchDto.SearchTerm))
+                // Hero / landing links use ?search=keyword — model binds SearchTerm; this fills the gap
+                var searchFromQuery = Request.Query["search"].FirstOrDefault();
+                if (!string.IsNullOrWhiteSpace(searchFromQuery) && string.IsNullOrWhiteSpace(searchDto.SearchTerm))
+                    searchDto.SearchTerm = searchFromQuery;
+
+                // Default: real DB keyword search (predictable UX). Opt-in ML: ?ai=1
+                var useSemanticAi = string.Equals(Request.Query["ai"].FirstOrDefault(), "1", StringComparison.OrdinalIgnoreCase);
+                if (!string.IsNullOrWhiteSpace(searchDto.SearchTerm) && useSemanticAi)
                 {
-                    var aiRequest = new SemanticSearchRequest 
-                    { 
-                        Query = searchDto.SearchTerm, 
-                        TopN = 30 
+                    var aiRequest = new SemanticSearchRequest
+                    {
+                        Query = searchDto.SearchTerm,
+                        TopN = 30
                     };
                     var aiResponse = await _mlService.SearchAsync(aiRequest);
-                    
+
                     var aiProjects = aiResponse?.Results.Select(r => new ProjectDto
                     {
-                        Id = -1 * new Random().Next(1000, 9999), // Negative ID signals "Market Deal"
+                        Id = -1 * Random.Shared.Next(1000, 9999),
                         Title = r.Title,
                         Description = r.DescriptionSnippet + " [Market Data extracted from AI Database]",
                         CategoryName = r.Category,
@@ -67,25 +73,21 @@ namespace SGP_Freelancing.Controllers
                         ClientName = "Market Deal (AI Match)",
                         ClientProjectsCount = 1,
                         Skills = new List<string>()
-                        // We use a fake ID so it renders seamlessly in our existing views.
                     }).ToList() ?? new List<ProjectDto>();
 
-                    result = new PagedResult<ProjectDto> 
+                    result = new PagedResult<ProjectDto>
                     {
                         Items = aiProjects,
                         TotalCount = aiProjects.Count,
                         PageNumber = 1,
                         PageSize = 30
                     };
-                    
+
                     if (aiProjects.Any())
-                        TempData["Success"] = $"AI Semantic Search found {aiProjects.Count} relevant matches based on your phrasing!";
+                        TempData["Success"] = $"AI semantic search found {aiProjects.Count} matches.";
                 }
                 else
-                {
-                    // Fall back to standard SQL Server logic
                     result = await _projectService.AdvancedSearchAsync(searchDto);
-                }
                 
                 ViewBag.SearchDto = searchDto;
                 
@@ -137,8 +139,7 @@ namespace SGP_Freelancing.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var skills = await _unitOfWork.Skills.GetAllAsync();
-            ViewBag.Skills = skills.OrderBy(s => s.Name).ToList();
+            await PopulateCreateViewBags();
             return View();
         }
 
@@ -148,7 +149,10 @@ namespace SGP_Freelancing.Controllers
         public async Task<IActionResult> Create(CreateProjectDto dto, List<IFormFile>? projectFiles)
         {
             if (!ModelState.IsValid)
+            {
+                await PopulateCreateViewBags();
                 return View(dto);
+            }
 
             try
             {
@@ -167,6 +171,7 @@ namespace SGP_Freelancing.Controllers
                 {
                     _logger.LogWarning("Spam project blocked: Risk {RiskScore}. Title: {Title}", spamResult.RiskScore, dto.Title);
                     ModelState.AddModelError("", $"Project blocked by AI Anti-Spam filter (Risk {spamResult.RiskScore}%). Reason: {spamResult.Message}");
+                    await PopulateCreateViewBags();
                     return View(dto);
                 }
                 // -------------------------
@@ -192,14 +197,24 @@ namespace SGP_Freelancing.Controllers
                 }
                 
                 ModelState.AddModelError("", result.Message);
+                await PopulateCreateViewBags();
                 return View(dto);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating project");
                 ModelState.AddModelError("", "An error occurred while creating the project");
+                await PopulateCreateViewBags();
                 return View(dto);
             }
+        }
+
+        private async Task PopulateCreateViewBags()
+        {
+            var categories = await _unitOfWork.Categories.GetAllAsync();
+            var skills = await _unitOfWork.Skills.GetAllAsync();
+            ViewBag.Categories = categories.OrderBy(c => c.Name).ToList();
+            ViewBag.Skills = skills.OrderBy(s => s.Name).ToList();
         }
 
         [Authorize]

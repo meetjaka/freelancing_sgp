@@ -183,6 +183,9 @@ namespace SGP_Freelancing.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
@@ -224,6 +227,23 @@ namespace SGP_Freelancing.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("VerificationDocumentUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("VerificationNote")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime?>("VerificationReviewedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("VerificationStatus")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("VerificationSubmittedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -387,7 +407,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(910),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(668),
                             Description = "Websites and web applications",
                             IconClass = "fa-globe",
                             IsDeleted = false,
@@ -396,7 +416,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(912),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(671),
                             Description = "iOS and Android apps",
                             IconClass = "fa-mobile",
                             IsDeleted = false,
@@ -405,7 +425,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(914),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(673),
                             Description = "Graphic design, UI/UX",
                             IconClass = "fa-palette",
                             IsDeleted = false,
@@ -414,7 +434,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(916),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(675),
                             Description = "Content writing, copywriting",
                             IconClass = "fa-pen",
                             IsDeleted = false,
@@ -423,7 +443,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(918),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(677),
                             Description = "Machine learning, data analysis",
                             IconClass = "fa-chart-line",
                             IsDeleted = false,
@@ -432,7 +452,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(919),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(679),
                             Description = "SEO, social media marketing",
                             IconClass = "fa-bullhorn",
                             IsDeleted = false,
@@ -489,6 +509,102 @@ namespace SGP_Freelancing.Migrations
                         .IsUnique();
 
                     b.ToTable("ClientProfiles");
+                });
+
+            modelBuilder.Entity("SGP_Freelancing.Models.Entities.ConnectsTransaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BidId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("WalletId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("WalletId");
+
+                    b.ToTable("ConnectsTransactions");
+                });
+
+            modelBuilder.Entity("SGP_Freelancing.Models.Entities.ConnectsWallet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Balance")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastRefillDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MonthlyAllocation")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("ConnectsWallets");
                 });
 
             modelBuilder.Entity("SGP_Freelancing.Models.Entities.Contract", b =>
@@ -550,6 +666,65 @@ namespace SGP_Freelancing.Migrations
                         .IsUnique();
 
                     b.ToTable("Contracts");
+                });
+
+            modelBuilder.Entity("SGP_Freelancing.Models.Entities.Dispute", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ContractId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RaisedByUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(MAX)");
+
+                    b.Property<string>("Resolution")
+                        .HasColumnType("nvarchar(MAX)");
+
+                    b.Property<DateTime?>("ResolvedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ResolvedByAdminId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContractId");
+
+                    b.HasIndex("RaisedByUserId");
+
+                    b.HasIndex("ResolvedByAdminId");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("Disputes");
                 });
 
             modelBuilder.Entity("SGP_Freelancing.Models.Entities.FileAttachment", b =>
@@ -676,6 +851,92 @@ namespace SGP_Freelancing.Migrations
                     b.ToTable("FreelancerProfiles");
                 });
 
+            modelBuilder.Entity("SGP_Freelancing.Models.Entities.FreelancerService", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("AverageRating")
+                        .HasPrecision(3, 2)
+                        .HasColumnType("decimal(3,2)");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DeliveryDays")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(MAX)");
+
+                    b.Property<string>("FreelancerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("TotalOrders")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("FreelancerId");
+
+                    b.HasIndex("IsActive");
+
+                    b.ToTable("FreelancerServices");
+                });
+
+            modelBuilder.Entity("SGP_Freelancing.Models.Entities.FreelancerServiceSkill", b =>
+                {
+                    b.Property<int>("FreelancerServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SkillId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FreelancerServiceId", "SkillId");
+
+                    b.HasIndex("SkillId");
+
+                    b.ToTable("FreelancerServiceSkills");
+                });
+
             modelBuilder.Entity("SGP_Freelancing.Models.Entities.FreelancerSkill", b =>
                 {
                     b.Property<int>("FreelancerProfileId")
@@ -751,6 +1012,60 @@ namespace SGP_Freelancing.Migrations
                     b.ToTable("Messages");
                 });
 
+            modelBuilder.Entity("SGP_Freelancing.Models.Entities.Milestone", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ContractId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(MAX)");
+
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContractId");
+
+                    b.ToTable("Milestones");
+                });
+
             modelBuilder.Entity("SGP_Freelancing.Models.Entities.OtpRecord", b =>
                 {
                     b.Property<int>("Id")
@@ -805,6 +1120,9 @@ namespace SGP_Freelancing.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("MilestoneId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("ProcessedAt")
                         .HasColumnType("datetime2");
 
@@ -826,6 +1144,8 @@ namespace SGP_Freelancing.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ContractId");
+
+                    b.HasIndex("MilestoneId");
 
                     b.ToTable("PaymentTransactions");
                 });
@@ -1240,6 +1560,69 @@ namespace SGP_Freelancing.Migrations
                     b.ToTable("Reviews");
                 });
 
+            modelBuilder.Entity("SGP_Freelancing.Models.Entities.ServiceOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ClientId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DeliveryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FreelancerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("FreelancerServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Requirements")
+                        .HasColumnType("nvarchar(MAX)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("FreelancerId");
+
+                    b.HasIndex("FreelancerServiceId");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("ServiceOrders");
+                });
+
             modelBuilder.Entity("SGP_Freelancing.Models.Entities.Skill", b =>
                 {
                     b.Property<int>("Id")
@@ -1280,7 +1663,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(1197),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(953),
                             Description = ".NET programming language",
                             IsDeleted = false,
                             Name = "C#"
@@ -1288,7 +1671,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(1201),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(955),
                             Description = "Web framework",
                             IsDeleted = false,
                             Name = "ASP.NET Core"
@@ -1296,7 +1679,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(1202),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(957),
                             Description = "Frontend programming",
                             IsDeleted = false,
                             Name = "JavaScript"
@@ -1304,7 +1687,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(1205),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(959),
                             Description = "Frontend library",
                             IsDeleted = false,
                             Name = "React"
@@ -1312,7 +1695,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(1207),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(960),
                             Description = "Frontend framework",
                             IsDeleted = false,
                             Name = "Angular"
@@ -1320,7 +1703,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(1209),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(962),
                             Description = "Frontend framework",
                             IsDeleted = false,
                             Name = "Vue.js"
@@ -1328,7 +1711,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(1210),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(964),
                             Description = "Backend JavaScript runtime",
                             IsDeleted = false,
                             Name = "Node.js"
@@ -1336,7 +1719,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(1213),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(965),
                             Description = "Programming language",
                             IsDeleted = false,
                             Name = "Python"
@@ -1344,7 +1727,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(1216),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(971),
                             Description = "Server-side scripting",
                             IsDeleted = false,
                             Name = "PHP"
@@ -1352,7 +1735,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(1218),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(972),
                             Description = "Database management",
                             IsDeleted = false,
                             Name = "SQL Server"
@@ -1360,7 +1743,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 11,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(1220),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(974),
                             Description = "iOS development",
                             IsDeleted = false,
                             Name = "Swift"
@@ -1368,7 +1751,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 12,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(1221),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(976),
                             Description = "Android development",
                             IsDeleted = false,
                             Name = "Kotlin"
@@ -1376,7 +1759,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 13,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(1223),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(978),
                             Description = "Cross-platform mobile",
                             IsDeleted = false,
                             Name = "React Native"
@@ -1384,7 +1767,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 14,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(1224),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(979),
                             Description = "Cross-platform mobile",
                             IsDeleted = false,
                             Name = "Flutter"
@@ -1392,7 +1775,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 15,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(1226),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(981),
                             Description = "Image editing",
                             IsDeleted = false,
                             Name = "Adobe Photoshop"
@@ -1400,7 +1783,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 16,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(1228),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(983),
                             Description = "UI/UX design tool",
                             IsDeleted = false,
                             Name = "Figma"
@@ -1408,7 +1791,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 17,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(1229),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(984),
                             Description = "User interface design",
                             IsDeleted = false,
                             Name = "UI/UX Design"
@@ -1416,7 +1799,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 18,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(1232),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(986),
                             Description = "Containerization",
                             IsDeleted = false,
                             Name = "Docker"
@@ -1424,7 +1807,7 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 19,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(1234),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(988),
                             Description = "Cloud platform",
                             IsDeleted = false,
                             Name = "Azure"
@@ -1432,11 +1815,73 @@ namespace SGP_Freelancing.Migrations
                         new
                         {
                             Id = 20,
-                            CreatedAt = new DateTime(2026, 3, 23, 13, 40, 58, 266, DateTimeKind.Utc).AddTicks(1236),
+                            CreatedAt = new DateTime(2026, 5, 4, 5, 45, 31, 459, DateTimeKind.Utc).AddTicks(989),
                             Description = "Version control",
                             IsDeleted = false,
                             Name = "Git"
                         });
+                });
+
+            modelBuilder.Entity("SGP_Freelancing.Models.Entities.TimeEntry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("ApprovedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ApprovedByClientId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ContractId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("FreelancerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("HoursWorked")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApprovedByClientId");
+
+                    b.HasIndex("FreelancerId");
+
+                    b.HasIndex("ContractId", "Date");
+
+                    b.ToTable("TimeEntries");
                 });
 
             modelBuilder.Entity("SGP_Freelancing.Models.Student", b =>
@@ -1552,6 +1997,36 @@ namespace SGP_Freelancing.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("SGP_Freelancing.Models.Entities.ConnectsTransaction", b =>
+                {
+                    b.HasOne("SGP_Freelancing.Models.Entities.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SGP_Freelancing.Models.Entities.ConnectsWallet", "Wallet")
+                        .WithMany("Transactions")
+                        .HasForeignKey("WalletId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("Wallet");
+                });
+
+            modelBuilder.Entity("SGP_Freelancing.Models.Entities.ConnectsWallet", b =>
+                {
+                    b.HasOne("SGP_Freelancing.Models.Entities.ApplicationUser", "User")
+                        .WithOne("ConnectsWallet")
+                        .HasForeignKey("SGP_Freelancing.Models.Entities.ConnectsWallet", "UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("SGP_Freelancing.Models.Entities.Contract", b =>
                 {
                     b.HasOne("SGP_Freelancing.Models.Entities.ApplicationUser", "Client")
@@ -1577,6 +2052,32 @@ namespace SGP_Freelancing.Migrations
                     b.Navigation("Freelancer");
 
                     b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("SGP_Freelancing.Models.Entities.Dispute", b =>
+                {
+                    b.HasOne("SGP_Freelancing.Models.Entities.Contract", "Contract")
+                        .WithMany("Disputes")
+                        .HasForeignKey("ContractId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SGP_Freelancing.Models.Entities.ApplicationUser", "RaisedByUser")
+                        .WithMany()
+                        .HasForeignKey("RaisedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SGP_Freelancing.Models.Entities.ApplicationUser", "ResolvedByAdmin")
+                        .WithMany()
+                        .HasForeignKey("ResolvedByAdminId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Contract");
+
+                    b.Navigation("RaisedByUser");
+
+                    b.Navigation("ResolvedByAdmin");
                 });
 
             modelBuilder.Entity("SGP_Freelancing.Models.Entities.FileAttachment", b =>
@@ -1619,6 +2120,44 @@ namespace SGP_Freelancing.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("SGP_Freelancing.Models.Entities.FreelancerService", b =>
+                {
+                    b.HasOne("SGP_Freelancing.Models.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SGP_Freelancing.Models.Entities.ApplicationUser", "Freelancer")
+                        .WithMany()
+                        .HasForeignKey("FreelancerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Freelancer");
+                });
+
+            modelBuilder.Entity("SGP_Freelancing.Models.Entities.FreelancerServiceSkill", b =>
+                {
+                    b.HasOne("SGP_Freelancing.Models.Entities.FreelancerService", "FreelancerService")
+                        .WithMany("ServiceSkills")
+                        .HasForeignKey("FreelancerServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SGP_Freelancing.Models.Entities.Skill", "Skill")
+                        .WithMany()
+                        .HasForeignKey("SkillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FreelancerService");
+
+                    b.Navigation("Skill");
+                });
+
             modelBuilder.Entity("SGP_Freelancing.Models.Entities.FreelancerSkill", b =>
                 {
                     b.HasOne("SGP_Freelancing.Models.Entities.FreelancerProfile", "FreelancerProfile")
@@ -1657,6 +2196,17 @@ namespace SGP_Freelancing.Migrations
                     b.Navigation("Sender");
                 });
 
+            modelBuilder.Entity("SGP_Freelancing.Models.Entities.Milestone", b =>
+                {
+                    b.HasOne("SGP_Freelancing.Models.Entities.Contract", "Contract")
+                        .WithMany("Milestones")
+                        .HasForeignKey("ContractId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Contract");
+                });
+
             modelBuilder.Entity("SGP_Freelancing.Models.Entities.PaymentTransaction", b =>
                 {
                     b.HasOne("SGP_Freelancing.Models.Entities.Contract", "Contract")
@@ -1665,7 +2215,14 @@ namespace SGP_Freelancing.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SGP_Freelancing.Models.Entities.Milestone", "Milestone")
+                        .WithMany("PaymentTransactions")
+                        .HasForeignKey("MilestoneId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("Contract");
+
+                    b.Navigation("Milestone");
                 });
 
             modelBuilder.Entity("SGP_Freelancing.Models.Entities.Portfolio", b =>
@@ -1780,6 +2337,59 @@ namespace SGP_Freelancing.Migrations
                     b.Navigation("Reviewer");
                 });
 
+            modelBuilder.Entity("SGP_Freelancing.Models.Entities.ServiceOrder", b =>
+                {
+                    b.HasOne("SGP_Freelancing.Models.Entities.ApplicationUser", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SGP_Freelancing.Models.Entities.ApplicationUser", "Freelancer")
+                        .WithMany()
+                        .HasForeignKey("FreelancerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SGP_Freelancing.Models.Entities.FreelancerService", "FreelancerService")
+                        .WithMany("Orders")
+                        .HasForeignKey("FreelancerServiceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Client");
+
+                    b.Navigation("Freelancer");
+
+                    b.Navigation("FreelancerService");
+                });
+
+            modelBuilder.Entity("SGP_Freelancing.Models.Entities.TimeEntry", b =>
+                {
+                    b.HasOne("SGP_Freelancing.Models.Entities.ApplicationUser", "ApprovedByClient")
+                        .WithMany()
+                        .HasForeignKey("ApprovedByClientId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("SGP_Freelancing.Models.Entities.Contract", "Contract")
+                        .WithMany("TimeEntries")
+                        .HasForeignKey("ContractId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SGP_Freelancing.Models.Entities.ApplicationUser", "Freelancer")
+                        .WithMany()
+                        .HasForeignKey("FreelancerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ApprovedByClient");
+
+                    b.Navigation("Contract");
+
+                    b.Navigation("Freelancer");
+                });
+
             modelBuilder.Entity("SGP_Freelancing.Models.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("Bids");
@@ -1791,6 +2401,8 @@ namespace SGP_Freelancing.Migrations
                     b.Navigation("ClientProfile");
 
                     b.Navigation("ClientProjects");
+
+                    b.Navigation("ConnectsWallet");
 
                     b.Navigation("FreelancerContracts");
 
@@ -1815,14 +2427,37 @@ namespace SGP_Freelancing.Migrations
                     b.Navigation("Projects");
                 });
 
+            modelBuilder.Entity("SGP_Freelancing.Models.Entities.ConnectsWallet", b =>
+                {
+                    b.Navigation("Transactions");
+                });
+
             modelBuilder.Entity("SGP_Freelancing.Models.Entities.Contract", b =>
                 {
+                    b.Navigation("Disputes");
+
+                    b.Navigation("Milestones");
+
                     b.Navigation("PaymentTransactions");
+
+                    b.Navigation("TimeEntries");
                 });
 
             modelBuilder.Entity("SGP_Freelancing.Models.Entities.FreelancerProfile", b =>
                 {
                     b.Navigation("FreelancerSkills");
+                });
+
+            modelBuilder.Entity("SGP_Freelancing.Models.Entities.FreelancerService", b =>
+                {
+                    b.Navigation("Orders");
+
+                    b.Navigation("ServiceSkills");
+                });
+
+            modelBuilder.Entity("SGP_Freelancing.Models.Entities.Milestone", b =>
+                {
+                    b.Navigation("PaymentTransactions");
                 });
 
             modelBuilder.Entity("SGP_Freelancing.Models.Entities.Portfolio", b =>

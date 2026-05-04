@@ -119,6 +119,15 @@ namespace SGP_Freelancing
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IBookmarkService, SGP_Freelancing.Services.BookmarkService>();
             builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IMLService, SGP_Freelancing.Services.MLService>();
 
+            // New Feature Services
+            builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IPaymentService, SGP_Freelancing.Services.PaymentService>();
+            builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IMilestoneService, SGP_Freelancing.Services.MilestoneService>();
+            builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IGigService, SGP_Freelancing.Services.GigService>();
+            builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IConnectsService, SGP_Freelancing.Services.ConnectsService>();
+            builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IDisputeService, SGP_Freelancing.Services.DisputeService>();
+            builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.IVerificationService, SGP_Freelancing.Services.VerificationService>();
+            builder.Services.AddScoped<SGP_Freelancing.Services.Interfaces.ITimeTrackingService, SGP_Freelancing.Services.TimeTrackingService>();
+
             // Add HttpClient for calling AI Microservice
             builder.Services.AddHttpClient();
 

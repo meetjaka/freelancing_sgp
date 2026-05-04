@@ -1,0 +1,142 @@
+@model SGP_Freelancing.Models.ViewModels.TimesheetViewModel
+@{
+    ViewData["Title"] = "Timesheet";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<div class="space-y-8">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <a asp-controller="Contract" asp-action="Details" asp-route-id="@Model.Summary.ContractId"
+               class="inline-flex items-center gap-2 text-indigo-500 hover:text-indigo-400 text-sm font-medium mb-2">
+                <i class="fas fa-arrow-left"></i> Back to Contract
+            </a>
+            <h1 class="text-3xl font-black text-slate-900 dark:text-white">
+                <i class="fas fa-clock text-violet-500 mr-2"></i> Timesheet
+            </h1>
+            <p class="text-slate-500 mt-1">@Model.Summary.ProjectTitle</p>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div class="bento-card p-4 text-center">
+            <p class="text-2xl font-black text-indigo-500">@Model.Summary.TotalHours.ToString("N1")h</p>
+            <p class="text-xs text-slate-500 mt-1">Total Hours</p>
+        </div>
+        <div class="bento-card p-4 text-center">
+            <p class="text-2xl font-black text-emerald-500">@Model.Summary.ApprovedHours.ToString("N1")h</p>
+            <p class="text-xs text-slate-500 mt-1">Approved</p>
+        </div>
+        <div class="bento-card p-4 text-center">
+            <p class="text-2xl font-black text-amber-500">@Model.Summary.PendingHours.ToString("N1")h</p>
+            <p class="text-xs text-slate-500 mt-1">Pending</p>
+        </div>
+        <div class="bento-card p-4 text-center">
+            <p class="text-2xl font-black text-slate-600 dark:text-slate-300">$@Model.Summary.HourlyRate.ToString("N0")/h</p>
+            <p class="text-xs text-slate-500 mt-1">Rate</p>
+        </div>
+        <div class="bento-card p-4 text-center">
+            <p class="text-2xl font-black text-violet-500">$@Model.Summary.TotalEarnings.ToString("N0")</p>
+            <p class="text-xs text-slate-500 mt-1">Earnings</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Time Entries Table -->
+        <div class="lg:col-span-2 bento-card overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 dark:border-white/10">
+                <h2 class="font-bold text-slate-900 dark:text-white">Time Entries</h2>
+            </div>
+            @if (Model.Summary.Entries.Any())
+            {
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="text-left text-slate-500 bg-slate-50 dark:bg-white/5">
+                            <th class="px-6 py-3 font-medium">Date</th>
+                            <th class="px-6 py-3 font-medium">Hours</th>
+                            <th class="px-6 py-3 font-medium">Description</th>
+                            <th class="px-6 py-3 font-medium">Status</th>
+                            @if (!Model.IsFreelancer)
+                            {
+                                <th class="px-6 py-3 font-medium">Action</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 dark:divide-white/5">
+                        @foreach (var entry in Model.Summary.Entries)
+                        {
+                            var stColor = entry.Status switch {
+                                "Logged" => "bg-amber-500/10 text-amber-500",
+                                "Approved" => "bg-emerald-500/10 text-emerald-500",
+                                "Rejected" => "bg-red-500/10 text-red-500",
+                                _ => "bg-slate-100 text-slate-500"
+                            };
+                            <tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+                                <td class="px-6 py-3 text-slate-700 dark:text-slate-300">@entry.Date.ToString("MMM dd")</td>
+                                <td class="px-6 py-3 font-bold text-slate-900 dark:text-white">@entry.HoursWorked.ToString("N1")h</td>
+                                <td class="px-6 py-3 text-slate-500 max-w-[200px] truncate">@entry.Description</td>
+                                <td class="px-6 py-3"><span class="px-2 py-1 rounded-lg text-xs font-bold @stColor">@entry.Status</span></td>
+                                @if (!Model.IsFreelancer && entry.Status == "Logged")
+                                {
+                                    <td class="px-6 py-3">
+                                        <div class="flex gap-2">
+                                            <form asp-action="Approve" method="post">
+                                                <input type="hidden" name="entryId" value="@entry.Id" />
+                                                <input type="hidden" name="contractId" value="@Model.Summary.ContractId" />
+                                                <button type="submit" class="px-2 py-1 bg-emerald-500/10 text-emerald-500 rounded-lg text-xs font-bold hover:bg-emerald-500/20"><i class="fas fa-check"></i></button>
+                                            </form>
+                                            <form asp-action="Reject" method="post">
+                                                <input type="hidden" name="entryId" value="@entry.Id" />
+                                                <input type="hidden" name="contractId" value="@Model.Summary.ContractId" />
+                                                <button type="submit" class="px-2 py-1 bg-red-500/10 text-red-500 rounded-lg text-xs font-bold hover:bg-red-500/20"><i class="fas fa-times"></i></button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="p-8 text-center text-slate-400">
+                    <i class="far fa-clock text-3xl mb-2"></i>
+                    <p>No time entries yet</p>
+                </div>
+            }
+        </div>
+
+        <!-- Log Hours Form (Freelancer Only) -->
+        @if (Model.IsFreelancer)
+        {
+            <div class="bento-card p-6 space-y-4 h-fit sticky top-24">
+                <h3 class="font-bold text-slate-900 dark:text-white">
+                    <i class="fas fa-plus-circle text-violet-500 mr-2"></i> Log Hours
+                </h3>
+                <form asp-action="LogHours" method="post" class="space-y-4">
+                    <input type="hidden" name="ContractId" value="@Model.Summary.ContractId" />
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Date</label>
+                        <input type="date" name="Date" required value="@DateTime.Today.ToString("yyyy-MM-dd")"
+                            class="w-full px-4 py-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 dark:text-white" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Hours Worked</label>
+                        <input type="number" step="0.25" min="0.25" max="24" name="HoursWorked" required placeholder="2.5"
+                            class="w-full px-4 py-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 dark:text-white" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Description</label>
+                        <textarea name="Description" rows="3" required placeholder="What did you work on?"
+                            class="w-full px-4 py-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 dark:text-white"></textarea>
+                    </div>
+                    <button type="submit" class="w-full px-4 py-3 bg-violet-500 text-white rounded-xl font-bold hover:bg-violet-400 transition-all shadow-lg shadow-violet-500/20">
+                        <i class="fas fa-clock mr-2"></i> Log Hours
+                    </button>
+                </form>
+            </div>
+        }
+    </div>
+</div>

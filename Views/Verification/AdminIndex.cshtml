@@ -1,0 +1,72 @@
+@model List<SGP_Freelancing.Models.DTOs.AdminVerificationDto>
+@{
+    ViewData["Title"] = "Verify Users";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<div class="space-y-8">
+    <div>
+        <h1 class="text-3xl font-black text-slate-900 dark:text-white">
+            <i class="fas fa-user-check text-blue-500 mr-2"></i> Pending Verifications
+        </h1>
+        <p class="text-slate-500 mt-1">Review and approve user identity documents</p>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="space-y-4">
+            @foreach (var user in Model)
+            {
+                <div class="bento-card p-6 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold">
+                                @user.UserName.Substring(0, 1)
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-900 dark:text-white">@user.UserName</h3>
+                                <p class="text-sm text-slate-500">@user.UserEmail</p>
+                            </div>
+                        </div>
+                        <span class="text-xs text-slate-400">Submitted @user.SubmittedAt?.ToString("MMM dd, yyyy")</span>
+                    </div>
+
+                    @if (user.DocumentUrl != null)
+                    {
+                        <div class="bg-slate-50 dark:bg-white/5 rounded-xl p-4">
+                            <p class="text-sm text-slate-600 dark:text-slate-400 mb-1">Document:</p>
+                            <a href="@user.DocumentUrl" target="_blank" class="text-indigo-500 hover:text-indigo-400 text-sm font-medium break-all">
+                                <i class="fas fa-external-link-alt mr-1"></i> @user.DocumentUrl
+                            </a>
+                        </div>
+                    }
+
+                    <div class="flex items-center gap-3">
+                        <form asp-action="Approve" method="post" class="flex-1">
+                            <input type="hidden" name="userId" value="@user.UserId" />
+                            <input type="text" name="note" placeholder="Note (optional)" class="w-full px-3 py-2 mb-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg text-sm text-slate-900 dark:text-white outline-none" />
+                            <button type="submit" class="w-full px-4 py-2 bg-emerald-500 text-white rounded-xl text-sm font-bold hover:bg-emerald-400 transition-all">
+                                <i class="fas fa-check mr-1"></i> Approve
+                            </button>
+                        </form>
+                        <form asp-action="Reject" method="post" class="flex-1">
+                            <input type="hidden" name="userId" value="@user.UserId" />
+                            <input type="text" name="note" required placeholder="Rejection reason..." class="w-full px-3 py-2 mb-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg text-sm text-slate-900 dark:text-white outline-none" />
+                            <button type="submit" class="w-full px-4 py-2 bg-red-500/10 text-red-500 border border-red-500/20 rounded-xl text-sm font-bold hover:bg-red-500/20 transition-all">
+                                <i class="fas fa-times mr-1"></i> Reject
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="bento-card p-12 text-center">
+            <i class="fas fa-check-double text-5xl text-emerald-400 mb-4"></i>
+            <h3 class="text-xl font-bold text-slate-600 dark:text-slate-400">All caught up!</h3>
+            <p class="text-slate-400 mt-2">No pending verification requests</p>
+        </div>
+    }
+</div>

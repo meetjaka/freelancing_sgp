@@ -1,0 +1,73 @@
+@model SGP_Freelancing.Models.ViewModels.DisputeDetailsViewModel
+@{
+    ViewData["Title"] = "Dispute Details";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<div class="max-w-3xl mx-auto space-y-8">
+    <a asp-controller="Contract" asp-action="Details" asp-route-id="@Model.Dispute.ContractId"
+       class="inline-flex items-center gap-2 text-indigo-500 hover:text-indigo-400 text-sm font-medium">
+        <i class="fas fa-arrow-left"></i> Back to Contract
+    </a>
+
+    <div class="bento-card p-6 md:p-8 space-y-6">
+        <div class="flex items-center justify-between">
+            <h1 class="text-2xl font-black text-slate-900 dark:text-white">Dispute #@Model.Dispute.Id</h1>
+            @{
+                var sc = Model.Dispute.Status switch {
+                    "Open" => "bg-red-500/10 text-red-500",
+                    "UnderReview" => "bg-amber-500/10 text-amber-500",
+                    "Resolved" => "bg-emerald-500/10 text-emerald-500",
+                    _ => "bg-slate-100 text-slate-500"
+                };
+            }
+            <span class="px-4 py-2 rounded-full text-sm font-bold @sc">@Model.Dispute.Status</span>
+        </div>
+
+        <div class="space-y-4">
+            <div>
+                <p class="text-sm text-slate-500 mb-1">Project</p>
+                <p class="font-bold text-slate-900 dark:text-white">@Model.Dispute.ProjectTitle</p>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p class="text-sm text-slate-500 mb-1">Raised By</p>
+                    <p class="font-bold text-slate-900 dark:text-white">@Model.Dispute.RaisedByName</p>
+                </div>
+                <div>
+                    <p class="text-sm text-slate-500 mb-1">Date</p>
+                    <p class="font-bold text-slate-900 dark:text-white">@Model.Dispute.CreatedAt.ToString("MMM dd, yyyy HH:mm")</p>
+                </div>
+            </div>
+            <div>
+                <p class="text-sm text-slate-500 mb-1">Reason</p>
+                <div class="bg-red-50 dark:bg-red-500/5 border border-red-200/50 dark:border-red-500/10 rounded-xl p-4">
+                    <p class="text-sm text-red-700 dark:text-red-300">@Model.Dispute.Reason</p>
+                </div>
+            </div>
+
+            @if (Model.Dispute.Resolution != null)
+            {
+                <div>
+                    <p class="text-sm text-slate-500 mb-1">Resolution</p>
+                    <div class="bg-emerald-50 dark:bg-emerald-500/5 border border-emerald-200/50 dark:border-emerald-500/10 rounded-xl p-4">
+                        <p class="text-sm text-emerald-700 dark:text-emerald-300">@Model.Dispute.Resolution</p>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-2">Resolved by @Model.Dispute.ResolvedByAdminName on @Model.Dispute.ResolvedAt?.ToString("MMM dd, yyyy")</p>
+                </div>
+            }
+        </div>
+
+        @if (Model.CanResolve)
+        {
+            <form asp-action="Resolve" method="post" class="space-y-3 pt-4 border-t border-slate-200 dark:border-white/10">
+                <input type="hidden" name="DisputeId" value="@Model.Dispute.Id" />
+                <textarea name="Resolution" required rows="3" placeholder="Enter your resolution..."
+                    class="w-full px-4 py-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 dark:text-white"></textarea>
+                <button type="submit" class="px-6 py-3 bg-emerald-500 text-white rounded-xl font-bold hover:bg-emerald-400 transition-all">
+                    <i class="fas fa-check mr-2"></i> Resolve Dispute
+                </button>
+            </form>
+        }
+    </div>
+</div>

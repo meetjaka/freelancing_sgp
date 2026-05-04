@@ -1,0 +1,116 @@
+@model SGP_Freelancing.Models.ViewModels.ConnectsViewModel
+@{
+    ViewData["Title"] = "My Connects";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<div class="max-w-3xl mx-auto space-y-8">
+    <div>
+        <h1 class="text-3xl font-black text-slate-900 dark:text-white">
+            <i class="fas fa-bolt text-amber-400 mr-2"></i> My Connects
+        </h1>
+        <p class="text-slate-500 mt-1">Connects are tokens used to place bids on projects</p>
+    </div>
+
+    <!-- Balance Card -->
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 p-8">
+        <div class="absolute top-0 right-0 w-60 h-60 bg-white/5 rounded-full -translate-y-20 translate-x-20"></div>
+        <div class="absolute bottom-0 left-0 w-40 h-40 bg-white/5 rounded-full translate-y-10 -translate-x-10"></div>
+        <div class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div>
+                <p class="text-white/60 text-sm font-medium">Available Balance</p>
+                <p class="text-6xl font-black text-white mt-1">@Model.Wallet.Balance</p>
+                <p class="text-white/60 text-sm mt-2">Connects</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/20 space-y-3 min-w-[200px]">
+                <div class="flex items-center justify-between text-sm">
+                    <span class="text-white/60">Cost per bid</span>
+                    <span class="text-white font-bold">@Model.CostPerBid connects</span>
+                </div>
+                <div class="flex items-center justify-between text-sm">
+                    <span class="text-white/60">Monthly refill</span>
+                    <span class="text-white font-bold">@Model.Wallet.MonthlyAllocation</span>
+                </div>
+                @if (Model.Wallet.LastRefillDate.HasValue)
+                {
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-white/60">Last refill</span>
+                        <span class="text-white font-bold">@Model.Wallet.LastRefillDate?.ToString("MMM dd")</span>
+                    </div>
+                }
+                <div class="flex items-center justify-between text-sm pt-2 border-t border-white/20">
+                    <span class="text-white/60">Bids remaining</span>
+                    <span class="text-white font-bold text-lg">@(Model.Wallet.Balance / Model.CostPerBid)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bento-card p-4 text-center">
+            <div class="w-10 h-10 mx-auto rounded-xl bg-indigo-500/10 flex items-center justify-center mb-2">
+                <i class="fas fa-gavel text-indigo-500"></i>
+            </div>
+            <p class="text-sm font-bold text-slate-900 dark:text-white">@Model.CostPerBid Connects</p>
+            <p class="text-xs text-slate-500">Per bid placed</p>
+        </div>
+        <div class="bento-card p-4 text-center">
+            <div class="w-10 h-10 mx-auto rounded-xl bg-emerald-500/10 flex items-center justify-center mb-2">
+                <i class="fas fa-sync text-emerald-500"></i>
+            </div>
+            <p class="text-sm font-bold text-slate-900 dark:text-white">@Model.Wallet.MonthlyAllocation / month</p>
+            <p class="text-xs text-slate-500">Free refill</p>
+        </div>
+        <div class="bento-card p-4 text-center">
+            <div class="w-10 h-10 mx-auto rounded-xl bg-amber-500/10 flex items-center justify-center mb-2">
+                <i class="fas fa-undo text-amber-500"></i>
+            </div>
+            <p class="text-sm font-bold text-slate-900 dark:text-white">Refundable</p>
+            <p class="text-xs text-slate-500">If bid is withdrawn</p>
+        </div>
+    </div>
+
+    <!-- Transaction History -->
+    <div class="bento-card overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-200 dark:border-white/10">
+            <h2 class="font-bold text-slate-900 dark:text-white">Transaction History</h2>
+        </div>
+        @if (Model.Wallet.RecentTransactions.Any())
+        {
+            <div class="divide-y divide-slate-100 dark:divide-white/5">
+                @foreach (var tx in Model.Wallet.RecentTransactions)
+                {
+                    var isPositive = tx.Amount > 0;
+                    var typeColor = tx.Type switch {
+                        "MonthlyRefill" => "text-emerald-500 bg-emerald-500/10",
+                        "BidSpend" => "text-red-500 bg-red-500/10",
+                        "Purchase" => "text-indigo-500 bg-indigo-500/10",
+                        "Refund" => "text-amber-500 bg-amber-500/10",
+                        _ => "text-slate-500 bg-slate-100"
+                    };
+                    <div class="flex items-center justify-between px-6 py-4 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl @typeColor flex items-center justify-center">
+                                <i class="fas @(tx.Type == "BidSpend" ? "fa-minus" : "fa-plus")"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-sm text-slate-900 dark:text-white">@tx.Description</p>
+                                <p class="text-xs text-slate-400">@tx.CreatedAt.ToString("MMM dd, yyyy HH:mm")</p>
+                            </div>
+                        </div>
+                        <span class="text-lg font-black @(isPositive ? "text-emerald-500" : "text-red-500")">
+                            @(isPositive ? "+" : "")@tx.Amount
+                        </span>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="p-8 text-center text-slate-400">
+                <p>No transactions yet</p>
+            </div>
+        }
+    </div>
+</div>

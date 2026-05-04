@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SGP_Freelancing.Models.DTOs;
@@ -17,6 +18,9 @@ namespace SGP_Freelancing.Controllers
         private readonly IBidService _bidService;
         private readonly IMessageService _messageService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IVerificationService _verificationService;
+        private readonly IDisputeService _disputeService;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<DashboardController> _logger;
 
         public DashboardController(
@@ -24,12 +28,18 @@ namespace SGP_Freelancing.Controllers
             IBidService bidService,
             IMessageService messageService,
             IUnitOfWork unitOfWork,
+            IVerificationService verificationService,
+            IDisputeService disputeService,
+            UserManager<ApplicationUser> userManager,
             ILogger<DashboardController> logger)
         {
             _projectService = projectService;
             _bidService = bidService;
             _messageService = messageService;
             _unitOfWork = unitOfWork;
+            _verificationService = verificationService;
+            _disputeService = disputeService;
+            _userManager = userManager;
             _logger = logger;
         }
 
@@ -37,6 +47,24 @@ namespace SGP_Freelancing.Controllers
         {
             try
             {
+                if (User.IsInRole("Admin"))
+                {
+                    var pendingVerifications = await _verificationService.GetPendingVerificationsAsync();
+                    var pendingDisputes = await _disputeService.GetAllPendingDisputesAsync();
+                    var totalUsers = await _userManager.Users.CountAsync();
+                    var totalOpenProjects = await _unitOfWork.Projects.CountAsync(p => !p.IsDeleted && p.Status == ProjectStatus.Open);
+
+                    var adminVm = new AdminHubViewModel
+                    {
+                        PendingVerificationCount = pendingVerifications.Count,
+                        PendingDisputeCount = pendingDisputes.Count,
+                        TotalRegisteredUsers = totalUsers,
+                        TotalOpenProjects = totalOpenProjects
+                    };
+                    ViewBag.UserName = User.Identity?.Name;
+                    return View("Admin", adminVm);
+                }
+
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var isFreelancer = User.IsInRole("Freelancer");
                 var isClient = User.IsInRole("Client");

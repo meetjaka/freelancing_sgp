@@ -10,6 +10,8 @@ namespace SGP_Freelancing.Models.Entities
     {
         public int ContractId { get; set; }
         
+        public int? MilestoneId { get; set; }
+        
         [Column(TypeName = "decimal(18,2)")]
         public decimal Amount { get; set; }
         
@@ -27,6 +29,9 @@ namespace SGP_Freelancing.Models.Entities
         // Navigation properties
         [ForeignKey(nameof(ContractId))]
         public Contract Contract { get; set; } = null!;
+        
+        [ForeignKey(nameof(MilestoneId))]
+        public Milestone? Milestone { get; set; }
     }
     
     public enum PaymentStatus
@@ -35,7 +40,9 @@ namespace SGP_Freelancing.Models.Entities
         Processing = 1,
         Completed = 2,
         Failed = 3,
-        Refunded = 4
+        Refunded = 4,
+        Escrow = 5,
+        Released = 6
     }
     
     public enum PaymentType
@@ -43,6 +50,8 @@ namespace SGP_Freelancing.Models.Entities
         Deposit = 0,
         Milestone = 1,
         Final = 2,
-        Refund = 3
+        Refund = 3,
+        EscrowDeposit = 4,
+        EscrowRelease = 5
     }
 }

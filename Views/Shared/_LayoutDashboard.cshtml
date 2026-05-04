@@ -70,11 +70,20 @@
             bottom: -2px;
             left: 50%;
             transform: translateX(-50%);
-            width: 20px;
-            height: 3px;
+            width: 16px;
+            height: 2px;
             background: #6366f1;
             border-radius: 4px 4px 0 0;
             box-shadow: 0 -2px 10px rgba(99, 102, 241, 0.5);
+        }
+
+        /* Hide scrollbar on compact nav pill (md–xl overflow) */
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
         }
 
         /* Smooth bento box hover */
@@ -132,62 +141,91 @@
         <!-- Main Content Wrapper (No Sidebar) -->
         <div class="flex flex-col min-h-screen">
             <!-- Futuristic Top Navigation Bar -->
-            <nav class="sticky top-0 z-50 bg-white/80 dark:bg-[#0f1115]/80 backdrop-blur-xl border-b border-slate-200 dark:border-white/5 shadow-lg dark:shadow-2xl transition-colors duration-300">
-                <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex items-center justify-between h-20">
+            <nav class="sticky top-0 z-50 overflow-visible bg-white/80 dark:bg-[#0f1115]/80 backdrop-blur-xl border-b border-slate-200 dark:border-white/5 shadow-lg dark:shadow-2xl transition-colors duration-300">
+                <div class="max-w-[1600px] mx-auto px-3 sm:px-5 lg:px-8 overflow-visible pr-2 sm:pr-3">
+                    <div class="flex items-center justify-between h-[4.25rem] sm:h-20 overflow-visible min-w-0 gap-2">
                         
                         <!-- Left: Logo -->
-                        <div class="flex-shrink-0 flex items-center gap-3 logo-container mr-8">
-                            <div class="logo-icon w-10 h-10 bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 rounded-2xl flex items-center justify-center shadow-[0_0_18px_rgba(99,102,241,0.35)] border border-white/10">
-                                <span class="text-white font-black text-lg tracking-tight">F</span>
+                        <div class="flex-shrink-0 flex items-center gap-2 sm:gap-3 logo-container mr-2 md:mr-4 lg:mr-8">
+                            <div class="logo-icon w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-[0_0_18px_rgba(99,102,241,0.35)] border border-white/10">
+                                <span class="text-white font-black text-base sm:text-lg tracking-tight">F</span>
                             </div>
-                            <span class="text-xl font-black tracking-tight text-slate-900 dark:text-white">Freeio</span>
+                            <span class="text-lg sm:text-xl font-black tracking-tight text-slate-900 dark:text-white">Freeio</span>
                         </div>
 
                         <!-- Center: Desktop Navigation -->
-                        <div class="hidden md:flex flex-1 items-center justify-center gap-1">
-                            <div class="flex bg-slate-100 dark:bg-white/5 rounded-full p-1.5 border border-slate-200 dark:border-white/5 backdrop-blur-md">
-                                <a asp-controller="Dashboard" asp-action="Index" class="nav-link px-5 py-2 rounded-full text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
-                                    Dashboard
-                                </a>
-                                
-                                @if (User.IsInRole("Client"))
+                        <div class="hidden md:flex flex-1 min-w-0 items-center justify-center px-1">
+                            <div class="flex max-w-full min-w-0 bg-slate-100 dark:bg-white/5 rounded-full p-1 border border-slate-200 dark:border-white/5 backdrop-blur-md overflow-x-auto no-scrollbar">
+                                @if (User.IsInRole("Admin"))
                                 {
-                                    <a asp-controller="Project" asp-action="MyProjects" class="nav-link px-5 py-2 rounded-full text-sm font-medium @(ViewContext.RouteData.Values["action"]?.ToString() == "MyProjects" ? "active" : "")">
+                                    <a asp-controller="Dashboard" asp-action="Index" class="nav-link px-2.5 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                                        Admin home
+                                    </a>
+                                    <a asp-controller="Verification" asp-action="AdminIndex" class="nav-link px-2.5 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Verification" && ViewContext.RouteData.Values["action"]?.ToString() == "AdminIndex" ? "active" : "")">
+                                        ID verifications
+                                    </a>
+                                    <a asp-controller="Dispute" asp-action="Index" class="nav-link px-2.5 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dispute" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                                        Disputes
+                                    </a>
+                                    <a asp-controller="Project" asp-action="Index" class="nav-link px-2.5 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Project" ? "active" : "")">
                                         Projects
                                     </a>
-                                    <a asp-controller="Freelancer" asp-action="Index" class="nav-link px-5 py-2 rounded-full text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Freelancer" ? "active" : "")">
-                                        Freelancers
+                                    <a asp-controller="Message" asp-action="Index" class="nav-link px-2.5 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Message" ? "active" : "")">
+                                        Messages
                                     </a>
                                 }
                                 else
                                 {
-                                    <a asp-controller="Project" asp-action="Index" class="nav-link px-5 py-2 rounded-full text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Project" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
-                                        Browse Projects
+                                    <a asp-controller="Dashboard" asp-action="Index" class="nav-link px-2.5 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                                        Dashboard
                                     </a>
-                                    <a asp-controller="Portfolio" asp-action="Index" class="nav-link px-5 py-2 rounded-full text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Portfolio" ? "active" : "")">
-                                        Portfolios
+                                    @if (User.IsInRole("Client"))
+                                    {
+                                        <a asp-controller="Project" asp-action="MyProjects" class="nav-link px-2.5 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm font-medium @(ViewContext.RouteData.Values["action"]?.ToString() == "MyProjects" ? "active" : "")">
+                                            Projects
+                                        </a>
+                                        <a asp-controller="Freelancer" asp-action="Index" class="nav-link px-2.5 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Freelancer" ? "active" : "")">
+                                            <span class="hidden xl:inline">Freelancers</span><span class="xl:hidden">Talent</span>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="Project" asp-action="Index" title="Browse Projects" class="nav-link px-2.5 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Project" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                                            <span class="hidden xl:inline">Browse Projects</span><span class="xl:hidden">Browse</span>
+                                        </a>
+                                        <a asp-controller="Portfolio" asp-action="Index" class="nav-link px-2.5 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Portfolio" ? "active" : "")">
+                                            <span class="hidden min-[1200px]:inline">Portfolios</span><span class="min-[1200px]:hidden">Portfolio</span>
+                                        </a>
+                                    }
+                                    <a asp-controller="Contract" asp-action="Index" class="nav-link px-2.5 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Contract" ? "active" : "")">
+                                        <span class="hidden min-[1200px]:inline">Milestones & Contracts</span><span class="min-[1200px]:hidden">Milestones</span>
+                                    </a>
+                                    <a asp-controller="Gig" asp-action="Index" class="nav-link px-2.5 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Gig" && (ViewContext.RouteData.Values["action"]?.ToString() == "Index" || ViewContext.RouteData.Values["action"]?.ToString() == "Details") ? "active" : "")">
+                                        Services
+                                    </a>
+                                    <a asp-controller="Analytics" asp-action="Index" class="nav-link px-2.5 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Analytics" ? "active" : "")">
+                                        <span class="hidden lg:inline">Analytics</span><span class="lg:hidden">Stats</span>
                                     </a>
                                 }
-                                
-                                <a asp-controller="Contract" asp-action="Index" class="nav-link px-5 py-2 rounded-full text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Contract" ? "active" : "")">
-                                    Contracts
-                                </a>
-                                <a asp-controller="Analytics" asp-action="Index" class="nav-link px-5 py-2 rounded-full text-sm font-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "Analytics" ? "active" : "")">
-                                    Analytics
-                                </a>
                             </div>
                         </div>
 
                         <!-- Right: Actions & User -->
-                        <div class="flex items-center gap-4 ml-8">
+                        <div class="flex flex-shrink-0 items-center gap-1.5 sm:gap-2 md:gap-3 ml-1 sm:ml-3 overflow-visible">
                             
-                            <!-- New Project Button (Clients Only) / Earnings (Freelancers Only) -->
+                            <!-- Quick action (clients / freelancers only) -->
                             <div class="hidden lg:block">
-                                @if (User.IsInRole("Client"))
+                                @if (User.IsInRole("Admin"))
                                 {
-                                    <a asp-controller="Project" asp-action="Create" class="flex items-center gap-2 px-4 py-2 bg-indigo-500 hover:bg-indigo-400 text-white rounded-full text-sm font-bold transition-all shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:shadow-[0_0_25px_rgba(99,102,241,0.5)]">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <a asp-controller="Verification" asp-action="AdminIndex" class="flex items-center gap-1.5 px-3 py-1.5 bg-violet-600 hover:bg-violet-500 text-white rounded-full text-xs font-bold transition-all shadow-[0_0_16px_rgba(124,58,237,0.35)]">
+                                        <i class="fas fa-user-check text-sm"></i>
+                                        Review IDs
+                                    </a>
+                                }
+                                else if (User.IsInRole("Client"))
+                                {
+                                    <a asp-controller="Project" asp-action="Create" class="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-500 hover:bg-indigo-400 text-white rounded-full text-xs font-bold transition-all shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:shadow-[0_0_25px_rgba(99,102,241,0.5)]">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                                         </svg>
                                         Post Job
@@ -195,33 +233,31 @@
                                 }
                                 else if (User.IsInRole("Freelancer"))
                                 {
-                                    <a asp-controller="Earnings" asp-action="Index" class="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 border border-slate-300 dark:border-white/10 text-slate-900 dark:text-white rounded-full text-sm font-medium transition-all">
-                                        <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                        </svg>
-                                        Earnings
+                                    <a asp-controller="Connects" asp-action="Index" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 border border-slate-300 dark:border-white/10 text-slate-900 dark:text-white rounded-full text-xs font-medium transition-all">
+                                        <i class="fas fa-bolt text-amber-400 text-sm"></i>
+                                        Connects
                                     </a>
                                 }
                             </div>
 
-                            <div class="h-8 w-px bg-slate-300 dark:bg-white/10 mx-2 hidden sm:block"></div>
+                            <div class="h-7 w-px bg-slate-300 dark:bg-white/10 mx-0.5 sm:mx-1 hidden sm:block"></div>
 
                             <!-- Messages Icon -->
-                            <a asp-controller="Message" asp-action="Index" class="relative p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 rounded-full transition-all group" title="Messages">
-                                <i class="far fa-comment-dots text-lg group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors"></i>
+                            <a asp-controller="Message" asp-action="Index" class="relative p-1.5 sm:p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 rounded-full transition-all group" title="Messages">
+                                <i class="far fa-comment-dots text-base sm:text-lg group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors"></i>
                                 <!-- Assuming you'd have an unread count from ViewBag/Component here eventually, using static dot for design -->
                                 <span class="absolute top-1 right-1 w-2 h-2 bg-indigo-500 rounded-full shadow-[0_0_8px_rgba(99,102,241,0.8)]"></span>
                             </a>
 
                             <!-- Theme Toggle -->
-                            <button class="relative p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 rounded-full transition-all group" id="themeToggleBtn" title="Toggle Theme">
-                                <i class="fas fa-moon text-lg transition-all duration-300 transform group-hover:rotate-12"></i>
+                            <button class="relative p-1.5 sm:p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 rounded-full transition-all group" id="themeToggleBtn" title="Toggle Theme">
+                                <i class="fas fa-moon text-base sm:text-lg transition-all duration-300 transform group-hover:rotate-12"></i>
                             </button>
 
                             <!-- Notifications -->
                             <div class="relative">
-                                <button class="relative p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 rounded-full transition-all group" id="notificationsBtn" title="Notifications">
-                                    <i class="far fa-bell text-lg group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors"></i>
+                                <button class="relative p-1.5 sm:p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 rounded-full transition-all group" id="notificationsBtn" title="Notifications">
+                                    <i class="far fa-bell text-base sm:text-lg group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors"></i>
                                     <span class="notification-badge absolute top-1 right-1.5 w-2 h-2 bg-red-500 rounded-full shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
                                 </button>
                                 
@@ -242,45 +278,80 @@
                                 <i class="fas fa-search text-lg"></i>
                             </button>
 
-                            <!-- User Dropdown Menu -->
-                            <div class="relative group ml-1">
-                                <button class="flex items-center gap-3 p-1 pr-3 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 rounded-full border border-slate-300 dark:border-white/5 transition-all">
-                                    <div class="w-8 h-8 rounded-full bg-indigo-500 border border-indigo-600 flex items-center justify-center text-white font-bold text-sm overflow-hidden">
-                                        <!-- You can place an image here later -->
+                            <!-- User Dropdown Menu (panel is fixed + JS-positioned to avoid viewport clip) -->
+                            <div class="relative z-[60] ml-0.5 flex-shrink-0">
+                                <button type="button" id="userMenuBtn" class="flex items-center gap-2 sm:gap-2.5 p-1 pr-2 sm:pr-3 max-w-[9.5rem] sm:max-w-[11rem] md:max-w-[13rem] lg:max-w-[15rem] bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 rounded-full border border-slate-300 dark:border-white/5 transition-all" aria-expanded="false" aria-haspopup="true">
+                                    <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-indigo-500 border border-indigo-600 flex items-center justify-center text-white font-bold text-xs sm:text-sm overflow-hidden flex-shrink-0">
                                         @(User.Identity.Name?.Substring(0, 1).ToUpper() ?? "U")
                                     </div>
-                                    <div class="hidden sm:block text-left">
+                                    <div class="hidden sm:block text-left min-w-0 flex-1">
                                         @{
-                                            string userRole = User.IsInRole("Client") ? "Client" : User.IsInRole("Freelancer") ? "Freelancer" : "User";
+                                            string userRole = User.IsInRole("Admin") ? "Admin" : User.IsInRole("Client") ? "Client" : User.IsInRole("Freelancer") ? "Freelancer" : "User";
                                         }
-                                        <span class="text-sm font-bold text-slate-800 dark:text-white group-hover:text-indigo-400 transition-colors">@User.Identity?.Name</span>
-                                        <span class="text-xs text-slate-500 dark:text-slate-400 block mt-0.5">@userRole</span>
+                                        <span class="text-xs sm:text-sm font-bold text-slate-800 dark:text-white hover:text-indigo-400 transition-colors truncate block">@User.Identity?.Name</span>
+                                        <span class="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 block mt-0.5 truncate">@userRole</span>
                                     </div>
-                                    <i class="fas fa-chevron-down text-xs text-slate-500 ml-1"></i>
+                                    <i class="fas fa-chevron-down text-[10px] sm:text-xs text-slate-500 flex-shrink-0"></i>
                                 </button>
 
-                                <!-- Dropdown Content -->
-                                <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-[#15171e] rounded-2xl shadow-2xl border border-slate-200 dark:border-white/10 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right group-hover:translate-y-0 translate-y-2">
-                                    @if (User.IsInRole("Freelancer"))
+                                <div id="userMenuDropdown" class="hidden fixed w-44 max-w-[calc(100vw-1rem)] z-[200] bg-white dark:bg-[#15171e] rounded-xl shadow-2xl border border-slate-200 dark:border-white/10 py-1.5 transition-opacity duration-150">
+                                    @if (User.IsInRole("Admin"))
                                     {
-                                        <a asp-controller="Profile" asp-action="EditFreelancer" class="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                                            </svg>
-                                            Edit Profile
+                                        <a asp-controller="Dashboard" asp-action="Index" class="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors whitespace-nowrap">
+                                            <i class="fas fa-gauge-high w-3.5 text-center flex-shrink-0 text-violet-500"></i>
+                                            Admin home
+                                        </a>
+                                        <a asp-controller="Verification" asp-action="AdminIndex" class="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors whitespace-nowrap">
+                                            <i class="fas fa-id-card w-3.5 text-center flex-shrink-0"></i>
+                                            ID verifications
+                                        </a>
+                                        <a asp-controller="Dispute" asp-action="Index" class="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors whitespace-nowrap">
+                                            <i class="fas fa-gavel w-3.5 text-center flex-shrink-0"></i>
+                                            Disputes
+                                        </a>
+                                        <a asp-controller="Project" asp-action="Index" class="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors whitespace-nowrap">
+                                            <i class="fas fa-briefcase w-3.5 text-center flex-shrink-0"></i>
+                                            Browse projects
                                         </a>
                                     }
-                                    else if (User.IsInRole("Client"))
+                                    else
                                     {
-                                        <a asp-controller="Profile" asp-action="EditClient" class="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                                            </svg>
-                                            Edit Profile
+                                        @if (User.IsInRole("Freelancer"))
+                                        {
+                                            <a asp-controller="Profile" asp-action="EditFreelancer" class="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors whitespace-nowrap">
+                                                <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                                </svg>
+                                                Edit Profile
+                                            </a>
+                                        }
+                                        else if (User.IsInRole("Client"))
+                                        {
+                                            <a asp-controller="Profile" asp-action="EditClient" class="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors whitespace-nowrap">
+                                                <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                                </svg>
+                                                Edit Profile
+                                            </a>
+                                        }
+                                        <a asp-controller="Earnings" asp-action="Index" class="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors whitespace-nowrap">
+                                            <i class="fas fa-chart-line w-3.5 text-center flex-shrink-0"></i>
+                                            @(User.IsInRole("Client") ? "Spending" : "Earnings")
                                         </a>
+                                        <a asp-controller="Verification" asp-action="Status" class="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors whitespace-nowrap">
+                                            <i class="fas fa-shield-alt w-3.5 text-center flex-shrink-0"></i>
+                                            Verification
+                                        </a>
+                                        @if (User.IsInRole("Freelancer"))
+                                        {
+                                            <a asp-controller="Gig" asp-action="MyGigs" class="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors whitespace-nowrap">
+                                                <i class="fas fa-store w-3.5 text-center flex-shrink-0"></i>
+                                                My Services
+                                            </a>
+                                        }
                                     }
-                                    <a asp-controller="Settings" asp-action="Index" class="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <a asp-controller="Settings" asp-action="Index" class="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors whitespace-nowrap">
+                                        <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                         </svg>
@@ -288,8 +359,8 @@
                                     </a>
                                     <div class="h-px bg-slate-200 dark:bg-white/10 my-1"></div>
                                     <form asp-controller="Account" asp-action="Logout" method="post">
-                                        <button type="submit" class="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors text-left">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <button type="submit" class="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors text-left whitespace-nowrap">
+                                            <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                                             </svg>
                                             Logout
@@ -429,10 +500,13 @@
         if (notificationsBtn && notificationsDropdown) {
             notificationsBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
+                const userPanel = document.getElementById('userMenuDropdown');
+                if (userPanel) userPanel.classList.add('hidden');
+                const userBtn = document.getElementById('userMenuBtn');
+                if (userBtn) userBtn.setAttribute('aria-expanded', 'false');
                 notificationsDropdown.classList.toggle('hidden');
             });
             
-            // Close dropdown when clicking outside
             document.addEventListener('click', function() {
                 notificationsDropdown.classList.add('hidden');
             });
@@ -441,6 +515,55 @@
                 e.stopPropagation();
             });
         }
+
+        // User menu: click toggle + fixed positioning inside viewport
+        (function () {
+            const userMenuBtn = document.getElementById('userMenuBtn');
+            const userMenuDropdown = document.getElementById('userMenuDropdown');
+            if (!userMenuBtn || !userMenuDropdown) return;
+
+            function positionUserMenu() {
+                if (userMenuDropdown.classList.contains('hidden')) return;
+                const r = userMenuBtn.getBoundingClientRect();
+                const margin = 8;
+                const maxW = 176; /* w-44 */
+                const menuWidth = Math.min(maxW, window.innerWidth - margin * 2);
+                let rightPx = window.innerWidth - r.right;
+                const leftEdge = window.innerWidth - rightPx - menuWidth;
+                if (leftEdge < margin)
+                    rightPx = window.innerWidth - menuWidth - margin;
+                userMenuDropdown.style.top = (r.bottom + 6) + 'px';
+                userMenuDropdown.style.right = rightPx + 'px';
+                userMenuDropdown.style.left = 'auto';
+                userMenuDropdown.style.width = menuWidth + 'px';
+            }
+
+            function closeUserMenu() {
+                userMenuDropdown.classList.add('hidden');
+                userMenuBtn.setAttribute('aria-expanded', 'false');
+            }
+
+            function toggleUserMenu(e) {
+                e.stopPropagation();
+                const notifPanel = document.getElementById('notificationsDropdown');
+                if (notifPanel) notifPanel.classList.add('hidden');
+                userMenuDropdown.classList.toggle('hidden');
+                const open = !userMenuDropdown.classList.contains('hidden');
+                userMenuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+                if (open) positionUserMenu();
+            }
+
+            userMenuBtn.addEventListener('click', toggleUserMenu);
+            userMenuDropdown.addEventListener('click', function (e) { e.stopPropagation(); });
+
+            document.addEventListener('click', closeUserMenu);
+            window.addEventListener('resize', function () {
+                if (!userMenuDropdown.classList.contains('hidden')) positionUserMenu();
+            });
+            window.addEventListener('scroll', function () {
+                if (!userMenuDropdown.classList.contains('hidden')) positionUserMenu();
+            }, true);
+        })();
     </script>
     
     @if (TempData["Success"] != null)

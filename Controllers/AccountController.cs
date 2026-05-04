@@ -265,6 +265,93 @@ namespace SGP_Freelancing.Controllers
             return View();
         }
 
+        // ─────────────────────────────────────────────────────────────
+        // FORGOT PASSWORD & RESET PASSWORD
+        // ─────────────────────────────────────────────────────────────
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                ModelState.AddModelError("", "Email is required");
+                return View();
+            }
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+            {
+                // Don't reveal that the user does not exist or is not confirmed
+                TempData["SuccessMessage"] = "If your email is registered and confirmed, a password reset link has been sent.";
+                return RedirectToAction("Login");
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var resetLink = Url.Action("ResetPassword", "Account", new { email = email, token = token }, Request.Scheme);
+
+            try
+            {
+                await _emailService.SendPasswordResetEmailAsync(email, resetLink);
+                TempData["SuccessMessage"] = "If your email is registered and confirmed, a password reset link has been sent.";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to send password reset email to {Email}", email);
+                TempData["ErrorMessage"] = "Failed to send password reset email. Please try again later.";
+            }
+
+            return RedirectToAction("Login");
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string token, string email)
+        {
+            if (token == null || email == null)
+            {
+                ModelState.AddModelError("", "Invalid password reset token");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(string email, string token, string password, string confirmPassword)
+        {
+            if (password != confirmPassword)
+            {
+                ModelState.AddModelError("", "Passwords do not match");
+                return View();
+            }
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                // Don't reveal that the user does not exist
+                TempData["SuccessMessage"] = "Your password has been reset successfully.";
+                return RedirectToAction("Login");
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, token, password);
+            if (result.Succeeded)
+            {
+                TempData["SuccessMessage"] = "Your password has been reset successfully.";
+                return RedirectToAction("Login");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+
+            return View();
+        }
+
         private IActionResult RedirectToLocal(string? returnUrl)
         {
             if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
